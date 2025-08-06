@@ -39,7 +39,15 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="w-full h-[80vh] min-h-[500px] flex items-center justify-center text-center relative overflow-hidden">
+      <section className="w-full h-screen min-h-[700px] flex items-center justify-center text-center relative overflow-hidden">
+        <Image
+            src="https://placehold.co/1920x1080/000000/ffffff.png"
+            alt="Cosmic background"
+            layout="fill"
+            objectFit="cover"
+            className="z-0 opacity-40"
+            data-ai-hint="galaxy stars"
+        />
         <div className="glow-effect" />
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
@@ -49,7 +57,7 @@ export default function Home() {
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
           <div className="space-x-4">
-            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 transform hover:scale-105 transition-transform">
+            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30 transform hover:scale-105 transition-transform">
               <Link href="/services">Our Services</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent/10 transform hover:scale-105 transition-transform">
