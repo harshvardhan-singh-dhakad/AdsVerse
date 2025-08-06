@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'SynergyFlow Digital',
+  title: 'PixelCraft Digital',
   description: 'Elevating Brands with Innovative Digital Marketing Solutions.',
 };
 

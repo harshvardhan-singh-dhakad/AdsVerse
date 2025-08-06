@@ -12,7 +12,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Logo className="h-8 w-8" />
-              <span className="font-bold text-xl">SynergyFlow Digital</span>
+              <span className="font-bold text-xl">PixelCraft Digital</span>
             </Link>
             <p className="text-muted-foreground text-sm">
               Blending creativity with data to drive measurable results and elevate brands.
@@ -58,7 +58,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} SynergyFlow Digital. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} PixelCraft Digital. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

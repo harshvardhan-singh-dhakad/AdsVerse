@@ -10,7 +10,7 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>SynergyFlow Digital Logo</title>
+      <title>PixelCraft Digital Logo</title>
       <path
         d="M16 3L3 10.25V21.75L16 29L29 21.75V10.25L16 3Z"
         stroke="hsl(var(--primary))"
