@@ -1,0 +1,98 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+
+const portfolioItems = [
+  { id: 1, title: "QuantumLeap Website Redesign", category: "web", imageUrl: "https://placehold.co/600x400/8e44ad/ffffff.png", hint: "website mockup", description: "A complete overhaul of the QuantumLeap corporate website, focusing on modern UI/UX, improved performance, and a clear presentation of their innovative technology products. The project resulted in a 40% increase in user engagement." },
+  { id: 2, title: "ApexIndustries Brand Launch", category: "branding", imageUrl: "https://placehold.co/600x400/2ecc71/ffffff.png", hint: "brand logo", description: "Developed a powerful new brand identity for ApexIndustries, including logo design, brand guidelines, and marketing collateral. The new brand positioned them as a modern leader in the industrial sector." },
+  { id: 3, title: "StellarFoods Ad Campaign", category: "ads", imageUrl: "https://placehold.co/600x400/3498db/ffffff.png", hint: "social media marketing", description: "Launched a highly successful Meta and Google Ads campaign for StellarFoods' new product line. The campaign exceeded ROI targets by 150% and significantly boosted brand awareness." },
+  { id: 4, title: "NovaHealth SEO Strategy", category: "web", imageUrl: "https://placehold.co/600x400/f1c40f/ffffff.png", hint: "analytics dashboard", description: "Implemented a comprehensive SEO strategy for NovaHealth, resulting in a 200% increase in organic traffic and first-page rankings for key competitive terms." },
+  { id: 5, title: "PioneerLogistics Content Hub", category: "branding", imageUrl: "https://placehold.co/600x400/e74c3c/ffffff.png", hint: "magazine layout", description: "Created a content marketing hub for PioneerLogistics, establishing them as thought leaders in the logistics industry. The project involved blog content, whitepapers, and infographics." },
+  { id: 6, title: "E-commerce Store for ChicBoutique", category: "web", imageUrl: "https://placehold.co/600x400/9b59b6/ffffff.png", hint: "fashion website", description: "Designed and developed a scalable Shopify e-commerce store for a fashion startup, featuring a seamless checkout process and mobile-first design." },
+];
+
+const filters = ["all", "web", "branding", "ads"];
+
+type PortfolioItem = typeof portfolioItems[0];
+
+export function PortfolioGrid() {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+
+  const filteredItems = activeFilter === "all"
+    ? portfolioItems
+    : portfolioItems.filter(item => item.category === activeFilter);
+
+  return (
+    <div>
+      <div className="flex justify-center space-x-2 mb-12">
+        {filters.map(filter => (
+          <Button
+            key={filter}
+            variant={activeFilter === filter ? "default" : "outline"}
+            onClick={() => setActiveFilter(filter)}
+            className="capitalize"
+          >
+            {filter}
+          </Button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredItems.map(item => (
+          <Card 
+            key={item.id} 
+            className="overflow-hidden cursor-pointer group"
+            onClick={() => setSelectedItem(item)}
+          >
+            <CardContent className="p-0 relative">
+              <Image
+                src={item.imageUrl}
+                alt={item.title}
+                width={600}
+                height={400}
+                data-ai-hint={item.hint}
+                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                <h3 className="text-xl font-bold text-white mb-1">{item.title}</h3>
+                <Badge variant="secondary" className="capitalize w-fit">{item.category}</Badge>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
+        <DialogContent className="max-w-3xl">
+          {selectedItem && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-3xl mb-2">{selectedItem.title}</DialogTitle>
+                <DialogDescription>
+                  <Badge variant="secondary" className="capitalize">{selectedItem.category}</Badge>
+                </DialogDescription>
+              </DialogHeader>
+              <div>
+                <Image
+                  src={selectedItem.imageUrl}
+                  alt={selectedItem.title}
+                  width={800}
+                  height={500}
+                  data-ai-hint={selectedItem.hint}
+                  className="rounded-lg mb-4 w-full h-auto object-cover"
+                />
+                <p className="text-muted-foreground">{selectedItem.description}</p>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
