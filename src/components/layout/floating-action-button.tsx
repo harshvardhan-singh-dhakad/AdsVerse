@@ -4,7 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus, X, Instagram, Facebook, Linkedin, Twitter, Phone } from "lucide-react";
+import { MessageSquare, X, Instagram, Facebook, Linkedin, Twitter, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const socialLinks = [
@@ -34,31 +34,43 @@ export function FloatingActionButton() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <div className="relative flex flex-col items-center gap-4">
-        {isOpen && (
-          <div className="flex flex-col items-center gap-4 transition-all duration-300">
-            {socialLinks.map((link, index) => (
-              <Button
-                key={index}
-                asChild
-                variant="outline"
-                size="icon"
-                className="w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground"
-                aria-label={link.label}
-              >
-                <Link href={link.href} target="_blank" rel="noopener noreferrer">
-                  {link.icon}
-                </Link>
-              </Button>
-            ))}
+      <div className="relative flex flex-col items-center gap-2">
+        {socialLinks.map((link, index) => (
+          <div
+            key={link.label}
+            className={cn(
+              "transform transition-all duration-300 ease-in-out",
+              isOpen
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0 pointer-events-none"
+            )}
+            style={{ transitionDelay: isOpen ? `${index * 50}ms` : "0ms" }}
+          >
+            <Button
+              asChild
+              variant="outline"
+              size="icon"
+              className="w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground shadow-md"
+              aria-label={link.label}
+              onClick={() => setIsOpen(false)}
+            >
+              <Link href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.icon}
+              </Link>
+            </Button>
           </div>
-        )}
+        ))}
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="icon"
-          className="w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90"
+          className={cn(
+            "w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-transform duration-300",
+             isOpen && "rotate-90"
+          )}
+          aria-expanded={isOpen}
         >
-          {isOpen ? <X className="h-8 w-8" /> : <Plus className="h-8 w-8" />}
+          <X className={cn("h-8 w-8 absolute transition-opacity duration-300", !isOpen && "opacity-0")} />
+          <MessageSquare className={cn("h-8 w-8 absolute transition-opacity duration-300", isOpen && "opacity-0")} />
         </Button>
       </div>
     </div>
