@@ -1,4 +1,5 @@
 import { ContactForm } from "@/components/pages/contact-form";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Twitter, Linkedin, Github } from "lucide-react";
 import Image from "next/image";
