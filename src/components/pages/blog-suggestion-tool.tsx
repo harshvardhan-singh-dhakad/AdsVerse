@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { getBlogSuggestions } from "@/app/blog/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +33,7 @@ function SubmitButton() {
 }
 
 export function BlogSuggestionTool() {
-  const [state, formAction] = useFormState(getBlogSuggestions, initialState);
+  const [state, formAction] = useActionState(getBlogSuggestions, initialState);
 
   return (
     <div>
