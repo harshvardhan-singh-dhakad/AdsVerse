@@ -40,14 +40,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       {/* Hero Section */}
       <section className="w-full h-screen min-h-[700px] flex items-center justify-center text-center relative overflow-hidden">
-        <Image
-            src="https://placehold.co/1920x1080/000000/ffffff.png"
-            alt="Cosmic background"
-            layout="fill"
-            objectFit="cover"
-            className="z-0 opacity-40"
-            data-ai-hint="galaxy stars"
-        />
+        <div className="absolute inset-0 bg-background z-0" />
         <div className="glow-effect" />
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">

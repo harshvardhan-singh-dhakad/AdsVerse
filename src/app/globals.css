@@ -67,10 +67,12 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, hsl(var(--primary) / 0.1), transparent 40%),
-                radial-gradient(circle, hsl(var(--accent) / 0.05), transparent 50%);
+    width: 300%;
+    height: 300%;
+    background: 
+      radial-gradient(circle, hsl(var(--primary) / 0.15), transparent 30%),
+      radial-gradient(circle, hsl(var(--accent) / 0.1), transparent 40%),
+      radial-gradient(circle, hsl(var(--secondary) / 0.1), transparent 50%);
     transform-origin: center center;
     animation: glow-rotate 40s linear infinite;
     z-index: 0;
