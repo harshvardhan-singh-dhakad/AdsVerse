@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="w-full h-screen min-h-[700px] flex items-start justify-center text-center relative overflow-hidden pt-32">
+      <section className="w-full h-screen min-h-[700px] flex items-start justify-center text-center relative overflow-hidden pt-24">
         <div className="absolute inset-0 bg-transparent z-0" />
         <div className="stars stars-sm"></div>
         <div className="stars stars-md"></div>
