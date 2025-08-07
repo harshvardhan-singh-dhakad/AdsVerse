@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Palette, Megaphone, TrendingUp, FileText } from 'lucide-react';
@@ -45,16 +46,36 @@ export default function Home() {
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-headline tracking-tight font-bold" style={{ textShadow: '2px 2px 0 #FFFFFF, -2px -2px 0 #FFFFFF, 2px -2px 0 #FFFFFF, -2px 2px 0 #FFFFFF, 2px 0px 0 #FFFFFF, -2px 0px 0 #FFFFFF, 0px 2px 0 #FFFFFF, 0px -2px 0 #FFFFFF' }}>
-            <span style={{ color: '#D81B60' }}>A</span>
-            <span style={{ color: '#F9A825' }}>d</span>
-            <span style={{ color: '#039BE5' }}>s</span>
-            <span style={{ color: '#8BC34A' }}>V</span>
-            <span style={{ color: '#E91E63' }}>e</span>
-            <span style={{ color: '#FF5722' }}>r</span>
-            <span style={{ color: '#009688' }}>s</span>
-            <span style={{ color: '#D7CCC8' }}>e</span>
-          </h1>
+          <div className="w-full max-w-4xl mx-auto">
+            <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+              <defs>
+                <style>
+                  {`
+                    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+                    .adsverse-text {
+                      font-family: 'Fredoka', sans-serif;
+                      font-size: 100px;
+                      font-weight: 500;
+                      stroke: #FFF;
+                      stroke-width: 4;
+                      stroke-linejoin: round;
+                      paint-order: stroke;
+                    }
+                  `}
+                </style>
+              </defs>
+              <text x="50%" y="50%" dy=".35em" textAnchor="middle" className="adsverse-text">
+                <tspan fill="#D81B60">A</tspan>
+                <tspan fill="#F9A825">d</tspan>
+                <tspan fill="#039BE5">s</tspan>
+                <tspan fill="#8BC34A">V</tspan>
+                <tspan fill="#E91E63">e</tspan>
+                <tspan fill="#FF5722">r</tspan>
+                <tspan fill="#009688">s</tspan>
+                <tspan fill="#D7CCC8">e</tspan>
+              </text>
+            </svg>
+          </div>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
