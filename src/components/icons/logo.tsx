@@ -10,26 +10,26 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>PixelCraft Digital New Logo</title>
-      {/* Comet Head */}
+      <title>DigitalFlow Logo</title>
+      <defs>
+        <linearGradient id="flowGradient" x1="4" y1="28" x2="28" y2="4">
+          <stop offset="0%" stopColor="hsl(var(--primary))" />
+          <stop offset="100%" stopColor="hsl(var(--accent))" />
+        </linearGradient>
+      </defs>
+      {/* Abstract 'D' shape */}
       <path 
-        d="M15 4L9 10L15 16L21 10L15 4Z" 
-        fill="hsl(var(--primary))" 
+        d="M8 28C4 28 4 28 4 24V8C4 4 4 4 8 4H12V28H8Z"
+        fill="url(#flowGradient)" 
       />
-      {/* Comet Tail */}
+      {/* Abstract 'F' shape / Flow element */}
       <path 
-        d="M21 10L15 16L21 22" 
-        stroke="hsl(var(--accent))" 
-        strokeWidth="2.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+        d="M16 12H28V16H16V12Z" 
+        fill="hsl(var(--primary))"
       />
       <path 
-        d="M15 16L9 22L15 28" 
-        stroke="hsl(var(--primary))" 
-        strokeWidth="2.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"
+        d="M16 4H24V8H16V4Z"
+        fill="hsl(var(--primary))"
       />
     </svg>
   );

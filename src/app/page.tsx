@@ -44,7 +44,7 @@ export default function Home() {
         <div className="glow-effect" />
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
-            PixelCraft Digital
+            DigitalFlow
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.

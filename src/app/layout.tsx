@@ -10,7 +10,7 @@ import { FloatingActionButton } from '@/components/layout/floating-action-button
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'PixelCraft Digital',
+  title: 'DigitalFlow',
   description: 'Elevating Brands with Innovative Digital Marketing Solutions.',
 };
 
