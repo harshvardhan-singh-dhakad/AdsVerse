@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
 const teamMembers = [
-  { name: "Alex Johnson", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
-  { name: "Maria Garcia", role: "Lead Strategist", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman portrait" },
-  { name: "Sam Chen", role: "Head of SEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "person portrait" },
-  { name: "Jessica Taylor", role: "Creative Director", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman smiling" },
+  { name: "Harshvardhan Singh dhaakad", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
+  { name: "Priya Sharma", role: "Lead Strategist", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman portrait" },
+  { name: "Rajesh Kumar", role: "Head of SEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "person portrait" },
+  { name: "Anjali Verma", role: "Creative Director", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman smiling" },
 ];
 
 const timelineEvents = [
