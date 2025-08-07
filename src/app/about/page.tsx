@@ -10,7 +10,7 @@ const teamMembers = [
 ];
 
 const timelineEvents = [
-  { year: "2018", title: "The Spark", description: "DigitalFlow was founded with a mission to demystify digital marketing for growing businesses." },
+  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses." },
   { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings." },
   { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media." },
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients." },
@@ -20,7 +20,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-24">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">About DigitalFlow</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">About AdsVerse</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           We are a team of passionate marketers, strategists, and creators dedicated to helping your brand thrive in the digital world.
         </p>

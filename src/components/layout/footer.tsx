@@ -12,7 +12,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Logo className="h-8 w-8" />
-              <span className="font-bold text-xl">DigitalFlow</span>
+              <span className="font-bold text-xl">AdsVerse</span>
             </Link>
             <p className="text-muted-foreground text-sm">
               Blending creativity with data to drive measurable results and elevate brands.
@@ -43,7 +43,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>contact@digitalflow.in</li>
+              <li>contact@adsverse.in</li>
               <li>Scheme No. 54, Vijay Nagar</li>
               <li>Indore (452010), INDIA</li>
             </ul>
@@ -60,7 +60,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} DigitalFlow. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} AdsVerse. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

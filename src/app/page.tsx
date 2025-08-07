@@ -46,17 +46,14 @@ export default function Home() {
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-headline tracking-tight font-bold">
-            <span style={{ color: '#d946ef' }}>D</span>
-            <span style={{ color: '#f472b6' }}>i</span>
-            <span style={{ color: '#60a5fa' }}>g</span>
-            <span style={{ color: '#34d399' }}>i</span>
-            <span style={{ color: '#d946ef' }}>t</span>
-            <span style={{ color: '#fb923c' }}>a</span>
-            <span style={{ color: '#4ade80' }}>l</span>
-            <span style={{ color: '#d946ef' }}>F</span>
-            <span style={{ color: '#f472b6' }}>l</span>
-            <span style={{ color: '#60a5fa' }}>o</span>
-            <span style={{ color: '#c0a08f' }}>w</span>
+            <span style={{ color: '#d946ef' }}>A</span>
+            <span style={{ color: '#f472b6' }}>d</span>
+            <span style={{ color: '#60a5fa' }}>s</span>
+            <span style={{ color: '#34d399' }}>V</span>
+            <span style={{ color: '#fb923c' }}>e</span>
+            <span style={{ color: '#4ade80' }}>r</span>
+            <span style={{ color: '#d946ef' }}>s</span>
+            <span style={{ color: '#f472b6' }}>e</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.

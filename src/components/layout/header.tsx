@@ -31,7 +31,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Logo className="h-8 w-8" />
-          <span className="font-bold hidden sm:inline-block">DigitalFlow</span>
+          <span className="font-bold hidden sm:inline-block">AdsVerse</span>
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="hidden md:flex gap-6">
@@ -62,7 +62,7 @@ export function Header() {
                   <div className="border-b pb-4">
                     <Link href="/" className="flex items-center space-x-2">
                       <Logo className="h-8 w-8" />
-                      <span className="font-bold">DigitalFlow</span>
+                      <span className="font-bold">AdsVerse</span>
                     </Link>
                   </div>
                   <nav className="flex flex-col gap-4 mt-6">
