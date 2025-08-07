@@ -43,8 +43,18 @@ export default function Home() {
         <div className="absolute inset-0 bg-transparent z-0" />
         <div className="glow-effect" />
         <div className="z-10 p-4 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
-            DigitalFlow
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+            <span style={{ color: 'hsl(var(--primary))' }}>D</span>
+            <span style={{ color: 'hsl(var(--accent))' }}>i</span>
+            <span style={{ color: '#3b82f6' }}>g</span>
+            <span style={{ color: '#ec4899' }}>i</span>
+            <span style={{ color: '#f97316' }}>t</span>
+            <span style={{ color: '#8b5cf6' }}>a</span>
+            <span style={{ color: '#14b8a6' }}>l</span>
+            <span style={{ color: 'hsl(var(--primary))' }}>F</span>
+            <span style={{ color: 'hsl(var(--accent))' }}>l</span>
+            <span style={{ color: '#3b82f6' }}>o</span>
+            <span style={{ color: '#ec4899' }}>w</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
