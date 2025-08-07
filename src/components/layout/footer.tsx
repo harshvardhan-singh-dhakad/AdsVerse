@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/icons/logo";
+import Image from "next/image";
 import { Github, Linkedin, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Logo className="h-8 w-8" />
-              <span className="font-bold text-xl">AdsVerse</span>
+              <Image 
+                src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+                alt="AdsVerse Logo"
+                width={120}
+                height={30}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-muted-foreground text-sm">
               Blending creativity with data to drive measurable results and elevate brands.

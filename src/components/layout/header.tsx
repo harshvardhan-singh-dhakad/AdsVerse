@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Bot } from "lucide-react";
-import { Logo } from "@/components/icons/logo";
+import { Menu } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -30,8 +30,13 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Logo className="h-8 w-8" />
-          <span className="font-bold hidden sm:inline-block">AdsVerse</span>
+           <Image 
+              src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+              alt="AdsVerse Logo"
+              width={120}
+              height={30}
+              className="h-8 w-auto"
+            />
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="hidden md:flex gap-6">
@@ -61,8 +66,13 @@ export function Header() {
                 <div className="flex flex-col h-full">
                   <div className="border-b pb-4">
                     <Link href="/" className="flex items-center space-x-2">
-                      <Logo className="h-8 w-8" />
-                      <span className="font-bold">AdsVerse</span>
+                       <Image 
+                          src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+                          alt="AdsVerse Logo"
+                          width={120}
+                          height={30}
+                          className="h-8 w-auto"
+                        />
                     </Link>
                   </div>
                   <nav className="flex flex-col gap-4 mt-6">
