@@ -49,30 +49,30 @@ export default function Home() {
           <div className="w-full max-w-4xl mx-auto">
             <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
               <defs>
+                 <linearGradient id="gradientA" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#8BC34A'}} />
+                  <stop offset="100%" style={{stopColor: '#F9A825'}} />
+                </linearGradient>
+                <linearGradient id="gradientV" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#D81B60'}} />
+                  <stop offset="100%" style={{stopColor: '#F9A825'}} />
+                </linearGradient>
                 <style>
                   {`
-                    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
-                    .adsverse-text {
-                      font-family: 'Fredoka', sans-serif;
+                    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+                    .adsverse-logo-text {
+                      font-family: 'Nunito', sans-serif;
                       font-size: 100px;
-                      font-weight: 500;
-                      stroke: #FFF;
-                      stroke-width: 4;
-                      stroke-linejoin: round;
-                      paint-order: stroke;
+                      font-weight: 700;
                     }
                   `}
                 </style>
               </defs>
-              <text x="50%" y="50%" dy=".35em" textAnchor="middle" className="adsverse-text">
-                <tspan fill="#D81B60">A</tspan>
-                <tspan fill="#F9A825">d</tspan>
-                <tspan fill="#039BE5">s</tspan>
-                <tspan fill="#8BC34A">V</tspan>
-                <tspan fill="#E91E63">e</tspan>
-                <tspan fill="#FF5722">r</tspan>
-                <tspan fill="#009688">s</tspan>
-                <tspan fill="#D7CCC8">e</tspan>
+              <text x="50%" y="50%" dy=".35em" textAnchor="middle" className="adsverse-logo-text">
+                <tspan fill="url(#gradientA)">A</tspan>
+                <tspan fill="#FFFFFF">ds</tspan>
+                <tspan fill="url(#gradientV)" dy="0.1em">V</tspan>
+                <tspan fill="#FFFFFF">erse</tspan>
               </text>
             </svg>
           </div>
