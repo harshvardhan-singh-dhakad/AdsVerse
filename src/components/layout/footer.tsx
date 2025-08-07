@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Image from "next/image";
 import { Github, Linkedin, Send } from "lucide-react";
@@ -12,7 +13,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Image 
-                src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+                src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
                 alt="AdsVerse Logo"
                 width={120}
                 height={30}

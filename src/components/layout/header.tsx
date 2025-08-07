@@ -31,7 +31,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
            <Image 
-              src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+              src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
               alt="AdsVerse Logo"
               width={120}
               height={30}
@@ -67,7 +67,7 @@ export function Header() {
                   <div className="border-b pb-4">
                     <Link href="/" className="flex items-center space-x-2">
                        <Image 
-                          src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+                          src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
                           alt="AdsVerse Logo"
                           width={120}
                           height={30}
