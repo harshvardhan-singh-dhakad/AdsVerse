@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Drone, Edit, Film, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const servicesData = [
   // SEO Services
@@ -85,7 +86,9 @@ const ServiceCard = ({ service }: { service: typeof servicesData[0] }) => {
             </CardContent>
             <CardFooter className="flex-col gap-4">
                 <p className="text-2xl font-bold text-accent">{service.price}</p>
-                <Button className="w-full bg-primary hover:bg-primary/90">Get Quote</Button>
+                <Button asChild className="w-full bg-primary hover:bg-primary/90">
+                  <Link href="/contact">Get Quote</Link>
+                </Button>
             </CardFooter>
         </Card>
     );
@@ -176,7 +179,9 @@ export default function PricingPage() {
                 <p className="text-muted-foreground">Tailored solutions for your unique project needs. From YouTube series to ad films.</p>
               </CardContent>
                <CardFooter>
-                <Button className="w-full bg-accent hover:bg-accent/90">Request Quote</Button>
+                <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                  <Link href="/contact">Request Quote</Link>
+                </Button>
               </CardFooter>
             </Card>
         </div>
