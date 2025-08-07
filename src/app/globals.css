@@ -143,15 +143,15 @@ body {
     animation: animate-stars 100s linear infinite;
     background-image:
       /* Slightly larger, colorful "galaxies" */
-      radial-gradient(2px 2px at 20px 30px, #AEC6CF, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 40px 70px, #FFDAB9, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 90px 40px, #B4D4FF, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 130px 80px, #FFC0CB, rgba(0,0,0,0)),
-      radial-gradient(3px 2px at 160px 120px, #F0E68C, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 180px 50px, #ADD8E6, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 20px 30px, #AEC6CF, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 40px 70px, #FFDAB9, rgba(0,0,0,0)),
+      radial-gradient(4px 4px at 90px 40px, #B4D4FF, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 130px 80px, #FFC0CB, rgba(0,0,0,0)),
+      radial-gradient(4px 3px at 160px 120px, #F0E68C, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 180px 50px, #ADD8E6, rgba(0,0,0,0)),
       /* Elliptical galaxies */
-      radial-gradient(2px 1px at 60px 150px, #FFDAB9, rgba(0,0,0,0)),
-      radial-gradient(1px 2px at 110px 160px, #AEC6CF, rgba(0,0,0,0));
+      radial-gradient(3px 2px at 60px 150px, #FFDAB9, rgba(0,0,0,0)),
+      radial-gradient(2px 3px at 110px 160px, #AEC6CF, rgba(0,0,0,0));
     background-size: 300px 300px;
   }
 
@@ -159,13 +159,13 @@ body {
     animation: animate-stars 50s linear infinite;
     background-image:
       /* Brighter, more prominent stars/galaxies */
-      radial-gradient(2px 2px at 50px 160px, #FFFFFF, rgba(0,0,0,0)),
-      radial-gradient(3px 3px at 90px 40px, #FFFFE0, rgba(0,0,0,0)),
-      radial-gradient(3px 3px at 160px 120px, #E6E6FA, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 50px 160px, #FFFFFF, rgba(0,0,0,0)),
+      radial-gradient(4px 4px at 90px 40px, #FFFFE0, rgba(0,0,0,0)),
+      radial-gradient(4px 4px at 160px 120px, #E6E6FA, rgba(0,0,0,0)),
       /* Larger, diffuse glows */
-      radial-gradient(4px 4px at 10% 20%, hsl(var(--primary) / 0.3), transparent 60%),
-      radial-gradient(4px 4px at 80% 90%, hsl(var(--accent) / 0.2), transparent 60%),
-      radial-gradient(3px 3px at 50% 50%, #FFFFFF, transparent 80%);
+      radial-gradient(6px 6px at 10% 20%, hsl(var(--primary) / 0.3), transparent 60%),
+      radial-gradient(6px 6px at 80% 90%, hsl(var(--accent) / 0.2), transparent 60%),
+      radial-gradient(5px 5px at 50% 50%, #FFFFFF, transparent 80%);
     background-size: 400px 400px;
   }
 
