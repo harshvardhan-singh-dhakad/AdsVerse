@@ -47,34 +47,14 @@ export default function Home() {
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
           <div className="w-full max-w-4xl mx-auto">
-            <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-              <defs>
-                 <linearGradient id="gradientA" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: '#8BC34A'}} />
-                  <stop offset="100%" style={{stopColor: '#F9A825'}} />
-                </linearGradient>
-                <linearGradient id="gradientV" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: '#D81B60'}} />
-                  <stop offset="100%" style={{stopColor: '#F9A825'}} />
-                </linearGradient>
-                <style>
-                  {`
-                    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
-                    .adsverse-logo-text {
-                      font-family: 'Nunito', sans-serif;
-                      font-size: 100px;
-                      font-weight: 700;
-                    }
-                  `}
-                </style>
-              </defs>
-              <text x="50%" y="50%" dy=".35em" textAnchor="middle" className="adsverse-logo-text">
-                <tspan fill="url(#gradientA)">A</tspan>
-                <tspan fill="#FFFFFF">ds</tspan>
-                <tspan fill="url(#gradientV)" dy="0.1em">V</tspan>
-                <tspan fill="#FFFFFF">erse</tspan>
-              </text>
-            </svg>
+            <Image 
+              src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
+              alt="AdsVerse Logo"
+              width={800}
+              height={120}
+              className="w-full h-auto"
+              priority
+            />
           </div>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
