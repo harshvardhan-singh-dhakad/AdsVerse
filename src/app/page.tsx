@@ -45,14 +45,14 @@ export default function Home() {
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
             <span style={{ color: 'hsl(var(--primary))' }}>D</span>
-            <span style={{ color: 'hsl(var(--accent))' }}>i</span>
+            <span style={{ color: '#32CD32' }}>i</span>
             <span style={{ color: '#2563eb' }}>g</span>
-            <span style={{ color: '#d946ef' }}>i</span>
+            <span style={{ color: '#32CD32' }}>i</span>
             <span style={{ color: '#f59e0b' }}>t</span>
             <span style={{ color: '#7c3aed' }}>a</span>
-            <span style={{ color: '#0d9488' }}>l</span>
+            <span style={{ color: '#32CD32' }}>l</span>
             <span style={{ color: 'hsl(var(--primary))' }}>F</span>
-            <span style={{ color: 'hsl(var(--accent))' }}>l</span>
+            <span style={{ color: '#32CD32' }}>l</span>
             <span style={{ color: '#2563eb' }}>o</span>
             <span style={{ color: '#d946ef' }}>w</span>
           </h1>
