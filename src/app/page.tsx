@@ -82,7 +82,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service) => (
-            <Link key={service.id} href={`/services#${service.id}`}>
+            <Link key={service.id} href={`/services/${service.id}`}>
               <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
                 <CardHeader className="items-center">
                   {service.icon}
