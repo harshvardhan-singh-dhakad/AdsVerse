@@ -1,7 +1,7 @@
 import { ContactForm } from "@/components/pages/contact-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Twitter, Linkedin, Github } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,15 +31,15 @@ export default function ContactPage() {
             <div className="space-y-4 text-muted-foreground">
               <div className="flex items-center gap-4">
                 <Mail className="w-6 h-6 text-primary" />
-                <span>info@digitalflow.agency</span>
+                <span>contact@digitalflow.in</span>
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="w-6 h-6 text-primary" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9977646156</span>
               </div>
               <div className="flex items-center gap-4">
                 <MapPin className="w-6 h-6 text-primary" />
-                <span>123 Digital Way, Innovation City, CA 12345</span>
+                <span>Scheme No. 54, Vijay Nagar, Indore (452010), INDIA</span>
               </div>
             </div>
           </div>

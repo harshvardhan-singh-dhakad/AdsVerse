@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/icons/logo";
-import { Github, Twitter, Linkedin, Send } from "lucide-react";
+import { Github, Linkedin, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -43,9 +43,9 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>info@digitalflow.agency</li>
-              <li>123 Digital Way, Suite 100</li>
-              <li>Innovation City, CA 12345</li>
+              <li>contact@digitalflow.in</li>
+              <li>Scheme No. 54, Vijay Nagar</li>
+              <li>Indore (452010), INDIA</li>
             </ul>
           </div>
           <div>
