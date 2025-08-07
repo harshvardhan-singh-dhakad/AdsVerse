@@ -127,7 +127,8 @@ body {
       radial-gradient(1px 1px at 50px 160px, #FFFF00, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 90px 40px, hsl(var(--primary) / 0.8), rgba(0,0,0,0)),
       radial-gradient(1px 1px at 130px 80px, #FFA500, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 160px 120px, hsl(var(--accent)), rgba(0,0,0,0));
+      radial-gradient(1px 1px at 160px 120px, hsl(var(--accent)), rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 70px 200px, #FF69B4, rgba(0,0,0,0));
     background-size: 200px 200px;
     background-repeat: repeat;
   }
@@ -140,7 +141,8 @@ body {
       radial-gradient(1px 1px at 50px 160px, hsl(var(--primary)), rgba(0,0,0,0)),
       radial-gradient(2px 2px at 90px 40px, #FFFF00, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 130px 80px, #FFA500, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 160px 120px, hsl(var(--primary) / 0.5), rgba(0,0,0,0));
+      radial-gradient(2px 2px at 160px 120px, hsl(var(--primary) / 0.5), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 180px 50px, #FF69B4, rgba(0,0,0,0));
     background-size: 300px 300px;
     background-repeat: repeat;
   }
@@ -153,7 +155,8 @@ body {
       radial-gradient(2px 2px at 50px 160px, #FFA500, rgba(0,0,0,0)),
       radial-gradient(3px 3px at 90px 40px, hsl(var(--primary)), rgba(0,0,0,0)),
       radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-      radial-gradient(3px 3px at 160px 120px, hsl(var(--accent) / 0.8), rgba(0,0,0,0));
+      radial-gradient(3px 3px at 160px 120px, hsl(var(--accent) / 0.8), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 100px 190px, #FF69B4, rgba(0,0,0,0));
     background-size: 400px 400px;
     background-repeat: repeat;
   }
