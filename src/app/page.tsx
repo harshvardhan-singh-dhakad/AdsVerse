@@ -41,20 +41,22 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full h-screen min-h-[700px] flex items-center justify-center text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-transparent z-0" />
-        <div className="glow-effect" />
+        <div className="stars stars-sm"></div>
+        <div className="stars stars-md"></div>
+        <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
-            <span style={{ color: 'hsl(var(--primary))' }}>D</span>
-            <span style={{ color: '#32CD32' }}>i</span>
+            <span style={{ color: '#d946ef' }}>D</span>
+            <span style={{ color: '#f59e0b' }}>i</span>
             <span style={{ color: '#2563eb' }}>g</span>
-            <span style={{ color: '#32CD32' }}>i</span>
-            <span style={{ color: '#f59e0b' }}>t</span>
-            <span style={{ color: '#7c3aed' }}>a</span>
-            <span style={{ color: '#32CD32' }}>l</span>
-            <span style={{ color: 'hsl(var(--primary))' }}>F</span>
-            <span style={{ color: '#32CD32' }}>l</span>
+            <span style={{ color: '#34d399' }}>i</span>
+            <span style={{ color: '#d946ef' }}>t</span>
+            <span style={{ color: '#f97316' }}>a</span>
+            <span style={{ color: '#14b8a6' }}>l</span>
+            <span style={{ color: '#d946ef' }}>F</span>
+            <span style={{ color: '#f59e0b' }}>l</span>
             <span style={{ color: '#2563eb' }}>o</span>
-            <span style={{ color: '#d946ef' }}>w</span>
+            <span style={{ color: '#c0a08f' }}>w</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
