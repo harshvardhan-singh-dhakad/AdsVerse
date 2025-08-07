@@ -46,15 +46,15 @@ export default function Home() {
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
             <span style={{ color: 'hsl(var(--primary))' }}>D</span>
             <span style={{ color: 'hsl(var(--accent))' }}>i</span>
-            <span style={{ color: '#3b82f6' }}>g</span>
-            <span style={{ color: '#ec4899' }}>i</span>
-            <span style={{ color: '#f97316' }}>t</span>
-            <span style={{ color: '#8b5cf6' }}>a</span>
-            <span style={{ color: '#14b8a6' }}>l</span>
+            <span style={{ color: '#2563eb' }}>g</span>
+            <span style={{ color: '#d946ef' }}>i</span>
+            <span style={{ color: '#f59e0b' }}>t</span>
+            <span style={{ color: '#7c3aed' }}>a</span>
+            <span style={{ color: '#0d9488' }}>l</span>
             <span style={{ color: 'hsl(var(--primary))' }}>F</span>
             <span style={{ color: 'hsl(var(--accent))' }}>l</span>
-            <span style={{ color: '#3b82f6' }}>o</span>
-            <span style={{ color: '#ec4899' }}>w</span>
+            <span style={{ color: '#2563eb' }}>o</span>
+            <span style={{ color: '#d946ef' }}>w</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
