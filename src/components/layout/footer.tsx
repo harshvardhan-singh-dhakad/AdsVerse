@@ -19,7 +19,9 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <Link href="#" aria-label="Twitter">
-                <Twitter className="h-6 w-6 text-muted-foreground hover:text-primary" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                </svg>
               </Link>
               <Link href="#" aria-label="LinkedIn">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" />
@@ -41,9 +43,9 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>info@synergyflow.digital</li>
-              <li>123 Tech Avenue, Suite 100</li>
-              <li>Innovation City, 12345</li>
+              <li>info@digitalflow.agency</li>
+              <li>123 Digital Way, Suite 100</li>
+              <li>Innovation City, CA 12345</li>
             </ul>
           </div>
           <div>
