@@ -30,7 +30,7 @@ body {
   }
 
   .dark {
-    --background: 222 89% 10%;
+    --background: 224 71.4% 4.1%;
     --foreground: 210 40% 98%;
     --card: 222 89% 12%;
     --card-foreground: 210 40% 98%;
@@ -58,6 +58,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
 }
 
@@ -103,5 +104,66 @@ body {
   }
   .card-3d-effect:hover {
     transform: perspective(1000px) rotateY(var(--rotateY)) rotateX(var(--rotateX)) scale3d(1.05, 1.05, 1.05);
+  }
+
+  /* Galaxy Theme */
+  .stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: transparent;
+  }
+
+  .stars-sm {
+    animation: animate-stars 50s linear infinite;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-size: 200px 200px;
+    background-repeat: repeat;
+  }
+  
+  .stars-md {
+    animation: animate-stars 100s linear infinite;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-size: 300px 300px;
+    background-repeat: repeat;
+  }
+
+  .stars-lg {
+    animation: animate-stars 150s linear infinite;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-size: 400px 400px;
+    background-repeat: repeat;
+  }
+
+  @keyframes animate-stars {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-2000px);
+    }
   }
 }

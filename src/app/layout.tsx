@@ -22,7 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} antialiased`}>
-        <div className="flex flex-col min-h-screen">
+        <div className="relative flex flex-col min-h-screen">
+          <div className="absolute top-0 left-0 w-full h-full -z-50 overflow-hidden">
+            <div className="stars stars-sm"></div>
+            <div className="stars stars-md"></div>
+            <div className="stars stars-lg"></div>
+          </div>
           <Header />
           <main className="flex-grow">{children}</main>
           <FloatingActionButton />

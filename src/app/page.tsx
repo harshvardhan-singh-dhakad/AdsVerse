@@ -40,7 +40,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       {/* Hero Section */}
       <section className="w-full h-screen min-h-[700px] flex items-center justify-center text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-background z-0" />
+        <div className="absolute inset-0 bg-transparent z-0" />
         <div className="glow-effect" />
         <div className="z-10 p-4 space-y-6">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">
@@ -82,7 +82,7 @@ export default function Home() {
       </section>
 
       {/* Client Showcase Section */}
-      <section className="w-full bg-card/30 py-16 md:py-24">
+      <section className="w-full bg-card/30 backdrop-blur-sm py-16 md:py-24">
         <div className="container mx-auto text-center px-4">
           <h2 className="text-4xl font-bold">Trusted by Industry Leaders</h2>
           <p className="text-lg text-foreground/70 mt-2 mb-12">We are proud to partner with innovative companies worldwide.</p>
