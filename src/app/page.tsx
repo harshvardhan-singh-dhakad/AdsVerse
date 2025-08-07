@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="w-full h-screen min-h-[700px] flex items-start justify-center text-center relative overflow-hidden pt-24">
+      <section className="w-full h-screen min-h-[700px] flex items-start justify-center text-center relative overflow-hidden pt-12">
         <div className="absolute inset-0 bg-transparent z-0" />
         <div className="stars stars-sm"></div>
         <div className="stars stars-md"></div>
@@ -56,7 +56,7 @@ export default function Home() {
               priority
             />
           </div>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-8">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
           <div className="space-x-4">
