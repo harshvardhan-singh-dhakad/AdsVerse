@@ -45,15 +45,15 @@ export default function Home() {
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-headline tracking-tight font-bold">
-            <span style={{ color: '#d946ef' }}>A</span>
-            <span style={{ color: '#f472b6' }}>d</span>
-            <span style={{ color: '#60a5fa' }}>s</span>
-            <span style={{ color: '#34d399' }}>V</span>
-            <span style={{ color: '#fb923c' }}>e</span>
-            <span style={{ color: '#4ade80' }}>r</span>
-            <span style={{ color: '#d946ef' }}>s</span>
-            <span style={{ color: '#f472b6' }}>e</span>
+          <h1 className="text-5xl md:text-7xl font-headline tracking-tight font-bold" style={{ textShadow: '2px 2px 0 #FFFFFF, -2px -2px 0 #FFFFFF, 2px -2px 0 #FFFFFF, -2px 2px 0 #FFFFFF, 2px 0px 0 #FFFFFF, -2px 0px 0 #FFFFFF, 0px 2px 0 #FFFFFF, 0px -2px 0 #FFFFFF' }}>
+            <span style={{ color: '#D81B60' }}>A</span>
+            <span style={{ color: '#F9A825' }}>d</span>
+            <span style={{ color: '#039BE5' }}>s</span>
+            <span style={{ color: '#8BC34A' }}>V</span>
+            <span style={{ color: '#E91E63' }}>e</span>
+            <span style={{ color: '#FF5722' }}>r</span>
+            <span style={{ color: '#009688' }}>s</span>
+            <span style={{ color: '#D7CCC8' }}>e</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
