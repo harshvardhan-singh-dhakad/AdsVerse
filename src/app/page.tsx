@@ -45,17 +45,17 @@ export default function Home() {
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-headline tracking-tight font-bold">
             <span style={{ color: '#d946ef' }}>D</span>
-            <span style={{ color: '#f59e0b' }}>i</span>
-            <span style={{ color: '#2563eb' }}>g</span>
+            <span style={{ color: '#f472b6' }}>i</span>
+            <span style={{ color: '#60a5fa' }}>g</span>
             <span style={{ color: '#34d399' }}>i</span>
             <span style={{ color: '#d946ef' }}>t</span>
-            <span style={{ color: '#f97316' }}>a</span>
-            <span style={{ color: '#14b8a6' }}>l</span>
+            <span style={{ color: '#fb923c' }}>a</span>
+            <span style={{ color: '#4ade80' }}>l</span>
             <span style={{ color: '#d946ef' }}>F</span>
-            <span style={{ color: '#f59e0b' }}>l</span>
-            <span style={{ color: '#2563eb' }}>o</span>
+            <span style={{ color: '#f472b6' }}>l</span>
+            <span style={{ color: '#60a5fa' }}>o</span>
             <span style={{ color: '#c0a08f' }}>w</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
