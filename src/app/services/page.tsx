@@ -76,6 +76,16 @@ export default function ServicesPage() {
             ))}
         </div>
       </main>
+
+      <section className="text-center mt-24">
+        <h2 className="text-3xl font-bold mb-4">Ready to See Everything We Offer?</h2>
+        <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Our pricing page has a detailed list of all our services, from individual tasks to comprehensive packages. Find the perfect fit for your needs.
+        </p>
+        <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/30 transform hover:scale-105 transition-transform">
+          <Link href="/pricing">Explore All Services</Link>
+        </Button>
+      </section>
     </div>
   );
 }
