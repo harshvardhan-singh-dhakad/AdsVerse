@@ -44,13 +44,13 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="w-full flex items-start justify-center text-center relative overflow-hidden pt-12 pb-24 md:pb-32">
+      <section className="w-full flex items-start justify-center text-center relative overflow-hidden pt-8 pb-12 md:pb-16">
         <div className="absolute inset-0 bg-transparent z-0" />
         <div className="stars stars-sm"></div>
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <div className="w-full max-w-4xl mx-auto">
+          <div className="w-full max-w-4xl mx-auto relative right-[-0.3rem]">
             <Image 
               src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
               alt="AdsVerse Logo"
@@ -60,7 +60,7 @@ export default function Home() {
               priority
             />
           </div>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-8">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-10">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
           <div className="space-x-4">
