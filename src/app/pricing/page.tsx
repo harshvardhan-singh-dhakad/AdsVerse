@@ -50,9 +50,14 @@ const servicesData = [
   { category: "Analytics", title: "Monthly Performance Report", description: "Detailed reports on your marketing performance.", price: "₹5,000/mo", icon: <LineChart className="w-8 h-8 text-accent" /> },
   { category: "Analytics", title: "CRO Audit", description: "Identify opportunities to improve your conversion rates.", price: "₹12,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
   { category: "Analytics", title: "Custom Dashboard Setup", description: "A custom dashboard to visualize your key metrics.", price: "₹10,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
+  // Political Campaigns
+  { category: "Political Campaigns", title: "Campaign Strategy & Management", description: "Comprehensive social media strategy and management for political campaigns.", price: "₹50,000/mo", icon: <Megaphone className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Voter Targeting & Outreach", description: "Advanced audience targeting to reach potential voters on social media.", price: "₹25,000/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Content & Ad Creation", description: "Creative development of posts, videos, and ads for political messaging.", price: "₹30,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Online Reputation Management", description: "Monitoring and managing online presence and public sentiment.", price: "₹20,000/mo", icon: <Mail className="w-8 h-8 text-accent" /> },
 ];
 
-const categories = ["All", "SEO", "Paid Ads", "Social Media", "Content Marketing", "Branding & Design", "Web & App Dev", "Analytics"];
+const categories = ["All", "SEO", "Paid Ads", "Social Media", "Content Marketing", "Branding & Design", "Web & App Dev", "Analytics", "Political Campaigns"];
 
 const ServiceCard = ({ service }: { service: typeof servicesData[0] }) => {
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
@@ -189,3 +194,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
+    
