@@ -79,7 +79,7 @@ export function FloatingActionButton() {
             <Button
               variant="outline"
               size="icon"
-              className="w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground shadow-md"
+              className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground"
               aria-label="Chat with AI"
               onClick={() => {
               setIsChatOpen(true);

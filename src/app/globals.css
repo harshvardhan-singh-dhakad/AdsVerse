@@ -63,6 +63,16 @@ body {
 }
 
 @layer utilities {
+  .ai-assistant-button-animated {
+    animation: ai-button-glow 4s linear infinite;
+    box-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary));
+  }
+  @keyframes ai-button-glow {
+    0% { box-shadow: 0 0 5px hsl(var(--primary)/0.7), 0 0 10px hsl(var(--primary)/0.7); }
+    50% { box-shadow: 0 0 10px hsl(var(--accent)/0.8), 0 0 20px hsl(var(--accent)/0.8); }
+    100% { box-shadow: 0 0 5px hsl(var(--primary)/0.7), 0 0 10px hsl(var(--primary)/0.7); }
+  }
+
   .glow-effect {
     position: absolute;
     top: 50%;
