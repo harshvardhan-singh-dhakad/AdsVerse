@@ -4,7 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, X, Phone } from "lucide-react";
+import { MessageSquare, X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const socialLinks = [
@@ -36,11 +36,7 @@ const socialLinks = [
     </svg>
   ), label: "X (Twitter)" },
   { href: "tel:+919977646156", icon: <Phone className="h-6 w-6" />, label: "Call Us" },
-  { href: "https://docs.google.com/forms", icon: (
-     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 11h-4v4h-2v-4H8v-2h4V7h2v4h4v2zm-8-9v-.57c0-.81.69-1.43 1.5-1.43h5c.81 0 1.5.62 1.5 1.43V4h-8zm12-2.26V18c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h.26C6.98 2.37 6.63 3.13 6.63 4v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-.87-.35-1.63-.92-2.26z"></path>
-    </svg>
-  ), label: "Google Form" },
+  { href: "/contact", icon: <Mail className="h-6 w-6" />, label: "Contact Us" },
 ];
 
 export function FloatingActionButton() {
@@ -68,7 +64,7 @@ export function FloatingActionButton() {
               aria-label={link.label}
               onClick={() => setIsOpen(false)}
             >
-              <Link href={link.href} target="_blank" rel="noopener noreferrer">
+              <Link href={link.href} target={link.href.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer">
                 {link.icon}
               </Link>
             </Button>
