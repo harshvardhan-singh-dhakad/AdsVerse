@@ -48,29 +48,6 @@ export function FloatingActionButton() {
     <>
       <div className="fixed bottom-6 right-5 z-50">
         <div className="relative flex flex-col items-center gap-2">
-           {/* AI Chat Button - always visible when menu is open */}
-           <div
-             className={cn(
-               "transform transition-all duration-300 ease-in-out",
-               isOpen
-                 ? "translate-y-0 opacity-100"
-                 : "translate-y-4 opacity-0 pointer-events-none"
-             )}
-            style={{ transitionDelay: isOpen ? `${socialLinks.length * 50}ms` : "0ms" }}
-           >
-             <Button
-               variant="outline"
-               size="icon"
-               className="w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground shadow-md"
-               aria-label="Chat with AI"
-               onClick={() => {
-                setIsChatOpen(true);
-                setIsOpen(false);
-               }}
-             >
-               <Bot className="h-6 w-6" />
-             </Button>
-           </div>
           {socialLinks.map((link, index) => (
             <div
               key={link.label}
@@ -96,6 +73,23 @@ export function FloatingActionButton() {
               </Button>
             </div>
           ))}
+
+          {/* AI Chat Button - now separate */}
+          <div className="mb-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground shadow-md"
+              aria-label="Chat with AI"
+              onClick={() => {
+              setIsChatOpen(true);
+              setIsOpen(false);
+              }}
+            >
+              <Bot className="h-6 w-6" />
+            </Button>
+          </div>
+
           <Button
             onClick={() => setIsOpen(!isOpen)}
             size="icon"
