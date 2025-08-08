@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -12,7 +13,7 @@ const portfolioItems = [
   { id: 2, title: "ApexIndustries Brand Launch", category: "branding", imageUrl: "https://placehold.co/600x400/2ecc71/ffffff.png", hint: "brand logo", description: "Developed a powerful new brand identity for ApexIndustries, including logo design, brand guidelines, and marketing collateral. The new brand positioned them as a modern leader in the industrial sector." },
   { id: 3, title: "StellarFoods Ad Campaign", category: "ads", imageUrl: "https://placehold.co/600x400/3498db/ffffff.png", hint: "social media marketing", description: "Launched a highly successful Meta and Google Ads campaign for StellarFoods' new product line. The campaign exceeded ROI targets by 150% and significantly boosted brand awareness." },
   { id: 4, title: "NovaHealth SEO Strategy", category: "web", imageUrl: "https://placehold.co/600x400/f1c40f/ffffff.png", hint: "analytics dashboard", description: "Implemented a comprehensive SEO strategy for NovaHealth, resulting in a 200% increase in organic traffic and first-page rankings for key competitive terms." },
-  { id: 5, title: "PioneerLogistics Content Hub", category: "branding", imageUrl: "https://placehold.co/600x400/e74c3c/ffffff.png", hint: "magazine layout", description: "Created a content marketing hub for PioneerLogistics, establishing them as thought leaders in the logistics industry. The project involved blog content, whitepapers, and infographics." },
+  { id: 5, title: "Funland Pvt. Ltd. Digital Launch", category: "web", imageUrl: "https://placehold.co/600x400/e74c3c/ffffff.png", hint: "business website", description: "Built a complete digital presence for Funland Pvt. Ltd. from the ground up. This included a new website design, a full SEO strategy, and local business setup to attract and engage their target audience." },
   { id: 6, title: "E-commerce Store for ChicBoutique", category: "web", imageUrl: "https://placehold.co/600x400/9b59b6/ffffff.png", hint: "fashion website", description: "Designed and developed a scalable Shopify e-commerce store for a fashion startup, featuring a seamless checkout process and mobile-first design." },
 ];
 
