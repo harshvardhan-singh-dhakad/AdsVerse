@@ -79,14 +79,47 @@ export function FloatingActionButton() {
             <Button
               variant="outline"
               size="icon"
-              className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground"
+              className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground flex items-center justify-center"
               aria-label="Chat with AI"
               onClick={() => {
               setIsChatOpen(true);
               setIsOpen(false);
               }}
             >
-              <Bot className="h-6 w-6" />
+               <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id="ai-logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: "hsl(var(--primary))", stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: "hsl(var(--accent))", stopOpacity: 1 }} />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 16.64C15.19 18.09 13.21 19 11 19C8.79 19 6.81 18.09 5.36 16.64C3.91 15.19 3 13.21 3 11C3 8.79 3.91 6.81 5.36 5.36C6.81 3.91 8.79 3 11 3C13.21 3 15.19 3.91 16.64 5.36C18.09 6.81 19 8.79 19 11C19 13.21 18.09 15.19 16.64 16.64Z"
+                  fill="url(#ai-logo-gradient)"
+                />
+                <path
+                  d="M12 6C11.45 6 11 6.45 11 7V11C11 11.55 11.45 12 12 12C12.55 12 13 11.55 13 11V7C13 6.45 12.55 6 12 6Z"
+                  fill="white"
+                />
+                <path
+                  d="M12 14C11.45 14 11 14.45 11 15V17C11 17.55 11.45 18 12 18C12.55 18 13 17.55 13 17V15C13 14.45 12.55 14 12 14Z"
+                  fill="white"
+                />
+                <path
+                  d="M8.5 9.5C8.22 9.5 8 9.72 8 10V14C8 14.28 8.22 14.5 8.5 14.5C8.78 14.5 9 14.28 9 14V10C9 9.72 8.78 9.5 8.5 9.5Z"
+                  fill="white"
+                />
+                <path
+                  d="M15.5 9.5C15.22 9.5 15 9.72 15 10V14C15 14.28 15.22 14.5 15.5 14.5C15.78 14.5 16 14.28 16 14V10C16 9.72 15.78 9.5 15.5 9.5Z"
+                  fill="white"
+                />
+              </svg>
             </Button>
           </div>
 
