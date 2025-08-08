@@ -1,6 +1,8 @@
 "use server";
 
 import { z } from "zod";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -25,11 +27,11 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
   }
 
   try {
-    // Here you would typically integrate with Firebase Firestore
-    // For example: await db.collection('contacts').add(validatedFields.data);
-    console.log("Form data submitted:", validatedFields.data);
-
-    // Simulate a successful submission
+    await addDoc(collection(db, "contacts"), {
+      ...validatedFields.data,
+      submittedAt: Timestamp.now(),
+    });
+    
     return { success: true };
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
