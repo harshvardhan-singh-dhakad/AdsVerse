@@ -50,7 +50,7 @@ export default function Home() {
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <div className="w-full max-w-4xl mx-auto relative right-[-0.3rem]">
+          <div className="w-full max-w-4xl mx-auto relative" style={{ right: '-0.3cm' }}>
             <Image 
               src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
               alt="AdsVerse Logo"
