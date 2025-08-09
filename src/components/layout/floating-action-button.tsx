@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -86,7 +85,7 @@ export function FloatingActionButton() {
               setIsOpen(false);
               }}
             >
-               AI
+               Ai
             </Button>
           </div>
 
