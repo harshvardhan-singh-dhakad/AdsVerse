@@ -11,51 +11,51 @@ import Link from "next/link";
 
 const servicesData = [
   // SEO Services
-  { category: "SEO", title: "Local SEO", description: "Optimize your online presence to attract more customers from local searches.", price: "₹8,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
-  { category: "SEO", title: "E-commerce SEO", description: "Drive more sales with targeted SEO strategies for your online store.", price: "₹15,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
-  { category: "SEO", title: "Technical SEO Audit", description: "A comprehensive analysis of your website's technical health.", price: "₹10,000 one-time", icon: <Search className="w-8 h-8 text-accent" /> },
-  { category: "SEO", title: "Keyword Research & Strategy", description: "Identify the best keywords to target for your business.", price: "₹5,000 one-time", icon: <Search className="w-8 h-8 text-accent" /> },
-  { category: "SEO", title: "Link Building Campaign", description: "Build high-quality backlinks to improve your domain authority.", price: "₹12,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
+  { category: "SEO", title: "Local SEO", description: "Dominate local search results. We optimize your Google Business Profile and build local citations to attract nearby customers actively searching for your services.", price: "₹8,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
+  { category: "SEO", title: "E-commerce SEO", description: "Increase product visibility and sales. Our e-commerce SEO service focuses on product page optimization, technical SEO, and category-level keyword targeting.", price: "₹15,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
+  { category: "SEO", title: "Technical SEO Audit", description: "Uncover hidden issues hurting your ranking. We perform a deep-dive analysis of your site's speed, crawlability, and indexing to build a strong foundation.", price: "₹10,000 one-time", icon: <Search className="w-8 h-8 text-accent" /> },
+  { category: "SEO", title: "Keyword Research & Strategy", description: "Find the exact terms your customers are searching for. We deliver a data-backed keyword strategy to guide your content and SEO efforts effectively.", price: "₹5,000 one-time", icon: <Search className="w-8 h-8 text-accent" /> },
+  { category: "SEO", title: "Link Building Campaign", description: "Build your website's authority and trust with high-quality backlinks. We execute targeted outreach to earn links that improve your domain authority.", price: "₹12,000/mo", icon: <Search className="w-8 h-8 text-accent" /> },
   // Paid Ads
-  { category: "Paid Ads", title: "Google Ads Management", description: "Expert management of your Google Ads campaigns for maximum ROI.", price: "₹10,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
-  { category: "Paid Ads", title: "Meta Ads Management", description: "Targeted advertising on Facebook and Instagram.", price: "₹9,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
-  { category: "Paid Ads", title: "LinkedIn Ads Campaign", description: "Reach a professional audience with targeted LinkedIn ads.", price: "₹12,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
-  { category: "Paid Ads", title: "Google Ads Setup", description: "Professional setup of your Google Ads account and campaigns.", price: "₹3,500 one-time", icon: <Target className="w-8 h-8 text-accent" /> },
-  { category: "Paid Ads", title: "Ad Copy & Creative Design", description: "Compelling ad copy and visuals that convert.", price: "₹7,000 per campaign", icon: <Target className="w-8 h-8 text-accent" /> },
+  { category: "Paid Ads", title: "Google Ads Management", description: "Get immediate, high-intent traffic. We manage your Google Ads from keyword bidding to ad creation, focusing on maximizing your Return on Ad Spend (ROAS).", price: "₹10,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
+  { category: "Paid Ads", title: "Meta Ads Management", description: "Reach your ideal customers on Facebook & Instagram. We create and manage targeted ad campaigns based on demographics, interests, and behavior.", price: "₹9,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
+  { category: "Paid Ads", title: "LinkedIn Ads Campaign", description: "Connect with B2B decision-makers. Our LinkedIn campaigns are perfect for lead generation, targeting specific industries, job titles, and company sizes.", price: "₹12,000/mo", icon: <Target className="w-8 h-8 text-accent" /> },
+  { category: "Paid Ads", title: "Google Ads Setup", description: "Start your campaigns on the right foot. We provide professional setup of your Google Ads account, including conversion tracking and initial campaign structure.", price: "₹3,500 one-time", icon: <Target className="w-8 h-8 text-accent" /> },
+  { category: "Paid Ads", title: "Ad Copy & Creative Design", description: "Capture attention and drive clicks. Our team designs compelling ad visuals and writes persuasive copy that is optimized for conversions.", price: "₹7,000 per campaign", icon: <Target className="w-8 h-8 text-accent" /> },
   // Social Media
-  { category: "Social Media", title: "Social Media Management", description: "Complete management of two social media platforms.", price: "₹14,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
-  { category: "Social Media", title: "Instagram Growth & Handling", description: "Grow your Instagram presence and engage your audience.", price: "₹4,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
-  { category: "Social Media", title: "Facebook Page Management", description: "Professional management of your Facebook business page.", price: "₹4,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
-  { category: "Social Media", title: "LinkedIn Profile Management", description: "Enhance your professional brand on LinkedIn.", price: "₹7,500/mo", icon: <Users className="w-8 h-8 text-accent" /> },
-  { category: "Social Media", title: "Twitter (X) Content Strategy", description: "Strategic content planning for your X profile.", price: "₹6,000/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Social Media", title: "Social Media Management", description: "Build a vibrant online community. We handle content creation, scheduling, and engagement across two of your chosen social media platforms.", price: "₹14,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Social Media", title: "Instagram Growth & Handling", description: "Accelerate your Instagram growth. This service focuses on strategic content, follower engagement, and proven methods to increase your audience.", price: "₹4,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Social Media", title: "Facebook Page Management", description: "Engage your audience on the world's largest social network. We provide professional content creation and community management for your Facebook page.", price: "₹4,999/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Social Media", title: "LinkedIn Profile Management", description: "Establish your professional authority. We optimize your LinkedIn profile and manage content to connect with industry leaders and potential clients.", price: "₹7,500/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Social Media", title: "Twitter (X) Content Strategy", description: "Craft a powerful voice on X. We develop a content strategy focused on timely, engaging tweets and conversations to build your brand's relevance.", price: "₹6,000/mo", icon: <Users className="w-8 h-8 text-accent" /> },
   // Content Marketing
-  { category: "Content Marketing", title: "Blog Post Writing (4/month)", description: "High-quality, SEO-friendly blog posts to drive traffic.", price: "₹10,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Content Marketing", title: "Content Strategy Development", description: "A roadmap for your content marketing efforts.", price: "₹8,000 one-time", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Content Marketing", title: "Ebook/Whitepaper Creation", description: "In-depth content to establish you as a thought leader.", price: "₹20,000 per project", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Content Marketing", title: "Video Script Writing", description: "Engaging scripts for your marketing videos.", price: "₹5,000 per script", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Content Marketing", title: "Infographic Design", description: "Visually appealing infographics to share your data.", price: "₹7,000 per infographic", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Content Marketing", title: "Blog Post Writing (4/month)", description: "Fuel your SEO with high-quality, SEO-optimized blog posts. Our team researches and writes four articles per month to attract and engage your audience.", price: "₹10,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Content Marketing", title: "Content Strategy Development", description: "A strategic roadmap for content that converts. We define your content pillars, target audience, and editorial calendar to ensure consistent messaging.", price: "₹8,000 one-time", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Content Marketing", title: "Ebook/Whitepaper Creation", description: "Establish your brand as a thought leader. We create in-depth, professionally designed ebooks or whitepapers to generate leads and build authority.", price: "₹20,000 per project", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Content Marketing", title: "Video Script Writing", description: "Turn ideas into compelling video content. We write engaging and structured scripts for your marketing videos, from short-form reels to detailed explainers.", price: "₹5,000 per script", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Content Marketing", title: "Infographic Design", description: "Make complex information beautiful and shareable. Our team designs custom, on-brand infographics that are perfect for social media and link building.", price: "₹7,000 per infographic", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
   // Branding & Design
-  { category: "Branding & Design", title: "Logo & Brand Identity", description: "A complete branding package for your business.", price: "₹25,000 one-time", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Branding & Design", title: "Social Media Graphics (15/mo)", description: "Custom graphics for your social media channels.", price: "₹9,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Branding & Design", title: "UI/UX Design for Apps", description: "Intuitive and beautiful design for your mobile app.", price: "₹50,000 per project", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Branding & Design", title: "Presentation Design", description: "Professional slides for your meetings and presentations.", price: "₹5,000 per deck", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Branding & Design", title: "Brochure/Flyer Design", description: "Print-ready designs for your marketing materials.", price: "₹4,000 per design", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Branding & Design", title: "Logo & Brand Identity", description: "The complete visual foundation for your business. Our package includes logo design, color palette, typography, and a full brand style guide.", price: "₹25,000 one-time", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Branding & Design", title: "Social Media Graphics (15/mo)", description: "Keep your social media feeds looking fresh and professional. We design 15 custom, on-brand graphics for your social media channels each month.", price: "₹9,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Branding & Design", title: "UI/UX Design for Apps", description: "Create an app that your users will love. We focus on intuitive, user-friendly, and beautiful interface design for mobile and web applications.", price: "₹50,000 per project", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Branding & Design", title: "Presentation Design", description: "Win over your audience with stunning presentations. We design professional and compelling slide decks for your meetings, pitches, and webinars.", price: "₹5,000 per deck", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Branding & Design", title: "Brochure/Flyer Design", description: "Professionally designed print materials that make an impact. We create print-ready brochures, flyers, and other marketing collateral for your business.", price: "₹4,000 per design", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
   // Web & App Dev
-  { category: "Web & App Dev", title: "Basic Website (5 pages)", description: "A professional, responsive website for your business.", price: "₹30,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
-  { category: "Web & App Dev", title: "E-commerce Website", description: "A fully functional online store to sell your products.", price: "₹80,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
-  { category: "Web & App Dev", title: "Mobile App Development", description: "Custom mobile app for iOS and Android platforms.", price: "From ₹1,50,000", icon: <Code className="w-8 h-8 text-accent" /> },
-  { category: "Web & App Dev", title: "Website Maintenance", description: "Keep your website secure and up-to-date.", price: "₹5,000/mo", icon: <Code className="w-8 h-8 text-accent" /> },
-  { category: "Web & App Dev", title: "Landing Page Development", description: "High-converting landing pages for your campaigns.", price: "₹15,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
+  { category: "Web & App Dev", title: "Basic Website (5 pages)", description: "Launch your online presence with a professional, responsive website. This package is perfect for showcasing your business and generating leads.", price: "₹30,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
+  { category: "Web & App Dev", title: "E-commerce Website", description: "Sell your products online with a fully functional e-commerce store. We build secure, scalable, and user-friendly online shops.", price: "₹80,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
+  { category: "Web & App Dev", title: "Mobile App Development", description: "Bring your app idea to life. We offer custom mobile app development for both iOS and Android platforms, from concept to launch.", price: "From ₹1,50,000", icon: <Code className="w-8 h-8 text-accent" /> },
+  { category: "Web & App Dev", title: "Website Maintenance", description: "Keep your website running smoothly. Our monthly maintenance package includes updates, security checks, and backups to ensure your site is secure.", price: "₹5,000/mo", icon: <Code className="w-8 h-8 text-accent" /> },
+  { category: "Web & App Dev", title: "Landing Page Development", description: "Maximize your campaign conversions. We design and build high-converting landing pages that are optimized for a single, focused call-to-action.", price: "₹15,000 one-time", icon: <Code className="w-8 h-8 text-accent" /> },
   // Analytics
-  { category: "Analytics", title: "GA4 Setup & Audit", description: "Ensure your Google Analytics 4 is set up for success.", price: "₹7,500 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
-  { category: "Analytics", title: "Monthly Performance Report", description: "Detailed reports on your marketing performance.", price: "₹5,000/mo", icon: <LineChart className="w-8 h-8 text-accent" /> },
-  { category: "Analytics", title: "CRO Audit", description: "Identify opportunities to improve your conversion rates.", price: "₹12,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
-  { category: "Analytics", title: "Custom Dashboard Setup", description: "A custom dashboard to visualize your key metrics.", price: "₹10,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
+  { category: "Analytics", title: "GA4 Setup & Audit", description: "Ensure your data is accurate and actionable. We'll set up or audit your Google Analytics 4 property to ensure you're tracking what matters.", price: "₹7,500 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
+  { category: "Analytics", title: "Monthly Performance Report", description: "Understand your marketing ROI with detailed monthly reports. We compile and analyze data from all your channels into one easy-to-understand summary.", price: "₹5,000/mo", icon: <LineChart className="w-8 h-8 text-accent" /> },
+  { category: "Analytics", title: "CRO Audit", description: "Turn more visitors into customers. Our Conversion Rate Optimization audit identifies friction points in your user journey and provides actionable recommendations.", price: "₹12,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
+  { category: "Analytics", title: "Custom Dashboard Setup", description: "Visualize your key metrics at a glance. We create a custom data dashboard (e.g., in Google Looker Studio) tailored to your business KPIs.", price: "₹10,000 one-time", icon: <LineChart className="w-8 h-8 text-accent" /> },
   // Political Campaigns
-  { category: "Political Campaigns", title: "Campaign Strategy & Management", description: "Comprehensive social media strategy and management for political campaigns.", price: "₹50,000/mo", icon: <Megaphone className="w-8 h-8 text-accent" /> },
-  { category: "Political Campaigns", title: "Voter Targeting & Outreach", description: "Advanced audience targeting to reach potential voters on social media.", price: "₹25,000/mo", icon: <Users className="w-8 h-8 text-accent" /> },
-  { category: "Political Campaigns", title: "Content & Ad Creation", description: "Creative development of posts, videos, and ads for political messaging.", price: "₹30,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
-  { category: "Political Campaigns", title: "Online Reputation Management", description: "Monitoring and managing online presence and public sentiment.", price: "₹20,000/mo", icon: <Mail className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Campaign Strategy & Management", description: "Winning social media for political campaigns. We provide comprehensive strategy, content planning, and execution for election success.", price: "₹50,000/mo", icon: <Megaphone className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Voter Targeting & Outreach", description: "Reach the right voters with precision. We use advanced audience targeting on social platforms to deliver your message to key demographics.", price: "₹25,000/mo", icon: <Users className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Content & Ad Creation", description: "Crafting impactful political messaging. Our team develops creative posts, videos, and ads designed to persuade and mobilize voters.", price: "₹30,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
+  { category: "Political Campaigns", title: "Online Reputation Management", description: "Shape public perception and manage online discourse. We monitor online sentiment and manage your campaign's digital reputation.", price: "₹20,000/mo", icon: <Mail className="w-8 h-8 text-accent" /> },
 ];
 
 const categories = ["All", "SEO", "Paid Ads", "Social Media", "Content Marketing", "Branding & Design", "Web & App Dev", "Analytics", "Political Campaigns"];
@@ -112,7 +112,7 @@ export default function PricingPage() {
       <section className="text-center mb-12">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Our Services &amp; Pricing</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
-          Explore our wide range of digital marketing solutions with transparent pricing.
+          Transparent pricing for our comprehensive suite of digital marketing solutions. Find the perfect package to elevate your brand and achieve your goals.
         </p>
       </section>
 
@@ -211,5 +211,7 @@ export default function PricingPage() {
     </div>
   );
 }
+
+    
 
     
