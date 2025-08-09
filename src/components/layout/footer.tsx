@@ -1,11 +1,20 @@
 
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Github, Linkedin, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 export function Footer() {
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-card/50 border-t border-border/40">
       <div className="container py-12">
@@ -31,9 +40,6 @@ export function Footer() {
               </Link>
               <Link href="https://www.linkedin.com/company/dmafia/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" />
-              </Link>
-              <Link href="#" aria-label="GitHub">
-                <Github className="h-6 w-6 text-muted-foreground hover:text-primary" />
               </Link>
             </div>
           </div>
@@ -65,7 +71,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} AdsVerse. All Rights Reserved.</p>
+          <p>&copy; {currentYear} AdsVerse. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

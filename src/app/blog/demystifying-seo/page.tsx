@@ -1,11 +1,20 @@
 
+"use client";
+
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 export default function DemystifyingSeoPage() {
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString());
+  }, []);
+
   return (
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
@@ -20,7 +29,7 @@ export default function DemystifyingSeoPage() {
       <header className="mb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Demystifying SEO: A Beginner's Guide to Ranking Higher</h1>
         <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-          <span>Published on {new Date().toLocaleDateString()}</span>
+          <span>Published on {currentDate}</span>
           <span>&middot;</span>
           <Badge variant="secondary">SEO</Badge>
         </div>

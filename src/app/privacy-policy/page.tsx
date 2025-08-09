@@ -1,10 +1,20 @@
 
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function PrivacyPolicyPage() {
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString());
+  }, []);
+
   return (
     <div className="container mx-auto py-16 px-4 max-w-4xl">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Privacy Policy</h1>
-        <p className="mt-4 text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+        <p className="mt-4 text-muted-foreground">Last updated: {currentDate}</p>
       </header>
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p>

@@ -10,14 +10,14 @@ import { Badge } from "@/components/ui/badge";
 
 const portfolioItems = [
   { id: 1, title: "Sports Mania Website & SEO", category: "web", imageUrl: "https://placehold.co/600x400/8e44ad/ffffff.png", hint: "sports website", description: "Designed and developed a dynamic website for Sports Mania and implemented a robust SEO strategy to boost their online visibility and search rankings." },
-  { id: 2, title: "Steadfast Spoken English Local SEO", category: "local-seo", imageUrl: "https://placehold.co/600x400/2ecc71/ffffff.png", hint: "local map", description: "Boosted local presence for Steadfast Spoken English through comprehensive local business setup and optimization, driving more foot traffic and local inquiries." },
+  { id: 2, title: "Steadfast Spoken English Local SEO", category: "seo", imageUrl: "https://placehold.co/600x400/2ecc71/ffffff.png", hint: "local map", description: "Boosted local presence for Steadfast Spoken English through comprehensive local business setup and optimization, driving more foot traffic and local inquiries." },
   { id: 3, title: "JSM Pvt. Ltd. Social Media Growth", category: "smm", imageUrl: "https://placehold.co/600x400/3498db/ffffff.png", hint: "social media growth", description: "Handled social media for JSM Pvt. Ltd., creating viral content for their Instagram profile. Engineered one of our fastest growth case studies, significantly increasing their audience and engagement." },
   { id: 4, title: "Evalvue Pvt. Ltd. Full Service", category: "branding", imageUrl: "https://placehold.co/600x400/f1c40f/ffffff.png", hint: "business growth", description: "Provided a comprehensive digital marketing solution for Evalvue Pvt. Ltd., including SEO, paid ads, and social media management to drive holistic growth." },
   { id: 5, title: "Funland Pvt. Ltd. Digital Launch", category: "web", imageUrl: "https://placehold.co/600x400/e74c3c/ffffff.png", hint: "business website", description: "Built a complete digital presence for Funland Pvt. Ltd. from the ground up. This included a new website design, a full SEO strategy, and local business setup to attract and engage their target audience." },
   { id: 6, title: "E-commerce Store for ChicBoutique", category: "web", imageUrl: "https://placehold.co/600x400/9b59b6/ffffff.png", hint: "fashion website", description: "Designed and developed a scalable Shopify e-commerce store for a fashion startup, featuring a seamless checkout process and mobile-first design." },
 ];
 
-const filters = ["all", "web", "seo", "local-seo", "branding", "smm"];
+const filters = ["all", "web", "seo", "branding", "smm"];
 
 type PortfolioItem = typeof portfolioItems[0];
 
@@ -27,7 +27,7 @@ export function PortfolioGrid() {
 
   const filteredItems = activeFilter === "all"
     ? portfolioItems
-    : portfolioItems.filter(item => item.category === activeFilter);
+    : portfolioItems.filter(item => item.category === activeFilter || (activeFilter === 'seo' && item.category === 'local-seo'));
 
   return (
     <div>
