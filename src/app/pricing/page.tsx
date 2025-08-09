@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, MouseEvent } from "react";
@@ -141,7 +142,23 @@ export default function PricingPage() {
           <h2 className="text-4xl font-bold">Video &amp; Photo Shoots</h2>
           <p className="text-lg text-muted-foreground mt-2">Professional shoots to elevate your brand's visual content.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <Card className="bg-card/70 backdrop-blur-md flex flex-col">
+              <CardHeader>
+                <CardTitle className="text-2xl">Reel/Shorts Package</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow space-y-4">
+                <p className="text-3xl font-bold text-primary">₹999</p>
+                <ul className="space-y-2 text-muted-foreground">
+                    <li className="flex items-center gap-2"><CheckCircle className="w-5 h-5 text-accent"/>15-60 Second Video</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-5 h-5 text-accent"/>Pro Editing & Sound</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="w-5 h-5 text-accent"/>For Instagram & YouTube</li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                 <Button className="w-full bg-accent hover:bg-accent/90">Book Shoot</Button>
+              </CardFooter>
+            </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
               <CardHeader>
                 <CardTitle className="text-2xl">Basic Package</CardTitle>
