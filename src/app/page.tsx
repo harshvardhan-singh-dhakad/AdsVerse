@@ -39,6 +39,7 @@ export default function Home() {
     { name: 'JSM Pvt. Ltd.', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=JSM', hint: 'business company' },
     { name: 'Funland', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Funland', hint: 'entertainment company' },
     { name: 'ChicBoutique', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique', hint: 'fashion brand' },
+    { name: 'Steadfast Spoken English', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Steadfast', hint: 'education company' },
   ];
 
   return (
@@ -50,7 +51,7 @@ export default function Home() {
         <div className="stars stars-md"></div>
         <div className="stars stars-lg"></div>
         <div className="z-10 p-4 space-y-6">
-          <div className="w-full max-w-4xl mx-auto relative" style={{ right: '-0.3cm' }}>
+          <div className="w-full max-w-4xl mx-auto relative" style={{ left: '0.75rem' }}>
             <Image 
               src="https://github.com/HSDmarketing/Adsverse.image/blob/main/ads.logo.png?raw=true"
               alt="AdsVerse Logo"

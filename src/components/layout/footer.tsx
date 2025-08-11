@@ -20,7 +20,7 @@ export function Footer() {
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2 relative" style={{ left: '0.75rem' }}>
               <Image 
                 src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
                 alt="AdsVerse Logo"
