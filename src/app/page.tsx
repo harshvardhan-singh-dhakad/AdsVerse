@@ -34,12 +34,12 @@ export default function Home() {
   ];
 
   const clients = [
-    { name: 'Sports Mania', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania', hint: 'sports company' },
-    { name: 'Evalvue', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Evalvue', hint: 'tech company'},
-    { name: 'JSM Pvt. Ltd.', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=JSM', hint: 'business company' },
-    { name: 'Funland', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Funland', hint: 'entertainment company' },
-    { name: 'ChicBoutique', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique', hint: 'fashion brand' },
-    { name: 'Steadfast Spoken English', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Steadfast', hint: 'education company' },
+    { name: "Sports Mania", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania", hint: "sports company" },
+    { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Steadfast", hint: "education company" },
+    { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50/36495f/94a3b8?text=JSM", hint: "business company" },
+    { name: "Evalvue", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Evalvue", hint: "tech company" },
+    { name: "Funland", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Funland", hint: "entertainment company" },
+    { name: "ChicBoutique", logo: "https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique", hint: "fashion brand" },
   ];
 
   return (
@@ -61,7 +61,7 @@ export default function Home() {
               priority
             />
           </div>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-16">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 relative bottom-10">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
           <div className="space-x-4">
