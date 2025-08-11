@@ -78,7 +78,7 @@ export default function Home() {
       </section>
 
       {/* Services Overview Section */}
-      <section id="services" className="w-full max-w-6xl py-16 md:py-24 px-4">
+      <section id="services" className="w-full max-w-6xl py-16 md:py-24 px-4 pt-0 md:pt-0">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold">What We Do</h2>
           <p className="text-lg text-foreground/70 mt-2">Our expertise spans the full digital marketing spectrum.</p>
