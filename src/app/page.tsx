@@ -61,16 +61,18 @@ export default function Home() {
               priority
             />
           </div>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 relative bottom-10">
-            Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
-          </p>
-          <div className="space-x-4">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30 transform hover:scale-105 transition-transform">
-              <Link href="/services">Our Services</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent/10 transform hover:scale-105 transition-transform">
-              <Link href="/contact">Get in Touch</Link>
-            </Button>
+          <div className="relative bottom-12 space-y-6">
+            <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
+              Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
+            </p>
+            <div className="space-x-4">
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30 transform hover:scale-105 transition-transform">
+                <Link href="/services">Our Services</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent/10 transform hover:scale-105 transition-transform">
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
