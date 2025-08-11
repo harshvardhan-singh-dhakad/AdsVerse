@@ -43,7 +43,7 @@ export function Footer() {
               </Link>
             </div>
           </div>
-          <div>
+          <div className="md:pl-4">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
@@ -52,7 +52,7 @@ export function Footer() {
               <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
             </ul>
           </div>
-          <div>
+          <div className="md:pl-4">
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
               <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
