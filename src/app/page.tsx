@@ -61,7 +61,7 @@ export default function Home() {
               priority
             />
           </div>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-10">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 -mt-16">
             Elevating Brands with Innovative Digital Marketing Solutions. We blend creativity with data to drive measurable results.
           </p>
           <div className="space-x-4">
