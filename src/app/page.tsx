@@ -34,11 +34,11 @@ export default function Home() {
   ];
 
   const clients = [
-    { name: 'QuantumLeap', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=QuantumLeap', hint: 'tech company' },
-    { name: 'ApexIndustries', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=ApexIndustries', hint: 'industrial factory'},
-    { name: 'StellarFoods', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=StellarFoods', hint: 'food brand' },
-    { name: 'NovaHealth', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=NovaHealth', hint: 'healthcare provider' },
-    { name: 'PioneerLogistics', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=PioneerLogistics', hint: 'shipping company' },
+    { name: 'Sports Mania', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania', hint: 'sports company' },
+    { name: 'Evalvue', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Evalvue', hint: 'tech company'},
+    { name: 'JSM Pvt. Ltd.', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=JSM', hint: 'business company' },
+    { name: 'Funland', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=Funland', hint: 'entertainment company' },
+    { name: 'ChicBoutique', logo: 'https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique', hint: 'fashion brand' },
   ];
 
   return (
