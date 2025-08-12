@@ -33,12 +33,12 @@ const services = [
 ];
 
 const clients = [
-  { name: "Sports Mania", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania", hint: "sports company" },
-  { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Steadfast", hint: "education company" },
-  { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50/36495f/94a3b8?text=JSM", hint: "business company" },
-  { name: "Evalvue", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Evalvue", hint: "tech company" },
-  { name: "Funland", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Funland", hint: "entertainment company" },
-  { name: "ChicBoutique", logo: "https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique", hint: "fashion brand" },
+  { name: "Sports Mania", logo: "https://placehold.co/150x50.png", hint: "sports company" },
+  { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50.png", hint: "education company" },
+  { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50.png", hint: "business company" },
+  { name: "Evalvue", logo: "https://placehold.co/150x50.png", hint: "tech company" },
+  { name: "Funland", logo: "https://placehold.co/150x50.png", hint: "entertainment company" },
+  { name: "ChicBoutique", logo: "https://placehold.co/150x50.png", hint: "fashion brand" },
 ];
 
 const icons: { [key: string]: FC<LucideProps> } = {
@@ -94,8 +94,8 @@ export default function Home() {
           {services.map((service) => {
             const Icon = icons[service.iconName];
             return (
-              <Link key={service.id} href={`/services/${service.id}`}>
-                <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
+              <Link key={service.id} href={`/services/${service.id}`} className="flex">
+                <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col w-full">
                   <CardHeader className="items-center">
                     {Icon && <Icon className="w-8 h-8 text-accent" />}
                     <CardTitle className="mt-4 text-center">{service.title}</CardTitle>
