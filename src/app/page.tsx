@@ -1,47 +1,54 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Megaphone, TrendingUp, FileText } from 'lucide-react';
+import { Palette, Megaphone, TrendingUp, FileText, type LucideProps } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FC } from 'react';
+
+const services = [
+  {
+    id: 'brand-strategy',
+    iconName: 'Palette',
+    title: 'Brand Strategy & Identity',
+    description: 'Crafting unique brand identities that resonate with your target audience and stand out in the market.',
+  },
+  {
+    id: 'paid-ads',
+    iconName: 'Megaphone',
+    title: 'Meta & Google Ads',
+    description: 'Driving targeted traffic and maximizing ROI with strategic ad campaigns on major platforms.',
+  },
+  {
+    id: 'seo-optimization',
+    iconName: 'TrendingUp',
+    title: 'SEO Optimization',
+    description: 'Improving your search engine rankings to increase organic visibility and attract qualified leads.',
+  },
+  {
+    id: 'content-marketing',
+    iconName: 'FileText',
+    title: 'Content Marketing',
+    description: 'Engaging your audience with valuable content that builds authority and drives conversions.',
+  },
+];
+
+const clients = [
+  { name: "Sports Mania", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania", hint: "sports company" },
+  { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Steadfast", hint: "education company" },
+  { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50/36495f/94a3b8?text=JSM", hint: "business company" },
+  { name: "Evalvue", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Evalvue", hint: "tech company" },
+  { name: "Funland", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Funland", hint: "entertainment company" },
+  { name: "ChicBoutique", logo: "https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique", hint: "fashion brand" },
+];
+
+const icons: { [key: string]: FC<LucideProps> } = {
+  Palette,
+  Megaphone,
+  TrendingUp,
+  FileText
+};
 
 export default function Home() {
-  const services = [
-    {
-      id: 'brand-strategy',
-      icon: <Palette className="w-8 h-8 text-accent" />,
-      title: 'Brand Strategy & Identity',
-      description: 'Crafting unique brand identities that resonate with your target audience and stand out in the market.',
-    },
-    {
-      id: 'paid-ads',
-      icon: <Megaphone className="w-8 h-8 text-accent" />,
-      title: 'Meta & Google Ads',
-      description: 'Driving targeted traffic and maximizing ROI with strategic ad campaigns on major platforms.',
-    },
-    {
-      id: 'seo-optimization',
-      icon: <TrendingUp className="w-8 h-8 text-accent" />,
-      title: 'SEO Optimization',
-      description: 'Improving your search engine rankings to increase organic visibility and attract qualified leads.',
-    },
-    {
-      id: 'content-marketing',
-      icon: <FileText className="w-8 h-8 text-accent" />,
-      title: 'Content Marketing',
-      description: 'Engaging your audience with valuable content that builds authority and drives conversions.',
-    },
-  ];
-
-  const clients = [
-    { name: "Sports Mania", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Sports+Mania", hint: "sports company" },
-    { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Steadfast", hint: "education company" },
-    { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50/36495f/94a3b8?text=JSM", hint: "business company" },
-    { name: "Evalvue", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Evalvue", hint: "tech company" },
-    { name: "Funland", logo: "https://placehold.co/150x50/36495f/94a3b8?text=Funland", hint: "entertainment company" },
-    { name: "ChicBoutique", logo: "https://placehold.co/150x50/36495f/94a3b8?text=ChicBoutique", hint: "fashion brand" },
-  ];
-
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
@@ -84,19 +91,22 @@ export default function Home() {
           <p className="text-lg text-foreground/70 mt-2">Our expertise spans the full digital marketing spectrum.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service) => (
-            <Link key={service.id} href={`/services/${service.id}`}>
-              <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
-                <CardHeader className="items-center">
-                  {service.icon}
-                  <CardTitle className="mt-4 text-center">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-center text-foreground/80">{service.description}</p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+          {services.map((service) => {
+            const Icon = icons[service.iconName];
+            return (
+              <Link key={service.id} href={`/services/${service.id}`}>
+                <Card className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
+                  <CardHeader className="items-center">
+                    {Icon && <Icon className="w-8 h-8 text-accent" />}
+                    <CardTitle className="mt-4 text-center">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-center text-foreground/80">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
