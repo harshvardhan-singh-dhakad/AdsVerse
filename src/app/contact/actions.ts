@@ -2,8 +2,8 @@
 "use server";
 
 import { z } from "zod";
-// import { db } from "@/lib/firebase";
-// import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -28,12 +28,10 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
   }
 
   try {
-    // NOTE: Firebase admin setup is required for this to work on the server.
-    // For now, we simulate a success response.
-    // await addDoc(collection(db, "contacts"), {
-    //   ...validatedFields.data,
-    //   submittedAt: Timestamp.now(),
-    // });
+    await addDoc(collection(db, "contacts"), {
+      ...validatedFields.data,
+      submittedAt: Timestamp.now(),
+    });
     
     console.log("Contact form submitted:", validatedFields.data);
 
