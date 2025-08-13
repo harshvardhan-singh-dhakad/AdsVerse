@@ -5,7 +5,7 @@ import { useState, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Drone, Edit, Film, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Video } from "lucide-react";
+import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -211,7 +211,3 @@ export default function PricingPage() {
     </div>
   );
 }
-
-    
-
-    
