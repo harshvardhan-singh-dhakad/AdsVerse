@@ -1,10 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
+import { useState, useTransition } from "react";
 import { getBlogSuggestions } from "@/app/blog/actions";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,12 +13,10 @@ const initialState = {
   error: null,
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
+function SubmitButton({ isPending }: { isPending: boolean }) {
   return (
-    <Button type="submit" disabled={pending} className="w-full md:w-auto bg-accent hover:bg-accent/90">
-      {pending ? (
+    <Button type="submit" disabled={isPending} className="w-full md:w-auto bg-accent hover:bg-accent/90">
+      {isPending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           Generating...
@@ -33,11 +29,22 @@ function SubmitButton() {
 }
 
 export function BlogSuggestionTool() {
-  const [state, formAction] = useActionState(getBlogSuggestions, initialState);
+  const [state, setState] = useState(initialState);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    startTransition(async () => {
+      const result = await getBlogSuggestions(state, formData);
+      setState(result);
+    });
+  };
 
   return (
     <div>
-      <form action={formAction} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="seoTrends">Current SEO Trends</Label>
@@ -60,7 +67,7 @@ export function BlogSuggestionTool() {
             />
           </div>
         </div>
-        <SubmitButton />
+        <SubmitButton isPending={isPending} />
       </form>
 
       {state.error && <p className="mt-4 text-destructive">{state.error}</p>}
