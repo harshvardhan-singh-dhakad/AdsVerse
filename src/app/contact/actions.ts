@@ -3,7 +3,8 @@
 
 import { z } from "zod";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, doc, updateDoc } from "firebase/firestore";
+import { analyzeContactRequest } from "@/ai/flows/contact-follow-up-flow";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -28,12 +29,17 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
   }
 
   try {
-    await addDoc(collection(db, "contacts"), {
+    // Step 1: Add the initial contact document to get an ID
+    const docRef = await addDoc(collection(db, "contacts"), {
       ...validatedFields.data,
       submittedAt: Timestamp.now(),
+      analysisStatus: 'pending',
     });
     
-    console.log("Contact form submitted:", validatedFields.data);
+    console.log("Contact form submitted with ID:", docRef.id);
+
+    // Step 2: Asynchronously call the AI flow for analysis (don't wait for it)
+    analyzeAndAndUpdate(docRef.id, validatedFields.data);
 
     return { success: true };
   } catch (e) {
@@ -43,5 +49,34 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
       success: false,
       error: "There was a problem submitting your form. Please try again later.",
     };
+  }
+}
+
+// Helper function to run AI analysis in the background
+async function analyzeAndAndUpdate(docId: string, data: z.infer<typeof formSchema>) {
+  try {
+    // Step 3: Run the AI analysis
+    const analysisResult = await analyzeContactRequest({
+      name: data.name,
+      email: data.email,
+      message: data.message,
+    });
+
+    // Step 4: Update the document in Firestore with the analysis results
+    const docToUpdate = doc(db, "contacts", docId);
+    await updateDoc(docToUpdate, {
+      aiAnalysis: analysisResult,
+      analysisStatus: 'complete',
+    });
+    console.log(`Successfully analyzed and updated contact ${docId}`);
+  } catch(e) {
+    const errorMessage = e instanceof Error ? e.message : "Unknown AI analysis error.";
+    console.error(`AI analysis failed for contact ${docId}:`, errorMessage);
+    // Optionally update the document with an error status
+    const docToUpdate = doc(db, "contacts", docId);
+    await updateDoc(docToUpdate, {
+      analysisStatus: 'failed',
+      analysisError: errorMessage,
+    });
   }
 }
