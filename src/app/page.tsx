@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Palette, Megaphone, TrendingUp, FileText, type LucideProps } from 'lucide-react';
+import { Palette, Megaphone, TrendingUp, FileText, type LucideProps, Bot } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
@@ -31,22 +31,20 @@ const services = [
     title: 'Content Marketing',
     description: 'Engaging your audience with valuable content that builds authority and drives conversions.',
   },
-];
-
-const clients = [
-  { name: "Sports Mania", logo: "https://images.unsplash.com/photo-1606419866333-ced28837d700?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c3BvcnRzJTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "sports company" },
-  { name: "Steadfast Spoken English", logo: "https://images.unsplash.com/photo-1648337564744-f919c7c2fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxlZHVjYXRpb24lMjBjb21wYW55fGVufDB8fHx8MTc1NTA2OTc5OHww&ixlib=rb-4.1.0&q=80&w=1080", hint: "education company" },
-  { name: "JSM Pvt. Ltd.", logo: "https://images.unsplash.com/photo-1657672733176-b48c9b0eec0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidXNpbmVzcyUyMGNvbXBhbnl8ZW58MHx8fHwxNzU1MDY5Nzk4fDA&ixlib=rb-4.1.0&q=80&w=1080", hint: "business company" },
-  { name: "Evalvue", logo: "https://images.unsplash.com/photo-1556761175-b413da4baf72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx0ZWNoJTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "tech company" },
-  { name: "Funland", logo: "https://images.unsplash.com/photo-1554976343-df6383b85587?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxlbnRlcnRhaW5tZW50JTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "entertainment company" },
-  { name: "ChicBoutique", logo: "https://images.unsplash.com/photo-1590664863685-a99ef05e9f61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwYnJhbmR8ZW58MHx8fHwxNzU1MDY5Nzk4fDA&ixlib=rb-4.1.0&q=80&w=1080", hint: "fashion brand" },
+  {
+    id: 'automation-tools',
+    iconName: 'Bot',
+    title: 'Automation Tools',
+    description: 'Building custom automation tools and bots to streamline your business processes and boost efficiency.',
+  },
 ];
 
 const icons: { [key: string]: FC<LucideProps> } = {
   Palette,
   Megaphone,
   TrendingUp,
-  FileText
+  FileText,
+  Bot,
 };
 
 export default function Home() {
@@ -91,7 +89,7 @@ export default function Home() {
           <h2 className="text-4xl font-bold">What We Do</h2>
           <p className="text-lg text-foreground/70 mt-2">Our expertise spans the full digital marketing spectrum.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => {
             const Icon = icons[service.iconName];
             return (
@@ -108,27 +106,6 @@ export default function Home() {
               </Link>
             );
           })}
-        </div>
-      </section>
-
-      {/* Client Showcase Section */}
-      <section className="w-full bg-card/30 backdrop-blur-sm py-16 md:py-24">
-        <div className="container mx-auto text-center px-4">
-          <h2 className="text-4xl font-bold">Trusted by Industry Leaders</h2>
-          <p className="text-lg text-foreground/70 mt-2 mb-12">We are proud to partner with innovative companies worldwide.</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            {clients.map((client) => (
-              <div key={client.name} className="grayscale hover:grayscale-0 transition-all duration-300" title={client.name}>
-                <Image
-                  src={client.logo}
-                  alt={`${client.name} Logo`}
-                  width={150}
-                  height={50}
-                  data-ai-hint={client.hint}
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </section>
     </div>

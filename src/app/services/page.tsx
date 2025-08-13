@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Palette, Megaphone, TrendingUp, FileText, Share2, Code } from 'lucide-react';
+import { Palette, Megaphone, TrendingUp, FileText, Share2, Code, Bot } from 'lucide-react';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -41,6 +41,12 @@ const services = [
     icon: <Code className="w-12 h-12 text-accent" />,
     title: 'Web Design & Development',
     description: "Creating beautiful, functional websites that convert visitors into customers.",
+  },
+  {
+    id: 'automation-tools',
+    icon: <Bot className="w-12 h-12 text-accent" />,
+    title: 'Automation Tools',
+    description: 'Streamlining your business processes with custom bots and automation solutions.',
   },
 ];
 
