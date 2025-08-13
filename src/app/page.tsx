@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Palette, Megaphone, TrendingUp, FileText, type LucideProps } from 'lucide-react';
@@ -33,12 +34,12 @@ const services = [
 ];
 
 const clients = [
-  { name: "Sports Mania", logo: "https://placehold.co/150x50.png", hint: "sports company" },
-  { name: "Steadfast Spoken English", logo: "https://placehold.co/150x50.png", hint: "education company" },
-  { name: "JSM Pvt. Ltd.", logo: "https://placehold.co/150x50.png", hint: "business company" },
-  { name: "Evalvue", logo: "https://placehold.co/150x50.png", hint: "tech company" },
-  { name: "Funland", logo: "https://placehold.co/150x50.png", hint: "entertainment company" },
-  { name: "ChicBoutique", logo: "https://placehold.co/150x50.png", hint: "fashion brand" },
+  { name: "Sports Mania", logo: "https://images.unsplash.com/photo-1606419866333-ced28837d700?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c3BvcnRzJTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "sports company" },
+  { name: "Steadfast Spoken English", logo: "https://images.unsplash.com/photo-1648337564744-f919c7c2fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxlZHVjYXRpb24lMjBjb21wYW55fGVufDB8fHx8MTc1NTA2OTc5OHww&ixlib=rb-4.1.0&q=80&w=1080", hint: "education company" },
+  { name: "JSM Pvt. Ltd.", logo: "https://images.unsplash.com/photo-1657672733176-b48c9b0eec0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidXNpbmVzcyUyMGNvbXBhbnl8ZW58MHx8fHwxNzU1MDY5Nzk4fDA&ixlib=rb-4.1.0&q=80&w=1080", hint: "business company" },
+  { name: "Evalvue", logo: "https://images.unsplash.com/photo-1556761175-b413da4baf72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx0ZWNoJTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "tech company" },
+  { name: "Funland", logo: "https://images.unsplash.com/photo-1554976343-df6383b85587?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxlbnRlcnRhaW5tZW50JTIwY29tcGFueXxlbnwwfHx8fDE3NTUwNjk3OTh8MA&ixlib=rb-4.1.0&q=80&w=1080", hint: "entertainment company" },
+  { name: "ChicBoutique", logo: "https://images.unsplash.com/photo-1590664863685-a99ef05e9f61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYXNoaW9uJTIwYnJhbmR8ZW58MHx8fHwxNzU1MDY5Nzk4fDA&ixlib=rb-4.1.0&q=80&w=1080", hint: "fashion brand" },
 ];
 
 const icons: { [key: string]: FC<LucideProps> } = {
