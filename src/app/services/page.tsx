@@ -13,6 +13,12 @@ export const metadata: Metadata = {
 
 const services = [
   {
+    id: 'automation-tools',
+    icon: <Bot className="w-12 h-12 text-accent" />,
+    title: 'Automation Tools',
+    description: 'Streamlining your business processes with custom bots and automation solutions.',
+  },
+  {
     id: 'brand-strategy',
     icon: <Palette className="w-12 h-12 text-accent" />,
     title: 'Brand Strategy & Identity',
@@ -47,12 +53,6 @@ const services = [
     icon: <Code className="w-12 h-12 text-accent" />,
     title: 'Web Design & Development',
     description: "Creating beautiful, functional websites that convert visitors into customers.",
-  },
-  {
-    id: 'automation-tools',
-    icon: <Bot className="w-12 h-12 text-accent" />,
-    title: 'Automation Tools',
-    description: 'Streamlining your business processes with custom bots and automation solutions.',
   },
 ];
 

@@ -8,6 +8,12 @@ import { FC } from 'react';
 
 const services = [
   {
+    id: 'automation-tools',
+    iconName: 'Bot',
+    title: 'Automation Tools',
+    description: 'Building custom automation tools and bots to streamline your business processes and boost efficiency.',
+  },
+  {
     id: 'brand-strategy',
     iconName: 'Palette',
     title: 'Brand Strategy & Identity',
@@ -30,12 +36,6 @@ const services = [
     iconName: 'FileText',
     title: 'Content Marketing',
     description: 'Engaging your audience with valuable content that builds authority and drives conversions.',
-  },
-  {
-    id: 'automation-tools',
-    iconName: 'Bot',
-    title: 'Automation Tools',
-    description: 'Building custom automation tools and bots to streamline your business processes and boost efficiency.',
   },
 ];
 
