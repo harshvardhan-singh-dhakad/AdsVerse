@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: "Harshvardhan Singh dhaakad", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
+  { name: "Harshvardhan Singh Dhakad", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
   { name: "Priya Sharma", role: "Lead Strategist", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman portrait" },
   { name: "Rajesh Kumar", role: "Head of SEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "person portrait" },
   { name: "Anjali Verma", role: "Creative Director", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman smiling" },
