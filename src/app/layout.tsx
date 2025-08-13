@@ -13,6 +13,10 @@ const playfairDisplay = Playfair_Display({ subsets: ['latin'], variable: '--font
 export const metadata: Metadata = {
   title: 'AdsVerse',
   description: 'Elevating Brands with Innovative Digital Marketing Solutions.',
+  icons: {
+    icon: 'https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true',
+    apple: 'https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true',
+  },
 };
 
 export default function RootLayout({
