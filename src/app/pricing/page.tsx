@@ -156,7 +156,9 @@ export default function PricingPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                 <Button className="w-full bg-accent hover:bg-accent/90">Book Shoot</Button>
+                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                    <Link href="/contact">Book Shoot</Link>
+                 </Button>
               </CardFooter>
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
@@ -172,7 +174,9 @@ export default function PricingPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                 <Button className="w-full bg-accent hover:bg-accent/90">Book Shoot</Button>
+                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                   <Link href="/contact">Book Shoot</Link>
+                 </Button>
               </CardFooter>
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col border-2 border-accent shadow-2xl shadow-accent/20">
@@ -189,7 +193,9 @@ export default function PricingPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-accent hover:bg-accent/90">Book Shoot</Button>
+                <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                   <Link href="/contact">Book Shoot</Link>
+                </Button>
               </CardFooter>
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
@@ -211,3 +217,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
+    
