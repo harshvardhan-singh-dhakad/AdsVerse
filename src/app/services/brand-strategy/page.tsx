@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Palette, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Brand Strategy & Identity | AdsVerse",
+  description: "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
+};
 
 const service = {
   id: 'brand-strategy',

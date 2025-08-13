@@ -1,7 +1,13 @@
 
 "use client";
 
+import { Metadata } from "next";
 import { useEffect, useState } from "react";
+
+export const metadata: Metadata = {
+    title: "Terms of Service | AdsVerse",
+    description: "Please read our Terms of Service carefully before using the AdsVerse website. Your access to and use of the Service is conditioned on your acceptance of these terms.",
+};
 
 export default function TermsOfServicePage() {
   const [currentDate, setCurrentDate] = useState("");

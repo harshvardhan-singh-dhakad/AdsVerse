@@ -4,6 +4,12 @@ import { Palette, Megaphone, TrendingUp, FileText, Share2, Code, Bot } from 'luc
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Services | AdsVerse",
+  description: "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and more, all designed to elevate your brand.",
+};
 
 const services = [
   {

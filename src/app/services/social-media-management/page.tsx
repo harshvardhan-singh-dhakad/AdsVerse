@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Share2, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Social Media Management | AdsVerse",
+  description: "Build and nurture your online community with our social media management services. We handle content creation, daily engagement, and performance reporting.",
+};
 
 const service = {
   id: 'social-media-management',

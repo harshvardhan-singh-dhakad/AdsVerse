@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Insights | AdsVerse Blog",
+  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
+};
 
 const featuredArticles = [
   {

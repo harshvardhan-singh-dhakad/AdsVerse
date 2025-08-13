@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { TrendingUp, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "SEO Optimization Services | AdsVerse",
+  description: "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
+};
 
 const service = {
   id: 'seo-optimization',

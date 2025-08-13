@@ -8,6 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services & Pricing | AdsVerse",
+  description: "Transparent pricing for our comprehensive suite of digital marketing solutions. Find the perfect package to elevate your brand and achieve your goals.",
+};
 
 const servicesData = [
   // SEO Services

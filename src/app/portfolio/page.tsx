@@ -1,4 +1,10 @@
 import { PortfolioGrid } from "@/components/pages/portfolio-grid";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Work | AdsVerse",
+  description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise.",
+};
 
 export default function PortfolioPage() {
   return (

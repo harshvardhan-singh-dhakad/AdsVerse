@@ -3,6 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Megaphone, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Meta & Google Ads Management | AdsVerse",
+  description: "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google. We handle setup, optimization, and reporting.",
+};
 
 const service = {
   id: 'paid-ads',

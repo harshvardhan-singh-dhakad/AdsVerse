@@ -1,6 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "About Us | AdsVerse",
+  description: "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
+};
 
 const teamMembers = [
   { name: "Harshvardhan Singh dhaakad", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
