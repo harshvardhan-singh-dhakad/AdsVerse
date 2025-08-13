@@ -38,11 +38,11 @@ const service = {
     },
     {
       title: "Business Pro",
-      price: "₹25,000",
+      price: "₹35,000",
       frequency: "one-time",
       features: [
         "Automate complex workflows",
-        "Advanced logic & conditions",
+        "AI Telecaller for Lead Gen",
         "Integrate up to 3 apps (e.g., CRM, Email)",
         "Priority support",
       ],
@@ -53,8 +53,8 @@ const service = {
       frequency: "project-based",
       features: [
         "End-to-end process automation",
+        "Advanced AI Telecaller with Deal Closing",
         "Custom UI/dashboard",
-        "Unlimited integrations",
         "Dedicated account manager",
       ],
     }
