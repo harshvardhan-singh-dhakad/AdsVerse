@@ -7,10 +7,10 @@ import { collection, addDoc, Timestamp, doc, updateDoc } from "firebase/firestor
 import { analyzeContactRequest } from "@/ai/flows/contact-follow-up-flow";
 
 const formSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  subject: z.string().min(5),
-  message: z.string().min(10),
+  name: z.string().min(1, "Name is required."),
+  email: z.string().email("A valid email is required."),
+  subject: z.string().min(1, "Subject is required."),
+  message: z.string().min(10, "Message must be at least 10 characters."),
 });
 
 type State = {
