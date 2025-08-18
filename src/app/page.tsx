@@ -1,13 +1,9 @@
 
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BarChart, Bot, Brush, Megaphone, Search, Users } from "lucide-react";
-import { Toaster } from "@/components/ui/toaster";
 
 const featuredServices = [
   {
@@ -57,113 +53,107 @@ const testimonials = [
 
 export default function HomePage() {
   return (
-    <>
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="py-24 sm:py-32 bg-gradient-to-br from-primary/10 via-background to-accent/10">
-          <div className="container text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
-              Digital Marketing That <span className="text-primary">Drives Results</span>
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              We blend creativity with data-driven strategies to elevate your brand, engage your audience, and boost your bottom line.
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link href="/services">Our Services</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/contact">Get a Free Quote</Link>
-              </Button>
-            </div>
+    <main>
+      {/* Hero Section */}
+      <section className="py-24 sm:py-32 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+        <div className="container text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight font-headline">
+            Digital Marketing That <span className="text-primary">Drives Results</span>
+          </h1>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+            We blend creativity with data-driven strategies to elevate your brand, engage your audience, and boost your bottom line.
+          </p>
+          <div className="mt-8 flex justify-center gap-4">
+            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Link href="/services">Our Services</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/contact">Get a Free Quote</Link>
+            </Button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Featured Services Section */}
-        <section className="py-24">
-            <div className="container">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold">What We Do</h2>
-                    <p className="text-muted-foreground mt-2">A glimpse into our core digital marketing services.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {featuredServices.map(service => (
-                         <Card key={service.title} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
-                             <CardHeader>
-                                <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
-                                    {service.icon}
-                                </div>
-                                <CardTitle>{service.title}</CardTitle>
-                             </CardHeader>
-                             <CardContent>
-                                 <p className="text-muted-foreground">{service.description}</p>
-                             </CardContent>
-                             <CardFooter>
-                                 <Button asChild variant="link" className="p-0 text-accent w-full justify-center">
-                                   <Link href={service.link}>
-                                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                                   </Link>
-                                 </Button>
-                             </CardFooter>
-                         </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
+      {/* Featured Services Section */}
+      <section className="py-24">
+          <div className="container">
+              <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold font-headline">What We Do</h2>
+                  <p className="text-muted-foreground mt-2">A glimpse into our core digital marketing services.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {featuredServices.map(service => (
+                       <Card key={service.title} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
+                           <CardHeader>
+                              <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
+                                  {service.icon}
+                              </div>
+                              <CardTitle className="font-headline">{service.title}</CardTitle>
+                           </CardHeader>
+                           <CardContent>
+                               <p className="text-muted-foreground">{service.description}</p>
+                           </CardContent>
+                           <CardFooter>
+                               <Button asChild variant="link" className="p-0 text-accent w-full justify-center">
+                                 <Link href={service.link}>
+                                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                                 </Link>
+                               </Button>
+                           </CardFooter>
+                       </Card>
+                  ))}
+              </div>
+          </div>
+      </section>
 
-        {/* Testimonials Section */}
-        <section className="py-24 bg-secondary/50">
-            <div className="container">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold">What Our Clients Say</h2>
-                    <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {testimonials.map(t => (
-                         <Card key={t.name} className="flex flex-col justify-between">
-                            <CardContent className="p-6">
-                                <p className="text-foreground/80 italic">"{t.text}"</p>
-                            </CardContent>
-                            <CardFooter className="bg-background/50 p-4 flex items-center gap-4">
-                                <Image 
-                                    src={t.avatar} 
-                                    alt={t.name} 
-                                    width={50} 
-                                    height={50} 
-                                    data-ai-hint={t.hint}
-                                    className="rounded-full" 
-                                />
-                                <div>
-                                    <p className="font-semibold">{t.name}</p>
-                                    <p className="text-sm text-muted-foreground">{t.role}</p>
-                                </div>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
-        
-        {/* CTA Section */}
-        <section className="py-32">
-            <div className="container">
-                <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground">
-                    <h2 className="text-4xl font-bold">Ready to Grow Your Business?</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg">
-                        Let's have a conversation about your goals. We'll provide a free, no-obligation consultation to explore how we can help you succeed.
-                    </p>
-                    <Button asChild size="lg" variant="secondary" className="mt-8">
-                      <Link href="/contact">Schedule a Free Consultation</Link>
-                    </Button>
-                </div>
-            </div>
-        </section>
+      {/* Testimonials Section */}
+      <section className="py-24 bg-secondary/50">
+          <div className="container">
+              <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold font-headline">What Our Clients Say</h2>
+                  <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {testimonials.map(t => (
+                       <Card key={t.name} className="flex flex-col justify-between bg-card/50 backdrop-blur-sm">
+                          <CardContent className="p-6">
+                              <p className="text-foreground/80 italic">"{t.text}"</p>
+                          </CardContent>
+                          <CardFooter className="bg-background/50 p-4 flex items-center gap-4 border-t border-border/50">
+                              <Image 
+                                  src={t.avatar} 
+                                  alt={t.name} 
+                                  width={50} 
+                                  height={50} 
+                                  data-ai-hint={t.hint}
+                                  className="rounded-full" 
+                              />
+                              <div>
+                                  <p className="font-semibold">{t.name}</p>
+                                  <p className="text-sm text-muted-foreground">{t.role}</p>
+                              </div>
+                          </CardFooter>
+                      </Card>
+                  ))}
+              </div>
+          </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="py-32">
+          <div className="container">
+              <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground">
+                  <h2 className="text-4xl font-bold font-headline">Ready to Grow Your Business?</h2>
+                  <p className="mt-4 max-w-2xl mx-auto text-lg">
+                      Let's have a conversation about your goals. We'll provide a free, no-obligation consultation to explore how we can help you succeed.
+                  </p>
+                  <Button asChild size="lg" variant="secondary" className="mt-8">
+                    <Link href="/contact">Schedule a Free Consultation</Link>
+                  </Button>
+              </div>
+          </div>
+      </section>
 
-      </main>
-      <Footer />
-      <FloatingActionButton />
-      <Toaster />
-    </>
+    </main>
   );
 }

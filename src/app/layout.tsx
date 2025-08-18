@@ -38,7 +38,10 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable
       )}>
+          <Header />
           {children}
+          <Footer />
+          <FloatingActionButton />
           <Toaster />
       </body>
     </html>

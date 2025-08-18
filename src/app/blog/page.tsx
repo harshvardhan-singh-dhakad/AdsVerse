@@ -40,17 +40,17 @@ export default function BlogPage() {
   return (
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Our Insights</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Insights</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           Stay ahead of the curve with the latest news, trends, and strategies in digital marketing.
         </p>
       </section>
 
       <section className="mb-24">
-        <h2 className="text-4xl font-bold mb-8">Latest Articles</h2>
+        <h2 className="text-4xl font-bold mb-8 font-headline">Latest Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredArticles.map(article => (
-            <Card key={article.slug} className="flex flex-col overflow-hidden group">
+            <Card key={article.slug} className="flex flex-col overflow-hidden group bg-card/50 backdrop-blur-sm">
               <Image 
                 src={article.image}
                 alt={article.title}
@@ -60,7 +60,7 @@ export default function BlogPage() {
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <CardHeader>
-                <CardTitle>{article.title}</CardTitle>
+                <CardTitle className="font-headline">{article.title}</CardTitle>
                 <CardDescription className="pt-2">{article.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow"></CardContent>
@@ -79,7 +79,7 @@ export default function BlogPage() {
       <section>
         <Card className="bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-3xl">Generate Blog Ideas with AI</CardTitle>
+            <CardTitle className="text-3xl font-headline">Generate Blog Ideas with AI</CardTitle>
             <CardDescription>
               Stuck on what to write about? Use our AI tool to generate relevant blog topics based on current SEO trends and keywords.
             </CardDescription>

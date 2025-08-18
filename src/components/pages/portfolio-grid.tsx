@@ -16,7 +16,7 @@ const portfolioItems = [
   { id: 6, title: "E-commerce Store for ChicBoutique", category: "web", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/image.png?raw=true", hint: "fashion website", description: "Designed and developed a scalable Shopify e-commerce store for a fashion startup, featuring a seamless checkout process and mobile-first design." },
 ];
 
-const filters = ["all", "web", "seo", "branding", "smm"];
+const filters = ["all", "web", "seo", "branding"];
 
 type PortfolioItem = typeof portfolioItems[0];
 
@@ -26,7 +26,7 @@ export function PortfolioGrid() {
 
   const filteredItems = activeFilter === "all"
     ? portfolioItems
-    : portfolioItems.filter(item => item.category === activeFilter || (activeFilter === 'seo' && item.category === 'local-seo'));
+    : portfolioItems.filter(item => item.category === activeFilter);
 
   return (
     <div>
@@ -43,11 +43,11 @@ export function PortfolioGrid() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredItems.map(item => (
           <Card 
             key={item.id} 
-            className="overflow-hidden cursor-pointer group"
+            className="overflow-hidden cursor-pointer group bg-card/50 backdrop-blur-sm"
             onClick={() => setSelectedItem(item)}
           >
             <CardContent className="p-0 relative">
@@ -73,7 +73,7 @@ export function PortfolioGrid() {
           {selectedItem && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-3xl mb-2">{selectedItem.title}</DialogTitle>
+                <DialogTitle className="text-3xl mb-2 font-headline">{selectedItem.title}</DialogTitle>
                 <DialogDescription>
                   <Badge variant="secondary" className="capitalize">{selectedItem.category}</Badge>
                 </DialogDescription>

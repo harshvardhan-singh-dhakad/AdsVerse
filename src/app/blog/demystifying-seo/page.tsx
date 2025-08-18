@@ -11,7 +11,7 @@ export default function DemystifyingSeoPage() {
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString());
+    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export default function DemystifyingSeoPage() {
       </div>
 
       <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Demystifying SEO: A Beginner's Guide to Ranking Higher</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 font-headline">Demystifying SEO: A Beginner's Guide to Ranking Higher</h1>
         <div className="flex items-center space-x-4 text-muted-foreground text-sm">
           <span>Published on {currentDate}</span>
           <span>&middot;</span>
@@ -48,7 +48,7 @@ export default function DemystifyingSeoPage() {
           In the vast, ever-expanding universe of the internet, how do you ensure your voice is heard? How do you connect with the people actively searching for the solutions you provide? The answer lies in mastering a powerful, often misunderstood discipline: Search Engine Optimization (SEO). For many, "SEO" is an intimidating acronym shrouded in technical jargon. But at its core, it's about making your website more visible to search engines like Google, and in turn, to your potential customers.
         </p>
         
-        <h2 className="text-3xl font-bold text-primary">What is SEO, Really?</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">What is SEO, Really?</h2>
         <p>
           SEO is the practice of increasing the quantity and quality of traffic to your website through organic search engine results. Let's break that down. "Quality of traffic" means attracting visitors who are genuinely interested in what you offer. "Quantity of traffic" means getting more of those ideal visitors. And "organic results" refers to the unpaid listings on a search engine results page (SERP), which are there because the search engine has determined they are the most relevant result for a user's query.
         </p>
@@ -56,12 +56,12 @@ export default function DemystifyingSeoPage() {
           Think of a search engine as a massive digital library and your website as a book. SEO is the process of cataloging your book correctly so the librarian (the search engine) can easily find it and recommend it to readers (users) looking for its specific content.
         </p>
 
-        <h2 className="text-3xl font-bold text-primary">The Three Pillars of Modern SEO</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">The Three Pillars of Modern SEO</h2>
         <p>
           Effective SEO strategy is typically built upon three fundamental pillars. Understanding these will give you a solid framework for your optimization efforts.
         </p>
         
-        <h3 className="text-2xl font-semibold text-accent">1. On-Page SEO</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">1. On-Page SEO</h3>
         <p>
           On-Page SEO refers to all the optimizations you perform directly on your website. This is where you have the most control. Key elements include:
         </p>
@@ -73,7 +73,7 @@ export default function DemystifyingSeoPage() {
           <li><strong>Image Optimization:</strong> Using descriptive file names and alt text for images to help search engines understand their content.</li>
         </ul>
         
-        <h3 className="text-2xl font-semibold text-accent">2. Off-Page SEO</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">2. Off-Page SEO</h3>
         <p>
           Off-Page SEO involves actions taken outside of your own website to impact your rankings within SERPs. This is largely about building your website's authority and reputation.
         </p>
@@ -83,7 +83,7 @@ export default function DemystifyingSeoPage() {
           <li><strong>Social Signals:</strong> While not a direct ranking factor, shares, likes, and comments on social media can increase the visibility of your content, leading to more traffic and potential backlinks.</li>
         </ul>
 
-        <h3 className="text-2xl font-semibold text-accent">3. Technical SEO</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">3. Technical SEO</h3>
         <p>
           Technical SEO focuses on the backend of your website to ensure search engine crawlers can effectively index your site. It’s about making sure your site’s foundation is solid.
         </p>
@@ -94,7 +94,7 @@ export default function DemystifyingSeoPage() {
           <li><strong>XML Sitemap:</strong> This is a file that lists all the important pages on your website, making it easier for search engines to find and index your content.</li>
         </ul>
 
-        <h2 className="text-3xl font-bold text-primary">Your Journey to the Top</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">Your Journey to the Top</h2>
         <p>
           SEO is not a one-time task; it's an ongoing process of refinement and adaptation. Search engine algorithms are constantly evolving, and so should your strategy. By focusing on creating a great experience for your users—through high-quality content, a technically sound website, and a strong online reputation—you are inherently aligning your goals with those of the search engines.
         </p>

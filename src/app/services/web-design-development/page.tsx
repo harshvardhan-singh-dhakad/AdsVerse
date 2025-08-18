@@ -56,21 +56,21 @@ export default function WebDesignDevelopmentPage() {
       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-6">{service.icon}</div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{service.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">{service.title}</h1>
         </CardHeader>
         <CardContent className="px-6 md:px-12 py-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 space-y-6">
               {service.description.slice(0, 2).map((section, index) => (
                 <div key={index}>
-                  <h2 className="text-2xl font-semibold text-primary">{section.heading}</h2>
+                  <h2 className="text-2xl font-semibold text-primary font-headline">{section.heading}</h2>
                   <p className="text-muted-foreground">{section.text}</p>
                 </div>
               ))}
             </div>
             <Card className="bg-background/50 sticky top-24">
               <CardHeader>
-                <CardTitle className="text-accent text-2xl">{service.pricing.title}</CardTitle>
+                <CardTitle className="text-accent text-2xl font-headline">{service.pricing.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-4xl font-extrabold mb-4">{service.pricing.price} <span className="text-lg font-normal text-muted-foreground">{service.pricing.frequency}</span></p>
@@ -93,7 +93,7 @@ export default function WebDesignDevelopmentPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 space-y-6 pt-8 border-t border-border">
             {service.description.slice(2).map((section, index) => (
               <div key={index}>
-                <h2 className="text-2xl font-semibold text-primary">{section.heading}</h2>
+                <h2 className="text-2xl font-semibold text-primary font-headline">{section.heading}</h2>
                 <p className="text-muted-foreground">{section.text}</p>
               </div>
             ))}

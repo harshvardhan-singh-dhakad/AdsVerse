@@ -11,7 +11,7 @@ export default function PaidAdsRoiPage() {
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString());
+    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export default function PaidAdsRoiPage() {
       </div>
 
       <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">The Art of Paid Ads: Maximizing Your ROI</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 font-headline">The Art of Paid Ads: Maximizing Your ROI</h1>
         <div className="flex items-center space-x-4 text-muted-foreground text-sm">
           <span>Published on {currentDate}</span>
           <span>&middot;</span>
@@ -48,7 +48,7 @@ export default function PaidAdsRoiPage() {
           In the world of digital marketing, paid advertising is the accelerator pedal. While organic strategies like SEO and content marketing build momentum over time, paid ads on platforms like Google and Meta offer an immediate, powerful way to reach your target audience. However, simply throwing money at ads is a recipe for disaster. The true art lies in a strategic approach focused on one critical metric: Return on Investment (ROI). Maximizing your ROI ensures that every dollar you spend is working hard to grow your business.
         </p>
         
-        <h2 className="text-3xl font-bold text-primary">Understanding the Paid Ads Landscape</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">Understanding the Paid Ads Landscape</h2>
         <p>
           Before diving into strategy, it's essential to understand the two giants of the paid advertising world:
         </p>
@@ -60,17 +60,17 @@ export default function PaidAdsRoiPage() {
           A successful strategy often involves using both platforms in concert, but the key to ROI on either is precision and continuous optimization.
         </p>
 
-        <h2 className="text-3xl font-bold text-primary">The Blueprint for High-ROI Campaigns</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">The Blueprint for High-ROI Campaigns</h2>
         <p>
           Maximizing your return is not about a single trick; it's a systematic process. Here’s a blueprint for building campaigns that deliver results.
         </p>
         
-        <h3 className="text-2xl font-semibold text-accent">1. Hyper-Targeted Audience Definition</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">1. Hyper-Targeted Audience Definition</h3>
         <p>
           The foundation of any successful ad campaign is knowing exactly who you're talking to. Go beyond basic demographics. Create detailed customer personas. What are their pain points? What are their interests? On Meta, use lookalike audiences and detailed interest targeting. On Google, focus on long-tail keywords that indicate strong purchase intent. The more specific your targeting, the less money you'll waste on irrelevant clicks.
         </p>
         
-        <h3 className="text-2xl font-semibold text-accent">2. Compelling Ad Creative and Copy</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">2. Compelling Ad Creative and Copy</h3>
         <p>
           Your ad is your digital billboard. It needs to grab attention and persuade in a matter of seconds.
         </p>
@@ -81,7 +81,7 @@ export default function PaidAdsRoiPage() {
           <li><strong>A/B Testing:</strong> Never assume you know what will work best. Continuously test different images, headlines, and CTAs to find the winning combination. Even small improvements in click-through rate can have a big impact on ROI.</li>
         </ul>
 
-        <h3 className="text-2xl font-semibold text-accent">3. Optimized Landing Pages</h3>
+        <h3 className="text-2xl font-semibold text-accent font-headline">3. Optimized Landing Pages</h3>
         <p>
           The ad is only half the battle. If a user clicks your ad and lands on a slow, confusing, or irrelevant page, you've wasted your money. Your landing page must be a seamless continuation of your ad's promise.
         </p>
@@ -91,7 +91,7 @@ export default function PaidAdsRoiPage() {
           <li><strong>Fast Load Times:</strong> Every second counts. Optimize images and code to ensure your page loads almost instantly.</li>
         </ul>
 
-        <h2 className="text-3xl font-bold text-primary">The Power of Data and Iteration</h2>
+        <h2 className="text-3xl font-bold text-primary font-headline">The Power of Data and Iteration</h2>
         <p>
           The most important principle in paid advertising is to be data-driven. Don't make decisions based on gut feelings. Install tracking pixels (like the Meta Pixel and Google Ads conversion tracking) from day one. Monitor key metrics like:
         </p>

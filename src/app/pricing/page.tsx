@@ -3,10 +3,9 @@
 import { useState, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Metadata } from "next";
 
 const servicesData = [
   // SEO Services
@@ -83,8 +82,8 @@ const ServiceCard = ({ service }: { service: typeof servicesData[0] }) => {
           onMouseLeave={handleMouseLeave}
         >
             <CardHeader className="items-center text-center">
-                {service.icon}
-                <CardTitle className="mt-4 text-xl">{service.title}</CardTitle>
+                <div className="mb-4 text-accent">{service.icon}</div>
+                <CardTitle className="mt-4 text-xl font-headline">{service.title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow text-center">
                 <p className="text-muted-foreground">{service.description}</p>
@@ -109,7 +108,7 @@ export default function PricingPage() {
   return (
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-12">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Our Services &amp; Pricing</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services &amp; Pricing</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           Transparent pricing for our comprehensive suite of digital marketing solutions. Find the perfect package to elevate your brand and achieve your goals.
         </p>
@@ -138,13 +137,13 @@ export default function PricingPage() {
       
       <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold">Video &amp; Photo Shoots</h2>
+          <h2 className="text-4xl font-bold font-headline">Video &amp; Photo Shoots</h2>
           <p className="text-lg text-muted-foreground mt-2">Professional shoots to elevate your brand's visual content.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
               <CardHeader>
-                <CardTitle className="text-2xl">Reel/Shorts Package</CardTitle>
+                <CardTitle className="text-2xl font-headline">Reel/Shorts Package</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
                 <p className="text-3xl font-bold text-primary">₹999</p>
@@ -162,7 +161,7 @@ export default function PricingPage() {
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
               <CardHeader>
-                <CardTitle className="text-2xl">Basic Package</CardTitle>
+                <CardTitle className="text-2xl font-headline">Basic Package</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
                 <p className="text-3xl font-bold text-primary">₹5,000</p>
@@ -180,7 +179,7 @@ export default function PricingPage() {
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col border-2 border-accent shadow-2xl shadow-accent/20">
               <CardHeader>
-                 <CardTitle className="text-2xl">Premium Package</CardTitle>
+                 <CardTitle className="text-2xl font-headline">Premium Package</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
                 <p className="text-3xl font-bold text-primary">₹15,000</p>
@@ -199,7 +198,7 @@ export default function PricingPage() {
             </Card>
             <Card className="bg-card/70 backdrop-blur-md flex flex-col">
               <CardHeader>
-                 <CardTitle className="text-2xl">Custom Package</CardTitle>
+                 <CardTitle className="text-2xl font-headline">Custom Package</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
                 <p className="text-3xl font-bold text-primary">Let's Talk</p>

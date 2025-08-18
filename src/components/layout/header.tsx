@@ -28,8 +28,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-12 items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2 relative" style={{ left: '0.75rem' }}>
+      <div className="container flex h-14 items-center">
+        <Link href="/" className="mr-6 flex items-center space-x-2">
            <Image 
               src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
               alt="AdsVerse Logo"

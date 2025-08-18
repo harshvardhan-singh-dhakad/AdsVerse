@@ -27,7 +27,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-24">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">About AdsVerse</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">About AdsVerse</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           We are a team of passionate marketers, strategists, and creators dedicated to helping your brand thrive in the digital world.
         </p>
@@ -35,13 +35,13 @@ export default function AboutPage() {
 
       <section className="grid md:grid-cols-2 gap-16 items-center mb-24">
         <div>
-          <h2 className="text-3xl font-bold mb-4 text-primary">Our Mission</h2>
+          <h2 className="text-3xl font-bold mb-4 text-primary font-headline">Our Mission</h2>
           <p className="text-muted-foreground text-lg">
             To empower businesses with data-driven, creative digital marketing strategies that foster growth, build lasting connections with audiences, and deliver exceptional return on investment.
           </p>
         </div>
-        <div className="text-right">
-          <h2 className="text-3xl font-bold mb-4 text-accent">Our Vision</h2>
+        <div className="md:text-right">
+          <h2 className="text-3xl font-bold mb-4 text-accent font-headline">Our Vision</h2>
           <p className="text-muted-foreground text-lg">
             To be the leading digital marketing agency known for innovation, transparency, and a relentless commitment to our clients' success in an ever-evolving digital landscape.
           </p>
@@ -49,7 +49,7 @@ export default function AboutPage() {
       </section>
 
       <section className="mb-24">
-        <h2 className="text-4xl font-bold text-center mb-12">Meet the Team</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 font-headline">Meet the Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member) => (
             <Card key={member.name} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
@@ -67,26 +67,27 @@ export default function AboutPage() {
       </section>
 
       <section>
-        <h2 className="text-4xl font-bold text-center mb-16">Our Journey</h2>
+        <h2 className="text-4xl font-bold text-center mb-16 font-headline">Our Journey</h2>
         <div className="relative">
           <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2" aria-hidden="true"></div>
           <div className="space-y-16">
             {timelineEvents.map((event, index) => (
-              <div key={event.year} className="relative flex items-center">
-                <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                  <Card className="bg-card/50 backdrop-blur-sm inline-block">
-                    <CardHeader>
-                      <CardTitle className="text-primary">{event.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p>{event.description}</p>
-                    </CardContent>
-                  </Card>
+              <div key={event.year} className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                 <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
+                  <div className={`relative ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                    <Card className="bg-card/50 backdrop-blur-sm inline-block text-left">
+                        <CardHeader>
+                            <CardTitle className="text-primary font-headline">{event.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p>{event.description}</p>
+                        </CardContent>
+                    </Card>
+                   </div>
                 </div>
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary flex items-center justify-center font-bold text-primary-foreground">
                   {event.year}
                 </div>
-                <div className="w-1/2"></div>
               </div>
             ))}
           </div>

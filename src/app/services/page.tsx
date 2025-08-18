@@ -60,7 +60,7 @@ export default function ServicesPage() {
   return (
     <div className="container mx-auto py-16 px-4">
       <header className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Our Services</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           A comprehensive suite of digital marketing solutions designed to elevate your brand and achieve your business goals.
         </p>
@@ -71,8 +71,8 @@ export default function ServicesPage() {
             {services.map((service) => (
                 <Card key={service.id} className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
                     <CardHeader className="items-center text-center">
-                        {service.icon}
-                        <CardTitle className="mt-4 text-center">{service.title}</CardTitle>
+                        <div className="mb-4 text-accent">{service.icon}</div>
+                        <CardTitle className="mt-4 text-center font-headline">{service.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="flex-grow">
                         <p className="text-center text-foreground/80">{service.description}</p>
@@ -90,7 +90,7 @@ export default function ServicesPage() {
       </main>
 
       <section className="text-center mt-24">
-        <h2 className="text-3xl font-bold mb-4">Ready to See Everything We Offer?</h2>
+        <h2 className="text-3xl font-bold mb-4 font-headline">Ready to See Everything We Offer?</h2>
         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
             Our pricing page has a detailed list of all our services, from individual tasks to comprehensive packages. Find the perfect fit for your needs.
         </p>

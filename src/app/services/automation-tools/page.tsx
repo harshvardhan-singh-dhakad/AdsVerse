@@ -76,13 +76,13 @@ export default function AutomationToolsPage() {
       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 mb-16">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-6">{service.icon}</div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{service.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">{service.title}</h1>
         </CardHeader>
         <CardContent className="px-6 md:px-12 py-8 space-y-8">
           <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
             {service.description.map((section, index) => (
               <div key={index}>
-                <h2 className="text-2xl font-semibold text-primary">{section.heading}</h2>
+                <h2 className="text-2xl font-semibold text-primary font-headline">{section.heading}</h2>
                 <p className="text-muted-foreground">{section.text}</p>
               </div>
             ))}
@@ -91,12 +91,12 @@ export default function AutomationToolsPage() {
       </Card>
       
       <section>
-        <h2 className="text-4xl font-bold text-center mb-12">Our Automation Packages</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 font-headline">Our Automation Packages</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {service.packages.map((pkg) => (
             <Card key={pkg.title} className="bg-card/50 backdrop-blur-sm flex flex-col">
               <CardHeader>
-                <CardTitle className="text-accent text-2xl">{pkg.title}</CardTitle>
+                <CardTitle className="text-accent text-2xl font-headline">{pkg.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-4xl font-extrabold mb-4">{pkg.price} <span className="text-lg font-normal text-muted-foreground">{pkg.frequency}</span></p>
