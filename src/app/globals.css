@@ -66,6 +66,7 @@
     left: 50%;
     width: 200vw;
     height: 200vh;
+    overflow: hidden;
     background: 
       radial-gradient(circle at center, hsl(var(--primary) / 0.1), transparent 40%),
       radial-gradient(circle at 20% 80%, hsl(var(--accent) / 0.1), transparent 50%),
