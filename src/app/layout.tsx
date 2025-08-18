@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${playfairDisplay.variable} antialiased font-body`}>
+      <body className={`${inter.variable} ${playfairDisplay.variable} font-body bg-background text-foreground`}>
         <div className="relative flex flex-col min-h-screen">
           <div className="absolute top-0 left-0 w-full h-full -z-50 overflow-hidden">
             <div className="stars stars-sm"></div>
