@@ -17,7 +17,7 @@ export function Footer() {
 
   return (
     <footer className="bg-card/50 border-t border-border/40">
-      <div className="container py-12">
+      <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
@@ -34,7 +34,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <Link href="https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
                 </svg>
               </Link>

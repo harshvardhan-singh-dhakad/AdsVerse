@@ -47,7 +47,7 @@ export default function BlogPage() {
       </section>
 
       <section className="mb-24">
-        <h2 className="text-4xl font-bold mb-8 font-headline">Latest Articles</h2>
+        <h2 className="text-4xl font-bold text-center mb-8 font-headline">Latest Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredArticles.map(article => (
             <Card key={article.slug} className="flex flex-col overflow-hidden group bg-card/50 backdrop-blur-sm">
@@ -78,7 +78,7 @@ export default function BlogPage() {
 
       <section>
         <Card className="bg-card/50 backdrop-blur-sm">
-          <CardHeader>
+          <CardHeader className="text-center">
             <CardTitle className="text-3xl font-headline">Generate Blog Ideas with AI</CardTitle>
             <CardDescription>
               Stuck on what to write about? Use our AI tool to generate relevant blog topics based on current SEO trends and keywords.

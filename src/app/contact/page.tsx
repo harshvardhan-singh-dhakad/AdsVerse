@@ -25,7 +25,7 @@ export default function ContactPage() {
       <div className="grid md:grid-cols-2 gap-16">
         <Card className="bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-3xl font-headline">Contact Us</CardTitle>
+            <CardTitle className="text-3xl font-headline text-center">Contact Us</CardTitle>
           </CardHeader>
           <CardContent>
             <ContactForm />

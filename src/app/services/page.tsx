@@ -67,9 +67,9 @@ export default function ServicesPage() {
       </header>
 
       <main>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {services.map((service) => (
-                <Card key={service.id} className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
+                <Card key={service.id} className="bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col max-w-sm">
                     <CardHeader className="items-center text-center">
                         <div className="mb-4 text-accent">{service.icon}</div>
                         <CardTitle className="mt-4 text-center font-headline">{service.title}</CardTitle>
@@ -77,8 +77,8 @@ export default function ServicesPage() {
                     <CardContent className="flex-grow">
                         <p className="text-center text-foreground/80">{service.description}</p>
                     </CardContent>
-                    <CardFooter>
-                        <Button asChild variant="link" className="p-0 text-accent w-full justify-center">
+                    <CardFooter className="justify-center">
+                        <Button asChild variant="link" className="p-0 text-accent">
                             <Link href={`/services/${service.id}`}>
                                 Learn More <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>

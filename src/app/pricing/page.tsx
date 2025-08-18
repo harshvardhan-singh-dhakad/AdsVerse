@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, MouseEvent } from "react";
@@ -5,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart } from "lucide-react";
 import Link from "next/link";
-import { Metadata } from "next";
 
 const servicesData = [
   // SEO Services

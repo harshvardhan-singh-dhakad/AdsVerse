@@ -56,7 +56,7 @@ export default function HomePage() {
     <main>
       {/* Hero Section */}
       <section className="py-24 sm:py-32 bg-gradient-to-br from-primary/10 via-background to-accent/10">
-        <div className="container text-center">
+        <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight font-headline">
             Digital Marketing That <span className="text-primary">Drives Results</span>
           </h1>
@@ -76,7 +76,7 @@ export default function HomePage() {
 
       {/* Featured Services Section */}
       <section className="py-24">
-          <div className="container">
+          <div className="container mx-auto px-4">
               <div className="text-center mb-16">
                   <h2 className="text-4xl font-bold font-headline">What We Do</h2>
                   <p className="text-muted-foreground mt-2">A glimpse into our core digital marketing services.</p>
@@ -93,8 +93,8 @@ export default function HomePage() {
                            <CardContent>
                                <p className="text-muted-foreground">{service.description}</p>
                            </CardContent>
-                           <CardFooter>
-                               <Button asChild variant="link" className="p-0 text-accent w-full justify-center">
+                           <CardFooter className="justify-center">
+                               <Button asChild variant="link" className="p-0 text-accent">
                                  <Link href={service.link}>
                                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
                                  </Link>
@@ -108,7 +108,7 @@ export default function HomePage() {
 
       {/* Testimonials Section */}
       <section className="py-24 bg-secondary/50">
-          <div className="container">
+          <div className="container mx-auto px-4">
               <div className="text-center mb-16">
                   <h2 className="text-4xl font-bold font-headline">What Our Clients Say</h2>
                   <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
@@ -141,7 +141,7 @@ export default function HomePage() {
       
       {/* CTA Section */}
       <section className="py-32">
-          <div className="container">
+          <div className="container mx-auto px-4">
               <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground">
                   <h2 className="text-4xl font-bold font-headline">Ready to Grow Your Business?</h2>
                   <p className="mt-4 max-w-2xl mx-auto text-lg">
