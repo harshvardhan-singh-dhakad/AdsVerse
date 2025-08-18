@@ -74,21 +74,18 @@ export function FloatingActionButton() {
             </div>
           ))}
 
-          {/* AI Chat Button - now separate */}
-          <div className="mb-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground flex items-center justify-center font-bold text-lg"
-              aria-label="Chat with AI"
-              onClick={() => {
-              setIsChatOpen(true);
-              setIsOpen(false);
-              }}
-            >
-               Ai
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground flex items-center justify-center font-bold text-lg"
+            aria-label="Chat with AI"
+            onClick={() => {
+            setIsChatOpen(true);
+            setIsOpen(false);
+            }}
+          >
+              Ai
+          </Button>
 
           <Button
             onClick={() => setIsOpen(!isOpen)}
