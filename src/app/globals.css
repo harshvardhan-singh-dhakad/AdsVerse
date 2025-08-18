@@ -119,7 +119,6 @@
   .stars-sm {
     animation: animate-stars 150s linear infinite;
     background-image: 
-      /* Tiny, numerous stars */
       radial-gradient(1px 1px at 10px 150px, #FFFFFF, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 25px 90px, #DDDDFF, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 40px 20px, #FFFFE0, rgba(0,0,0,0)),
@@ -132,37 +131,43 @@
       radial-gradient(1px 1px at 145px 30px, #FFFFFF, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 160px 170px, #FFFFE0, rgba(0,0,0,0)),
       radial-gradient(1px 1px at 175px 80px, #DDDDFF, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 190px 10px, #FFFFFF, rgba(0,0,0,0));
+      radial-gradient(1px 1px at 190px 10px, #FFFFFF, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 5px 300px, #FFFFFF, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 35px 250px, #DDDDFF, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 60px 320px, #FFFFE0, rgba(0,0,0,0));
     background-size: 200px 200px;
   }
   
   .stars-md {
     animation: animate-stars 100s linear infinite;
     background-image:
-      /* Slightly larger, colorful "galaxies" */
       radial-gradient(2px 2px at 20px 30px, #AEC6CF, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 40px 70px, #FFDAB9, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 90px 40px, #B4D4FF, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 130px 80px, #FFC0CB, rgba(0,0,0,0)),
       radial-gradient(3px 2px at 160px 120px, #F0E68C, rgba(0,0,0,0)),
       radial-gradient(2px 2px at 180px 50px, #ADD8E6, rgba(0,0,0,0)),
-      /* Elliptical galaxies */
       radial-gradient(2px 1px at 60px 150px, #FFDAB9, rgba(0,0,0,0)),
-      radial-gradient(1px 2px at 110px 160px, #AEC6CF, rgba(0,0,0,0));
+      radial-gradient(1px 2px at 110px 160px, #AEC6CF, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 200px 200px, #AEC6CF, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 240px 270px, #FFDAB9, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 290px 240px, #B4D4FF, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 330px 280px, #FFC0CB, rgba(0,0,0,0));
     background-size: 300px 300px;
   }
 
   .stars-lg {
     animation: animate-stars 50s linear infinite;
     background-image:
-      /* Brighter, more prominent stars/galaxies */
       radial-gradient(2px 2px at 50px 160px, #FFFFFF, rgba(0,0,0,0)),
       radial-gradient(3px 3px at 90px 40px, #FFFFE0, rgba(0,0,0,0)),
       radial-gradient(3px 3px at 160px 120px, #E6E6FA, rgba(0,0,0,0)),
-      /* Larger, diffuse glows */
       radial-gradient(4px 4px at 10% 20%, hsl(var(--primary) / 0.3), transparent 60%),
       radial-gradient(4px 4px at 80% 90%, hsl(var(--accent) / 0.2), transparent 60%),
-      radial-gradient(3px 3px at 50% 50%, #FFFFFF, transparent 80%);
+      radial-gradient(3px 3px at 50% 50%, #FFFFFF, transparent 80%),
+      radial-gradient(2px 2px at 250px 360px, #FFFFFF, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 390px 240px, #FFFFE0, rgba(0,0,0,0)),
+      radial-gradient(3px 3px at 180px 320px, #E6E6FA, rgba(0,0,0,0));
     background-size: 400px 400px;
   }
 
