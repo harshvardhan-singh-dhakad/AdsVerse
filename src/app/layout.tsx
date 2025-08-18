@@ -38,6 +38,12 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable
       )}>
+          <div className="fixed top-0 left-0 w-full h-full -z-10">
+            <div className="glow-effect"></div>
+            <div className="stars stars-sm"></div>
+            <div className="stars stars-md"></div>
+            <div className="stars stars-lg"></div>
+          </div>
           <div className="relative z-10">
             <Header />
             {children}
