@@ -38,11 +38,13 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable
       )}>
-          <Header />
-          {children}
-          <Footer />
-          <FloatingActionButton />
-          <Toaster />
+          <div className="relative z-10">
+            <Header />
+            {children}
+            <Footer />
+            <FloatingActionButton />
+            <Toaster />
+          </div>
       </body>
     </html>
   );
