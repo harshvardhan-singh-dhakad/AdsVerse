@@ -4,7 +4,7 @@
 import { useState, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart } from "lucide-react";
+import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Bot } from "lucide-react";
 import Link from "next/link";
 
 const servicesData = [
@@ -55,6 +55,45 @@ const servicesData = [
   { category: "Political Campaigns", title: "Content & Ad Creation", description: "Crafting impactful political messaging. Our team develops creative posts, videos, and ads designed to persuade and mobilize voters.", price: "₹30,000/mo", icon: <PencilRuler className="w-8 h-8 text-accent" /> },
   { category: "Political Campaigns", title: "Online Reputation Management", description: "Shape public perception and manage online discourse. We monitor online sentiment and manage your campaign's digital reputation.", price: "₹20,000/mo", icon: <Mail className="w-8 h-8 text-accent" /> },
 ];
+
+const automationPackages = [
+    {
+      title: "Starter Bot",
+      price: "₹12,000",
+      frequency: "one-time",
+      features: [
+        "Automate one core task",
+        "Basic workflow design",
+        "Integration with 1 app (e.g., Sheets)",
+        "Standard deployment & support",
+      ],
+      isPopular: false,
+    },
+    {
+      title: "Business Pro",
+      price: "₹35,000",
+      frequency: "one-time",
+      features: [
+        "Automate complex workflows",
+        "AI Telecaller for Lead Gen",
+        "Integrate up to 3 apps (e.g., CRM, Email)",
+        "Priority support",
+      ],
+      isPopular: true,
+    },
+    {
+      title: "Enterprise Suite",
+      price: "Custom",
+      frequency: "project-based",
+      features: [
+        "End-to-end process automation",
+        "Advanced AI Telecaller with Deal Closing",
+        "Custom UI/dashboard",
+        "Dedicated account manager",
+      ],
+      isPopular: false,
+    }
+  ];
 
 const categories = ["All", "SEO", "Paid Ads", "Social Media", "Content Marketing", "Branding & Design", "Web & App Dev", "Analytics", "Political Campaigns"];
 
@@ -135,7 +174,7 @@ export default function PricingPage() {
         ))}
       </section>
       
-      <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10 mb-24">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold font-headline">Video &amp; Photo Shoots</h2>
           <p className="text-lg text-muted-foreground mt-2">Professional shoots to elevate your brand's visual content.</p>
@@ -210,6 +249,38 @@ export default function PricingPage() {
                 </Button>
               </CardFooter>
             </Card>
+        </div>
+      </section>
+
+      <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold font-headline">Custom Automation Tools</h2>
+          <p className="text-lg text-muted-foreground mt-2">Bespoke bots and tools to streamline your business processes.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            {automationPackages.map((pkg) => (
+            <Card key={pkg.title} className={`bg-card/70 backdrop-blur-md flex flex-col ${pkg.isPopular ? 'border-2 border-accent shadow-2xl shadow-accent/20' : ''}`}>
+              <CardHeader>
+                <CardTitle className="text-2xl font-headline text-primary">{pkg.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow space-y-4">
+                <p className="text-3xl font-bold text-accent">{pkg.price} <span className="text-lg font-normal text-muted-foreground">{pkg.frequency}</span></p>
+                <ul className="space-y-2 text-muted-foreground">
+                  {pkg.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+              <CardFooter>
+                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                    <Link href="/contact">Get Started</Link>
+                 </Button>
+              </CardFooter>
+            </Card>
+            ))}
         </div>
       </section>
     </div>
