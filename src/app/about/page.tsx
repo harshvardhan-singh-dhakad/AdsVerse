@@ -13,7 +13,7 @@ const teamMembers = [
   { name: "Harshvardhan Singh Dhakad", role: "Automation Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD.jpeg?raw=true", hint: "man portrait" },
   { name: "Aakash Dhakad", role: "Developer", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/AAKASH.jpeg?raw=true", hint: "man portrait" },
   { name: "Manisha kumawat", role: "Founder & CEO", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
-  { name: "Shailee Jain", role: "Creative Director", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/SHAILEE.jpeg?raw=true", hint: "woman smiling" },
+  { name: "Shailee Jain", role: "Creative Director", avatar: "https://raw.githubusercontent.com/harshvardhan-singh-dhakad/image/895092166b5b4a22da81d9e67bc1b70570c0e930/SHAILEE.jpeg", hint: "woman smiling" },
 ];
 
 const timelineEvents = [
