@@ -1,13 +1,7 @@
 
 "use client";
 
-import { Metadata } from "next";
 import { useEffect, useState } from "react";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy | AdsVerse",
-  description: "Read the Privacy Policy for AdsVerse to understand how we collect, use, and protect your personal information and data when you use our website and services.",
-};
 
 export default function PrivacyPolicyPage() {
   const [currentDate, setCurrentDate] = useState("");
