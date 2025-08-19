@@ -9,7 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, Loader2 } from "lucide-react";
 
-const initialState = {
+type SuggestionState = {
+  topics: string[];
+  error: string | null;
+};
+
+const initialState: SuggestionState = {
   topics: [],
   error: null,
 };
