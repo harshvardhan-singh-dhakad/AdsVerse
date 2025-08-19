@@ -40,6 +40,7 @@ const servicesData = [
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
+  phone: z.string().min(10, "Please enter a valid phone number.").optional().or(z.literal('')),
   subject: z.string({ required_error: "Please select a service." }).min(1, "Please select a service."),
   message: z.string().min(10, "Message must be at least 10 characters."),
 });
@@ -68,6 +69,7 @@ export function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       subject: "",
       message: "",
     },
@@ -115,6 +117,19 @@ export function ContactForm() {
               <FormLabel>Email Address</FormLabel>
               <FormControl>
                 <Input placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number (Optional)</FormLabel>
+              <FormControl>
+                <Input placeholder="+91 12345 67890" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
