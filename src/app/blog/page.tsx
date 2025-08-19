@@ -17,21 +17,21 @@ const featuredArticles = [
     slug: "demystifying-seo",
     title: "Demystifying SEO: A Beginner's Guide to Ranking Higher",
     description: "Learn the fundamentals of Search Engine Optimization and how to apply them to your website to attract more organic traffic.",
-    image: "https://placehold.co/600x400/8e44ad/ffffff.png",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true",
     hint: "laptop analytics"
   },
   {
     slug: "content-is-king",
     title: "Why Content is Still King in 2024",
     description: "Explore the importance of a robust content marketing strategy and how it builds brand authority and drives conversions.",
-    image: "https://placehold.co/600x400/2ecc71/ffffff.png",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true",
     hint: "writing content"
   },
   {
     slug: "paid-ads-roi",
     title: "The Art of Paid Ads: Maximizing Your ROI",
     description: "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results.",
-    image: "https://placehold.co/600x400/3498db/ffffff.png",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true",
     hint: "charts graphs"
   },
 ];
