@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: "Harshvardhan Singh Dhakad", role: "Automation Specialist", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
-  { name: "Aakash Dhakad", role: "Developer", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "man portrait" },
-  { name: "Manisha kumawat", role: "Founder & CEO", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman portrait" },
-  { name: "Shailee Jain", role: "Creative Director", avatar: "https://placehold.co/100x100/8E44AD/FFFFFF/png", hint: "woman smiling" },
+  { name: "Harshvardhan Singh Dhakad", role: "Automation Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD.jpeg?raw=true", hint: "man portrait" },
+  { name: "Aakash Dhakad", role: "Developer", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/AAKASH.jpeg?raw=true", hint: "man portrait" },
+  { name: "Manisha kumawat", role: "Founder & CEO", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
+  { name: "Shailee Jain", role: "Creative Director", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/SHAILEE.jpeg?raw=true", hint: "woman smiling" },
 ];
 
 const timelineEvents = [
