@@ -20,11 +20,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactForm } from "@/app/contact/actions";
 import { Loader2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const servicesData = [
+  "Local SEO", "E-commerce SEO", "Technical SEO Audit", "Keyword Research & Strategy", "Link Building Campaign",
+  "Google Ads Management", "Meta Ads Management", "LinkedIn Ads Campaign", "Google Ads Setup", "Ad Copy & Creative Design",
+  "Social Media Management", "Instagram Growth & Handling", "Facebook Page Management", "LinkedIn Profile Management", "Twitter (X) Content Strategy",
+  "Blog Post Writing (4/month)", "Content Strategy Development", "Ebook/Whitepaper Creation", "Video Script Writing", "Infographic Design",
+  "Logo & Brand Identity", "Social Media Graphics (15/mo)", "UI/UX Design for Apps", "Presentation Design", "Brochure/Flyer Design",
+  "Basic Website (5 pages)", "E-commerce Website", "Mobile App Development", "Website Maintenance", "Landing Page Development",
+  "GA4 Setup & Audit", "Monthly Performance Report", "CRO Audit", "Custom Dashboard Setup",
+  "Campaign Strategy & Management", "Voter Targeting & Outreach", "Content & Ad Creation", "Online Reputation Management",
+  "Reel/Shorts Package", "Basic Photo Shoot Package", "Premium Video/Photo Package",
+  "Starter Bot", "Business Pro Automation", "Enterprise Automation Suite",
+  "Other Inquiry"
+];
+
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
-  subject: z.string().min(5, "Subject must be at least 5 characters."),
+  subject: z.string({ required_error: "Please select a service." }).min(1, "Please select a service."),
   message: z.string().min(10, "Message must be at least 10 characters."),
 });
 
@@ -109,10 +125,21 @@ export function ContactForm() {
           name="subject"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Subject</FormLabel>
-              <FormControl>
-                <Input placeholder="Re: Project Inquiry" {...field} />
-              </FormControl>
+              <FormLabel>Service of Interest</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a service you're interested in" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {servicesData.map(service => (
+                      <SelectItem key={service} value={service}>
+                        {service}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               <FormMessage />
             </FormItem>
           )}
