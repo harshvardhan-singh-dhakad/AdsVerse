@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Bot } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing & Plans | AdsVerse",
+  description: "Transparent pricing for our digital marketing services. Explore packages for SEO, Paid Ads, Social Media, Web Development, and more to find the perfect fit for your business.",
+};
 
 const servicesData = [
   // SEO Services
