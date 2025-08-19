@@ -35,7 +35,7 @@ export default function PaidAdsRoiPage() {
       </header>
 
       <Image
-        src="https://placehold.co/1200x600/3498db/ffffff.png"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true"
         alt="Paid Ads ROI"
         width={1200}
         height={600}

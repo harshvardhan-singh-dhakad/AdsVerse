@@ -35,7 +35,7 @@ export default function ContentIsKingPage() {
       </header>
 
       <Image
-        src="https://placehold.co/1200x600/2ecc71/ffffff.png"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true"
         alt="Content is King"
         width={1200}
         height={600}

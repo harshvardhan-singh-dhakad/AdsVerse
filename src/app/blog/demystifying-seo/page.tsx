@@ -35,7 +35,7 @@ export default function DemystifyingSeoPage() {
       </header>
 
       <Image
-        src="https://placehold.co/1200x600/8e44ad/ffffff.png"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true"
         alt="Demystifying SEO"
         width={1200}
         height={600}
