@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, MouseEvent } from "react";
@@ -136,6 +137,52 @@ const ServiceCard = ({ service }: { service: typeof servicesData[0] }) => {
     );
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Our Services & Pricing | AdsVerse",
+  "description": "Transparent pricing for our comprehensive suite of digital marketing solutions.",
+  "url": "https://adsverse.in/pricing",
+  "mainEntity": {
+     "@type": "ItemList",
+     "itemListElement": servicesData.map((service, index) => ({
+       "@type": "Offer",
+       "itemOffered": {
+         "@type": "Service",
+         "name": service.title,
+         "description": service.description,
+         "provider": {
+           "@type": "Organization",
+           "name": "AdsVerse"
+         }
+       },
+       "priceSpecification": {
+         "@type": "PriceSpecification",
+         "price": service.price.replace(/[^0-9.]/g, ''),
+         "priceCurrency": "INR"
+       }
+     }))
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Pricing",
+        "item": "https://adsverse.in/pricing"
+      }
+    ]
+  }
+};
+
+
 export default function PricingPage() {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -144,6 +191,11 @@ export default function PricingPage() {
     : servicesData.filter(item => item.category === activeFilter);
 
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-12">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services &amp; Pricing</h1>
@@ -283,5 +335,6 @@ export default function PricingPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

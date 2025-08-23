@@ -36,8 +36,52 @@ const featuredArticles = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Our Insights | AdsVerse Blog",
+  "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
+  "url": "https://adsverse.in/blog",
+  "publisher": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+    }
+  },
+  "blogPost": featuredArticles.map(article => ({
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://adsverse.in/blog/${article.slug}`
+    },
+    "headline": article.title,
+    "description": article.description,
+    "image": article.image,
+    "author": {
+      "@type": "Organization",
+      "name": "AdsVerse"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AdsVerse",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+      }
+    }
+  }))
+};
+
+
 export default function BlogPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Insights</h1>
@@ -90,5 +134,6 @@ export default function BlogPage() {
         </Card>
       </section>
     </div>
+    </>
   );
 }

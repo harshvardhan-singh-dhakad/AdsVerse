@@ -41,8 +41,59 @@ const service = {
   }
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "SEO Optimization",
+  "name": "SEO Optimization Services",
+  "description": "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
+  "provider": {
+    "@type": "Organization",
+    "name": "AdsVerse"
+  },
+  "offers": {
+    "@type": "Offer",
+    "name": service.pricing.title,
+    "priceSpecification": {
+      "@type": "PriceSpecification",
+      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+      "priceCurrency": "INR",
+      "valueAddedTaxIncluded": false
+    }
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://adsverse.in/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "SEO Optimization",
+        "item": "https://adsverse.in/services/seo-optimization"
+      }
+    ]
+  }
+};
+
+
 export default function SeoOptimizationPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -101,5 +152,6 @@ export default function SeoOptimizationPage() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

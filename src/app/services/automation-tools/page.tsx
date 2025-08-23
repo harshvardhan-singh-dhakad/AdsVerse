@@ -61,8 +61,59 @@ const service = {
   ]
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Custom Automation Tools",
+  "name": "Custom Automation Tools",
+  "description": "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
+  "provider": {
+    "@type": "Organization",
+    "name": "AdsVerse"
+  },
+  "offers": service.packages.map(pkg => ({
+    "@type": "Offer",
+    "name": pkg.title,
+    "priceSpecification": {
+      "@type": "PriceSpecification",
+      "price": pkg.price === 'Custom' ? "0" : pkg.price.replace(/[^0-9.]/g, ''),
+      "priceCurrency": "INR",
+      "valueAddedTaxIncluded": false
+    }
+  })),
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://adsverse.in/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Custom Automation Tools",
+        "item": "https://adsverse.in/services/automation-tools"
+      }
+    ]
+  }
+};
+
+
 export default function AutomationToolsPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -119,5 +170,6 @@ export default function AutomationToolsPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

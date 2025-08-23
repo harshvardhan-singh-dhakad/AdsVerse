@@ -12,8 +12,59 @@ export const metadata: Metadata = {
   description: "Get in touch with the AdsVerse team. Whether you have a project in mind or just want to say hello, we'd love to hear from you.",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Us | AdsVerse",
+  "description": "Get in touch with the AdsVerse team. Whether you have a project in mind or just want to say hello, we'd love to hear from you.",
+  "url": "https://adsverse.in/contact",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in",
+    "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-9977646156",
+      "contactType": "Customer Service",
+      "email": "contact@adsverse.in",
+      "areaServed": "IN",
+      "availableLanguage": "en"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Scheme No. 54, Vijay Nagar",
+      "addressLocality": "Indore",
+      "postalCode": "452010",
+      "addressCountry": "IN"
+    }
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Contact Us",
+        "item": "https://adsverse.in/contact"
+      }
+    ]
+  }
+};
+
 export default function ContactPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Get in Touch</h1>
@@ -93,5 +144,6 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

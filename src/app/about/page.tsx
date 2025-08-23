@@ -22,8 +22,50 @@ const timelineEvents = [
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients." },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Us | AdsVerse",
+  "description": "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
+  "url": "https://adsverse.in/about",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in",
+    "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+    "member": teamMembers.map(member => ({
+      "@type": "Person",
+      "name": member.name,
+      "jobTitle": member.role,
+      "image": member.avatar
+    }))
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About Us",
+        "item": "https://adsverse.in/about"
+      }
+    ]
+  }
+};
+
 export default function AboutPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-24">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">About AdsVerse</h1>
@@ -93,5 +135,6 @@ export default function AboutPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

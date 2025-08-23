@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -7,14 +8,69 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://adsverse.in/blog/demystifying-seo"
+  },
+  "headline": "Demystifying SEO: A Beginner's Guide to Ranking Higher",
+  "description": "A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results.",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true",
+  "author": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+    }
+  },
+  "datePublished": "2024-05-16",
+  "dateModified": "2024-05-16",
+   "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://adsverse.in/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Demystifying SEO: A Beginner's Guide to Ranking Higher",
+        "item": "https://adsverse.in/blog/demystifying-seo"
+      }
+    ]
+  }
+};
+
 export default function DemystifyingSeoPage() {
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("May 16, 2024");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+    setCurrentDate(new Date("2024-05-16").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -103,5 +159,6 @@ export default function DemystifyingSeoPage() {
         </p>
       </div>
     </article>
+    </>
   );
 }

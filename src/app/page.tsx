@@ -50,9 +50,97 @@ const testimonials = [
     }
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "AdsVerse",
+      "url": "https://adsverse.in",
+      "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+      "description": "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-9977646156",
+        "contactType": "Customer Service",
+        "email": "contact@adsverse.in",
+        "areaServed": "IN",
+        "availableLanguage": ["en", "hi"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Scheme No. 54, Vijay Nagar",
+        "addressLocality": "Indore",
+        "postalCode": "452010",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.facebook.com/share/1E56NG5ZZL/",
+        "https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09",
+        "https://www.linkedin.com/company/dmafia/",
+        "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=",
+        "https://wa.me/919977646156"
+      ],
+      "review": testimonials.map(t => ({
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": t.name
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": t.text
+      }))
+    },
+    {
+      "@type": "WebSite",
+      "url": "https://adsverse.in",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://adsverse.in/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "url": "https://adsverse.in",
+      "name": "AdsVerse | Digital Marketing That Drives Results",
+      "description": "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
+      "isPartOf": {
+        "@id": "https://adsverse.in/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://adsverse.in/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://adsverse.in/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        }
+      ]
+    }
+  ]
+};
 
 export default function HomePage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <main>
       {/* Hero Section */}
       <section className="py-24 sm:py-32 bg-gradient-to-br from-primary/10 via-background to-accent/10">
@@ -155,5 +243,6 @@ export default function HomePage() {
       </section>
 
     </main>
+    </>
   );
 }

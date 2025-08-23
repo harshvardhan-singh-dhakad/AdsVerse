@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -7,14 +8,70 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://adsverse.in/blog/paid-ads-roi"
+  },
+  "headline": "The Art of Paid Ads: Maximizing Your ROI",
+  "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results.",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true",
+  "author": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+    }
+  },
+  "datePublished": "2024-05-17",
+  "dateModified": "2024-05-17",
+   "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://adsverse.in/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "The Art of Paid Ads: Maximizing Your ROI",
+        "item": "https://adsverse.in/blog/paid-ads-roi"
+      }
+    ]
+  }
+};
+
+
 export default function PaidAdsRoiPage() {
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("May 17, 2024");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+    setCurrentDate(new Date("2024-05-17").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -105,5 +162,6 @@ export default function PaidAdsRoiPage() {
         </p>
       </div>
     </article>
+    </>
   );
 }

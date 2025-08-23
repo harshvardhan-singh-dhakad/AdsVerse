@@ -41,8 +41,59 @@ const service = {
   }
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Web Design & Development",
+  "name": "Web Design & Development",
+  "description": "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
+  "provider": {
+    "@type": "Organization",
+    "name": "AdsVerse"
+  },
+  "offers": {
+    "@type": "Offer",
+    "name": service.pricing.title,
+    "priceSpecification": {
+      "@type": "PriceSpecification",
+      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+      "priceCurrency": "INR",
+      "valueAddedTaxIncluded": false
+    }
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://adsverse.in/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Web Design & Development",
+        "item": "https://adsverse.in/services/web-design-development"
+      }
+    ]
+  }
+};
+
+
 export default function WebDesignDevelopmentPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
         <div className="mb-8">
             <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -101,5 +152,6 @@ export default function WebDesignDevelopmentPage() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

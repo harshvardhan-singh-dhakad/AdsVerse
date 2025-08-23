@@ -56,8 +56,52 @@ const services = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Our Services | AdsVerse",
+  "description": "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and more, all designed to elevate your brand.",
+  "url": "https://adsverse.in/services",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": services.map((service, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Service",
+        "name": service.title,
+        "description": service.description,
+        "url": `https://adsverse.in/services/${service.id}`
+      }
+    }))
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://adsverse.in/services"
+      }
+    ]
+  }
+};
+
+
 export default function ServicesPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <header className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services</h1>
@@ -99,5 +143,6 @@ export default function ServicesPage() {
         </Button>
       </section>
     </div>
+    </>
   );
 }

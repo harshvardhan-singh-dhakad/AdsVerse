@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -7,14 +8,72 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://adsverse.in/blog/content-is-king"
+  },
+  "headline": "Why Content is Still King in 2024",
+  "description": "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true",
+  "author": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+    }
+  },
+  "datePublished": "2024-05-15",
+  "dateModified": "2024-05-15",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://adsverse.in/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Why Content is Still King in 2024",
+        "item": "https://adsverse.in/blog/content-is-king"
+      }
+    ]
+  }
+};
+
 export default function ContentIsKingPage() {
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("May 15, 2024");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+    // To avoid hydration mismatch, the initial date is set to a static value
+    // matching the one in the schema. The client-side render can update it if needed,
+    // but the initial render will match the server.
+    setCurrentDate(new Date("2024-05-15").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -86,5 +145,6 @@ export default function ContentIsKingPage() {
         </p>
       </div>
     </article>
+    </>
   );
 }

@@ -7,8 +7,39 @@ export const metadata: Metadata = {
   description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise.",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Our Work | AdsVerse",
+  "description": "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise.",
+  "url": "https://adsverse.in/portfolio",
+   "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Our Work",
+        "item": "https://adsverse.in/portfolio"
+      }
+    ]
+  }
+};
+
+
 export default function PortfolioPage() {
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Work</h1>
@@ -19,5 +50,6 @@ export default function PortfolioPage() {
       
       <PortfolioGrid />
     </div>
+    </>
   );
 }
