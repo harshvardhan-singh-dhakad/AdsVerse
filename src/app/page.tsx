@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BarChart, Bot, Brush, Megaphone, Search, Users } from "lucide-react";
+import { ArrowRight, Search, Megaphone, Users } from "lucide-react";
 
 const featuredServices = [
   {
