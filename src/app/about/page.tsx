@@ -13,7 +13,6 @@ const teamMembers = [
   { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
   { name: "Harshvardhan Singh Dhakad", role: "Ai Automation , GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD.jpeg?raw=true", hint: "man portrait" },
   { name: "Aakash Dhakad", role: "Digital Marketing Executive", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/AD.jpeg?raw=true", hint: "man portrait" },
-  { name: "Shailee Jain", role: "Creative Director", avatar: "https://raw.githubusercontent.com/harshvardhan-singh-dhakad/image/895092166b5b4a22da81d9e67bc1b70570c0e930/SHAILEE.jpeg", hint: "woman smiling" },
 ];
 
 const timelineEvents = [
@@ -50,7 +49,7 @@ export default function AboutPage() {
 
       <section className="mb-24">
         <h2 className="text-4xl font-bold text-center mb-12 font-headline">Meet the Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {teamMembers.map((member) => (
             <Card key={member.name} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
