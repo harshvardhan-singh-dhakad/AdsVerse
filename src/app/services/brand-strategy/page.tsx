@@ -38,52 +38,86 @@ const service = {
       "Logo & Visual Identity Design",
       "Comprehensive Brand Guidelines",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is brand strategy different from just a logo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A logo is a single visual mark, while brand strategy is the entire plan for how your business is perceived. The strategy informs the logo design, your messaging, customer service, and every other touchpoint. A good logo without a strategy is just a picture; a good logo with a strategy becomes a powerful symbol for your business values."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does the branding process take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our comprehensive Brand Strategy & Identity package typically takes 3-4 weeks from the initial discovery workshop to the delivery of the final brand guidelines. This allows for thorough research, creative exploration, and collaborative feedback to ensure we get it right."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you redesign my existing brand?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. We can work with you to refresh your existing brand or undertake a complete rebrand. We'll analyze what's working with your current brand and what isn't, and develop a strategy to evolve your identity to better connect with your audience and meet your current business goals."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Brand Strategy & Identity",
-  "name": "Brand Strategy & Identity",
-  "description": "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Brand Strategy & Identity",
+      "name": "Brand Strategy & Identity",
+      "description": "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Brand Strategy & Identity",
-        "item": "https://adsverse.in/services/brand-strategy"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Brand Strategy & Identity",
+          "item": "https://adsverse.in/services/brand-strategy"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 export default function BrandStrategyPage() {

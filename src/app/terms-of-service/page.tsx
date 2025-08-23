@@ -1,19 +1,18 @@
-"use client";
+import { Metadata } from "next";
 
-import { useEffect, useState } from "react";
+export const metadata: Metadata = {
+    title: "Terms of Service | AdsVerse",
+    description: "Please read our Terms of Service carefully before using the AdsVerse website. This document outlines the rules and regulations for the use of our services.",
+};
 
 export default function TermsOfServicePage() {
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
-  }, []);
+  const lastUpdatedDate = "August 19, 2024";
 
   return (
     <div className="container mx-auto py-16 px-4 max-w-4xl">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">Terms of Service</h1>
-        <p className="mt-4 text-muted-foreground">Last updated: {currentDate}</p>
+        <p className="mt-4 text-muted-foreground">Last updated: {lastUpdatedDate}</p>
       </header>
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <h2 className="text-3xl font-bold text-primary font-headline">1. Agreement to Terms</h2>
@@ -33,7 +32,7 @@ export default function TermsOfServicePage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">4. Prohibited Activities</h2>
         <p>
-          You agree not to engage in any of the following prohibited activities: (i) copying, distributing, or disclosing any part of the Service in any medium; (ii) using any automated system, including without limitation "robots," "spiders," "offline readers," etc., to access the Service; (iii) transmitting spam, chain letters, or other unsolicited email.
+          You agree not to engage in any of ahe following prohibited activities: (i) copying, distributing, or disclosing any part of the Service in any medium; (ii) using any automated system, including without limitation "robots," "spiders," "offline readers," etc., to access the Service; (iii) transmitting spam, chain letters, or other unsolicited email.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">5. Termination</h2>

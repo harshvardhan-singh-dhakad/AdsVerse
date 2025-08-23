@@ -38,52 +38,86 @@ const service = {
       "SEO Keyword Optimization",
       "Stock Imagery Included",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does content marketing help my SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Content marketing is crucial for SEO. High-quality content allows you to target specific keywords your audience is searching for. It also helps you earn backlinks from other websites, which is a major ranking factor for Google. Fresh, relevant content signals to search engines that your site is active and authoritative."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What kind of content will you create for my business?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The type of content depends on your business and audience. While our main package focuses on blog posts, we can also create ebooks, whitepapers, case studies, infographics, video scripts, and social media content. We'll recommend a content mix that best aligns with your marketing goals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I review the content before it's published?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, absolutely. Our process is collaborative. We provide all content for your review and approval before it goes live. We welcome your feedback to ensure the content perfectly captures your brand's voice and message."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Content Marketing",
-  "name": "Content Marketing Services",
-  "description": "Engage your audience with valuable content marketing from AdsVerse. Our services include blog writing, content strategy, and SEO optimization to build authority.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Content Marketing",
+      "name": "Content Marketing Services",
+      "description": "Engage your audience with valuable content marketing from AdsVerse. Our services include blog writing, content strategy, and SEO optimization to build authority.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Content Marketing",
-        "item": "https://adsverse.in/services/content-marketing"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Content Marketing",
+          "item": "https://adsverse.in/services/content-marketing"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 export default function ContentMarketingPage() {

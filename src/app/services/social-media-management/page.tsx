@@ -38,52 +38,86 @@ const service = {
       "Daily Posting & Engagement",
       "Performance Reporting",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Which social media platforms do you manage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We manage all major social media platforms, including Facebook, Instagram, LinkedIn, Twitter (X), Pinterest, and TikTok. Our standard package includes management for two platforms, but we can create a custom package to cover any platforms that are relevant to your business."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will you create the content for my social media?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, our service is all-inclusive. We handle everything from strategy and content creation (graphics, videos, and copy) to scheduling, posting, and community management. We'll work with you to ensure all content aligns with your brand voice and goals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you measure the success of social media campaigns?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We track a variety of key performance indicators (KPIs) depending on your goals. These include engagement rate (likes, comments, shares), follower growth, reach and impressions, website clicks, and conversions. We provide a detailed report each month to show you the direct impact of our efforts."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Social Media Management",
-  "name": "Social Media Management",
-  "description": "Build and nurture your online community with our social media management services. We handle content creation, daily engagement, and performance reporting.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Social Media Management",
+      "name": "Social Media Management",
+      "description": "Build and nurture your online community with our social media management services. We handle content creation, daily engagement, and performance reporting.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Social Media Management",
-        "item": "https://adsverse.in/services/social-media-management"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Social Media Management",
+          "item": "https://adsverse.in/services/social-media-management"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 

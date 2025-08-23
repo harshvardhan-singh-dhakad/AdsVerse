@@ -1,20 +1,19 @@
 
-"use client";
+import { Metadata } from "next";
 
-import { useEffect, useState } from "react";
+export const metadata: Metadata = {
+    title: "Privacy Policy | AdsVerse",
+    description: "Read the Privacy Policy for AdsVerse to understand how we collect, use, and protect your personal information and data when you use our website and services.",
+};
 
 export default function PrivacyPolicyPage() {
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
-  }, []);
+  const lastUpdatedDate = "August 19, 2024";
 
   return (
     <div className="container mx-auto py-16 px-4 max-w-4xl">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">Privacy Policy</h1>
-        <p className="mt-4 text-muted-foreground">Last updated: {currentDate}</p>
+        <p className="mt-4 text-muted-foreground">Last updated: {lastUpdatedDate}</p>
       </header>
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p>

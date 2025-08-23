@@ -38,52 +38,86 @@ const service = {
       "Ongoing Optimization & A/B Testing",
       "Monthly Performance Reports",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much should I spend on ads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your ad spend depends on your industry, goals, and the competitiveness of your target keywords or audience. We recommend starting with a budget you're comfortable with for testing. As we gather data and optimize campaigns, we can provide a data-driven recommendation for scaling your ad spend to maximize ROI."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How soon will I see results from paid ads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can start seeing traffic and impressions almost immediately after a campaign is launched. However, achieving optimal performance and a positive ROI typically takes 1-3 months. This initial period is crucial for data collection, A/B testing, and campaign refinement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you manage ads on other platforms besides Google and Meta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "While our primary expertise is with Google and Meta (Facebook/Instagram), we also have experience running campaigns on other platforms like LinkedIn, Twitter (X), and Pinterest. Please contact us to discuss your specific needs for other platforms."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Paid Advertising",
-  "name": "Meta & Google Ads Management",
-  "description": "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Paid Advertising",
+      "name": "Meta & Google Ads Management",
+      "description": "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Meta & Google Ads",
-        "item": "https://adsverse.in/services/paid-ads"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Meta & Google Ads",
+          "item": "https://adsverse.in/services/paid-ads"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 

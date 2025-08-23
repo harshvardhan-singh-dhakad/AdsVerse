@@ -38,52 +38,86 @@ const service = {
       "On-Page & Technical Optimization",
       "Monthly Link Building & Reporting",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How long does it take to see results from SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SEO is a long-term strategy. While some improvements can be seen in as little as a few weeks (like technical fixes), it typically takes 4-6 months to see significant, lasting results in organic traffic and rankings. The exact timeline depends on the competitiveness of your industry and the current state of your website."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is SEO a one-time thing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, SEO is an ongoing process. Search engine algorithms are constantly changing, and your competitors are always working to outrank you. Continuous effort is required to maintain and improve your rankings, including regular content creation, link building, and technical monitoring."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between on-page and off-page SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "On-page SEO refers to optimizations you do directly on your website, such as improving content, title tags, and site speed. Off-page SEO refers to actions taken outside of your website to build its authority, primarily through earning backlinks from other reputable sites."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "SEO Optimization",
-  "name": "SEO Optimization Services",
-  "description": "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "SEO Optimization",
+      "name": "SEO Optimization Services",
+      "description": "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "SEO Optimization",
-        "item": "https://adsverse.in/services/seo-optimization"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "SEO Optimization",
+          "item": "https://adsverse.in/services/seo-optimization"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 

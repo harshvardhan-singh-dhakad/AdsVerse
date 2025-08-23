@@ -58,52 +58,86 @@ const service = {
         "Dedicated account manager",
       ],
     }
-  ]
+  ],
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What kind of tasks can be automated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Almost any repetitive, rule-based digital task can be automated. This includes data entry, report generation, email marketing, social media posting, customer support responses, lead qualification, and much more. We'll work with you to identify the best opportunities for automation in your business."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to build a custom automation tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The timeline depends on the complexity of the workflow. A 'Starter Bot' for a single task can often be developed within 1-2 weeks. More complex 'Business Pro' or 'Enterprise' solutions may take 3-6 weeks or longer, depending on the number of integrations and the sophistication of the AI involved."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will I need technical skills to use the automation tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. We design our automation tools to be user-friendly and integrate seamlessly into your existing workflow. For more complex solutions, we can build a custom, intuitive dashboard for you to manage the tool. We also provide full training and documentation to ensure your team is comfortable using it from day one."
+        }
+      }
+    ]
+  }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Custom Automation Tools",
-  "name": "Custom Automation Tools",
-  "description": "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": service.packages.map(pkg => ({
-    "@type": "Offer",
-    "name": pkg.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": pkg.price === 'Custom' ? "0" : pkg.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  })),
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Custom Automation Tools",
+      "name": "Custom Automation Tools",
+      "description": "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Custom Automation Tools",
-        "item": "https://adsverse.in/services/automation-tools"
-      }
-    ]
-  }
+      "offers": service.packages.map(pkg => ({
+        "@type": "Offer",
+        "name": pkg.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": pkg.price === 'Custom' ? "0" : pkg.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Custom Automation Tools",
+          "item": "https://adsverse.in/services/automation-tools"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 

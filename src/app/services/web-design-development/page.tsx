@@ -38,52 +38,86 @@ const service = {
       "Basic On-Page SEO Setup",
       "Content Management System (CMS)",
     ],
+  },
+  faq: {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How long does it take to build a website?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A basic 5-page website typically takes 4-6 weeks from the start of the project to launch. The timeline can vary depending on the complexity of the design, the number of features, and the speed of feedback and content delivery from your side."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you build an e-commerce website?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we specialize in building custom e-commerce websites on platforms like Shopify and WooCommerce. We can create a secure, scalable, and user-friendly online store that is optimized for sales and conversions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will I be able to update the website myself?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. All our websites are built on a Content Management System (CMS) that allows you to easily update content like text, images, and blog posts without any coding knowledge. We provide full training on how to use the CMS after we launch your site."
+        }
+      }
+    ]
   }
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Web Design & Development",
-  "name": "Web Design & Development",
-  "description": "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
-  "provider": {
-    "@type": "Organization",
-    "name": "AdsVerse"
-  },
-  "offers": {
-    "@type": "Offer",
-    "name": service.pricing.title,
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": service.pricing.price.replace(/[^0-9.]/g, ''),
-      "priceCurrency": "INR",
-      "valueAddedTaxIncluded": false
-    }
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://adsverse.in"
+  "@graph": [
+    {
+      "@type": "Service",
+      "serviceType": "Web Design & Development",
+      "name": "Web Design & Development",
+      "description": "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
+      "provider": {
+        "@type": "Organization",
+        "name": "AdsVerse"
       },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": "https://adsverse.in/services"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Web Design & Development",
-        "item": "https://adsverse.in/services/web-design-development"
+      "offers": {
+        "@type": "Offer",
+        "name": service.pricing.title,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": service.pricing.price.replace(/[^0-9.]/g, ''),
+          "priceCurrency": "INR",
+          "valueAddedTaxIncluded": false
+        }
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://adsverse.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://adsverse.in/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Web Design & Development",
+          "item": "https://adsverse.in/services/web-design-development"
+        }
+      ]
+    },
+    service.faq
+  ]
 };
 
 
