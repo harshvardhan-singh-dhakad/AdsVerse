@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -11,6 +10,7 @@ import { useEffect, useState } from "react";
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
+  // This prevents hydration errors by ensuring the year is only set on the client
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
