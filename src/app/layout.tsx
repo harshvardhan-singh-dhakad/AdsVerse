@@ -19,12 +19,47 @@ const playfairDisplay = Playfair_Display({
   variable: '--font-playfair-display',
 });
 
+const siteUrl = "https://adsverse.in";
+const siteName = "AdsVerse";
+const description = "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.";
+const twitterHandle = "@Adsverse1";
+const defaultImage = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
+
 export const metadata: Metadata = {
   title: {
     default: "AdsVerse | Digital Marketing That Drives Results",
     template: "%s | AdsVerse",
   },
-  description: "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
+  description: description,
+  openGraph: {
+    title: {
+      default: "AdsVerse | Digital Marketing That Drives Results",
+      template: "%s | AdsVerse",
+    },
+    description: description,
+    url: siteUrl,
+    siteName: siteName,
+    images: [
+      {
+        url: defaultImage,
+        width: 1200,
+        height: 630,
+        alt: "AdsVerse Logo",
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: {
+      default: "AdsVerse | Digital Marketing That Drives Results",
+      template: "%s | AdsVerse",
+    },
+    description: description,
+    creator: twitterHandle,
+    images: [defaultImage],
+  },
 };
 
 export default function RootLayout({
