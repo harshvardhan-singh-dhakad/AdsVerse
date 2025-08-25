@@ -6,8 +6,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Web Design & Development | AdsVerse",
+  title: "Web Design & Development Services | AdsVerse",
   description: "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
+  alternates: {
+    canonical: '/services/web-design-development',
+  },
 };
 
 const service = {
@@ -76,7 +79,7 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "Web Design & Development",
-      "name": "Web Design & Development",
+      "name": "Web Design & Development Services | AdsVerse",
       "description": "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
       "provider": {
         "@type": "Organization",

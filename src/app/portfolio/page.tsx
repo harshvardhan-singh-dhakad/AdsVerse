@@ -3,14 +3,17 @@ import { PortfolioGrid } from "@/components/pages/portfolio-grid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Work | AdsVerse",
-  description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise.",
+  title: "Our Work & Client Case Studies | AdsVerse",
+  description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise in SEO, web design, and branding.",
+  alternates: {
+    canonical: '/portfolio',
+  },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Our Work | AdsVerse",
+  "name": "Our Work & Client Case Studies | AdsVerse",
   "description": "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise.",
   "url": "https://adsverse.in/portfolio",
    "breadcrumb": {

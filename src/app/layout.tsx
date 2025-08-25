@@ -26,6 +26,7 @@ const twitterHandle = "@Adsverse1";
 const defaultImage = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "AdsVerse | Digital Marketing That Drives Results",
     template: "%s | AdsVerse",
@@ -59,6 +60,9 @@ export const metadata: Metadata = {
     description: description,
     creator: twitterHandle,
     images: [defaultImage],
+  },
+  alternates: {
+    canonical: '/',
   },
 };
 

@@ -5,8 +5,11 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About Us | AdsVerse",
+  title: "About The AdsVerse Team & Our Mission",
   description: "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 const teamMembers = [
@@ -25,7 +28,7 @@ const timelineEvents = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "name": "About Us | AdsVerse",
+  "name": "About The AdsVerse Team & Our Mission",
   "description": "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
   "url": "https://adsverse.in/about",
   "mainEntity": {

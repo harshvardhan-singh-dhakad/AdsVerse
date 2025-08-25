@@ -6,8 +6,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SEO Optimization Services | AdsVerse",
-  description: "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
+  title: "Expert SEO Optimization Services to Rank Higher | AdsVerse",
+  description: "Improve your search engine rankings and attract organic traffic with AdsVerse's expert SEO services, including technical audits, keyword research, and link building.",
+  alternates: {
+    canonical: '/services/seo-optimization',
+  },
 };
 
 const service = {
@@ -76,8 +79,8 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "SEO Optimization",
-      "name": "SEO Optimization Services",
-      "description": "Improve your search engine rankings and attract organic traffic with AdsVerse's SEO services, including technical audits, keyword research, and link building.",
+      "name": "Expert SEO Optimization Services to Rank Higher | AdsVerse",
+      "description": "Improve your search engine rankings and attract organic traffic with AdsVerse's expert SEO services, including technical audits, keyword research, and link building.",
       "provider": {
         "@type": "Organization",
         "name": "AdsVerse"

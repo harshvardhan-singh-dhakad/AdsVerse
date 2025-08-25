@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -15,8 +16,8 @@ const jsonLd = {
     "@type": "WebPage",
     "@id": "https://adsverse.in/blog/paid-ads-roi"
   },
-  "headline": "The Art of Paid Ads: Maximizing Your ROI",
-  "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results.",
+  "headline": "The Art of Paid Ads: Maximizing Your ROI on Google & Meta",
+  "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
   "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true",
   "author": {
     "@type": "Organization",
@@ -60,7 +61,7 @@ const jsonLd = {
 
 
 export default function PaidAdsRoiPage() {
-  const [currentDate, setCurrentDate] = useState("May 17, 2024");
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     setCurrentDate(new Date("2024-05-17").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
@@ -68,10 +69,15 @@ export default function PaidAdsRoiPage() {
 
   return (
     <>
-    <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+    <Head>
+        <title>The Art of Paid Ads: Maximizing Your ROI on Google & Meta</title>
+        <meta name="description" content="A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI)." />
+        <link rel="canonical" href="/blog/paid-ads-roi" />
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    </Head>
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">

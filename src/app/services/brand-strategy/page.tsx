@@ -6,8 +6,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Brand Strategy & Identity | AdsVerse",
+  title: "Brand Strategy & Identity Design Services | AdsVerse",
   description: "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
+  alternates: {
+    canonical: '/services/brand-strategy',
+  },
 };
 
 const service = {
@@ -76,7 +79,7 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "Brand Strategy & Identity",
-      "name": "Brand Strategy & Identity",
+      "name": "Brand Strategy & Identity Design Services | AdsVerse",
       "description": "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
       "provider": {
         "@type": "Organization",

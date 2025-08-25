@@ -6,8 +6,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Custom Automation Tools | AdsVerse",
+  title: "Custom Business Automation Tools & Bots | AdsVerse",
   description: "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
+  alternates: {
+    canonical: '/services/automation-tools',
+  },
 };
 
 const service = {
@@ -96,7 +99,7 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "Custom Automation Tools",
-      "name": "Custom Automation Tools",
+      "name": "Custom Business Automation Tools & Bots | AdsVerse",
       "description": "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
       "provider": {
         "@type": "Organization",

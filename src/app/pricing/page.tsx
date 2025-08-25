@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Bot } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
 
 const servicesData = [
   // SEO Services
@@ -140,8 +141,8 @@ const ServiceCard = ({ service }: { service: typeof servicesData[0] }) => {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Our Services & Pricing | AdsVerse",
-  "description": "Transparent pricing for our comprehensive suite of digital marketing solutions.",
+  "name": "Digital Marketing Services & Pricing | AdsVerse",
+  "description": "Transparent pricing for our comprehensive suite of digital marketing solutions, including SEO, Paid Ads, Web Development, and Automation.",
   "url": "https://adsverse.in/pricing",
   "mainEntity": {
      "@type": "ItemList",
@@ -192,10 +193,15 @@ export default function PricingPage() {
 
   return (
     <>
-    <script
+    <Head>
+      <title>Digital Marketing Services & Pricing | AdsVerse</title>
+      <meta name="description" content="Transparent pricing for our comprehensive suite of digital marketing solutions, including SEO, Paid Ads, Web Development, and Automation." />
+      <link rel="canonical" href="/pricing" />
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+      />
+    </Head>
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-12">
         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services &amp; Pricing</h1>

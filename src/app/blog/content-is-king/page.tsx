@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -15,7 +16,7 @@ const jsonLd = {
     "@type": "WebPage",
     "@id": "https://adsverse.in/blog/content-is-king"
   },
-  "headline": "Why Content is Still King in 2024",
+  "headline": "Why Content is Still King in 2024 for Digital Marketing",
   "description": "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
   "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true",
   "author": {
@@ -59,21 +60,23 @@ const jsonLd = {
 };
 
 export default function ContentIsKingPage() {
-  const [currentDate, setCurrentDate] = useState("May 15, 2024");
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
-    // To avoid hydration mismatch, the initial date is set to a static value
-    // matching the one in the schema. The client-side render can update it if needed,
-    // but the initial render will match the server.
     setCurrentDate(new Date("2024-05-15").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 
   return (
     <>
-    <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+      <Head>
+        <title>Why Content is Still King in 2024 for Digital Marketing</title>
+        <meta name="description" content="In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024." />
+        <link rel="canonical" href="/blog/content-is-king" />
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+    </Head>
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">

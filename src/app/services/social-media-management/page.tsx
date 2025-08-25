@@ -6,8 +6,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Social Media Management | AdsVerse",
-  description: "Build and nurture your online community with our social media management services. We handle content creation, daily engagement, and performance reporting.",
+  title: "Social Media Management Services | AdsVerse",
+  description: "Build and nurture your online community with our expert social media management services. We handle content creation, daily engagement, and performance reporting.",
+  alternates: {
+    canonical: '/services/social-media-management',
+  },
 };
 
 const service = {
@@ -76,8 +79,8 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "Social Media Management",
-      "name": "Social Media Management",
-      "description": "Build and nurture your online community with our social media management services. We handle content creation, daily engagement, and performance reporting.",
+      "name": "Social Media Management Services | AdsVerse",
+      "description": "Build and nurture your online community with our expert social media management services. We handle content creation, daily engagement, and performance reporting.",
       "provider": {
         "@type": "Organization",
         "name": "AdsVerse"

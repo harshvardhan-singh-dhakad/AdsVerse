@@ -8,8 +8,11 @@ import { ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Insights | AdsVerse Blog",
-  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
+  title: "Digital Marketing Insights & Trends | AdsVerse Blog",
+  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team. Explore articles on SEO, paid ads, and content.",
+  alternates: {
+    canonical: '/blog',
+  },
 };
 
 const featuredArticles = [
@@ -39,7 +42,7 @@ const featuredArticles = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Blog",
-  "name": "Our Insights | AdsVerse Blog",
+  "name": "Digital Marketing Insights & Trends | AdsVerse Blog",
   "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
   "url": "https://adsverse.in/blog",
   "publisher": {

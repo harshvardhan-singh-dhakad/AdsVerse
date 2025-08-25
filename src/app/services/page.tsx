@@ -7,8 +7,11 @@ import { ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Services | AdsVerse",
-  description: "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and more, all designed to elevate your brand.",
+  title: "Digital Marketing Services for Business Growth | AdsVerse",
+  description: "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and Web Development, all designed to elevate your brand.",
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 const services = [
@@ -59,7 +62,7 @@ const services = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Our Services | AdsVerse",
+  "name": "Digital Marketing Services for Business Growth | AdsVerse",
   "description": "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and more, all designed to elevate your brand.",
   "url": "https://adsverse.in/services",
   "mainEntity": {
