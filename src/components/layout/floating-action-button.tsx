@@ -67,7 +67,7 @@ export function FloatingActionButton() {
                 aria-label={link.label}
                 onClick={() => setIsOpen(false)}
               >
-                <Link href={link.href} target={link.href.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer">
+                <Link href={link.href} target={link.href.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer nofollow">
                   {link.icon}
                 </Link>
               </Button>
