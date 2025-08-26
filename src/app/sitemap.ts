@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog pages
     const blogRoutes = [
+        '/blog/best-automation-tools-for-business',
         '/blog/demystifying-seo',
         '/blog/content-is-king',
         '/blog/paid-ads-roi',

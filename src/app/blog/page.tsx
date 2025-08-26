@@ -24,6 +24,13 @@ const featuredArticles = [
     hint: "cityscape marketing"
   },
   {
+    slug: "best-automation-tools-for-business",
+    title: "Best Automation Tools for Business – Save Time and Boost Productivity",
+    description: "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
+    image: "https://picsum.photos/1200/600",
+    hint: "automation tools"
+  },
+  {
     slug: "demystifying-seo",
     title: "Demystifying SEO: A Beginner's Guide to Ranking Higher",
     description: "Learn the fundamentals of Search Engine Optimization and how to apply them to your website to attract more organic traffic.",
