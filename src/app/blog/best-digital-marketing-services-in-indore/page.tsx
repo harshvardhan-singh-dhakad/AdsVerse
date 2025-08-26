@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Best Digital Marketing Services in Indore – Grow Your Business with the Best Digital Marketing Agency",
   "description": "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency in Indore for your business.",
-  "image": "https://github.com/HSDmarketing/Adsverse.image/blob/main/Best%20Digital%20Marketing%20Services%20in%20Indore.jpg?raw=true",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -107,7 +107,7 @@ export default function BestDigitalMarketingServicesInIndorePage() {
       </header>
 
       <Image
-        src="https://github.com/HSDmarketing/Adsverse.image/blob/main/Best%20Digital%20Marketing%20Services%20in%20Indore.jpg?raw=true"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true"
         alt="Best Digital Marketing Services in Indore"
         width={1200}
         height={600}

@@ -20,14 +20,14 @@ const featuredArticles = [
     slug: "best-digital-marketing-services-in-indore",
     title: "Best Digital Marketing Services in Indore – Grow Your Business",
     description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
-    image: "https://github.com/HSDmarketing/Adsverse.image/blob/main/Best%20Digital%20Marketing%20Services%20in%20Indore.jpg?raw=true",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true",
     hint: "cityscape marketing"
   },
   {
     slug: "best-automation-tools-for-business",
     title: "Best Automation Tools for Business – Save Time and Boost Productivity",
     description: "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
-    image: "https://picsum.photos/1200/600",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true",
     hint: "automation tools"
   },
   {

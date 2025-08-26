@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Best Automation Tools for Business – Save Time and Boost Productivity",
   "description": "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
-  "image": "https://picsum.photos/1200/600",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -107,7 +107,7 @@ export default function BestAutomationToolsPage() {
       </header>
 
       <Image
-        src="https://picsum.photos/1200/600"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true"
         alt="Best Automation Tools for Business"
         width={1200}
         height={600}
