@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/blog/demystifying-seo',
         '/blog/content-is-king',
         '/blog/paid-ads-roi',
+        '/blog/best-digital-marketing-services-in-indore',
     ];
 
     const allRoutes = [...staticRoutes, ...serviceRoutes, ...blogRoutes];

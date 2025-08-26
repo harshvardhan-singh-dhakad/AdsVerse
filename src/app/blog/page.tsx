@@ -17,6 +17,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "best-digital-marketing-services-in-indore",
+    title: "Best Digital Marketing Services in Indore – Grow Your Business",
+    description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
+    image: "https://github.com/HSDmarketing/Adsverse.image/blob/main/Best%20Digital%20Marketing%20Services%20in%20Indore.jpg?raw=true",
+    hint: "cityscape marketing"
+  },
+  {
     slug: "demystifying-seo",
     title: "Demystifying SEO: A Beginner's Guide to Ranking Higher",
     description: "Learn the fundamentals of Search Engine Optimization and how to apply them to your website to attract more organic traffic.",
