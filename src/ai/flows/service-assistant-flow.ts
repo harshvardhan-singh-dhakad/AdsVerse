@@ -2,7 +2,7 @@
 'use server';
 /**
  * @fileoverview A service assistant flow that can answer questions about
- * the company's services.
+ * the company's services and provide actionable links.
  */
 
 import { ai } from '@/ai/genkit';
@@ -11,7 +11,15 @@ import { z } from 'genkit';
 const ServiceAssistantInputSchema = z.string();
 export type ServiceAssistantInput = z.infer<typeof ServiceAssistantInputSchema>;
 
-const ServiceAssistantOutputSchema = z.string();
+const ActionButtonSchema = z.object({
+  label: z.string().describe('The text to display on the button. Example: "Call Now" or "Follow on Instagram".'),
+  href: z.string().describe('The URL the button should link to. For phone numbers, use "tel:..." format. For social media, use the full URL.'),
+});
+
+const ServiceAssistantOutputSchema = z.object({
+    responseText: z.string().describe("The main text-based response to the user's query."),
+    actions: z.array(ActionButtonSchema).optional().describe('A list of suggested action buttons to show the user. Use this for contact numbers or social media links.'),
+});
 export type ServiceAssistantOutput = z.infer<
   typeof ServiceAssistantOutputSchema
 >;
@@ -35,6 +43,15 @@ Use this content to answer the user's questions in a helpful, friendly, and prof
 You MUST ONLY use the provided information to answer questions. Do not make up any information.
 If the answer is not in the provided text, say "I'm sorry, I don't have information about that. You can find more details on our services page or contact us directly."
 
+IMPORTANT INSTRUCTIONS:
+- If the user asks for a contact number, phone number, or how to call, provide the phone number in the responseText and also create ONE action button with the label "Call Now" and the href "tel:+919977646156".
+- If the user asks for social media links (like Instagram, Facebook, LinkedIn, X/Twitter, or WhatsApp), provide the links in the responseText and also create corresponding action buttons for each platform.
+  - WhatsApp: { label: 'Chat on WhatsApp', href: 'https://wa.me/919977646156' }
+  - Instagram: { label: 'Follow on Instagram', href: 'https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=' }
+  - Facebook: { label: 'Find us on Facebook', href: 'https://www.facebook.com/share/1E56NG5ZZL/' }
+  - LinkedIn: { label: 'Connect on LinkedIn', href: 'https://www.linkedin.com/company/dmafia/' }
+  - X (Twitter): { label: 'Follow on X', href: 'https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09' }
+
 Here is the content of the AdsVerse services pages:
 ---
 {{{servicePages}}}
@@ -57,7 +74,7 @@ const serviceAssistantFlow = ai.defineFlow(
       servicePages: servicePageContent,
       query: input,
     });
-    return output ?? "I'm sorry, I'm having trouble finding that information right now.";
+    return output ?? { responseText: "I'm sorry, I'm having trouble finding that information right now." };
   }
 );
 
