@@ -1,13 +1,9 @@
 
-"use client";
-
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import Head from "next/head";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -42,8 +38,8 @@ const jsonLd = {
       "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
     }
   },
-  "datePublished": new Date().toISOString().split('T')[0],
-  "dateModified": new Date().toISOString().split('T')[0],
+  "datePublished": "2024-05-19",
+  "dateModified": "2024-05-19",
    "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -70,23 +66,14 @@ const jsonLd = {
 };
 
 export default function BestDigitalMarketingServicesInIndorePage() {
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
-  }, []);
+  const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <>
-    <Head>
-        <title>{String(metadata.title)}</title>
-        <meta name="description" content={metadata.description || ""} />
-        <link rel="canonical" href="/blog/best-digital-marketing-services-in-indore" />
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-    </Head>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -113,6 +100,7 @@ export default function BestDigitalMarketingServicesInIndorePage() {
         height={600}
         data-ai-hint="cityscape marketing"
         className="w-full h-auto rounded-lg mb-12 object-cover"
+        priority
       />
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">

@@ -31,21 +31,21 @@ const testimonials = [
         name: "Aarav Patel",
         role: "Founder, TechSolutions",
         text: "AdsVerse transformed our online presence. Their SEO strategy doubled our organic traffic in just three months. Highly recommended!",
-        avatar: "https://placehold.co/100x100/3498db/ffffff.png",
+        avatar: "https://picsum.photos/100/100",
         hint: "man portrait"
     },
     {
         name: "Priya Sharma",
         role: "Marketing Head, FashionFiesta",
         text: "The social media campaigns created by AdsVerse were phenomenal. Our engagement rates skyrocketed, and we saw a direct impact on sales.",
-        avatar: "https://placehold.co/100x100/e74c3c/ffffff.png",
+        avatar: "https://picsum.photos/100/100",
         hint: "woman portrait"
     },
     {
         name: "Rohan Gupta",
         role: "CEO, Innovate Hub",
         text: "Working with AdsVerse felt like having an in-house marketing team. Their dedication and data-driven approach are second to none.",
-        avatar: "https://placehold.co/100x100/2ecc71/ffffff.png",
+        avatar: "https://picsum.photos/100/100",
         hint: "man smiling"
     }
 ];

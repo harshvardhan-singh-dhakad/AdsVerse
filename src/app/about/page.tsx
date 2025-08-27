@@ -99,7 +99,7 @@ export default function AboutPage() {
             <Card key={member.name} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
                 <Avatar className="w-24 h-24 mx-auto mb-4 border-2 border-primary">
-                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.hint} />
+                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.hint} width={96} height={96} />
                   <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <h3 className="text-xl font-semibold">{member.name}</h3>

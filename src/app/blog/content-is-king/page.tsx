@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import Head from "next/head";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -60,23 +58,14 @@ const jsonLd = {
 };
 
 export default function ContentIsKingPage() {
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    setCurrentDate(new Date("2024-05-15").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
-  }, []);
+  const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <>
-      <Head>
-        <title>Why Content is Still King in 2024 for Digital Marketing</title>
-        <meta name="description" content="In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024." />
-        <link rel="canonical" href="/blog/content-is-king" />
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-    </Head>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -103,6 +92,7 @@ export default function ContentIsKingPage() {
         height={600}
         data-ai-hint="writing content"
         className="w-full h-auto rounded-lg mb-12 object-cover"
+        priority
       />
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">

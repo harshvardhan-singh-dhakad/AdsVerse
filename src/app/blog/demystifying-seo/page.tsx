@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import Head from "next/head";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -60,23 +58,14 @@ const jsonLd = {
 };
 
 export default function DemystifyingSeoPage() {
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    setCurrentDate(new Date("2024-05-16").toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
-  }, []);
+  const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <>
-    <Head>
-        <title>Demystifying SEO: A Beginner's Guide to Ranking Higher in Search</title>
-        <meta name="description" content="A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results." />
-        <link rel="canonical" href="/blog/demystifying-seo" />
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-    </Head>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
@@ -103,6 +92,7 @@ export default function DemystifyingSeoPage() {
         height={600}
         data-ai-hint="laptop analytics"
         className="w-full h-auto rounded-lg mb-12 object-cover"
+        priority
       />
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">

@@ -44,7 +44,7 @@ export function PortfolioGrid() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredItems.map(item => (
+        {filteredItems.map((item, index) => (
           <Card 
             key={item.id} 
             className="overflow-hidden cursor-pointer group bg-card/50 backdrop-blur-sm"
@@ -58,6 +58,7 @@ export function PortfolioGrid() {
                 height={400}
                 data-ai-hint={item.hint}
                 className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-110"
+                priority={index < 3}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-xl font-bold text-white mb-1">{item.title}</h3>

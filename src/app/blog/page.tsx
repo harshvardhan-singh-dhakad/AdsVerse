@@ -110,7 +110,7 @@ export default function BlogPage() {
       <section className="mb-24">
         <h2 className="text-4xl font-bold text-center mb-8 font-headline">Latest Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredArticles.map(article => (
+          {featuredArticles.map((article, index) => (
             <Card key={article.slug} className="flex flex-col overflow-hidden group bg-card/50 backdrop-blur-sm">
               <Image 
                 src={article.image}
@@ -119,6 +119,7 @@ export default function BlogPage() {
                 height={400}
                 data-ai-hint={article.hint}
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                priority={index < 3}
               />
               <CardHeader>
                 <CardTitle className="font-headline">{article.title}</CardTitle>
