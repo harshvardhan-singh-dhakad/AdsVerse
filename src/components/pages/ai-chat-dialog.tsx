@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, User, Loader2, Send, Phone, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { serviceAssistant, ServiceAssistantOutput } from "@/ai/flows/service-assistant-flow";
+import { adsVerseAssistant, AdsVerseAssistantOutput } from "@/ai/flows/adsverse-assistant-flow";
 
 type ActionButton = {
   label: string;
@@ -52,7 +52,7 @@ export function AiChatDialog({ open, onOpenChange }: AiChatDialogProps) {
     setIsLoading(true);
 
     try {
-      const response: ServiceAssistantOutput = await serviceAssistant(input);
+      const response: AdsVerseAssistantOutput = await adsVerseAssistant(input);
       const assistantMessage: Message = { 
           role: "assistant", 
           content: response.responseText,
