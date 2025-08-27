@@ -6,6 +6,4 @@ const plugins: Plugin<any>[] = [googleAI()];
 
 export const ai = genkit({
   plugins,
-  logLevel: "debug",
-  enableTracingAndMetrics: true,
 });
