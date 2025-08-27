@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { genkit, type Plugin } from "genkit";
+import { genkit } from "genkit";
 import { googleAI } from "@genkit-ai/googleai";
 import { firebase } from "@genkit-ai/firebase";
 
-const plugins: Plugin<any>[] = [googleAI()];
+const plugins = [googleAI()];
 
 // Conditionally add Firebase plugin if the GCLOUD_PROJECT is set.
 // This is often the case in a deployed Firebase environment.
