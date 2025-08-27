@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
   { name: "Harshvardhan Singh Dhakad", role: "Ai Automation , GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD01.jpeg?raw=true", hint: "man portrait" },
   { name: "Aakash Dhakad", role: "Digital Marketing Executive", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/akash02.jpeg?raw=true", hint: "man portrait" },
+  { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
 ];
 
 const timelineEvents = [
