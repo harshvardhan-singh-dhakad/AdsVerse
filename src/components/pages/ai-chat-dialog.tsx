@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, User, Loader2, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { serviceAssistant } from "@/ai/flows/service-assistant-flow";
 
 type Message = {
   role: "user" | "assistant";
@@ -36,19 +37,27 @@ export function AiChatDialog({ open, onOpenChange }: AiChatDialogProps) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
-    // AI functionality is temporarily disabled.
-    setTimeout(() => {
-        const assistantMessage: Message = { role: "assistant", content: "AI chat is temporarily disabled while we resolve some technical issues. Please check back later!" };
-        setMessages((prev) => [...prev, assistantMessage]);
-        setIsLoading(false);
-    }, 500);
+    try {
+      const response = await serviceAssistant(input);
+      const assistantMessage: Message = { role: "assistant", content: response };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("AI chat error:", error);
+      const errorMessage: Message = {
+        role: "assistant",
+        content: "I'm sorry, but I'm having trouble connecting to my brain right now. Please try again in a moment.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -60,14 +69,15 @@ export function AiChatDialog({ open, onOpenChange }: AiChatDialogProps) {
             AI Service Assistant
           </DialogTitle>
           <DialogDescription>
-            Ask me anything about AdsVerse's services! (Currently disabled)
+            Ask me anything about AdsVerse's services!
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="flex-grow p-6" ref={scrollAreaRef}>
           <div className="space-y-4">
             {messages.length === 0 && (
                 <div className="text-center text-sm text-muted-foreground p-8">
-                    <p>Welcome! How can I help you today?</p>
+                    <p>Welcome! How can I help you learn about our services today?</p>
+                    <p className="mt-2">For example, you could ask: <em className="text-foreground/80">"What's included in your SEO package?"</em></p>
                 </div>
             )}
             {messages.map((message, index) => (
@@ -91,7 +101,7 @@ export function AiChatDialog({ open, onOpenChange }: AiChatDialogProps) {
                       : "bg-muted"
                   )}
                 >
-                    <p className="prose dark:prose-invert prose-sm">{message.content}</p>
+                    <p className="prose dark:prose-invert prose-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
                  {message.role === "user" && (
                   <div className="w-8 h-8 rounded-full bg-accent text-accent-foreground flex items-center justify-center flex-shrink-0">
