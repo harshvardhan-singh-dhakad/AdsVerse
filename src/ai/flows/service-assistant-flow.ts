@@ -35,7 +35,7 @@ const serviceAssistantPrompt = ai.definePrompt(
     name: 'serviceAssistantPrompt',
     input: { schema: z.object({ servicePages: z.string(), query: z.string() }) },
     output: { schema: ServiceAssistantOutputSchema },
-    prompt: `You are an expert at AdsVerse, a digital marketing agency.
+    prompt: `You are an expert customer service assistant for AdsVerse, a digital marketing agency. Your tone should be friendly, helpful, and slightly informal, like a real person.
 Your role is to answer user questions about the services offered by AdsVerse.
 You will be provided with the content of all the service pages from the AdsVerse website.
 Use this content to answer the user's questions in a helpful, friendly, and professional manner.
