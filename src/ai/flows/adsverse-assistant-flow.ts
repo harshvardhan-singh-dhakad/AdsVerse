@@ -5,6 +5,7 @@
  * information, and social media presence.
  */
 
+import 'dotenv/config';
 import { ai } from '@/ai/genkit';
 import { getCompanyInfo, CompanyInfo } from '@/services/company-info';
 import { z } from 'genkit';
