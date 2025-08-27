@@ -25,7 +25,7 @@ export async function serviceAssistant(
 const serviceAssistantPrompt = ai.definePrompt(
   {
     name: 'serviceAssistantPrompt',
-    input: { schema: ServiceAssistantInputSchema },
+    input: { schema: z.object({ servicePages: z.string(), query: z.string() }) },
     output: { schema: ServiceAssistantOutputSchema },
     prompt: `You are an expert at AdsVerse, a digital marketing agency.
 Your role is to answer user questions about the services offered by AdsVerse.
@@ -37,21 +37,11 @@ If the answer is not in the provided text, say "I'm sorry, I don't have informat
 
 Here is the content of the AdsVerse services pages:
 ---
-{{$servicePages}}
+{{{servicePages}}}
 ---
 
 User's question:
 "{{query}}"`,
-    },
-  async (input) => {
-    const servicePageContent = await getServicePageContent();
-    return {
-      prompt: input,
-      context: {
-        servicePages: servicePageContent,
-        query: input,
-      },
-    };
   }
 );
 
@@ -62,7 +52,11 @@ const serviceAssistantFlow = ai.defineFlow(
     outputSchema: ServiceAssistantOutputSchema,
   },
   async (input) => {
-    const { output } = await serviceAssistantPrompt(input);
+    const servicePageContent = await getServicePageContent();
+    const { output } = await serviceAssistantPrompt({
+      servicePages: servicePageContent,
+      query: input,
+    });
     return output ?? "I'm sorry, I'm having trouble finding that information right now.";
   }
 );
