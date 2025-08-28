@@ -7,7 +7,6 @@
 
 import 'dotenv/config';
 import { ai } from '@/ai/genkit';
-import { getCompanyInfo, CompanyInfo } from '@/services/company-info';
 import { z } from 'genkit';
 
 const AdsVerseAssistantInputSchema = z.string();
@@ -26,17 +25,63 @@ export type AdsVerseAssistantOutput = z.infer<
   typeof AdsVerseAssistantOutputSchema
 >;
 
+// Define Service and Company Info Schemas
+const ServiceSchema = z.object({
+  category: z.string(),
+  title: z.string(),
+  description: z.string(),
+  price: z.string(),
+});
+
+const SocialLinkSchema = z.object({
+  platform: z.string(),
+  url: z.string(),
+});
+
+const CompanyInfoSchema = z.object({
+  companyName: z.string(),
+  description: z.string(),
+  contact: z.object({
+    phone: z.string(),
+    email: z.string(),
+    address: z.string(),
+  }),
+  socialLinks: z.array(SocialLinkSchema),
+  services: z.array(ServiceSchema),
+});
+
+
 // Define the tool that the AI can use to get company information.
 const getCompanyInfoTool = ai.defineTool(
     {
       name: 'getCompanyInfo',
       description: 'Retrieves comprehensive information about the AdsVerse company, including services offered, their descriptions, pricing, contact details, and social media links. Use this tool whenever a user asks a question about the company.',
       inputSchema: z.void(),
-      outputSchema: CompanyInfo,
+      outputSchema: CompanyInfoSchema,
     },
     async () => {
-      console.log('Using getCompanyInfo tool');
-      return getCompanyInfo();
+        console.log('Using getCompanyInfo tool');
+        return {
+            companyName: "AdsVerse",
+            description: "A full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development.",
+            contact: {
+                phone: "+91 9977646156",
+                email: "contact@adsverse.in",
+                address: "Scheme No. 54, Vijay Nagar, Indore (452010), INDIA",
+            },
+            socialLinks: [
+                { platform: "WhatsApp", url: "https://wa.me/919977646156" },
+                { platform: "Instagram", url: "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=" },
+                { platform: "Facebook", url: "https://www.facebook.com/share/1E56NG5ZZL/" },
+                { platform: "LinkedIn", url: "https://www.linkedin.com/company/dmafia/" },
+                { platform: "X", url: "https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09" },
+            ],
+            services: [
+                { category: "SEO", title: "Local SEO", description: "Dominate local search results.", price: "₹8,000/mo" },
+                { category: "SEO", title: "E-commerce SEO", description: "Increase product visibility and sales.", price: "₹15,000/mo" },
+                { category: "Paid Ads", title: "Google Ads Management", description: "Get immediate, high-intent traffic.", price: "₹10,000/mo" },
+            ],
+        };
     }
 );
 
