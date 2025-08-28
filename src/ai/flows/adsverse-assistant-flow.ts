@@ -5,7 +5,6 @@
  * information, and social media presence.
  */
 
-import 'dotenv/config';
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
