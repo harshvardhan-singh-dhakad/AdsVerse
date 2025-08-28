@@ -24,7 +24,6 @@ export type AdsVerseAssistantOutput = z.infer<
   typeof AdsVerseAssistantOutputSchema
 >;
 
-// Define Service and Company Info Schemas
 const ServiceSchema = z.object({
   category: z.string(),
   title: z.string(),
@@ -50,7 +49,6 @@ const CompanyInfoSchema = z.object({
 });
 
 
-// Define the tool that the AI can use to get company information.
 const getCompanyInfoTool = ai.defineTool(
     {
       name: 'getCompanyInfo',
