@@ -86,6 +86,11 @@ const getCompanyInfoTool = ai.defineTool(
 export async function adsVerseAssistant(
   input: AdsVerseAssistantInput
 ): Promise<AdsVerseAssistantOutput> {
+  if (!process.env.GEMINI_API_KEY) {
+    return {
+      responseText: "A GEMINI_API_KEY is required to use my services. Please get your API key from https://aistudio.google.com/app/apikey and add it to your .env file."
+    };
+  }
   return await adsVerseAssistantFlow(input);
 }
 
