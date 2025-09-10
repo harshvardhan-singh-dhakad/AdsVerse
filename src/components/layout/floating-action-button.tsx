@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -6,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, X, Phone, Mail, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AiChatDialog } from "../pages/ai-chat-dialog";
 
 const socialLinks = [
   { href: "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=", icon: (
@@ -42,7 +40,6 @@ const socialLinks = [
 
 export function FloatingActionButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <>
@@ -75,19 +72,6 @@ export function FloatingActionButton() {
           ))}
 
           <Button
-            variant="outline"
-            size="icon"
-            className="ai-assistant-button-animated w-14 h-14 rounded-full bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground flex items-center justify-center font-bold text-lg"
-            aria-label="Chat with AI"
-            onClick={() => {
-            setIsChatOpen(true);
-            setIsOpen(false);
-            }}
-          >
-              Ai
-          </Button>
-
-          <Button
             onClick={() => setIsOpen(!isOpen)}
             size="icon"
             className={cn(
@@ -101,7 +85,6 @@ export function FloatingActionButton() {
           </Button>
         </div>
       </div>
-      <AiChatDialog open={isChatOpen} onOpenChange={setIsChatOpen} />
     </>
   );
 }
