@@ -1,5 +1,4 @@
 
-import { BlogSuggestionTool } from "@/components/pages/blog-suggestion-tool";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -136,20 +135,6 @@ export default function BlogPage() {
             </Card>
           ))}
         </div>
-      </section>
-
-      <section>
-        <Card className="bg-card/50 backdrop-blur-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-headline">Generate Blog Ideas with AI</CardTitle>
-            <CardDescription>
-              Stuck on what to write about? Use our AI tool to generate relevant blog topics based on current SEO trends and keywords.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <BlogSuggestionTool />
-          </CardContent>
-        </Card>
       </section>
     </div>
     </>
