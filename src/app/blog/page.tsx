@@ -16,6 +16,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "why-automation-is-essential",
+    title: "Why Automation is Essential for Modern Companies",
+    description: "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth.",
+    image: "https://picsum.photos/seed/automation1/600/400",
+    hint: "gears automation"
+  },
+  {
     slug: "best-digital-marketing-services-in-indore",
     title: "Best Digital Marketing Services in Indore – Grow Your Business",
     description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
