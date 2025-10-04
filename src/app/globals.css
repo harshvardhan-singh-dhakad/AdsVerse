@@ -193,10 +193,10 @@
 
   @keyframes animate-stars {
     from {
-      transform: translateY(0px);
+      background-position-y: 0px;
     }
     to {
-      transform: translateY(-2000px);
+      background-position-y: -2000px;
     }
   }
 }
