@@ -4,7 +4,6 @@
 import { z } from "zod";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { contactFollowUp } from "@/ai/flows/contact-follow-up-flow";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -33,13 +32,10 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
     const docRef = await addDoc(collection(db, "contacts"), {
       ...validatedFields.data,
       submittedAt: Timestamp.now(),
-      analysisStatus: 'pending',
+      analysisStatus: 'disabled',
     });
     
     console.log("Contact form submitted with ID:", docRef.id);
-
-    // Asynchronously run the AI follow-up analysis. We don't need to wait for it.
-    contactFollowUp({ ...validatedFields.data, contactId: docRef.id }).catch(console.error);
 
     return { success: true };
   } catch (e) {
