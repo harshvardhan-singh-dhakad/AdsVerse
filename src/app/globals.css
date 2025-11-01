@@ -111,13 +111,13 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 200%; /* Double the height for seamless looping */
     display: block;
     background: transparent;
     z-index: -1;
     background-repeat: repeat;
     animation: animate-stars 50s linear infinite;
-    will-change: background-position;
+    will-change: transform;
   }
 
   .stars-sm {
@@ -197,10 +197,10 @@
 
   @keyframes animate-stars {
     from {
-      background-position-y: 0px;
+      transform: translateY(0);
     }
     to {
-      background-position-y: -1000px;
+      transform: translateY(-50%);
     }
   }
 }

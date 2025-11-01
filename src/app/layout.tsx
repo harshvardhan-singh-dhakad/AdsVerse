@@ -95,7 +95,7 @@ export default function RootLayout({
               style={{display: 'none', visibility: 'hidden'}}
             ></iframe>
           </noscript>
-          <div className="fixed top-0 left-0 w-full h-full -z-10">
+          <div className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden">
             <div className="glow-effect"></div>
             <div className="stars stars-sm"></div>
             <div className="stars stars-md"></div>
