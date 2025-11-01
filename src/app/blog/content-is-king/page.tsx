@@ -24,7 +24,7 @@ const jsonLd = {
   },
   "headline": "Why Content is Still King in 2024 for Digital Marketing",
   "description": "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -94,12 +94,13 @@ export default function ContentIsKingPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true"
         alt="Content is King"
         width={1200}
         height={600}
         data-ai-hint="writing content"
         className="w-full h-auto rounded-lg mb-12 object-cover"
+        priority={false}
       />
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">

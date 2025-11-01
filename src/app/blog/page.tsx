@@ -54,7 +54,7 @@ const featuredArticles = [
     slug: "content-is-king",
     title: "Why Content is Still King in 2024",
     description: "Explore the importance of a robust content marketing strategy and how it builds brand authority and drives conversions.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Why%20Content%20is%20Still%20King%20in%202024.jpg?raw=true",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true",
     hint: "writing content"
   },
   {
