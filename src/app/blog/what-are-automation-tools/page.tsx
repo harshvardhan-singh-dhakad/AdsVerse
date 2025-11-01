@@ -23,7 +23,7 @@ const jsonLd = {
   },
   "headline": "What Are Automation Tools and Why Adsverse Is the Best Company for It in Indore",
   "description": "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
-  "image": "https://picsum.photos/seed/automation2/1200/600",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20Tool%201.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -93,7 +93,7 @@ export default function AutomationToolsBlogPage() {
       </header>
 
       <Image
-        src="https://picsum.photos/seed/automation2/1200/600"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20Tool%201.jpeg?raw=true"
         alt="Automation tools concept"
         width={1200}
         height={600}

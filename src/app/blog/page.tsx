@@ -19,14 +19,14 @@ const featuredArticles = [
     slug: "what-are-automation-tools",
     title: "What Are Automation Tools and Why Adsverse Is the Best for It",
     description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
-    image: "https://picsum.photos/seed/automation2/600/400",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20Tool%201.jpeg?raw=true",
     hint: "gears robots"
   },
   {
     slug: "why-automation-is-essential",
     title: "Why Automation is Essential for Modern Companies",
     description: "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth.",
-    image: "https://picsum.photos/seed/automation1/600/400",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true",
     hint: "gears automation"
   },
   {

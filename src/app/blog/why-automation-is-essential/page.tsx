@@ -24,7 +24,7 @@ const jsonLd = {
   },
   "headline": "Why Automation is No Longer a Luxury, It's Essential for Business",
   "description": "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth and innovation.",
-  "image": "https://picsum.photos/seed/automation1/1200/600",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -94,7 +94,7 @@ export default function WhyAutomationIsEssentialPage() {
       </header>
 
       <Image
-        src="https://picsum.photos/seed/automation1/1200/600"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true"
         alt="Business automation concept"
         width={1200}
         height={600}
