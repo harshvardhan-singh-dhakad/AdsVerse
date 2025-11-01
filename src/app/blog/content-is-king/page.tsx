@@ -100,7 +100,6 @@ export default function ContentIsKingPage() {
         height={600}
         data-ai-hint="writing content"
         className="w-full h-auto rounded-lg mb-12 object-cover"
-        priority
       />
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
