@@ -72,8 +72,8 @@
       radial-gradient(circle at 80% 30%, hsl(var(--secondary) / 0.15), transparent 50%);
     transform-origin: center center;
     animation: glow-move 30s ease-in-out infinite;
-    z-index: 0;
     will-change: transform;
+    transform: translate(-50%, -50%);
   }
 
   @keyframes glow-move {
@@ -115,10 +115,13 @@
     display: block;
     background: transparent;
     z-index: -1;
+    background-repeat: repeat;
+    animation: animate-stars 50s linear infinite;
+    will-change: background-position;
   }
 
   .stars-sm {
-    animation: animate-stars 150s linear infinite;
+    animation-duration: 150s;
     background-image: 
       radial-gradient(1.5px 1.5px at 10px 150px, #FFFFFF, rgba(0,0,0,0)),
       radial-gradient(1.5px 1.5px at 25px 90px, #DDDDFF, rgba(0,0,0,0)),
@@ -147,7 +150,7 @@
   }
   
   .stars-md {
-    animation: animate-stars 100s linear infinite;
+    animation-duration: 100s;
     background-image:
       radial-gradient(2.5px 2.5px at 20px 30px, #AEC6CF, rgba(0,0,0,0)),
       radial-gradient(2.5px 2.5px at 40px 70px, #FFDAB9, rgba(0,0,0,0)),
@@ -172,7 +175,7 @@
   }
 
   .stars-lg {
-    animation: animate-stars 50s linear infinite;
+    animation-duration: 50s;
     background-image:
       radial-gradient(3px 3px at 50px 160px, #FFFFFF, rgba(0,0,0,0)),
       radial-gradient(4px 4px at 90px 40px, #FFFFE0, rgba(0,0,0,0)),
@@ -194,10 +197,10 @@
 
   @keyframes animate-stars {
     from {
-      transform: translateY(0px);
+      background-position-y: 0px;
     }
     to {
-      transform: translateY(-2000px);
+      background-position-y: -1000px;
     }
   }
 }
