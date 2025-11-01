@@ -1,11 +1,18 @@
 
-"use client";
-
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "The Art of Paid Ads: Maximizing Your ROI on Google & Meta",
+    description: "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
+    alternates: {
+        canonical: '/blog/paid-ads-roi',
+    },
+};
 
 const jsonLd = {
   "@context": "https://schema.org",

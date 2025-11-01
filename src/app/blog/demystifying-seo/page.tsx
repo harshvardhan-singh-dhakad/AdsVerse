@@ -1,11 +1,18 @@
 
-"use client";
-
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Demystifying SEO: A Beginner's Guide to Ranking Higher in Search",
+    description: "A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results.",
+    alternates: {
+        canonical: '/blog/demystifying-seo',
+    },
+};
 
 const jsonLd = {
   "@context": "https://schema.org",

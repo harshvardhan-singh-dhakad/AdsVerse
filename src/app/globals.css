@@ -114,6 +114,7 @@
     height: 100%;
     display: block;
     background: transparent;
+    z-index: -1;
   }
 
   .stars-sm {
@@ -193,10 +194,10 @@
 
   @keyframes animate-stars {
     from {
-      background-position-y: 0px;
+      transform: translateY(0px);
     }
     to {
-      background-position-y: -2000px;
+      transform: translateY(-2000px);
     }
   }
 }
