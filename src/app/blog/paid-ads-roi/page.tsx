@@ -23,7 +23,7 @@ const jsonLd = {
   },
   "headline": "The Art of Paid Ads: Maximizing Your ROI on Google & Meta",
   "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -94,7 +94,7 @@ export default function PaidAdsRoiPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true"
         alt="Paid Ads ROI"
         width={1200}
         height={600}

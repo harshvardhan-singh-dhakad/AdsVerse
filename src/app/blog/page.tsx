@@ -61,7 +61,7 @@ const featuredArticles = [
     slug: "paid-ads-roi",
     title: "The Art of Paid Ads: Maximizing Your ROI",
     description: "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?raw=true",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true",
     hint: "charts graphs"
   },
 ];
