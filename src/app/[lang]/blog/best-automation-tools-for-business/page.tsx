@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Automation Tools for Business – Save Time and Boost Productivity | AdsVerse",
-  description: "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
+  title: "Best Automation Tools for Business – Save Time & Boost Productivity",
+  description: "Discover the top automation tools to streamline your workflow, reduce errors, and free up valuable time to focus on growing your business and boosting productivity.",
   alternates: {
     canonical: '/blog/best-automation-tools-for-business',
     languages: {

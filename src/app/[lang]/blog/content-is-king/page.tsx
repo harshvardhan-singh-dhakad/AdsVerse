@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Why Content is Still King in 2024 for Digital Marketing | AdsVerse",
-  description: "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
+  title: "Why Content is Still King in 2024 for Digital Marketing",
+  description: "In the ever-shifting landscape of digital marketing, one principle remains constant: Content is King. Learn why this still holds true for your SEO strategy in 2024.",
   alternates: {
     canonical: '/blog/content-is-king',
     languages: {

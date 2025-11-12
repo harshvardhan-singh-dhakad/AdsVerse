@@ -7,6 +7,19 @@ import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot } from "l
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "AdsVerse | Digital Marketing That Drives Results",
+  description: "We are a data-driven digital marketing agency specializing in SEO, Paid Ads, and Web Development. Partner with us to achieve measurable growth and dominate your market.",
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en': '/en',
+      'hi': '/hi',
+    },
+  },
+};
 
 const featuredServices = [
   {

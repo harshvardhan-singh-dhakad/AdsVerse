@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "What Are Automation Tools and Why Adsverse Is the Best Company for It in Indore",
-  description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
+  title: "What Are Automation Tools & Why Adsverse Excels in Indore",
+  description: "Discover what automation tools are and how they can transform your business. Learn why Adsverse is the leading automation and digital marketing company in Indore.",
   alternates: {
     canonical: '/blog/what-are-automation-tools',
     languages: {

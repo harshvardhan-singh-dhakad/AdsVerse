@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Demystifying SEO: A Beginner's Guide to Ranking Higher in Search",
-    description: "A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results.",
+    title: "Demystifying SEO: A Beginner's Guide to Ranking Higher",
+    description: "Our beginner's guide to Search Engine Optimization (SEO) demystifies the jargon and shows you how to rank higher in search results to attract more organic traffic.",
     alternates: {
         canonical: '/blog/demystifying-seo',
         languages: {

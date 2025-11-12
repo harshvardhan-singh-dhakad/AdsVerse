@@ -8,7 +8,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Best Digital Marketing Services in Indore | AdsVerse",
-  description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
+  description: "Looking for the best digital marketing services in Indore? This guide covers why it matters, what to look for, and how to find the right agency for your business.",
   alternates: {
     canonical: '/blog/best-digital-marketing-services-in-indore',
     languages: {
