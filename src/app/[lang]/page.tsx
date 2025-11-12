@@ -219,10 +219,10 @@ export default function HomePage() {
       <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline">
-            Stop Blending In. <br/> <span className="text-primary">Start Standing Out.</span>
+            Automate. Elevate. Dominate.
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-            We are a results-obsessed digital marketing agency that combines data and creativity to help ambitious brands scale.
+            The Future of Digital Marketing is Here.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
@@ -389,5 +389,3 @@ export default function HomePage() {
     </>
   );
 }
-
-    
