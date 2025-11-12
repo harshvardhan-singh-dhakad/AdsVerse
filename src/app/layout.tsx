@@ -1,11 +1,8 @@
-
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import Script from "next/script";
 
@@ -64,18 +61,21 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      'en': '/',
+      'en': '/en',
+      'hi': '/hi',
     },
   },
 };
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { lang: string };
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang={params.lang ?? 'en'} className="dark" suppressHydrationWarning>
       <head>
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -105,10 +105,7 @@ export default function RootLayout({
             <div className="stars stars-lg"></div>
           </div>
           <div className="relative z-10">
-            <Header />
             {children}
-            <Footer />
-            <FloatingActionButton />
             <Toaster />
           </div>
       </body>

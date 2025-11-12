@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -10,26 +9,28 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
-];
+type NavLink = {
+  href: string;
+  label: string;
+};
 
-export function Header() {
+type HeaderProps = {
+  navLinks: NavLink[];
+  lang: string;
+};
+
+export function Header({ navLinks, lang }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  const getLangPath = (href: string) => `/${lang}${href === '/' ? '' : href}`;
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
+        <Link href={getLangPath('/')} className="mr-6 flex items-center space-x-2">
            <Image 
               src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
               alt="AdsVerse Logo"
@@ -43,10 +44,10 @@ export function Header() {
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
-                href={href}
+                href={getLangPath(href)}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-primary",
-                  pathname === href ? "text-primary" : "text-muted-foreground"
+                  pathname === getLangPath(href) ? "text-primary" : "text-muted-foreground"
                 )}
               >
                 {label}
@@ -65,7 +66,7 @@ export function Header() {
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full">
                   <div className="border-b pb-4">
-                    <Link href="/" className="flex items-center space-x-2">
+                    <Link href={getLangPath('/')} className="flex items-center space-x-2">
                        <Image 
                           src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
                           alt="AdsVerse Logo"
@@ -79,11 +80,11 @@ export function Header() {
                     {navLinks.map(({ href, label }) => (
                       <Link
                         key={href}
-                        href={href}
+                        href={getLangPath(href)}
                         onClick={closeMobileMenu}
                         className={cn(
                           "text-lg font-medium transition-colors hover:text-primary",
-                          pathname === href ? "text-primary" : "text-foreground"
+                          pathname === getLangPath(href) ? "text-primary" : "text-foreground"
                         )}
                       >
                         {label}
