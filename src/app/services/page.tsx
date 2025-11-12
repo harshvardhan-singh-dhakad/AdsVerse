@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "Explore our comprehensive suite of digital marketing services including Brand Strategy, SEO, Paid Ads, Content Marketing, and Web Development, all designed to elevate your brand.",
   alternates: {
     canonical: '/services',
+    languages: {
+      'en': '/services',
+    },
   },
 };
 

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
   alternates: {
     canonical: '/blog/what-are-automation-tools',
+    languages: {
+      'en': '/blog/what-are-automation-tools',
+    },
   },
 };
 

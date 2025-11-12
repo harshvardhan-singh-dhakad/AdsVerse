@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: "A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results.",
     alternates: {
         canonical: '/blog/demystifying-seo',
+        languages: {
+          'en': '/blog/demystifying-seo',
+        },
     },
 };
 

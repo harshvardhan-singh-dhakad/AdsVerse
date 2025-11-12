@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise in SEO, web design, and branding.",
   alternates: {
     canonical: '/portfolio',
+    languages: {
+      'en': '/portfolio',
+    },
   },
 };
 

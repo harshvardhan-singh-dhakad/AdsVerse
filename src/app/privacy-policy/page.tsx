@@ -4,6 +4,12 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Privacy Policy | AdsVerse",
     description: "Read the Privacy Policy for AdsVerse to understand how we collect, use, and protect your personal information and data when you use our website and services.",
+    alternates: {
+        canonical: '/privacy-policy',
+        languages: {
+            'en': '/privacy-policy',
+        },
+    },
 };
 
 export default function PrivacyPolicyPage() {

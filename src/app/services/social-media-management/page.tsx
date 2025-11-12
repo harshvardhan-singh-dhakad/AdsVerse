@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Build and nurture your online community with our expert social media management services. We handle content creation, daily engagement, and performance reporting.",
   alternates: {
     canonical: '/services/social-media-management',
+    languages: {
+      'en': '/services/social-media-management',
+    },
   },
 };
 

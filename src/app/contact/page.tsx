@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description: "Get in touch with the AdsVerse team. Whether you have a project in mind, need a quote, or just want to say hello, we'd love to hear from you.",
   alternates: {
     canonical: '/contact',
+    languages: {
+      'en': '/contact',
+    },
   },
 };
 

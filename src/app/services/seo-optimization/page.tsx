@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Improve your search engine rankings and attract organic traffic with AdsVerse's expert SEO services, including technical audits, keyword research, and link building.",
   alternates: {
     canonical: '/services/seo-optimization',
+    languages: {
+      'en': '/services/seo-optimization',
+    },
   },
 };
 

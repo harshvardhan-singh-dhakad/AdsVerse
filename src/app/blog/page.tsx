@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team. Explore articles on SEO, paid ads, and content.",
   alternates: {
     canonical: '/blog',
+    languages: {
+      'en': '/blog',
+    },
   },
 };
 

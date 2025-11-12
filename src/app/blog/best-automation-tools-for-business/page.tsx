@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
   alternates: {
     canonical: '/blog/best-automation-tools-for-business',
+    languages: {
+      'en': '/blog/best-automation-tools-for-business',
+    },
   },
 };
 

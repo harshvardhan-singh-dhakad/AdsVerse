@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description: "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
   alternates: {
     canonical: '/about',
+    languages: {
+      'en': '/about',
+    },
   },
 };
 

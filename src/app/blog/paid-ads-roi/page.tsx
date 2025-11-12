@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
     alternates: {
         canonical: '/blog/paid-ads-roi',
+        languages: {
+          'en': '/blog/paid-ads-roi',
+        },
     },
 };
 

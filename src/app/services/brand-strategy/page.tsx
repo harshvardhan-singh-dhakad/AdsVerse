@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
   alternates: {
     canonical: '/services/brand-strategy',
+    languages: {
+      'en': '/services/brand-strategy',
+    },
   },
 };
 

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth and innovation.",
   alternates: {
     canonical: '/blog/why-automation-is-essential',
+    languages: {
+      'en': '/blog/why-automation-is-essential',
+    },
   },
 };
 

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
   alternates: {
     canonical: '/blog/content-is-king',
+    languages: {
+      'en': '/blog/content-is-king',
+    },
   },
 };
 

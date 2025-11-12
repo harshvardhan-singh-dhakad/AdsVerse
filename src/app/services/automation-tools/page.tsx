@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
   alternates: {
     canonical: '/services/automation-tools',
+    languages: {
+      'en': '/services/automation-tools',
+    },
   },
 };
 

@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
   alternates: {
     canonical: '/services/web-design-development',
+    languages: {
+      'en': '/services/web-design-development',
+    },
   },
 };
 

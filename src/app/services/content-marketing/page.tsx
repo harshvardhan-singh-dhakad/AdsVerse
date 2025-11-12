@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Engage your audience with valuable content marketing from AdsVerse. Our services include blog writing, content strategy, and SEO optimization to build authority.",
   alternates: {
     canonical: '/services/content-marketing',
+    languages: {
+      'en': '/services/content-marketing',
+    },
   },
 };
 

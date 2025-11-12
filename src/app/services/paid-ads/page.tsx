@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google. We handle setup, optimization, and reporting.",
   alternates: {
     canonical: '/services/paid-ads',
+    languages: {
+      'en': '/services/paid-ads',
+    },
   },
 };
 

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
   alternates: {
     canonical: '/blog/best-digital-marketing-services-in-indore',
+    languages: {
+      'en': '/blog/best-digital-marketing-services-in-indore',
+    },
   },
 };
 
