@@ -1,28 +1,61 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Search, Megaphone, Users } from "lucide-react";
+import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const featuredServices = [
   {
-    icon: <Search className="w-8 h-8 text-accent" />,
+    icon: <TrendingUp className="w-10 h-10 text-accent" />,
     title: "SEO Optimization",
-    description: "Climb the ranks and get discovered by more customers organically.",
-    link: "/services/seo-optimization"
+    description: "Climb the ranks and get discovered by more customers organically through our data-driven SEO strategies.",
+    link: "/services/seo-optimization",
+    imageUrl: "https://picsum.photos/seed/seo/600/400",
+    imageHint: "analytics graph"
   },
   {
-    icon: <Megaphone className="w-8 h-8 text-accent" />,
+    icon: <Megaphone className="w-10 h-10 text-accent" />,
     title: "Paid Ads",
-    description: "Targeted campaigns on Google & Meta to drive immediate, high-quality traffic.",
-    link: "/services/paid-ads"
+    description: "Targeted campaigns on Google & Meta to drive immediate, high-quality traffic and maximize your ROI.",
+    link: "/services/paid-ads",
+    imageUrl: "https://picsum.photos/seed/ads/600/400",
+    imageHint: "marketing dashboard"
   },
   {
-    icon: <Users className="w-8 h-8 text-accent" />,
+    icon: <Users className="w-10 h-10 text-accent" />,
     title: "Social Media",
-    description: "Build a vibrant community and engage with your audience effectively.",
-    link: "/services/social-media-management"
+    description: "Build a vibrant community, engage your audience, and foster brand loyalty with expert management.",
+    link: "/services/social-media-management",
+    imageUrl: "https://picsum.photos/seed/social/600/400",
+    imageHint: "social media feed"
+  },
+  {
+    icon: <FileText className="w-10 h-10 text-accent" />,
+    title: "Content Marketing",
+    description: "Engage your audience with valuable, SEO-optimized content that builds authority and drives conversions.",
+    link: "/services/content-marketing",
+    imageUrl: "https://picsum.photos/seed/content/600/400",
+    imageHint: "writing blog"
+  },
+  {
+    icon: <Code className="w-10 h-10 text-accent" />,
+    title: "Web Development",
+    description: "Creating beautiful, functional, and high-performing websites that convert visitors into customers.",
+    link: "/services/web-design-development",
+    imageUrl: "https://picsum.photos/seed/web/600/400",
+    imageHint: "website code"
+  },
+  {
+    icon: <Bot className="w-10 h-10 text-accent" />,
+    title: "Automation Tools",
+    description: "Streamline your business processes with custom bots and automation solutions to boost efficiency.",
+    link: "/services/automation-tools",
+    imageUrl: "https://picsum.photos/seed/automation/600/400",
+    imageHint: "robot gears"
   },
 ];
 
@@ -47,8 +80,43 @@ const testimonials = [
         text: "Working with AdsVerse felt like having an in-house marketing team. Their dedication and data-driven approach are second to none.",
         avatar: "https://picsum.photos/seed/3/100/100",
         hint: "man smiling"
+    },
+    {
+        name: "Sunita Singh",
+        role: "Owner, Local Eats",
+        text: "Their Local SEO service put us on the map! We are now the top-rated restaurant in our area on Google.",
+        avatar: "https://picsum.photos/seed/4/100/100",
+        hint: "woman smiling"
     }
 ];
+
+const clientLogos = [
+    { name: "TechCorp", logo: "https://picsum.photos/seed/logo1/120/40?grayscale" },
+    { name: "Innovate Inc.", logo: "https://picsum.photos/seed/logo2/120/40?grayscale" },
+    { name: "Quantum Leap", logo: "https://picsum.photos/seed/logo3/120/40?grayscale" },
+    { name: "Stellar Solutions", logo: "https://picsum.photos/seed/logo4/120/40?grayscale" },
+    { name: "Apex Industries", logo: "https://picsum.photos/seed/logo5/120/40?grayscale" },
+];
+
+const faqs = [
+    {
+      question: "How long does it take to see results from SEO?",
+      answer: "SEO is a long-term strategy. While foundational improvements can be seen within weeks, it typically takes 4-6 months to see significant, lasting results in organic traffic and rankings, depending on your industry's competitiveness."
+    },
+    {
+      question: "How much should I spend on paid ads?",
+      answer: "Your ad spend depends on your industry, goals, and competition. We recommend starting with a test budget you're comfortable with. As we gather data, we provide data-driven recommendations for scaling your ad spend to maximize ROI."
+    },
+    {
+      question: "Do you offer custom service packages?",
+      answer: "Yes! We understand that every business is unique. We can create custom packages tailored to your specific needs and goals. Contact us for a free consultation to discuss a personalized plan."
+    },
+    {
+      question: "What makes AdsVerse different from other agencies?",
+      answer: "We blend creativity with a data-obsessed approach. Our focus is on achieving measurable results and a tangible return on investment for our clients. We act as a true partner, not just a service provider, and specialize in integrating automation to make your marketing efforts more efficient."
+    }
+];
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -148,46 +216,54 @@ export default function HomePage() {
     />
     <main>
       {/* Hero Section */}
-      <section className="py-24 sm:py-32 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight font-headline">
-            Digital Marketing That <span className="text-primary">Drives Results</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline">
+            Stop Blending In. <br/> <span className="text-primary">Start Standing Out.</span>
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            We blend creativity with data-driven strategies to elevate your brand, engage your audience, and boost your bottom line.
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
+            We are a results-obsessed digital marketing agency that combines data and creativity to help ambitious brands scale.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/services">Our Services</Link>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
+              <Link href="/contact">Get Your Free Proposal</Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/contact">Get a Free Quote</Link>
+            <Button asChild size="lg" variant="link" className="text-accent">
+              <Link href="/services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
+          </div>
+          <div className="mt-16">
+            <p className="text-sm text-muted-foreground mb-4">Trusted by over 50+ clients worldwide</p>
+            <div className="flex justify-center items-center gap-6 sm:gap-8 flex-wrap">
+              {clientLogos.map(client => (
+                <Image key={client.name} src={client.logo} alt={client.name} width={120} height={40} className="opacity-60 hover:opacity-100 transition-opacity" />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured Services Section */}
-      <section className="py-24">
+      <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold font-headline">What We Do</h2>
-                  <p className="text-muted-foreground mt-2">A glimpse into our core digital marketing services.</p>
+                  <h2 className="text-4xl font-bold font-headline">Our Core Services</h2>
+                  <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {featuredServices.map(service => (
-                       <Card key={service.title} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
+                       <Card key={service.title} className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden group">
                            <CardHeader>
-                              <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
-                                  {service.icon}
+                              <div className="flex items-center gap-4">
+                                {service.icon}
+                                <CardTitle className="font-headline text-2xl">{service.title}</CardTitle>
                               </div>
-                              <CardTitle className="font-headline">{service.title}</CardTitle>
                            </CardHeader>
-                           <CardContent>
+                           <CardContent className="flex-grow">
                                <p className="text-muted-foreground">{service.description}</p>
                            </CardContent>
-                           <CardFooter className="justify-center">
-                               <Button asChild variant="link" className="p-0 text-accent">
+                           <CardFooter>
+                               <Button asChild variant="link" className="p-0 text-accent font-semibold">
                                  <Link href={service.link}>
                                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
                                  </Link>
@@ -199,50 +275,112 @@ export default function HomePage() {
           </div>
       </section>
 
+      {/* Results Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold font-headline">We Deliver Real Results</h2>
+              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Our strategies are designed for one thing: measurable growth.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="bg-card/30 text-center p-6">
+              <p className="text-5xl font-extrabold text-primary">400%</p>
+              <p className="text-muted-foreground mt-2">Increase in Organic Traffic</p>
+            </Card>
+            <Card className="bg-card/30 text-center p-6">
+              <p className="text-5xl font-extrabold text-primary">3x</p>
+              <p className="text-muted-foreground mt-2">Higher Conversion Rates</p>
+            </Card>
+            <Card className="bg-card/30 text-center p-6">
+              <p className="text-5xl font-extrabold text-primary">50%</p>
+              <p className="text-muted-foreground mt-2">Reduction in Ad Spend</p>
+            </Card>
+             <Card className="bg-card/30 text-center p-6">
+              <p className="text-5xl font-extrabold text-primary">10x</p>
+              <p className="text-muted-foreground mt-2">Return on Investment</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
-      <section className="py-24 bg-secondary/50">
+      <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
                   <h2 className="text-4xl font-bold font-headline">What Our Clients Say</h2>
                   <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {testimonials.map(t => (
-                       <Card key={t.name} className="flex flex-col justify-between bg-card/50 backdrop-blur-sm">
-                          <CardContent className="p-6">
-                              <p className="text-foreground/80 italic">"{t.text}"</p>
-                          </CardContent>
-                          <CardFooter className="bg-background/50 p-4 flex items-center gap-4 border-t border-border/50">
-                              <Image 
-                                  src={t.avatar} 
-                                  alt={t.name} 
-                                  width={50} 
-                                  height={50} 
-                                  data-ai-hint={t.hint}
-                                  className="rounded-full" 
-                              />
-                              <div>
-                                  <p className="font-semibold">{t.name}</p>
-                                  <p className="text-sm text-muted-foreground">{t.role}</p>
+               <Carousel
+                  opts={{
+                    loop: true,
+                  }}
+                  className="w-full max-w-4xl mx-auto"
+                >
+                <CarouselContent>
+                  {testimonials.map((t, index) => (
+                    <CarouselItem key={index}>
+                      <div className="p-1">
+                        <Card className="bg-card/50 backdrop-blur-sm text-center p-8">
+                          <CardContent className="p-0">
+                              <p className="text-lg md:text-xl text-foreground/80 italic mb-6">"{t.text}"</p>
+                              <div className="flex items-center justify-center gap-4">
+                                <Avatar>
+                                    <AvatarImage src={t.avatar} alt={t.name} data-ai-hint={t.hint} width={50} height={50} />
+                                    <AvatarFallback>{t.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <p className="font-semibold">{t.name}</p>
+                                    <p className="text-sm text-muted-foreground">{t.role}</p>
+                                </div>
                               </div>
-                          </CardFooter>
-                      </Card>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
                   ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+          </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24">
+          <div className="container mx-auto px-4">
+              <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold font-headline">Frequently Asked Questions</h2>
+                  <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Have questions? We have answers.</p>
+              </div>
+              <div className="max-w-3xl mx-auto">
+                <Accordion type="single" collapsible className="w-full">
+                    {faqs.map((faq, index) => (
+                        <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionTrigger className="text-lg text-left hover:no-underline">{faq.question}</AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground text-base">
+                                {faq.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
               </div>
           </div>
       </section>
       
       {/* CTA Section */}
-      <section className="py-32">
+      <section className="py-24">
           <div className="container mx-auto px-4">
-              <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground">
-                  <h2 className="text-4xl font-bold font-headline">Ready to Grow Your Business?</h2>
-                  <p className="mt-4 max-w-2xl mx-auto text-lg">
-                      Let's have a conversation about your goals. We'll provide a free, no-obligation consultation to explore how we can help you succeed.
-                  </p>
-                  <Button asChild size="lg" variant="secondary" className="mt-8">
-                    <Link href="/contact">Schedule a Free Consultation</Link>
-                  </Button>
+              <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="relative z-10">
+                    <h2 className="text-4xl font-bold font-headline">Ready to Grow Your Business?</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg opacity-90">
+                        Let's have a conversation about your goals. We'll provide a free, no-obligation consultation and a detailed proposal on how we can help you succeed.
+                    </p>
+                    <Button asChild size="lg" variant="secondary" className="mt-8 text-lg py-6 px-8 shadow-lg transform hover:scale-105 transition-transform">
+                      <Link href="/contact">Schedule Your Free Consultation</Link>
+                    </Button>
+                  </div>
               </div>
           </div>
       </section>
@@ -251,3 +389,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    

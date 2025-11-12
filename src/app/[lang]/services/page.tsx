@@ -20,16 +20,10 @@ export const metadata: Metadata = {
 
 const services = [
   {
-    id: 'automation-tools',
-    icon: <Bot className="w-12 h-12 text-accent" />,
-    title: 'Automation Tools',
-    description: 'Streamlining your business processes with custom bots and automation solutions.',
-  },
-  {
-    id: 'brand-strategy',
-    icon: <Palette className="w-12 h-12 text-accent" />,
-    title: 'Brand Strategy & Identity',
-    description: "Crafting unique brand identities that resonate and stand out.",
+    id: 'seo-optimization',
+    icon: <TrendingUp className="w-12 h-12 text-accent" />,
+    title: 'SEO Optimization',
+    description: "Improving search rankings to increase organic visibility and attract leads.",
   },
   {
     id: 'paid-ads',
@@ -38,10 +32,10 @@ const services = [
     description: "Driving targeted traffic and maximizing ROI with strategic ad campaigns.",
   },
   {
-    id: 'seo-optimization',
-    icon: <TrendingUp className="w-12 h-12 text-accent" />,
-    title: 'SEO Optimization',
-    description: "Improving search rankings to increase organic visibility and attract leads.",
+    id: 'social-media-management',
+    icon: <Share2 className="w-12 h-12 text-accent" />,
+    title: 'Social Media Management',
+    description: "Building and nurturing your online community to foster brand loyalty.",
   },
   {
     id: 'content-marketing',
@@ -50,16 +44,22 @@ const services = [
     description: "Engaging your audience with valuable content that builds authority.",
   },
   {
-    id: 'social-media-management',
-    icon: <Share2 className="w-12 h-12 text-accent" />,
-    title: 'Social Media Management',
-    description: "Building and nurturing your online community to foster brand loyalty.",
-  },
-  {
     id: 'web-design-development',
     icon: <Code className="w-12 h-12 text-accent" />,
     title: 'Web Design & Development',
     description: "Creating beautiful, functional websites that convert visitors into customers.",
+  },
+  {
+    id: 'brand-strategy',
+    icon: <Palette className="w-12 h-12 text-accent" />,
+    title: 'Brand Strategy & Identity',
+    description: "Crafting unique brand identities that resonate and stand out.",
+  },
+  {
+    id: 'automation-tools',
+    icon: <Bot className="w-12 h-12 text-accent" />,
+    title: 'Automation Tools',
+    description: 'Streamlining your business processes with custom bots and automation solutions.',
   },
 ];
 
