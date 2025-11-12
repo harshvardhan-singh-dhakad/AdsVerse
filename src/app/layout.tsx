@@ -18,7 +18,7 @@ const playfairDisplay = Playfair_Display({
 
 const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
-const description = "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.";
+const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
 const defaultImage = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
 
