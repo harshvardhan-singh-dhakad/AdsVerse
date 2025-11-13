@@ -141,7 +141,7 @@ export default function ServicesPage() {
       </main>
 
       <section className="text-center mt-24">
-        <h2 className="text-3xl font-bold mb-4 font-headline">Ready to See Everything We Offer?</h2>
+        <h2 className="text-3xl font-bold mb-4 font-headline text-yellow-400">Ready to See Everything We Offer?</h2>
         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
             Our pricing page has a detailed list of all our services, from individual tasks to comprehensive packages. Find the perfect fit for your needs.
         </p>
