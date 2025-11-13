@@ -7,19 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { CheckCircle, Search, Target, Megaphone, Mail, Users, PencilRuler, Code, LineChart, Bot } from "lucide-react";
 import Link from "next/link";
 import Head from "next/head";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Digital Marketing Services & Pricing | AdsVerse",
-  description: "Transparent pricing for our comprehensive suite of digital marketing solutions, including SEO, Paid Ads, Web Development, and Automation. Find the perfect plan.",
-  alternates: {
-    canonical: '/pricing',
-    languages: {
-      'en': '/en/pricing',
-      'hi': '/hi/pricing',
-    },
-  },
-};
 
 const servicesData = [
   // SEO Services
@@ -357,3 +344,5 @@ export default function PricingPage() {
     </>
   );
 }
+
+    
