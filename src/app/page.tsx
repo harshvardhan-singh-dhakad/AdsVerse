@@ -344,20 +344,20 @@ export default function HomePage() {
               <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Our strategies are designed for one thing: measurable growth.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="bg-card/30 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">400%</p>
+            <Card className="bg-primary/20 text-center p-6">
+              <p className="text-5xl font-extrabold text-yellow-400">400%</p>
               <p className="text-muted-foreground mt-2">Increase in Organic Traffic</p>
             </Card>
-            <Card className="bg-card/30 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">3x</p>
+            <Card className="bg-primary/20 text-center p-6">
+              <p className="text-5xl font-extrabold text-yellow-400">3x</p>
               <p className="text-muted-foreground mt-2">Higher Conversion Rates</p>
             </Card>
-            <Card className="bg-card/30 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">50%</p>
+            <Card className="bg-primary/20 text-center p-6">
+              <p className="text-5xl font-extrabold text-yellow-400">50%</p>
               <p className="text-muted-foreground mt-2">Reduction in Ad Spend</p>
             </Card>
-             <Card className="bg-card/30 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">10x</p>
+             <Card className="bg-primary/20 text-center p-6">
+              <p className="text-5xl font-extrabold text-yellow-400">10x</p>
               <p className="text-muted-foreground mt-2">Return on Investment</p>
             </Card>
           </div>
