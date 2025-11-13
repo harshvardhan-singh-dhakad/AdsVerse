@@ -382,17 +382,18 @@ export default function HomePage() {
                   {testimonials.map((t, index) => (
                     <CarouselItem key={index}>
                       <div className="p-1">
-                        <Card className="bg-card/50 backdrop-blur-sm text-center p-8">
-                          <CardContent className="p-0">
-                              <p className="text-lg md:text-xl text-foreground/80 italic mb-6">"{t.text}"</p>
+                        <Card className="bg-gradient-to-r from-primary to-accent/80 text-center p-8 relative overflow-hidden rounded-lg">
+                           <div className="absolute inset-0 bg-black/20"></div>
+                          <CardContent className="p-0 relative z-10">
+                              <p className="text-lg md:text-xl text-primary-foreground/80 italic mb-6">"{t.text}"</p>
                               <div className="flex items-center justify-center gap-4">
                                 <Avatar>
                                     <AvatarImage src={t.avatar} alt={t.name} data-ai-hint={t.hint} width={50} height={50} />
                                     <AvatarFallback>{t.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                    <p className="font-semibold">{t.name}</p>
-                                    <p className="text-sm text-muted-foreground">{t.role}</p>
+                                    <p className="font-semibold text-primary-foreground">{t.name}</p>
+                                    <p className="text-sm text-primary-foreground/70">{t.role}</p>
                                 </div>
                               </div>
                           </CardContent>
