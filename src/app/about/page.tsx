@@ -116,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       <section>
-        <h2 className="text-4xl font-bold text-center mb-16 font-headline">Our Journey</h2>
+        <h2 className="text-4xl font-bold text-center mb-16 font-headline text-yellow-400">Our Journey</h2>
         <div className="relative">
           <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2" aria-hidden="true"></div>
           <div className="space-y-16">
