@@ -204,7 +204,7 @@ export default function PricingPage() {
     </Head>
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-12">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">Our Services &amp; Pricing</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-yellow-400">Our Services &amp; Pricing</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           Transparent pricing for our comprehensive suite of digital marketing solutions. Find the perfect package to elevate your brand and achieve your goals.
         </p>
