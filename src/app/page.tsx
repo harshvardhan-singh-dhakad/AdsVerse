@@ -15,8 +15,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      'en': '/en',
-      'hi': '/hi',
+      'en': '/',
     },
   },
 };
@@ -453,5 +452,4 @@ export default function HomePage() {
   );
 }
 
-    
     
