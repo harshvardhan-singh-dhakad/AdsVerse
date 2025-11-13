@@ -134,7 +134,7 @@ export default function AboutPage() {
                     </Card>
                    </div>
                 </div>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary flex items-center justify-center font-bold text-primary-foreground">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">
                   {event.year}
                 </div>
               </div>

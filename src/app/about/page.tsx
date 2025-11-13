@@ -75,7 +75,7 @@ export default function AboutPage() {
     />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-24">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline">About AdsVerse</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-yellow-400">About AdsVerse</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           We are a team of passionate marketers, strategists, and creators dedicated to helping your brand thrive in the digital world.
         </p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
                     </Card>
                    </div>
                 </div>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary flex items-center justify-center font-bold text-primary-foreground">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">
                   {event.year}
                 </div>
               </div>
