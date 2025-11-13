@@ -27,6 +27,7 @@ const timelineEvents = [
   { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings." },
   { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media." },
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients." },
+  { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals." },
 ];
 
 const jsonLd = {
