@@ -309,7 +309,7 @@ export default function HomePage() {
       <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold font-headline">Our Core Services</h2>
+                  <h2 className="text-4xl font-bold font-headline text-yellow-400">Our Core Services</h2>
                   <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
