@@ -280,7 +280,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-yellow-400">
             Automate. Elevate. Dominate.
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
