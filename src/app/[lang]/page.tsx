@@ -100,6 +100,55 @@ const testimonials = [
         text: "Their Local SEO service put us on the map! We are now the top-rated restaurant in our area on Google.",
         avatar: "https://picsum.photos/seed/4/100/100",
         hint: "woman smiling"
+    },
+    {
+        name: "Vikram Chauhan",
+        role: "Director, BuildRight Constructions",
+        text: "The new website they built for us is not only beautiful but also incredibly fast. Our lead generation has increased by over 50% since the launch.",
+        avatar: "https://picsum.photos/seed/5/100/100",
+        hint: "man architect"
+    },
+    {
+        name: "Neha Reddy",
+        role: "Co-founder, EduGrowth",
+        text: "The automation tool AdsVerse created for our admissions process has saved us hundreds of hours. It's a game-changer for our productivity.",
+        avatar: "https://picsum.photos/seed/6/100/100",
+        hint: "woman professional"
+    },
+    {
+        name: "Ankit Jain",
+        role: "E-commerce Manager, GadgetGalaxy",
+        text: "Their Google Ads management is superb. Our Return on Ad Spend (ROAS) has never been higher, and they are always transparent with their reports.",
+        avatar: "https://picsum.photos/seed/7/100/100",
+        hint: "man entrepreneur"
+    },
+    {
+        name: "Deepika Iyer",
+        role: "Founder, WellnessFirst",
+        text: "The content marketing strategy they developed has established us as a thought leader in the wellness space. The quality of their blog posts is outstanding.",
+        avatar: "https://picsum.photos/seed/8/100/100",
+        hint: "woman yoga"
+    },
+    {
+        name: "Siddharth Malhotra",
+        role: "CTO, FinSecure",
+        text: "A truly professional and knowledgeable team. They delivered a complex web application on time and on budget. I'm thoroughly impressed.",
+        avatar: "https://picsum.photos/seed/9/100/100",
+        hint: "man technology"
+    },
+    {
+        name: "Ishita Verma",
+        role: "Brand Manager, LuxeLiving",
+        text: "AdsVerse helped us with a complete rebrand, and the results are stunning. Our new brand identity truly reflects our values and connects with our audience.",
+        avatar: "https://picsum.photos/seed/10/100/100",
+        hint: "woman elegant"
+    },
+    {
+        name: "Rajesh Kumar",
+        role: "Owner, FreshBites Cafe",
+        text: "Their social media management has built such a fun and engaging community around our cafe. We've seen a noticeable increase in new customers.",
+        avatar: "https://picsum.photos/seed/11/100/100",
+        hint: "man chef"
     }
 ];
 
@@ -197,7 +246,7 @@ const jsonLd = {
       "@type": "WebPage",
       "url": "https://adsverse.in",
       "name": "AdsVerse | Digital Marketing That Drives Results",
-      "description": "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
+      "description": "We are a data-driven digital marketing agency specializing in SEO, Paid Ads, and Web Development. Partner with us to achieve measurable growth and dominate your market.",
       "isPartOf": {
         "@id": "https://adsverse.in/#website"
       },
@@ -402,3 +451,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    
