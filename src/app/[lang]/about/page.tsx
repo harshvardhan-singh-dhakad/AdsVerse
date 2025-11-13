@@ -24,7 +24,7 @@ const teamMembers = [
 ];
 
 const timelineEvents = [
-  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-red-500" },
+  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-yellow-400 text-black" },
   { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings.", color: "bg-blue-500" },
   { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-green-500" },
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-purple-500" },
