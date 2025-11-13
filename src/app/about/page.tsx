@@ -23,11 +23,11 @@ const teamMembers = [
 ];
 
 const timelineEvents = [
-  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses." },
-  { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings." },
-  { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media." },
-  { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients." },
-  { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals." },
+  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-red-500" },
+  { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings.", color: "bg-blue-500" },
+  { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-green-500" },
+  { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-purple-500" },
+  { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals.", color: "bg-orange-500" },
 ];
 
 const jsonLd = {
@@ -134,7 +134,7 @@ export default function AboutPage() {
                     </Card>
                    </div>
                 </div>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-black">
+                <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary-foreground ${event.color}`}>
                   {event.year}
                 </div>
               </div>
