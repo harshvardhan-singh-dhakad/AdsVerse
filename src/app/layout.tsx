@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -20,7 +21,7 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const defaultImage = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
+const defaultImage = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/insta%26facbook%20card.jpeg?raw=true";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
         url: defaultImage,
         width: 1200,
         height: 630,
-        alt: "AdsVerse Logo",
+        alt: "AdsVerse - Digital Marketing Agency",
       },
     ],
     locale: 'en_US',
