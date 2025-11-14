@@ -32,7 +32,7 @@ const jsonLd = {
     "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-9977646156",
+      "telephone": "+91-9685123339",
       "contactType": "Customer Service",
       "email": "contact@adsverse.in",
       "areaServed": "IN",
@@ -100,7 +100,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="w-6 h-6 text-primary" />
-                <span>+91 9977646156</span>
+                <span>+91 9685123339</span>
               </div>
               <div className="flex items-center gap-4">
                 <MapPin className="w-6 h-6 text-primary" />

@@ -190,7 +190,7 @@ const jsonLd = {
       "description": "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-9977646156",
+        "telephone": "+91-9685123339",
         "contactType": "Customer Service",
         "email": "contact@adsverse.in",
         "areaServed": "IN",
@@ -452,4 +452,5 @@ export default function HomePage() {
   );
 }
 
+    
     
