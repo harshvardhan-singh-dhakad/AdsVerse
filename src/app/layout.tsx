@@ -66,6 +66,9 @@ export const metadata: Metadata = {
       'hi': '/hi',
     },
   },
+  icons: {
+    icon: 'https://github.com/harshvardhan-singh-dhakad/image/blob/main/favicon.jpeg?raw=true',
+  },
 };
 
 export default function RootLayout({
