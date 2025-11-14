@@ -368,7 +368,7 @@ export default function HomePage() {
       <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold font-headline">What Our Clients Say</h2>
+                  <h2 className="text-4xl font-bold font-headline text-yellow-400">What Our Clients Say</h2>
                   <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
               </div>
                <Carousel
@@ -453,4 +453,6 @@ export default function HomePage() {
 }
 
     
+    
+
     
