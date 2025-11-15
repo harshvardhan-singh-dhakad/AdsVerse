@@ -321,7 +321,7 @@ export default function HomePage() {
                               </div>
                            </CardHeader>
                            <CardContent className="flex-grow">
-                               <p className="text-muted-foreground">{service.description}</p>
+                               <p className="text-foreground/90">{service.description}</p>
                            </CardContent>
                            <CardFooter>
                                <Button asChild variant="link" className="p-0 text-accent font-semibold">
