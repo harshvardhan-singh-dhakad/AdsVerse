@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 
 type NavLink = {
   href: string;
@@ -40,7 +41,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
             />
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <nav className="hidden md:flex gap-6">
+          <nav className="hidden md:flex gap-6 items-center">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
@@ -53,8 +54,10 @@ export function Header({ navLinks, lang }: HeaderProps) {
                 {label}
               </Link>
             ))}
+             <ThemeToggle />
           </nav>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            <ThemeToggle />
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">

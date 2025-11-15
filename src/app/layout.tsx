@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import Script from "next/script";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -79,7 +80,7 @@ export default function RootLayout({
   params: { lang: string };
 }>) {
   return (
-    <html lang={params.lang ?? 'en'} className="dark" suppressHydrationWarning>
+    <html lang={params.lang ?? 'en'} suppressHydrationWarning>
       <head>
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -94,6 +95,12 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable
       )}>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+        >
           <noscript>
             <iframe 
               src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
@@ -112,6 +119,7 @@ export default function RootLayout({
             {children}
             <Toaster />
           </div>
+        </ThemeProvider>
       </body>
     </html>
   );
