@@ -74,7 +74,7 @@ export default function ContactPage() {
     />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-yellow-400">Get in Touch</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">Get in Touch</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           Have a project in mind or just want to say hello? We'd love to hear from you.
         </p>

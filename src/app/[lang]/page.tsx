@@ -280,7 +280,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-yellow-400">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-primary">
             Automate. Elevate. Dominate.
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -309,7 +309,7 @@ export default function HomePage() {
       <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold font-headline text-yellow-400">Our Core Services</h2>
+                  <h2 className="text-4xl font-bold font-headline text-primary">Our Core Services</h2>
                   <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -341,24 +341,24 @@ export default function HomePage() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-headline text-yellow-400">We Deliver Real Results</h2>
+              <h2 className="text-4xl font-bold font-headline text-primary">We Deliver Real Results</h2>
               <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Our strategies are designed for one thing: measurable growth.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-yellow-400">400%</p>
+              <p className="text-5xl font-extrabold text-primary">400%</p>
               <p className="text-muted-foreground mt-2">Increase in Organic Traffic</p>
             </Card>
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-yellow-400">3x</p>
+              <p className="text-5xl font-extrabold text-primary">3x</p>
               <p className="text-muted-foreground mt-2">Higher Conversion Rates</p>
             </Card>
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-yellow-400">50%</p>
+              <p className="text-5xl font-extrabold text-primary">50%</p>
               <p className="text-muted-foreground mt-2">Reduction in Ad Spend</p>
             </Card>
              <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-yellow-400">10x</p>
+              <p className="text-5xl font-extrabold text-primary">10x</p>
               <p className="text-muted-foreground mt-2">Return on Investment</p>
             </Card>
           </div>
@@ -369,7 +369,7 @@ export default function HomePage() {
       <section className="py-24 bg-secondary/20">
           <div className="container mx-auto px-4">
               <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold font-headline text-yellow-400">What Our Clients Say</h2>
+                  <h2 className="text-4xl font-bold font-headline text-primary">What Our Clients Say</h2>
                   <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
               </div>
                <Carousel
@@ -452,8 +452,3 @@ export default function HomePage() {
     </>
   );
 }
-
-    
-    
-
-    

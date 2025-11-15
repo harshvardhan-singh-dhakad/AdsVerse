@@ -204,7 +204,7 @@ export default function PricingPage() {
     </Head>
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-12">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-yellow-400">Our Services &amp; Pricing</h1>
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">Our Services &amp; Pricing</h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
           Transparent pricing for our comprehensive suite of digital marketing solutions. Find the perfect package to elevate your brand and achieve your goals.
         </p>
@@ -233,7 +233,7 @@ export default function PricingPage() {
       
       <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10 mb-24">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold font-headline text-yellow-400">Video &amp; Photo Shoots</h2>
+          <h2 className="text-4xl font-bold font-headline text-primary">Video &amp; Photo Shoots</h2>
           <p className="text-lg text-muted-foreground mt-2">Professional shoots to elevate your brand's visual content.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -311,7 +311,7 @@ export default function PricingPage() {
 
       <section className="py-16 px-8 rounded-xl bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold font-headline text-yellow-400">Custom Automation Tools</h2>
+          <h2 className="text-4xl font-bold font-headline text-primary">Custom Automation Tools</h2>
           <p className="text-lg text-muted-foreground mt-2">Bespoke bots and tools to streamline your business processes.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -344,6 +344,3 @@ export default function PricingPage() {
     </>
   );
 }
-
-    
-    
