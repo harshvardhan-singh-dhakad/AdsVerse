@@ -294,14 +294,6 @@ export default function HomePage() {
               <Link href="/services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>
-          <div className="mt-16">
-            <p className="text-sm text-muted-foreground mb-4">Trusted by over 50+ clients worldwide</p>
-            <div className="flex justify-center items-center gap-6 sm:gap-8 flex-wrap">
-              {clientLogos.map(client => (
-                <Image key={client.name} src={client.logo} alt={client.name} width={120} height={40} className="opacity-60 hover:opacity-100 transition-opacity" />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
