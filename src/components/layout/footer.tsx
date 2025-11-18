@@ -3,18 +3,26 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Github, Linkedin, Send } from "lucide-react";
+import { Linkedin, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  // This prevents hydration errors by ensuring the year is only set on the client
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
+    setMounted(true);
   }, []);
+
+  const darkLogo = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
+  const lightLogo = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/white%20logo%20of%20adsverse.png?raw=true";
+  
+  const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
 
   return (
     <footer className="bg-card/50 border-t border-border/40">
@@ -23,11 +31,12 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Image 
-                src="https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+                src={currentLogo}
                 alt="AdsVerse Logo"
                 width={120}
                 height={30}
                 className="h-8 w-auto"
+                key={currentLogo}
               />
             </Link>
             <p className="text-muted-foreground text-sm">
