@@ -287,7 +287,7 @@ export default function HomePage() {
             The Future of Digital Marketing is Here.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
+            <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
               <Link href="/contact">Get Your Free Proposal</Link>
             </Button>
             <Button asChild size="lg" variant="link" className="text-accent">
