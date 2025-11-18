@@ -20,7 +20,7 @@ export function Footer() {
   }, []);
 
   const darkLogo = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
-  const lightLogo = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/white%20logo%20of%20adsverse.png?raw=true";
+  const lightLogo = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Logo-Black.png?raw=true";
   
   const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
 
