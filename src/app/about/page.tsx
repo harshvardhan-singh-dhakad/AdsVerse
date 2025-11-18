@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 
 const teamMembers = [
   { name: "Harshvardhan Singh Dhakad", role: "Ai Automation , GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD01.jpeg?raw=true", hint: "man portrait" },
-  { name: "Aakash Dhakad", role: "Digital Marketing Executive", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/akash02.jpeg?raw=true", hint: "man portrait" },
   { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
   { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Aarsh.JPG?raw=true", hint: "man portrait" },
 ];
@@ -99,7 +98,7 @@ export default function AboutPage() {
 
       <section className="mb-24">
         <h2 className="text-4xl font-bold text-center mb-12 font-headline">Meet the Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {teamMembers.map((member) => (
             <Card key={member.name} className="text-center bg-card/50 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
