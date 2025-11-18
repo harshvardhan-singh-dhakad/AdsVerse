@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: "Harshvardhan Singh Dhakad", role: "Ai Automation , GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD01.jpeg?raw=true", hint: "man portrait" },
+  { name: "Deepak Dhakad", role: "Ads, Ai Automation, GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD01.jpeg?raw=true", hint: "man portrait" },
   { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
   { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Aarsh.JPG?raw=true", hint: "man portrait" },
 ];
