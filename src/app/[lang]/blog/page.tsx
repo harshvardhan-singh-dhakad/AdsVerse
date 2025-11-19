@@ -68,6 +68,13 @@ const featuredArticles = [
     image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true",
     hint: "charts graphs"
   },
+  {
+    slug: "how-local-seo-works-for-indore-businesses",
+    title: "How Digital Marketing Helps Small Businesses in Indore",
+    description: "Local SEO is no longer optional—it's a survival strategy for every business in Indore.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/How%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?raw=true",
+    hint: "map business"
+  },
 ];
 
 const jsonLd = {
