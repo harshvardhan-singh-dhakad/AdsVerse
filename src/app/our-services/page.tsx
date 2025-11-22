@@ -1,3 +1,4 @@
+
 import { Check } from "lucide-react";
 import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -190,19 +191,23 @@ export default function OurServicesPage() {
                                 <CardHeader>
                                     <CardTitle className="text-xl font-headline text-accent">⭐ {category.name}</CardTitle>
                                 </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <h4 className="font-semibold mb-2">Services:</h4>
-                                    <ul className="space-y-1 text-sm text-muted-foreground mb-4">
-                                        {category.services.map(service => <li key={service}>{service}</li>)}
-                                    </ul>
-                                    <h4 className="font-semibold mb-2">Pricing:</h4>
-                                     <div className="space-y-1 text-sm">
-                                        {category.pricing.map(p => (
-                                            <div key={p.tier} className="flex justify-between">
-                                                <span className="text-muted-foreground">{p.tier}:</span>
-                                                <span className="font-semibold text-primary">{p.price}</span>
-                                            </div>
-                                        ))}
+                                <CardContent className="flex-grow space-y-4">
+                                    <div>
+                                        <h4 className="font-semibold mb-2 text-foreground">Services:</h4>
+                                        <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
+                                            {category.services.map((service, index) => <li key={index}>{service}</li>)}
+                                        </ol>
+                                    </div>
+                                    <div className="pt-4 border-t border-border/40">
+                                        <h4 className="font-semibold mb-2 text-foreground">Pricing:</h4>
+                                        <div className="space-y-1 text-sm">
+                                            {category.pricing.map(p => (
+                                                <div key={p.tier} className="flex justify-between">
+                                                    <span className="text-muted-foreground">{p.tier}:</span>
+                                                    <span className="font-semibold text-primary">{p.price}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -243,3 +248,4 @@ export default function OurServicesPage() {
         </div>
     );
 }
+
