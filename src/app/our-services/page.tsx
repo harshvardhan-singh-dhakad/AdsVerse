@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Digital Marketing & Automation Services | AdsVerse",
-    description: "Explore the full range of digital marketing and automation services offered by AdsVerse, from SEO and SMM to custom AI Chatbots and Workflow Automation.",
+    title: "Complete Digital Marketing Services | AdsVerse",
+    description: "TOP Digital Marketing Services for Small Business | Pricing, Plans & packages| SEO, PPC, Ads, Social media & CRM integration",
     alternates: {
         canonical: '/our-services',
     },
@@ -160,13 +160,17 @@ export default function OurServicesPage() {
                     <TabsTrigger value="automation-services">Automation Services</TabsTrigger>
                 </TabsList>
                 <TabsContent value="digital-marketing" className="mt-8">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold font-headline text-primary">Complete Digital Marketing Services</h2>
+                        <p className="text-lg text-muted-foreground mt-2">All the tools you need to succeed online.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {digitalMarketingServices.map((serviceCategory) => (
                             <div key={serviceCategory.category} className="bg-card/50 backdrop-blur-sm rounded-lg p-6 border border-border/40">
-                                <h2 className="text-2xl font-bold font-headline text-accent mb-4">
+                                <h3 className="text-2xl font-bold font-headline text-accent mb-4">
                                     <span className="mr-2">{serviceCategory.emoji}</span>
                                     {serviceCategory.category}
-                                </h2>
+                                </h3>
                                 <ul className="space-y-2">
                                     {serviceCategory.items.map((item) => (
                                         <li key={item} className="flex items-center gap-3 text-muted-foreground">
