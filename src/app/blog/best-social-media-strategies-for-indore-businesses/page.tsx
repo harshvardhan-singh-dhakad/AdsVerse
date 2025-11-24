@@ -23,7 +23,7 @@ const jsonLd = {
   },
   "headline": "Best Social Media Strategies for Indore's Local Businesses",
   "description": "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with examples from Indore's market.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -154,4 +154,5 @@ export default function SocialMediaIndorePage() {
       </div>
     </article>
     </>
-  )
+  );
+}
