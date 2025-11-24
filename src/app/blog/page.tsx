@@ -11,19 +11,23 @@ export const metadata: Metadata = {
   description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team. Explore articles on SEO, paid ads, and content.",
   alternates: {
     canonical: '/blog',
-    languages: {
-      'en': '/blog',
-    },
   },
 };
 
 const featuredArticles = [
-   {
+  {
     slug: "future-of-automation-in-indore",
     title: "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
     description: "Indore's businesses are on the verge of an automation revolution. Discover how integrated CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth.",
     image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/future-of-automation-indore.jpg?raw=true",
     hint: "city future technology"
+  },
+  {
+    slug: "best-social-media-strategies-for-indore-businesses",
+    title: "Best Social Media Strategies for Indore's Local Businesses",
+    description: "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with real examples from the city.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
+    hint: "social media marketing"
   },
   {
     slug: "what-are-automation-tools",

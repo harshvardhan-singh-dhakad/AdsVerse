@@ -27,6 +27,13 @@ const featuredArticles = [
     hint: "city future technology"
   },
   {
+    slug: "best-social-media-strategies-for-indore-businesses",
+    title: "Best Social Media Strategies for Indore's Local Businesses",
+    description: "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with real examples from the city.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
+    hint: "social media marketing"
+  },
+  {
     slug: "what-are-automation-tools",
     title: "What Are Automation Tools and Why Adsverse Is the Best for It",
     description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",

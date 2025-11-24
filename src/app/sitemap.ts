@@ -38,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/blog/best-digital-marketing-services-in-indore',
         '/blog/how-local-seo-works-for-indore-businesses',
         '/blog/future-of-automation-in-indore',
+        '/blog/best-social-media-strategies-for-indore-businesses',
     ];
 
     const allRoutes = [...staticRoutes, ...serviceRoutes, ...blogRoutes];
