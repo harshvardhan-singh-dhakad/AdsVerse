@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
   "description": "Indore's businesses are adopting automation. Discover how CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth and customer engagement.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM%2C%20WhatsApp%20Chatbots%2C%20Funnels).png?raw=true",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -97,7 +97,7 @@ export default function FutureOfAutomationPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM%2C%20WhatsApp%20Chatbots%2C%20Funnels).png?raw=true"
+        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true"
         alt="Future of Automation in Indore"
         width={1200}
         height={600}
