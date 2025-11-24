@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/blog/paid-ads-roi',
         '/blog/best-digital-marketing-services-in-indore',
         '/blog/how-local-seo-works-for-indore-businesses',
+        '/blog/future-of-automation-in-indore',
     ];
 
     const allRoutes = [...staticRoutes, ...serviceRoutes, ...blogRoutes];

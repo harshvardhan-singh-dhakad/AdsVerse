@@ -20,6 +20,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "future-of-automation-in-indore",
+    title: "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
+    description: "Indore's businesses are on the verge of an automation revolution. Discover how integrated CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/future-of-automation-indore.jpg?raw=true",
+    hint: "city future technology"
+  },
+  {
     slug: "what-are-automation-tools",
     title: "What Are Automation Tools and Why Adsverse Is the Best for It",
     description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
