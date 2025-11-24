@@ -20,11 +20,11 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
-    slug: "future-of-automation-in-indore",
-    title: "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
-    description: "Indore's businesses are on the verge of an automation revolution. Discover how integrated CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/future-of-automation-indore.jpg?raw=true",
-    hint: "city future technology"
+    slug: "facebook-instagram-ads-for-indore-builders",
+    title: "A Builder's Guide to Winning with Facebook & Instagram Ads in Indore",
+    description: "Learn how real estate builders in Indore can leverage Facebook and Instagram ads to generate high-quality leads, target the right homebuyers, and boost property sales.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Facebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?raw=true",
+    hint: "real estate marketing"
   },
   {
     slug: "best-social-media-strategies-for-indore-businesses",
@@ -32,6 +32,13 @@ const featuredArticles = [
     description: "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with real examples from the city.",
     image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
     hint: "social media marketing"
+  },
+  {
+    slug: "future-of-automation-in-indore",
+    title: "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
+    description: "Indore's businesses are on the verge of an automation revolution. Discover how integrated CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true",
+    hint: "city future technology"
   },
   {
     slug: "what-are-automation-tools",
