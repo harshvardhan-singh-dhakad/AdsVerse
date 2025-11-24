@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/blog/future-of-automation-in-indore',
     languages: {
-      'en': '/en/blog/future-of-automation-in-indore',
-      'hi': '/hi/blog/future-of-automation-in-indore',
+      'en': '/blog/future-of-automation-in-indore',
     },
   },
 };
