@@ -97,7 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mb-24">
+      {/* <section className="mb-24">
         <h2 className="text-4xl font-bold text-center mb-12 font-headline">Meet the Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {teamMembers.map((member) => (
@@ -113,7 +113,7 @@ export default function AboutPage() {
             </Card>
           ))}
         </div>
-      </section>
+      </section> */}
 
       <section>
         <h2 className="text-4xl font-bold text-center mb-16 font-headline text-primary">Our Journey</h2>
