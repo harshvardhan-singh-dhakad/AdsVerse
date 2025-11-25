@@ -20,6 +20,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "indore-real-estate-case-study",
+    title: "Case Study: How an Indore Real Estate Project Sold 40% Units via Digital Marketing",
+    description: "Discover the digital marketing strategy that led to a 5X ROI and sold 40% of units for a real estate project in Indore in just 3 months.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Case%20Study%20How%20an%20Indore%20Real%20Estate%20Project%20Sold%2040%25%20Units%20via%20Digital%20Marketing%20Case%20Study.jpg?raw=true",
+    hint: "real estate success"
+  },
+  {
     slug: "lead-generation-guide-indore",
     title: "A Complete Lead Generation Guide for Your Business in Indore",
     description: "Learn effective lead generation strategies for your Indore business. This guide covers local SEO, social media, paid ads, and automation to help you get more customers.",
