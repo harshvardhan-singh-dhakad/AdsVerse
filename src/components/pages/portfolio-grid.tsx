@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const portfolioItems = [
   { 
@@ -61,13 +62,14 @@ export function PortfolioGrid() {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
   useEffect(() => {
+    const body = document.body;
     if (selectedItem) {
-      document.body.style.overflow = 'hidden';
+      body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto';
+      body.style.overflow = 'auto';
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      body.style.overflow = 'auto';
     };
   }, [selectedItem]);
 
@@ -117,30 +119,32 @@ export function PortfolioGrid() {
         ))}
       </div>
 
-      <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
-        <DialogContent className="max-w-3xl">
+      <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+        <DialogContent className="max-w-3xl grid-rows-[auto_1fr] p-0">
           {selectedItem && (
             <>
-              <DialogHeader>
+              <DialogHeader className="p-6 pb-0">
                 <DialogTitle className="text-3xl mb-2 font-headline">{selectedItem.title}</DialogTitle>
                 <DialogDescription>
                   <Badge variant="secondary" className="capitalize">{selectedItem.category}</Badge>
                 </DialogDescription>
               </DialogHeader>
-              <div>
-                <Image
-                  src={selectedItem.imageUrl}
-                  alt={selectedItem.title}
-                  width={800}
-                  height={500}
-                  data-ai-hint={selectedItem.hint}
-                  className="rounded-lg mb-4 w-full h-auto object-cover"
-                />
-                <div 
-                  className="text-muted-foreground prose prose-sm dark:prose-invert" 
-                  dangerouslySetInnerHTML={{ __html: selectedItem.description }}
-                />
-              </div>
+              <ScrollArea className="max-h-[70vh]">
+                <div className="px-6 pb-6">
+                  <Image
+                    src={selectedItem.imageUrl}
+                    alt={selectedItem.title}
+                    width={800}
+                    height={500}
+                    data-ai-hint={selectedItem.hint}
+                    className="rounded-lg mb-4 w-full h-auto object-cover"
+                  />
+                  <div 
+                    className="text-muted-foreground prose prose-sm dark:prose-invert" 
+                    dangerouslySetInnerHTML={{ __html: selectedItem.description }}
+                  />
+                </div>
+              </ScrollArea>
             </>
           )}
         </DialogContent>
