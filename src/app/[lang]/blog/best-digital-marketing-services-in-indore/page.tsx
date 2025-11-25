@@ -132,27 +132,27 @@ export default function BestDigitalMarketingServicesInIndorePage() {
 
         <h3 className="text-2xl font-semibold text-accent font-headline">1. Search Engine Optimization (SEO)</h3>
         <p>
-            SEO helps your website rank higher on Google search results. With proper keyword optimization, content marketing, and link-building strategies, SEO ensures that your business appears when potential customers search for your products or services.
+            <Link href="/services/seo-optimization" className="text-accent hover:underline">SEO</Link> helps your website rank higher on Google search results. With proper keyword optimization, content marketing, and link-building strategies, SEO ensures that your business appears when potential customers search for your products or services.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">2. Social Media Marketing (SMM)</h3>
         <p>
-            Social media platforms like Facebook, Instagram, and LinkedIn are powerful tools to build brand awareness. Creative campaigns, engaging reels, and consistent posting help connect with your target audience.
+            <Link href="/services/social-media-management" className="text-accent hover:underline">Social media platforms</Link> like Facebook, Instagram, and LinkedIn are powerful tools to build brand awareness. Creative campaigns, engaging reels, and consistent posting help connect with your target audience.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">3. Pay-Per-Click Advertising (PPC)</h3>
         <p>
-            Google Ads and social media ads allow you to directly target potential customers. A well-managed PPC campaign can bring instant traffic and conversions to your business.
+            <Link href="/services/paid-ads" className="text-accent hover:underline">Google Ads and social media ads</Link> allow you to directly target potential customers. A well-managed PPC campaign can bring instant traffic and conversions to your business.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">4. Website Design and Development</h3>
         <p>
-            A professional, mobile-friendly website is the foundation of every digital marketing strategy. The best agencies in Indore not only design websites but also ensure they are SEO-friendly and user-focused.
+            A professional, mobile-friendly <Link href="/services/web-design-development" className="text-accent hover:underline">website</Link> is the foundation of every digital marketing strategy. The best agencies in Indore not only design websites but also ensure they are SEO-friendly and user-focused.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">5. Content Marketing</h3>
         <p>
-            High-quality blogs, articles, videos, and infographics help in building trust with customers. Content is the backbone of digital marketing as it improves brand authority and SEO rankings.
+            High-quality blogs, articles, videos, and infographics help in building trust with customers. <Link href="/services/content-marketing" className="text-accent hover:underline">Content</Link> is the backbone of digital marketing as it improves brand authority and SEO rankings.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">6. Email & WhatsApp Marketing</h3>

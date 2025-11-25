@@ -108,7 +108,7 @@ export default function IndoreBuildersAdsPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Why Facebook & Instagram Are a Goldmine for Indore's Builders</h2>
         <p>
-            Real estate is a visual sell. People want to see beautiful images of their future homes, lifestyle videos, and walkthroughs. Facebook and Instagram are the perfect platforms for this. They allow you to showcase your property in a way that print ads never can. More importantly, they offer powerful targeting tools to reach the exact buyers you want.
+            Real estate is a visual sell. People want to see beautiful images of their future homes, lifestyle videos, and walkthroughs. Facebook and Instagram are the perfect platforms for this. They allow you to showcase your property in a way that print ads never can. More importantly, they offer powerful <Link href="/services/paid-ads" className="text-accent hover:underline">targeting tools</Link> to reach the exact buyers you want.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Key Strategies for High-Quality Leads</h2>
@@ -138,7 +138,7 @@ export default function IndoreBuildersAdsPage() {
         
         <h3 className="text-2xl font-semibold text-accent font-headline">4. The Follow-Up Funnel (Lead Ko Customer Banao)</h3>
         <p>
-            Generating a lead is only the first step. A winning strategy includes an automated follow-up system.
+            Generating a lead is only the first step. A winning strategy includes an <Link href="/services/automation-tools" className="text-accent hover:underline">automated follow-up system</Link>.
         </p>
         <ol className="list-decimal pl-6 space-y-2">
             <li>A lead submits the form.</li>
@@ -150,7 +150,7 @@ export default function IndoreBuildersAdsPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-            For builders in Indore, Facebook and Instagram are no longer optional. They are the most powerful tools for reaching a targeted audience, generating high-quality leads, and closing deals faster. By combining smart targeting, beautiful creatives, and an automated follow-up process, you can build a predictable pipeline of customers for your projects and stay ahead of the competition in Indore's dynamic real estate market.
+            For builders in Indore, Facebook and Instagram are no longer optional. They are the most powerful tools for reaching a targeted audience, generating high-quality leads, and closing deals faster. By combining smart targeting, beautiful creatives, and an <Link href="/services/automation-tools" className="text-accent hover:underline">automated follow-up process</Link>, you can build a predictable pipeline of customers for your projects and stay ahead of the competition in Indore's dynamic real estate market.
         </p>
       </div>
     </article>

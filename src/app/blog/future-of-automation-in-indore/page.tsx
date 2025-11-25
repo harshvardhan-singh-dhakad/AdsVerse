@@ -106,7 +106,7 @@ export default function FutureOfAutomationPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          Indore, the commercial capital of Madhya Pradesh, is buzzing with entrepreneurial energy. From traditional businesses to modern startups, everyone is looking for a competitive edge. In this new era, automation is no longer a futuristic concept—it's the key to survival and growth. Specifically, the integration of CRM, WhatsApp chatbots, and automated funnels is set to redefine how businesses in Indore operate.
+          Indore, the commercial capital of Madhya Pradesh, is buzzing with entrepreneurial energy. From traditional businesses to modern startups, everyone is looking for a competitive edge. In this new era, <Link href="/services/automation-tools" className="text-accent hover:underline">automation</Link> is no longer a futuristic concept—it's the key to survival and growth. Specifically, the integration of CRM, WhatsApp chatbots, and automated funnels is set to redefine how businesses in Indore operate.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">The Old Way vs. The New Way</h2>
@@ -116,7 +116,7 @@ export default function FutureOfAutomationPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. CRM: The Central Brain of Your Business</h2>
         <p>
-          A Customer Relationship Management (CRM) system is becoming the non-negotiable core for smart businesses in Indore. Instead of just a contact list, a CRM acts as a central database for all customer interactions.
+          A <Link href="/services/automation-tools" className="text-accent hover:underline">Customer Relationship Management (CRM)</Link> system is becoming the non-negotiable core for smart businesses in Indore. Instead of just a contact list, a CRM acts as a central database for all customer interactions.
         </p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Automated Lead Capture:</strong> Leads from your website, social media, and Google Ads are automatically fed into the CRM. No more manual data entry.</li>
@@ -128,7 +128,7 @@ export default function FutureOfAutomationPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">2. WhatsApp Chatbots: Your 24/7 Sales Assistant</h2>
         <p>
-          With over 500 million users in India, WhatsApp is where your customers are. WhatsApp automation is the most powerful tool for direct customer engagement.
+          With over 500 million users in India, WhatsApp is where your customers are. <Link href="/services/automation-tools" className="text-accent hover:underline">WhatsApp automation</Link> is the most powerful tool for direct customer engagement.
         </p>
         <p>Imagine a customer visits your Instagram page at midnight:</p>
         <ol className="list-decimal pl-6 space-y-2">
@@ -163,7 +163,7 @@ export default function FutureOfAutomationPage() {
         
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-          The future of business growth in Indore lies in smart automation. Integrating your CRM, implementing WhatsApp chatbots, and building automated sales funnels are no longer just for big tech companies. They are accessible, affordable, and absolutely essential for any Indore-based business looking to scale, improve efficiency, and dominate its market in 2025 and beyond. The revolution is here—don't get left behind.
+          The future of business growth in Indore lies in smart automation. Integrating your <Link href="/services/automation-tools" className="text-accent hover:underline">CRM, implementing WhatsApp chatbots, and building automated sales funnels</Link> are no longer just for big tech companies. They are accessible, affordable, and absolutely essential for any Indore-based business looking to scale, improve efficiency, and dominate its market in 2025 and beyond. The revolution is here—don't get left behind.
         </p>
       </div>
     </article>

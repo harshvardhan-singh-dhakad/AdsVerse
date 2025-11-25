@@ -107,7 +107,7 @@ export default function SocialMediaIndorePage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          Indore is a city that loves to connect, whether it's over a plate of poha-jalebi or through a smartphone screen. For local businesses, this means social media isn't just an option; it's the new "chauraha" where your customers hang out. But how do you turn scrolls into sales? Here are some simple, effective social media strategies tailored for the Indori market.
+          Indore is a city that loves to connect, whether it's over a plate of poha-jalebi or through a smartphone screen. For local businesses, this means <Link href="/services/social-media-management" className="text-accent hover:underline">social media</Link> isn't just an option; it's the new "chauraha" where your customers hang out. But how do you turn scrolls into sales? Here are some simple, effective social media strategies tailored for the Indori market.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. Choose Your Platform Wisely (Har Jagah Hona Zaruri Nahi)</h2>
@@ -129,7 +129,7 @@ export default function SocialMediaIndorePage() {
         </ul>
 
         <h2 className="text-3xl font-bold text-primary font-headline">3. Run Hyper-Local Ads</h2>
-        <p>Don’t waste money showing your ads to people in Mumbai. Use the power of location targeting.</p>
+        <p>Don’t waste money showing your ads to people in Mumbai. Use the power of <Link href="/services/paid-ads" className="text-accent hover:underline">location targeting</Link>.</p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Geo-targeting:</strong> On Facebook and Instagram, you can target your ads to specific pin codes or even a 1-2 km radius around your store. A salon in Vijay Nagar can target ads only to people living in that area.</li>
             <li><strong>Local Interests:</strong> Target people who have shown interest in local pages like "Indore Food Explorer" or have attended events at Phoenix Citadel mall.</li>
@@ -153,7 +153,7 @@ export default function SocialMediaIndorePage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-            For an Indore-based business, social media success is about being authentic, local, and engaging. Understand the Indori vibe, create content that resonates with the city's spirit, and talk to your customers like they're your friends. By following these simple strategies, you can build a strong community online that translates into real business growth.
+            For an Indore-based business, social media success is about being authentic, local, and engaging. Understand the Indori vibe, create content that resonates with the city's spirit, and talk to your customers like they're your friends. By following these simple <Link href="/services/social-media-management" className="text-accent hover:underline">social media strategies</Link>, you can build a strong community online that translates into real business growth.
         </p>
       </div>
     </article>

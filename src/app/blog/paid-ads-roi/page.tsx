@@ -107,7 +107,7 @@ export default function PaidAdsRoiPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In the world of digital marketing, paid advertising is the accelerator pedal. While organic strategies like SEO and content marketing build momentum over time, paid ads on platforms like Google and Meta offer an immediate, powerful way to reach your target audience. However, simply throwing money at ads is a recipe for disaster. The true art lies in a strategic approach focused on one critical metric: Return on Investment (ROI). Maximizing your ROI ensures that every dollar you spend is working hard to grow your business.
+          In the world of digital marketing, <Link href="/services/paid-ads" className="text-accent hover:underline">paid advertising</Link> is the accelerator pedal. While organic strategies like SEO and content marketing build momentum over time, paid ads on platforms like Google and Meta offer an immediate, powerful way to reach your target audience. However, simply throwing money at ads is a recipe for disaster. The true art lies in a strategic approach focused on one critical metric: Return on Investment (ROI). Maximizing your ROI ensures that every dollar you spend is working hard to grow your business.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">Understanding the Paid Ads Landscape</h2>
@@ -145,7 +145,7 @@ export default function PaidAdsRoiPage() {
 
         <h3 className="text-2xl font-semibold text-accent font-headline">3. Optimized Landing Pages</h3>
         <p>
-          The ad is only half the battle. If a user clicks your ad and lands on a slow, confusing, or irrelevant page, you've wasted your money. Your landing page must be a seamless continuation of your ad's promise.
+          The ad is only half the battle. If a user clicks your ad and lands on a slow, confusing, or irrelevant page, you've wasted your money. Your <Link href="/services/web-design-development" className="text-accent hover:underline">landing page</Link> must be a seamless continuation of your ad's promise.
         </p>
          <ul className="list-disc pl-6 space-y-2">
           <li><strong>Message Match:</strong> The headline and offer on your landing page should directly match the ad that brought the user there.</li>

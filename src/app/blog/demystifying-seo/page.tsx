@@ -106,7 +106,7 @@ export default function DemystifyingSeoPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In the vast, ever-expanding universe of the internet, how do you ensure your voice is heard? How do you connect with the people actively searching for the solutions you provide? The answer lies in mastering a powerful, often misunderstood discipline: Search Engine Optimization (SEO). For many, "SEO" is an intimidating acronym shrouded in technical jargon. But at its core, it's about making your website more visible to search engines like Google, and in turn, to your potential customers.
+          In the vast, ever-expanding universe of the internet, how do you ensure your voice is heard? How do you connect with the people actively searching for the solutions you provide? The answer lies in mastering a powerful, often misunderstood discipline: <Link href="/services/seo-optimization" className="text-accent hover:underline">Search Engine Optimization (SEO)</Link>. For many, "SEO" is an intimidating acronym shrouded in technical jargon. But at its core, it's about making your website more visible to search engines like Google, and in turn, to your potential customers.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">What is SEO, Really?</h2>

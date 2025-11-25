@@ -107,7 +107,7 @@ export default function LocalSeoIndorePage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          Local SEO is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.
+          <Link href="/services/seo-optimization" className="text-accent hover:underline">Local SEO</Link> is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. Your Google Business Profile: The Digital Shopfront</h2>
@@ -164,7 +164,7 @@ export default function LocalSeoIndorePage() {
         <p>Fresh content signals that your business is active, relevant, and trustworthy.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
-        <p>To win the Local SEO game in Indore, remember: Complete and accurate information, high-quality photos & videos, strong customer reviews, regular content updates, and full GBP optimization.</p>
+        <p>To win the <Link href="/services/seo-optimization" className="text-accent hover:underline">Local SEO</Link> game in Indore, remember: Complete and accurate information, high-quality photos & videos, strong customer reviews, regular content updates, and full GBP optimization.</p>
         <p>Google rewards businesses that stay active and trustworthy. With this playbook, your business can dominate local search results in Indore.</p>
       </div>
     </article>

@@ -108,7 +108,7 @@ export default function WhyAutomationIsEssentialPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In any growing business, time is the most valuable asset. Teams often find themselves buried under repetitive, manual tasks like data entry, sending follow-up emails, or managing spreadsheets. While necessary, these jobs consume hours that could be spent on strategy, customer relationships, and innovation. This is where automation tools come in as a game-changer.
+          In any growing business, time is the most valuable asset. Teams often find themselves buried under repetitive, manual tasks like data entry, sending follow-up emails, or managing spreadsheets. While necessary, these jobs consume hours that could be spent on strategy, customer relationships, and innovation. This is where <Link href="/services/automation-tools" className="text-accent hover:underline">automation tools</Link> come in as a game-changer.
         </p>
         <p>
           Automation is no longer a complex technology reserved for large corporations. It is now an accessible and essential tool for companies of all sizes. But why is it so important?
@@ -126,7 +126,7 @@ export default function WhyAutomationIsEssentialPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">3. It Boosts Overall Productivity and Efficiency</h2>
         <p>
-          When your team isn’t bogged down by manual work, they can get more done. Automation streamlines workflows, ensuring that processes run smoothly and quickly without delays. For example, when a customer fills out a contact form, an automation tool can instantly assign the lead to a sales representative and add it to your CRM. This speed and efficiency lead to faster response times and a more productive operation.
+          When your team isn’t bogged down by manual work, they can get more done. Automation streamlines workflows, ensuring that processes run smoothly and quickly without delays. For example, when a customer fills out a contact form, an <Link href="/services/automation-tools" className="text-accent hover:underline">automation tool</Link> can instantly assign the lead to a sales representative and add it to your CRM. This speed and efficiency lead to faster response times and a more productive operation.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">The Smart Move for Growth</h2>
