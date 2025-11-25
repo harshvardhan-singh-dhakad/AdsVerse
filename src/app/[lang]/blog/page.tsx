@@ -20,6 +20,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "lead-generation-guide-indore",
+    title: "A Complete Lead Generation Guide for Your Business in Indore",
+    description: "Learn effective lead generation strategies for your Indore business. This guide covers local SEO, social media, paid ads, and automation to help you get more customers.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Lead%20Generation%20Guide%20for%20Your%20business%20in%20Indore.jpg?raw=true",
+    hint: "business strategy meeting"
+  },
+  {
     slug: "facebook-instagram-ads-for-indore-builders",
     title: "A Builder's Guide to Winning with Facebook & Instagram Ads in Indore",
     description: "Learn how real estate builders in Indore can leverage Facebook and Instagram ads to generate high-quality leads, target the right homebuyers, and boost property sales.",

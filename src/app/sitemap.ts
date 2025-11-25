@@ -1,3 +1,4 @@
+
 import { MetadataRoute } from 'next'
 
 const BASE_URL = 'https://adsverse.in';
@@ -29,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog pages
     const blogRoutes = [
+        '/blog/lead-generation-guide-indore',
         '/blog/what-are-automation-tools',
         '/blog/why-automation-is-essential',
         '/blog/best-automation-tools-for-business',
