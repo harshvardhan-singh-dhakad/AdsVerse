@@ -7,13 +7,49 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const portfolioItems = [
-  { id: 1, title: "Sports Mania Website & SEO", category: "web", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/sm.png?raw=true", hint: "sports website", description: "Designed and developed a dynamic website for Sports Mania and implemented a robust SEO strategy to boost their online visibility and search rankings." },
-  { id: 2, title: "Steadfast Spoken English Local SEO", category: "seo", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/sf.png?raw=true", hint: "local map", description: "Boosted local presence for Steadfast Spoken English through comprehensive local business setup and optimization, driving more foot traffic and local inquiries." },
-  { id: 4, title: "Evalvue Pvt. Ltd. Full Service", category: "branding", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/eve.png?raw=true", hint: "business growth", description: "Provided a comprehensive digital marketing solution for Evalvue Pvt. Ltd., including SEO, paid ads, and social media management to drive holistic growth." },
-  { id: 5, title: "Funland Pvt. Ltd. Digital Launch", category: "web", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/fun.png?raw=true", hint: "business website", description: "Built a complete digital presence for Funland Pvt. Ltd. from the ground up. This included a new website design, a full SEO strategy, and local business setup to attract and engage their target audience." },
-  { id: 6, title: "E-commerce Store for ChicBoutique", category: "web", imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/image.png?raw=true", hint: "fashion website", description: "Designed and developed a scalable Shopify e-commerce store for a fashion startup, featuring a seamless checkout process and mobile-first design." },
+  { 
+    id: 1, 
+    title: "Sports Mania: Website & SEO", 
+    category: "web", 
+    imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/sm.png?raw=true", 
+    hint: "sports website",
+    description: "<strong>Problem:</strong> Sports Mania, an emerging sports goods retailer in Indore, had a minimal online presence and struggled to compete with established stores. They needed a professional website and a strategy to attract local sports enthusiasts searching online.<br/><br/><strong>Solution:</strong> We designed a dynamic, mobile-first website to showcase their wide range of products. Alongside the website, we launched a targeted <a href='/services/seo-optimization' class='text-accent hover:underline'>Local SEO campaign</a>, optimizing their Google Business Profile and creating content around local sports events. This helped them rank for terms like 'best cricket gear in Indore' and 'sports shop near me'.<br/><br/><strong>Result:</strong> Within 6 months, their organic search traffic increased by 150%, and they reported a 40% rise in walk-in customers who found them online."
+  },
+  { 
+    id: 2, 
+    title: "Steadfast Spoken English: Local SEO", 
+    category: "seo", 
+    imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/sf.png?raw=true", 
+    hint: "local map",
+    description: "<strong>Problem:</strong> Steadfast, a leading English-speaking institute in Indore, was not appearing in the top results for local searches like 'spoken English classes in Vijay Nagar'. Their enrollments were plateauing as competitors dominated the online space.<br/><br/><strong>Solution:</strong> We implemented a hyper-local SEO strategy focused on making them the top choice in their vicinity. This involved a complete overhaul of their Google Business Profile, generating positive student reviews, and creating location-specific landing pages. We also ran a <a href='/services/paid-ads' class='text-accent hover:underline'>Google Ads campaign</a> targeting students in specific Indore neighborhoods.<br/><br/><strong>Result:</strong> Steadfast now ranks in the top 3 on Google Maps for their target keywords. They saw a 60% increase in inquiries through their website and a significant boost in student enrollments from their key localities."
+  },
+  { 
+    id: 4, 
+    title: "Evalvue Pvt. Ltd.: Full Service", 
+    category: "branding", 
+    imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/eve.png?raw=true", 
+    hint: "business growth",
+    description: "<strong>Problem:</strong> Evalvue, a B2B tech firm in Indore, had a great product but struggled with brand recognition and lead generation. Their brand identity was inconsistent, and their marketing efforts were not generating qualified leads.<br/><br/><strong>Solution:</strong> We provided a full-service digital marketing solution. We started with a complete <a href='/services/brand-strategy' class='text-accent hover:underline'>brand strategy and identity redesign</a> to create a professional and modern look. We then built a lead-generation-focused content marketing plan and managed their LinkedIn presence to establish thought leadership. An <a href='/services/automation-tools' class='text-accent hover:underline'>automated CRM workflow</a> was set up to nurture every lead effectively.<br/><br/><strong>Result:</strong> The rebranding led to a 200% increase in engagement on LinkedIn. Their sales pipeline grew by 75% in the first quarter, with higher quality leads thanks to the new content and automation strategy."
+  },
+  { 
+    id: 5, 
+    title: "Funland: Digital Launch", 
+    category: "web", 
+    imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/fun.png?raw=true", 
+    hint: "business website",
+    description: "<strong>Problem:</strong> Funland, a new family entertainment center in Indore, needed to make a big splash for their launch. They had no website, no social media presence, and no digital strategy to attract families.<br/><br/><strong>Solution:</strong> We handled their complete digital launch. This included building a vibrant, user-friendly <a href='/services/web-design-development' class='text-accent hover:underline'>website</a> with an online booking feature. We created and managed their Instagram and Facebook pages, running 'coming soon' campaigns and contests that built huge local excitement. A targeted <a href='/services/social-media-management' class='text-accent hover:underline'>social media ad campaign</a> reached thousands of families in Indore.<br/><br/><strong>Result:</strong> Funland had a sold-out opening week, with over 70% of bookings coming directly from the new website. Their Instagram page grew to 5,000 local followers in just two months."
+  },
+  { 
+    id: 6, 
+    title: "ChicBoutique: E-commerce Store", 
+    category: "web", 
+    imageUrl: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/image.png?raw=true", 
+    hint: "fashion website",
+    description: "<strong>Problem:</strong> An Indore-based fashion boutique, ChicBoutique, wanted to expand its reach beyond its physical store. They needed a stylish and functional e-commerce platform to sell their products nationwide.<br/><br/><strong>Solution:</strong> We developed a beautiful and scalable Shopify e-commerce store. The website was optimized for mobile shopping and featured high-quality product photography. We integrated a secure payment gateway and implemented an <a href='/services/automation-tools' class='text-accent hover:underline'>abandoned cart recovery automation</a> via email and WhatsApp to boost conversions.<br/><br/><strong>Result:</strong> ChicBoutique's online sales now account for 30% of their total revenue. The abandoned cart automation alone has recovered over 15% of potentially lost sales. Ready to launch your online store? <a href='/contact' class='text-accent hover:underline'>Contact us today</a>."
+  },
 ];
 
 const filters = ["all", "web", "seo", "branding"];
@@ -88,7 +124,10 @@ export function PortfolioGrid() {
                   data-ai-hint={selectedItem.hint}
                   className="rounded-lg mb-4 w-full h-auto object-cover"
                 />
-                <p className="text-muted-foreground">{selectedItem.description}</p>
+                <div 
+                  className="text-muted-foreground prose prose-sm dark:prose-invert" 
+                  dangerouslySetInnerHTML={{ __html: selectedItem.description }}
+                />
               </div>
             </>
           )}
