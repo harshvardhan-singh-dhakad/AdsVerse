@@ -109,7 +109,7 @@ export default function TataSierraPage() {
           Fast forward to 2025, and Tata Motors has dropped the bomb. The Tata Sierra is back, and the internet has absolutely lost its calm. But as marketers and auto-enthusiasts, we need to ask: Why?
         </p>
         <p>
-          Why did a car launch turn into a viral cultural moment? It’s not just about the specifications; it’s about a brilliant marketing mix. Let's decode the Sierra Strategy.
+          Why did a car launch turn into a viral cultural moment? It’s not just about the specifications; it’s about a brilliant <Link href="/our-services" className="text-accent hover:underline">marketing mix</Link>. Let's decode the Sierra Strategy.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. The Weaponization of Nostalgia</h2>
@@ -117,7 +117,7 @@ export default function TataSierraPage() {
           Marketing isn't always about selling a product; sometimes, it's about selling a memory. Tata Motors didn't just launch a new SUV; they revived a legacy. By keeping the iconic nameplate, they instantly tapped into a loyal fanbase aged 30 to 50.
         </p>
         <p><strong>The Hook:</strong> They targeted the people who couldn't afford a Sierra in 1995 but have the purchasing power in 2025.</p>
-        <p><strong>The Viral Factor:</strong> Social media flooded with "My dad had this car" or "This was my childhood dream" posts. This organic user-generated content (UGC) gave them millions of impressions for free.</p>
+        <p><strong>The Viral Factor:</strong> <Link href="/services/social-media-management" className="text-accent hover:underline">Social media</Link> flooded with "My dad had this car" or "This was my childhood dream" posts. This organic <Link href="/services/content-marketing" className="text-accent hover:underline">user-generated content (UGC)</Link> gave them millions of impressions for free.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">2. Design: Mixing Retro with 'Cyberpunk'</h2>
         <p>
@@ -132,7 +132,7 @@ export default function TataSierraPage() {
           Let's talk numbers. Everyone expected this "Legendary" car to come with a premium "Legendary" price tag, likely touching ₹20 Lakhs. Tata pulled a classic disruption move. Starting Price: ₹11.49 Lakh (Ex-Showroom).
         </p>
         <p>This price point places the Sierra right in the middle of the fiercely competitive mid-size SUV segment (challenging the Creta, Seltos, and Grand Vitara).</p>
-        <p>The result? Curiosity turned into serious purchase intent. The low entry barrier made the car "attainable" for the masses, driving massive search traffic on Google.</p>
+        <p>The result? Curiosity turned into serious purchase intent. The low entry barrier made the car "attainable" for the masses, driving massive <Link href="/services/seo-optimization" className="text-accent hover:underline">search traffic on Google</Link>.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">4. Future-Proofing (EV + ICE)</h2>
         <p>
@@ -140,11 +140,11 @@ export default function TataSierraPage() {
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">Why This Matters for Marketers</h2>
-        <p>The Tata Sierra 2025 case study teaches us three simple rules of viral marketing:</p>
+        <p>The Tata Sierra 2025 case study teaches us three simple rules of <Link href="/services/social-media-management" className="text-accent hover:underline">viral marketing</Link>:</p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Respect the Legacy:</strong> If you have a strong brand history, use it. Don't reinvent the wheel; just polish it.</li>
             <li><strong>Product is King:</strong> No amount of ads can beat a product that looks different and solves a desire (the desire to stand out).</li>
-            <li><strong>Surprise with Value:</strong> Great branding + Shocking pricing = Instant Market Disruption.</li>
+            <li><strong>Surprise with Value:</strong> Great <Link href="/services/brand-strategy" className="text-accent hover:underline">branding</Link> + Shocking pricing = Instant Market Disruption.</li>
         </ul>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
