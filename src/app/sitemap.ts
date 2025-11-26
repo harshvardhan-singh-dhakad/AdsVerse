@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog pages
     const blogRoutes = [
+        '/blog/tata-sierra-2025-viral-marketing-case-study',
         '/blog/indore-real-estate-case-study',
         '/blog/lead-generation-guide-indore',
         '/blog/what-are-automation-tools',

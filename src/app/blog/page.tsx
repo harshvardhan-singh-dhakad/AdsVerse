@@ -16,6 +16,13 @@ export const metadata: Metadata = {
 
 const featuredArticles = [
   {
+    slug: "tata-sierra-2025-viral-marketing-case-study",
+    title: "The Legend Returns: Why the Tata Sierra 2025 went Viral Overnight?",
+    description: "A marketing case study on how Tata Motors used nostalgia, disruptive pricing, and unique design to make the Sierra 2025 launch a massive viral success.",
+    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?raw=true",
+    hint: "suv car"
+  },
+  {
     slug: "indore-real-estate-case-study",
     title: "Case Study: How an Indore Real Estate Project Sold 40% Units via Digital Marketing",
     description: "Discover the digital marketing strategy that led to a 5X ROI and sold 40% of units for a real estate project in Indore in just 3 months.",
