@@ -41,8 +41,8 @@ const jsonLd = {
       "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
     }
   },
-  "datePublished": "2024-08-30",
-  "dateModified": "2024-08-30",
+  "datePublished": "2025-11-26",
+  "dateModified": "2025-11-26",
    "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
