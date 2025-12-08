@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/contact',
         '/privacy-policy',
         '/terms-of-service',
+        '/tools/seo-audit',
     ];
 
     // Service pages

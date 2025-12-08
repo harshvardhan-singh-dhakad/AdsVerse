@@ -18,6 +18,7 @@ export default async function LangLayout({
     { href: "/our-services", label: dictionary.navigation.services },
     { href: "/portfolio", label: dictionary.navigation.portfolio },
     { href: "/pricing", label: dictionary.navigation.pricing },
+    { href: "/tools/seo-audit", label: dictionary.navigation.tools },
     { href: "/blog", label: dictionary.navigation.blog },
     { href: "/contact", label: dictionary.navigation.contact },
   ];
