@@ -45,22 +45,23 @@ const SeoAuditPage = () => {
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    const pdfHeight = imgWidth / ratio;
+    const canvasPdfWidth = pdfHeight * ratio;
     
     let position = 0;
-    let heightLeft = pdfHeight;
+    let heightLeft = imgHeight * pdfWidth / imgWidth;
     
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, heightLeft);
+    heightLeft -= pdfHeight;
 
     while (heightLeft > 0) {
-      position = heightLeft - pdfHeight;
+      position = -heightLeft;
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight * pdfWidth / imgWidth);
+      heightLeft -= pdfHeight;
     }
 
     pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
@@ -138,21 +139,35 @@ const SeoAuditPage = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <Card className="bg-card/50 flex flex-col justify-center items-center p-6">
                 <CardTitle className="text-center mb-4">Overall Score</CardTitle>
-                <div className="relative w-48 h-24 overflow-hidden">
-                    <div 
-                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid rounded-t-full"
-                      style={{borderColor: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))', opacity: 0.2}}
-                    ></div>
-                    <div 
-                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid rounded-t-full origin-bottom-center transition-transform duration-1000"
-                      style={{ 
-                          borderColor: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))',
-                          transform: `rotate(${(result.score / 100) * 180 - 180}deg)` 
-                      }}
-                    ></div>
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
-                      <span className="text-4xl font-bold" style={{color: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))'}}>{result.score}</span>
-                      <span className="text-muted-foreground text-sm">/ 100</span>
+                 <div className="relative w-48 h-48">
+                    <svg className="w-full h-full" viewBox="0 0 36 36">
+                        <path
+                            className="text-border"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                        />
+                        <path
+                            className={
+                                result.score > 80 ? "text-green-500" :
+                                result.score > 50 ? "text-yellow-500" :
+                                "text-red-500"
+                            }
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeDasharray={`${result.score}, 100`}
+                        />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-4xl font-bold">{result.score}</span>
+                        <span className="text-muted-foreground text-sm">/ 100</span>
                     </div>
                 </div>
             </Card>
@@ -205,5 +220,3 @@ const SeoAuditPage = () => {
 };
 
 export default SeoAuditPage;
-
-    
