@@ -9,6 +9,7 @@ export interface AnalysisResult {
   title: string;
   metaDescription: string;
   h1s: string[];
+  headings: { h1: number; h2: number; h3: number; h4: number };
   isHttps: boolean;
   loadTime: number;
   images: {
@@ -19,6 +20,9 @@ export interface AnalysisResult {
     internal: number;
     external: number;
   };
+  hasRobotsTxt: boolean;
+  hasSchema: boolean;
+  wordCount: number;
 }
 
 export async function analyzeUrl(url: string): Promise<AnalysisResult> {
@@ -50,12 +54,20 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   }
 
   const $ = cheerio.load(html);
+  const siteUrl = new URL(finalUrl);
 
+  // --- Start Analysis ---
   const title = $('title').text().trim();
   const metaDescription = $('meta[name="description"]').attr('content')?.trim() || '';
   const h1s = $('h1').map((_, el) => $(el).text().trim()).get();
+  const headings = {
+    h1: $('h1').length,
+    h2: $('h2').length,
+    h3: $('h3').length,
+    h4: $('h4').length,
+  };
   
-  const isHttps = new URL(finalUrl).protocol === 'https:';
+  const isHttps = siteUrl.protocol === 'https:';
 
   const images = {
     total: $('img').length,
@@ -64,8 +76,6 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
 
   const internalLinks = new Set<string>();
   const externalLinks = new Set<string>();
-  const siteUrl = new URL(finalUrl);
-
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href');
     if (href) {
@@ -81,24 +91,47 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
       }
     }
   });
-
   const links = {
     internal: internalLinks.size,
     external: externalLinks.size,
   };
 
-  // Scoring Logic
+  // --- New Advanced Checks ---
+  let hasRobotsTxt = false;
+  try {
+      const robotsUrl = `${siteUrl.protocol}//${siteUrl.hostname}/robots.txt`;
+      const robotsRes = await axios.get(robotsUrl, { timeout: 5000 });
+      if (robotsRes.status === 200) {
+        hasRobotsTxt = true;
+      }
+  } catch (e) {
+    //
+  }
+
+  const hasSchema = $('script[type="application/ld+json"]').length > 0;
+  const wordCount = $('body').text().split(/\s+/).filter(Boolean).length;
+
+  // --- Scoring Logic ---
   let score = 0;
-  if (title.length > 10 && title.length < 70) score += 15;
-  if (metaDescription.length > 70 && metaDescription.length < 160) score += 15;
-  if (h1s.length === 1) score += 15;
-  if (isHttps) score += 10;
-  if (loadTime < 1) score += 15; else if (loadTime < 2.5) score += 10;
-  if (images.total > 0 && images.withAlt / images.total > 0.8) score += 10; else if (images.total > 0) score += 5;
-  if (links.internal > 5) score += 10;
-  if (links.external > 0) score += 10;
+  // On-page
+  if (title.length > 10 && title.length < 70) score += 10;
+  if (metaDescription.length > 70 && metaDescription.length < 160) score += 10;
+  if (headings.h1 === 1) score += 10;
+  if (headings.h2 > 0) score += 5;
+  if (wordCount > 300) score += 10;
   
-  score = Math.min(100, Math.max(0, score));
+  // Technical
+  if (isHttps) score += 10;
+  if (loadTime < 1) score += 10; else if (loadTime < 2.5) score += 5;
+  if (hasRobotsTxt) score += 5;
+  if (hasSchema) score += 5;
+
+  // Content
+  if (images.total > 0 && (images.withAlt / images.total) > 0.9) score += 10; else if (images.total > 0) score += 5;
+  if (links.internal > 5) score += 5;
+  if (links.external > 0) score += 5;
+  
+  score = Math.min(100, Math.max(0, Math.round(score)));
 
   return {
     url: finalUrl,
@@ -106,9 +139,13 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     title,
     metaDescription,
     h1s,
+    headings,
     isHttps,
     loadTime,
     images,
     links,
+    hasRobotsTxt,
+    hasSchema,
+    wordCount
   };
 }

@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Search, CheckCircle, XCircle, Download, Info } from 'lucide-react';
+import { Loader2, Search, CheckCircle, XCircle, Download, Info, FileText, Bot, Link2, Image as ImageIcon, Heading1, Heading2, Heading3, Heading4, Clock, ShieldCheck, FileJson } from 'lucide-react';
 import { analyzeUrl, AnalysisResult } from './actions';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -49,28 +49,27 @@ const SeoAuditPage = () => {
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    const canvasPdfWidth = pdfHeight * ratio;
-    
-    let position = 0;
-    let heightLeft = imgHeight * pdfWidth / imgWidth;
-    
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, heightLeft);
-    heightLeft -= pdfHeight;
+    let canvasPdfWidth, canvasPdfHeight;
 
-    while (heightLeft > 0) {
-      position = -heightLeft;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight * pdfWidth / imgWidth);
-      heightLeft -= pdfHeight;
+    if (pdfWidth / ratio < pdfHeight) {
+        canvasPdfWidth = pdfWidth;
+        canvasPdfHeight = pdfWidth / ratio;
+    } else {
+        canvasPdfHeight = pdfHeight;
+        canvasPdfWidth = pdfHeight * ratio;
     }
-
+    
+    pdf.addImage(imgData, 'PNG', 0, 0, canvasPdfWidth, canvasPdfHeight);
     pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
   };
   
-  const ResultItem = ({ label, value, passed, recommendation, details }: { label: string, value: string | number, passed: boolean, recommendation: string, details: string }) => (
+  const ResultItem = ({ icon, label, value, passed, recommendation, details }: { icon: React.ReactNode, label: string, value: string | number, passed: boolean, recommendation: string, details: string }) => (
     <Card className="bg-card/50">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-medium">{label}</CardTitle>
+        <CardHeader className="flex flex-row items-start justify-between pb-2">
+            <div className="flex items-center gap-3">
+              {icon}
+              <CardTitle className="text-base font-medium">{label}</CardTitle>
+            </div>
             {passed ? <CheckCircle className="h-5 w-5 text-green-500" /> : <XCircle className="h-5 w-5 text-red-500" />}
         </CardHeader>
         <CardContent>
@@ -140,7 +139,7 @@ const SeoAuditPage = () => {
             <Card className="bg-card/50 flex flex-col justify-center items-center p-6">
                 <CardTitle className="text-center mb-4">Overall Score</CardTitle>
                  <div className="relative w-48 h-48">
-                    <svg className="w-full h-full" viewBox="0 0 36 36">
+                    <svg className="w-full h-full" viewBox="0 0 36 36" style={{ transform: 'rotate(-90deg)' }}>
                         <path
                             className="text-border"
                             d="M18 2.0845
@@ -163,6 +162,7 @@ const SeoAuditPage = () => {
                             stroke="currentColor"
                             strokeWidth="3"
                             strokeDasharray={`${result.score}, 100`}
+                            strokeLinecap="round"
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -192,25 +192,43 @@ const SeoAuditPage = () => {
             <div>
               <h3 className="text-2xl font-bold font-headline mb-4">On-Page SEO</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ResultItem label="Title Tag" value={result.title.length > 0 ? `${result.title.length} chars` : 'Missing'} passed={result.title.length > 10 && result.title.length < 70} recommendation="Your title should be between 10 and 70 characters long to display properly in search results." details="The title tag is a key factor for search engines to understand your page's topic."/>
-                  <ResultItem label="Meta Description" value={result.metaDescription.length > 0 ? `${result.metaDescription.length} chars` : 'Missing'} passed={result.metaDescription.length > 70 && result.metaDescription.length < 160} recommendation="Write a compelling meta description between 70 and 160 characters to encourage clicks." details="This description appears under your title in search results."/>
-                  <ResultItem label="H1 Tags" value={result.h1s.length} passed={result.h1s.length === 1} recommendation="Your page should have exactly one H1 tag to clearly define the main topic." details="The H1 is the most important heading on your page."/>
+                  <ResultItem icon={<FileText />} label="Title Tag" value={result.title.length > 0 ? `${result.title.length} chars` : 'Missing'} passed={result.title.length > 10 && result.title.length < 70} recommendation="Your title should be between 10 and 70 characters long to display properly in search results." details="The title tag is a key factor for search engines to understand your page's topic."/>
+                  <ResultItem icon={<FileText />} label="Meta Description" value={result.metaDescription.length > 0 ? `${result.metaDescription.length} chars` : 'Missing'} passed={result.metaDescription.length > 70 && result.metaDescription.length < 160} recommendation="Write a compelling meta description between 70 and 160 characters to encourage clicks." details="This description appears under your title in search results."/>
+                   <ResultItem icon={<FileText />} label="Word Count" value={result.wordCount} passed={result.wordCount > 300} recommendation="Aim for at least 300 words of valuable content on important pages." details="Content depth can signal authority and relevance to search engines."/>
               </div>
             </div>
+
+            <div>
+              <h3 className="text-2xl font-bold font-headline mb-4">Headings</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <ResultItem icon={<Heading1 />} label="H1 Tags" value={result.headings.h1} passed={result.headings.h1 === 1} recommendation="Your page should have exactly one H1 tag to clearly define the main topic." details="The most important heading."/>
+                  <ResultItem icon={<Heading2 />} label="H2 Tags" value={result.headings.h2} passed={result.headings.h2 > 0} recommendation="Use H2 tags to structure your content into logical sections." details="Important for content structure."/>
+                  <ResultItem icon={<Heading3 />} label="H3 Tags" value={result.headings.h3} passed={true} recommendation="" details="Use for sub-sections within H2s."/>
+                  <ResultItem icon={<Heading4 />} label="H4 Tags" value={result.headings.h4} passed={true} recommendation="" details="Use for further nested content."/>
+              </div>
+            </div>
+
             <div>
               <h3 className="text-2xl font-bold font-headline mb-4">Technical SEO</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                   <ResultItem label="SSL Enabled (HTTPS)" value={result.isHttps ? 'Yes' : 'No'} passed={result.isHttps} recommendation="Install an SSL certificate on your server to secure your website." details="HTTPS is a ranking signal and builds user trust."/>
-                   <ResultItem label="Page Load Time" value={`${result.loadTime.toFixed(2)}s`} passed={result.loadTime < 2.5} recommendation="Optimize images, leverage browser caching, and minify code to improve speed. Aim for under 2.5 seconds." details="Faster pages provide a better user experience and rank higher."/>
+                   <ResultItem icon={<ShieldCheck />} label="SSL Enabled (HTTPS)" value={result.isHttps ? 'Yes' : 'No'} passed={result.isHttps} recommendation="Install an SSL certificate on your server to secure your website." details="HTTPS is a ranking signal and builds user trust."/>
+                   <ResultItem icon={<Clock />} label="Page Load Time" value={`${result.loadTime.toFixed(2)}s`} passed={result.loadTime < 2.5} recommendation="Optimize images, leverage browser caching, and minify code to improve speed. Aim for under 2.5 seconds." details="Faster pages provide a better user experience and rank higher."/>
+                   <ResultItem icon={<Bot />} label="Robots.txt" value={result.hasRobotsTxt ? 'Found' : 'Missing'} passed={result.hasRobotsTxt} recommendation="Create a robots.txt file to guide search engines on how to crawl your site." details="Instructs search engine crawlers."/>
               </div>
             </div>
             <div>
-              <h3 className="text-2xl font-bold font-headline mb-4">Content & Links</h3>
+              <h3 className="text-2xl font-bold font-headline mb-4">Content Analysis</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ResultItem label="Images with Alt Text" value={`${result.images.withAlt} / ${result.images.total}`} passed={result.images.total === 0 || result.images.withAlt / result.images.total > 0.8} recommendation="Add descriptive alt text to all important images to improve accessibility and image SEO." details="Alt text helps search engines understand what your images are about."/>
-                  <ResultItem label="Internal Links" value={result.links.internal} passed={result.links.internal > 5} recommendation="Add more links to other relevant pages on your own website to improve navigation and distribute link equity." details="Internal links help users and search engines discover more of your content."/>
-                  <ResultItem label="External Links" value={result.links.external} passed={result.links.external > 0} recommendation="Link out to reputable, relevant external sources to provide more value and context to your users." details="Linking to other quality sites can be a signal of a well-researched page."/>
+                  <ResultItem icon={<ImageIcon />} label="Images with Alt Text" value={`${result.images.withAlt} / ${result.images.total}`} passed={result.images.total === 0 || result.images.withAlt / result.images.total > 0.8} recommendation="Add descriptive alt text to all important images to improve accessibility and image SEO." details="Alt text helps search engines understand what your images are about."/>
+                  <ResultItem icon={<Link2 />} label="Internal Links" value={result.links.internal} passed={result.links.internal > 5} recommendation="Add more links to other relevant pages on your own website to improve navigation and distribute link equity." details="Helps users and search engines discover more of your content."/>
+                  <ResultItem icon={<Link2 />} label="External Links" value={result.links.external} passed={result.links.external > 0} recommendation="Link out to reputable, relevant external sources to provide more value and context to your users." details="Linking to quality sites can be a signal of a well-researched page."/>
               </div>
+            </div>
+             <div>
+                <h3 className="text-2xl font-bold font-headline mb-4">Structured Data</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                     <ResultItem icon={<FileJson />} label="Schema Markup" value={result.hasSchema ? 'Found' : 'Not Found'} passed={result.hasSchema} recommendation="Implement Schema.org markup to help search engines understand your content and enable rich snippets." details="Structured data helps create rich search results."/>
+                </div>
             </div>
           </div>
         </section>
