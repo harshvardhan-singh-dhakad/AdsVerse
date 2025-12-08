@@ -1,9 +1,10 @@
+
 "use client";
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Search, CheckCircle, XCircle, Download } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Loader2, Search, CheckCircle, XCircle, Download, Info } from 'lucide-react';
 import { analyzeUrl, AnalysisResult } from './actions';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -37,41 +38,54 @@ const SeoAuditPage = () => {
 
   const downloadPdf = async () => {
     if (!reportRef.current) return;
-    const canvas = await html2canvas(reportRef.current, { scale: 2 });
+    const canvas = await html2canvas(reportRef.current, { 
+      scale: 2,
+      backgroundColor: document.body.classList.contains('dark') ? '#09090b' : '#ffffff',
+    });
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = imgWidth / imgHeight;
-    const width = pdfWidth;
-    const height = width / ratio;
+    const pdfHeight = imgWidth / ratio;
     
     let position = 0;
-    let heightLeft = height;
-
-    pdf.addImage(imgData, 'PNG', 0, position, width, height);
-    heightLeft -= pdfHeight;
+    let heightLeft = pdfHeight;
+    
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pdf.internal.pageSize.getHeight();
 
     while (heightLeft > 0) {
-      position = heightLeft - height;
+      position = heightLeft - pdfHeight;
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, width, height);
-      heightLeft -= pdfHeight;
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
     }
 
     pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
   };
   
-  const ResultItem = ({ label, value, passed }: { label: string, value: string | number, passed: boolean }) => (
-    <li className="flex items-center justify-between p-3 bg-card/50 rounded-md">
-      <div className="flex items-center gap-3">
-        {passed ? <CheckCircle className="h-5 w-5 text-green-500" /> : <XCircle className="h-5 w-5 text-red-500" />}
-        <span className="font-medium">{label}</span>
-      </div>
-      <span className="text-muted-foreground font-mono text-sm">{value}</span>
-    </li>
+  const ResultItem = ({ label, value, passed, recommendation, details }: { label: string, value: string | number, passed: boolean, recommendation: string, details: string }) => (
+    <Card className="bg-card/50">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-base font-medium">{label}</CardTitle>
+            {passed ? <CheckCircle className="h-5 w-5 text-green-500" /> : <XCircle className="h-5 w-5 text-red-500" />}
+        </CardHeader>
+        <CardContent>
+            <div className="text-2xl font-bold">{value}</div>
+            <p className="text-xs text-muted-foreground pt-2">{details}</p>
+             {!passed && (
+                <div className="mt-4 flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                    <Info className="h-4 w-4 text-destructive mt-1 flex-shrink-0" />
+                    <div>
+                        <p className="text-sm font-semibold text-destructive">Recommendation</p>
+                        <p className="text-xs text-destructive/80">{recommendation}</p>
+                    </div>
+                </div>
+            )}
+        </CardContent>
+    </Card>
   );
 
   return (
@@ -109,81 +123,80 @@ const SeoAuditPage = () => {
       )}
 
       {result && (
-        <section ref={reportRef} className="max-w-4xl mx-auto bg-card/30 p-8 rounded-lg">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold font-headline text-primary">Audit Report for {new URL(result.url).hostname}</h2>
-            <Button onClick={downloadPdf} variant="outline">
+        <section ref={reportRef} className="max-w-5xl mx-auto bg-card/30 p-4 sm:p-8 rounded-lg">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8">
+            <div>
+                <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary">Audit Report</h2>
+                <p className="text-muted-foreground text-sm sm:text-base break-all">{result.url}</p>
+            </div>
+            <Button onClick={downloadPdf} variant="outline" className="w-full sm:w-auto">
               <Download className="h-4 w-4 mr-2" />
               Download PDF
             </Button>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <Card className="bg-card/50">
-              <CardHeader>
-                <CardTitle>Overall Score</CardTitle>
-              </CardHeader>
-              <CardContent className="flex justify-center items-center">
-                 <div className="relative w-48 h-24 overflow-hidden">
+            <Card className="bg-card/50 flex flex-col justify-center items-center p-6">
+                <CardTitle className="text-center mb-4">Overall Score</CardTitle>
+                <div className="relative w-48 h-24 overflow-hidden">
                     <div 
-                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid border-primary/20 rounded-t-full"
-                      style={{ transform: 'rotate(180deg)' }}
+                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid rounded-t-full"
+                      style={{borderColor: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))', opacity: 0.2}}
                     ></div>
                     <div 
-                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid border-primary rounded-t-full origin-bottom-center transition-transform duration-1000"
-                      style={{ transform: `rotate(${(result.score / 100) * 180 - 180}deg)` }}
+                      className="absolute top-0 left-0 w-full h-full border-t-[12px] border-r-[12px] border-b-0 border-l-[12px] border-solid rounded-t-full origin-bottom-center transition-transform duration-1000"
+                      style={{ 
+                          borderColor: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))',
+                          transform: `rotate(${(result.score / 100) * 180 - 180}deg)` 
+                      }}
                     ></div>
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
-                      <span className="text-4xl font-bold">{result.score}</span>
+                      <span className="text-4xl font-bold" style={{color: result.score > 80 ? 'hsl(var(--primary))' : result.score > 50 ? 'hsl(var(--accent))' : 'hsl(var(--destructive))'}}>{result.score}</span>
                       <span className="text-muted-foreground text-sm">/ 100</span>
                     </div>
                 </div>
-              </CardContent>
             </Card>
             <Card className="bg-card/50">
               <CardHeader>
                 <CardTitle>Website Preview</CardTitle>
+                <CardDescription>A snapshot of your website's homepage.</CardDescription>
               </CardHeader>
               <CardContent>
-                <img 
-                    src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}`} 
-                    alt="Website screenshot" 
-                    className="w-full h-auto rounded border" 
-                />
+                <div className="aspect-video w-full overflow-hidden rounded-md border">
+                    <img 
+                        src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}`} 
+                        alt="Website screenshot" 
+                        className="w-full h-full object-cover object-top" 
+                    />
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          <div className="space-y-6">
-            <Card className="bg-card/50">
-              <CardHeader><CardTitle>On-Page SEO</CardTitle></CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <ResultItem label="Title Tag" value={result.title.length > 0 ? `Length: ${result.title.length}` : 'Missing'} passed={result.title.length > 10 && result.title.length < 70} />
-                  <ResultItem label="Meta Description" value={result.metaDescription.length > 0 ? `Length: ${result.metaDescription.length}` : 'Missing'} passed={result.metaDescription.length > 70 && result.metaDescription.length < 160} />
-                  <ResultItem label="H1 Tags" value={result.h1s.length} passed={result.h1s.length === 1} />
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="bg-card/50">
-              <CardHeader><CardTitle>Technical SEO</CardTitle></CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                   <ResultItem label="SSL Enabled (HTTPS)" value={result.isHttps ? 'Yes' : 'No'} passed={result.isHttps} />
-                   <ResultItem label="Page Load Time (TTFB)" value={`${result.loadTime.toFixed(2)}s`} passed={result.loadTime < 2.5} />
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="bg-card/50">
-              <CardHeader><CardTitle>Content & Links</CardTitle></CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  <ResultItem label="Images with Alt Text" value={`${result.images.withAlt} / ${result.images.total}`} passed={result.images.withAlt / (result.images.total || 1) > 0.8} />
-                  <ResultItem label="Internal Links" value={result.links.internal} passed={result.links.internal > 5} />
-                  <ResultItem label="External Links" value={result.links.external} passed={result.links.external > 0} />
-                </ul>
-              </CardContent>
-            </Card>
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-2xl font-bold font-headline mb-4">On-Page SEO</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <ResultItem label="Title Tag" value={result.title.length > 0 ? `${result.title.length} chars` : 'Missing'} passed={result.title.length > 10 && result.title.length < 70} recommendation="Your title should be between 10 and 70 characters long to display properly in search results." details="The title tag is a key factor for search engines to understand your page's topic."/>
+                  <ResultItem label="Meta Description" value={result.metaDescription.length > 0 ? `${result.metaDescription.length} chars` : 'Missing'} passed={result.metaDescription.length > 70 && result.metaDescription.length < 160} recommendation="Write a compelling meta description between 70 and 160 characters to encourage clicks." details="This description appears under your title in search results."/>
+                  <ResultItem label="H1 Tags" value={result.h1s.length} passed={result.h1s.length === 1} recommendation="Your page should have exactly one H1 tag to clearly define the main topic." details="The H1 is the most important heading on your page."/>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold font-headline mb-4">Technical SEO</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                   <ResultItem label="SSL Enabled (HTTPS)" value={result.isHttps ? 'Yes' : 'No'} passed={result.isHttps} recommendation="Install an SSL certificate on your server to secure your website." details="HTTPS is a ranking signal and builds user trust."/>
+                   <ResultItem label="Page Load Time" value={`${result.loadTime.toFixed(2)}s`} passed={result.loadTime < 2.5} recommendation="Optimize images, leverage browser caching, and minify code to improve speed. Aim for under 2.5 seconds." details="Faster pages provide a better user experience and rank higher."/>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold font-headline mb-4">Content & Links</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <ResultItem label="Images with Alt Text" value={`${result.images.withAlt} / ${result.images.total}`} passed={result.images.total === 0 || result.images.withAlt / result.images.total > 0.8} recommendation="Add descriptive alt text to all important images to improve accessibility and image SEO." details="Alt text helps search engines understand what your images are about."/>
+                  <ResultItem label="Internal Links" value={result.links.internal} passed={result.links.internal > 5} recommendation="Add more links to other relevant pages on your own website to improve navigation and distribute link equity." details="Internal links help users and search engines discover more of your content."/>
+                  <ResultItem label="External Links" value={result.links.external} passed={result.links.external > 0} recommendation="Link out to reputable, relevant external sources to provide more value and context to your users." details="Linking to other quality sites can be a signal of a well-researched page."/>
+              </div>
+            </div>
           </div>
         </section>
       )}
@@ -192,3 +205,5 @@ const SeoAuditPage = () => {
 };
 
 export default SeoAuditPage;
+
+    
