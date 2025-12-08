@@ -61,7 +61,7 @@ const SeoAuditPage = () => {
       heightLeft -= pdfHeight;
     }
 
-    pdf.save(`seo-audit-report-${new URL(url).hostname}.pdf`);
+    pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
   };
   
   const ResultItem = ({ label, value, passed }: { label: string, value: string | number, passed: boolean }) => (
@@ -111,7 +111,7 @@ const SeoAuditPage = () => {
       {result && (
         <section ref={reportRef} className="max-w-4xl mx-auto bg-card/30 p-8 rounded-lg">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold font-headline text-primary">Audit Report for {result.url}</h2>
+            <h2 className="text-3xl font-bold font-headline text-primary">Audit Report for {new URL(result.url).hostname}</h2>
             <Button onClick={downloadPdf} variant="outline">
               <Download className="h-4 w-4 mr-2" />
               Download PDF
