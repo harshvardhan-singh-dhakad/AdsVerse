@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot } from "lucide-react";
+import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
+import { Input } from "@/components/ui/input";
 
 export const metadata: Metadata = {
   title: "AdsVerse | Digital Marketing That Drives Results",
@@ -293,6 +294,45 @@ export default function HomePage() {
               <Link href="/services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* SEO Audit Tool Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <Card className="bg-card/50 backdrop-blur-sm overflow-hidden">
+            <div className="grid md:grid-cols-2 items-center">
+              <div className="p-8 md:p-12">
+                <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-4">Free SEO Audit Tool</h2>
+                <p className="text-muted-foreground mb-6">
+                  Uncover technical issues & on-page optimization opportunities. Enter your website URL to get an instant, comprehensive SEO analysis.
+                </p>
+                <form action="/tools/seo-audit" method="GET" className="flex gap-2">
+                  <Input
+                    type="url"
+                    name="url"
+                    placeholder="https://yourwebsite.com"
+                    className="flex-grow h-12 text-lg bg-input"
+                    required
+                  />
+                  <Button type="submit" size="lg" className="h-12 bg-accent hover:bg-accent/90">
+                    <Search className="h-6 w-6" />
+                    <span className="ml-2 hidden md:inline">Analyze</span>
+                  </Button>
+                </form>
+              </div>
+              <div className="hidden md:block">
+                <Image 
+                  src="https://picsum.photos/seed/seo-tool/800/600"
+                  alt="SEO Audit Tool illustration"
+                  width={800}
+                  height={600}
+                  data-ai-hint="seo analytics dashboard"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </Card>
         </div>
       </section>
 
