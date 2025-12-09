@@ -4,10 +4,81 @@ import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Search, CheckCircle, XCircle, Download, Info, FileText, Bot, Link2, Image as ImageIcon, Heading1, Heading2, Heading3, Heading4, Clock, ShieldCheck, FileJson } from 'lucide-react';
-import { analyzeUrl, AnalysisResult } from './actions';
+import { Loader2, Search, Download } from 'lucide-react';
+import { analyzeUrl, AnalysisResult, Recommendation } from './actions';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+const ScoreGauge = ({ score, grade, size = 180, strokeWidth = 12 }: { score: number, grade: string, size?: number, strokeWidth?: number }) => {
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (score / 100) * circumference;
+
+    const getColor = (s: number) => {
+        if (s >= 80) return 'text-green-500';
+        if (s >= 60) return 'text-yellow-500';
+        return 'text-red-500';
+    };
+
+    return (
+        <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+            <svg className="w-full h-full transform -rotate-90">
+                <circle
+                    className="text-border"
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                    r={radius}
+                    cx={size / 2}
+                    cy={size / 2}
+                />
+                <circle
+                    className={getColor(score)}
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    strokeLinecap="round"
+                    fill="transparent"
+                    r={radius}
+                    cx={size / 2}
+                    cy={size / 2}
+                    style={{ strokeDasharray: circumference, strokeDashoffset: offset, transition: 'stroke-dashoffset 0.5s ease-out' }}
+                />
+            </svg>
+            <div className="absolute flex flex-col items-center justify-center">
+                <span className="text-5xl font-bold">{grade}</span>
+            </div>
+        </div>
+    );
+};
+
+const MiniScoreGauge = ({ grade, label }: { grade: string, label: string }) => {
+    const getGradeColor = (g: string) => {
+        if (g.startsWith('A')) return 'border-green-500 text-green-500';
+        if (g.startsWith('B')) return 'border-yellow-500 text-yellow-500';
+        if (g.startsWith('C')) return 'border-orange-500 text-orange-500';
+        return 'border-red-500 text-red-500';
+    }
+    return (
+        <div className="flex flex-col items-center gap-2">
+            <div className={`flex items-center justify-center w-20 h-20 rounded-full border-4 ${getGradeColor(grade)} bg-card/50`}>
+                <span className="text-3xl font-bold">{grade}</span>
+            </div>
+            <p className="text-sm font-medium text-muted-foreground">{label}</p>
+        </div>
+    )
+}
+
+const PriorityBadge = ({ priority }: { priority: Recommendation['priority'] }) => {
+    const priorityClasses = {
+        High: 'bg-red-500/20 text-red-400 border-red-500/30',
+        Medium: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+        Low: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    };
+    return <Badge variant="outline" className={`font-semibold ${priorityClasses[priority]}`}>{priority} Priority</Badge>;
+};
+
 
 const SeoAuditPage = () => {
   const [url, setUrl] = useState('');
@@ -40,53 +111,26 @@ const SeoAuditPage = () => {
     if (!reportRef.current) return;
     const canvas = await html2canvas(reportRef.current, { 
       scale: 2,
-      backgroundColor: document.body.classList.contains('dark') ? '#09090b' : '#ffffff',
+      backgroundColor: document.body.classList.contains('dark') ? '#0f172a' : '#ffffff',
     });
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-    const ratio = imgWidth / imgHeight;
-    let canvasPdfWidth, canvasPdfHeight;
-
-    if (pdfWidth / ratio < pdfHeight) {
-        canvasPdfWidth = pdfWidth;
-        canvasPdfHeight = pdfWidth / ratio;
-    } else {
-        canvasPdfHeight = pdfHeight;
-        canvasPdfWidth = pdfHeight * ratio;
-    }
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
     
-    pdf.addImage(imgData, 'PNG', 0, 0, canvasPdfWidth, canvasPdfHeight);
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+    heightLeft -= pdf.internal.pageSize.getHeight();
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+    }
     pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
   };
-  
-  const ResultItem = ({ icon, label, value, passed, recommendation, details }: { icon: React.ReactNode, label: string, value: string | number, passed: boolean, recommendation: string, details: string }) => (
-    <Card className="bg-card/50">
-        <CardHeader className="flex flex-row items-start justify-between pb-2">
-            <div className="flex items-center gap-3">
-              {icon}
-              <CardTitle className="text-base font-medium">{label}</CardTitle>
-            </div>
-            {passed ? <CheckCircle className="h-5 w-5 text-green-500" /> : <XCircle className="h-5 w-5 text-red-500" />}
-        </CardHeader>
-        <CardContent>
-            <div className="text-2xl font-bold">{value}</div>
-            <p className="text-xs text-muted-foreground pt-2">{details}</p>
-             {!passed && (
-                <div className="mt-4 flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-                    <Info className="h-4 w-4 text-destructive mt-1 flex-shrink-0" />
-                    <div>
-                        <p className="text-sm font-semibold text-destructive">Recommendation</p>
-                        <p className="text-xs text-destructive/80">{recommendation}</p>
-                    </div>
-                </div>
-            )}
-        </CardContent>
-    </Card>
-  );
 
   return (
     <div className="container mx-auto py-16 px-4">
@@ -123,114 +167,81 @@ const SeoAuditPage = () => {
       )}
 
       {result && (
-        <section ref={reportRef} className="max-w-5xl mx-auto bg-card/30 p-4 sm:p-8 rounded-lg">
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8">
-            <div>
-                <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary">Audit Report</h2>
-                <p className="text-muted-foreground text-sm sm:text-base break-all">{result.url}</p>
+        <section ref={reportRef} className="max-w-6xl mx-auto bg-card/30 p-4 sm:p-8 rounded-lg">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
+                <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary">Audit Results for {new URL(result.url).hostname}</h2>
+                    <p className="text-muted-foreground text-sm sm:text-base break-all">{result.url}</p>
+                </div>
+                <Button onClick={downloadPdf} variant="outline" className="w-full sm:w-auto">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download PDF
+                </Button>
             </div>
-            <Button onClick={downloadPdf} variant="outline" className="w-full sm:w-auto">
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
-            </Button>
-          </div>
           
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <Card className="bg-card/50 flex flex-col justify-center items-center p-6">
-                <CardTitle className="text-center mb-4">Overall Score</CardTitle>
-                 <div className="relative w-48 h-48">
-                    <svg className="w-full h-full" viewBox="0 0 36 36" style={{ transform: 'rotate(-90deg)' }}>
-                        <path
-                            className="text-border"
-                            d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                        />
-                        <path
-                            className={
-                                result.score > 80 ? "text-green-500" :
-                                result.score > 50 ? "text-yellow-500" :
-                                "text-red-500"
-                            }
-                            d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            strokeDasharray={`${result.score}, 100`}
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-4xl font-bold">{result.score}</span>
-                        <span className="text-muted-foreground text-sm">/ 100</span>
+            <Card className="bg-card/50 mb-8 p-6">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                    <div className="flex flex-col items-center">
+                        <ScoreGauge score={result.overallScore.score} grade={result.overallScore.grade} />
+                        <p className="mt-4 text-lg text-center font-semibold">Your page could be better</p>
+                        <p className="text-sm text-muted-foreground">Recommendations: {result.recommendations.filter(r => !r.passed).length}</p>
+                    </div>
+                    <div>
+                      <Card className="bg-background/50">
+                        <CardHeader>
+                          <CardTitle>Website Preview</CardTitle>
+                          <CardDescription>A snapshot of your website's homepage.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="aspect-video w-full overflow-hidden rounded-md border">
+                              <img 
+                                  src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}?w=800`} 
+                                  alt="Website screenshot" 
+                                  className="w-full h-full object-cover object-top" 
+                              />
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
                 </div>
-            </Card>
-            <Card className="bg-card/50">
-              <CardHeader>
-                <CardTitle>Website Preview</CardTitle>
-                <CardDescription>A snapshot of your website's homepage.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="aspect-video w-full overflow-hidden rounded-md border">
-                    <img 
-                        src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}`} 
-                        alt="Website screenshot" 
-                        className="w-full h-full object-cover object-top" 
-                    />
+                <div className="mt-8 pt-6 border-t border-border/50 flex flex-wrap justify-around gap-6">
+                    <MiniScoreGauge label="On-Page SEO" grade={result.categoryScores.onPage.grade} />
+                    <MiniScoreGauge label="Usability" grade={result.categoryScores.usability.grade} />
+                    <MiniScoreGauge label="Performance" grade={result.categoryScores.performance.grade} />
+                    <MiniScoreGauge label="Social" grade={result.categoryScores.social.grade} />
                 </div>
-              </CardContent>
             </Card>
-          </div>
 
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold font-headline mb-4">On-Page SEO</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ResultItem icon={<FileText />} label="Title Tag" value={result.title.length > 0 ? `${result.title.length} chars` : 'Missing'} passed={result.title.length > 10 && result.title.length < 70} recommendation="Your title should be between 10 and 70 characters long to display properly in search results." details="The title tag is a key factor for search engines to understand your page's topic."/>
-                  <ResultItem icon={<FileText />} label="Meta Description" value={result.metaDescription.length > 0 ? `${result.metaDescription.length} chars` : 'Missing'} passed={result.metaDescription.length > 70 && result.metaDescription.length < 160} recommendation="Write a compelling meta description between 70 and 160 characters to encourage clicks." details="This description appears under your title in search results."/>
-                   <ResultItem icon={<FileText />} label="Word Count" value={result.wordCount} passed={result.wordCount > 300} recommendation="Aim for at least 300 words of valuable content on important pages." details="Content depth can signal authority and relevance to search engines."/>
-              </div>
-            </div>
 
-            <div>
-              <h3 className="text-2xl font-bold font-headline mb-4">Headings</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <ResultItem icon={<Heading1 />} label="H1 Tags" value={result.headings.h1} passed={result.headings.h1 === 1} recommendation="Your page should have exactly one H1 tag to clearly define the main topic." details="The most important heading."/>
-                  <ResultItem icon={<Heading2 />} label="H2 Tags" value={result.headings.h2} passed={result.headings.h2 > 0} recommendation="Use H2 tags to structure your content into logical sections." details="Important for content structure."/>
-                  <ResultItem icon={<Heading3 />} label="H3 Tags" value={result.headings.h3} passed={true} recommendation="" details="Use for sub-sections within H2s."/>
-                  <ResultItem icon={<Heading4 />} label="H4 Tags" value={result.headings.h4} passed={true} recommendation="" details="Use for further nested content."/>
-              </div>
-            </div>
+            <Card className="bg-card/50 p-6">
+                <CardHeader className="p-0 mb-4">
+                    <CardTitle className="font-headline text-2xl">Recommendations</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Check</TableHead>
+                                <TableHead className="hidden md:table-cell">Category</TableHead>
+                                <TableHead className="text-right">Priority</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {result.recommendations.filter(r => !r.passed).map(rec => (
+                                <TableRow key={rec.id}>
+                                    <TableCell>
+                                        <p className="font-semibold">{rec.check}</p>
+                                        <p className="text-xs text-muted-foreground">{rec.description}</p>
+                                    </TableCell>
+                                    <TableCell className="hidden md:table-cell">{rec.category}</TableCell>
+                                    <TableCell className="text-right"><PriorityBadge priority={rec.priority} /></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
 
-            <div>
-              <h3 className="text-2xl font-bold font-headline mb-4">Technical SEO</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                   <ResultItem icon={<ShieldCheck />} label="SSL Enabled (HTTPS)" value={result.isHttps ? 'Yes' : 'No'} passed={result.isHttps} recommendation="Install an SSL certificate on your server to secure your website." details="HTTPS is a ranking signal and builds user trust."/>
-                   <ResultItem icon={<Clock />} label="Page Load Time" value={`${result.loadTime.toFixed(2)}s`} passed={result.loadTime < 2.5} recommendation="Optimize images, leverage browser caching, and minify code to improve speed. Aim for under 2.5 seconds." details="Faster pages provide a better user experience and rank higher."/>
-                   <ResultItem icon={<Bot />} label="Robots.txt" value={result.hasRobotsTxt ? 'Found' : 'Missing'} passed={result.hasRobotsTxt} recommendation="Create a robots.txt file to guide search engines on how to crawl your site." details="Instructs search engine crawlers."/>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold font-headline mb-4">Content Analysis</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ResultItem icon={<ImageIcon />} label="Images with Alt Text" value={`${result.images.withAlt} / ${result.images.total}`} passed={result.images.total === 0 || result.images.withAlt / result.images.total > 0.8} recommendation="Add descriptive alt text to all important images to improve accessibility and image SEO." details="Alt text helps search engines understand what your images are about."/>
-                  <ResultItem icon={<Link2 />} label="Internal Links" value={result.links.internal} passed={result.links.internal > 5} recommendation="Add more links to other relevant pages on your own website to improve navigation and distribute link equity." details="Helps users and search engines discover more of your content."/>
-                  <ResultItem icon={<Link2 />} label="External Links" value={result.links.external} passed={result.links.external > 0} recommendation="Link out to reputable, relevant external sources to provide more value and context to your users." details="Linking to quality sites can be a signal of a well-researched page."/>
-              </div>
-            </div>
-             <div>
-                <h3 className="text-2xl font-bold font-headline mb-4">Structured Data</h3>
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                     <ResultItem icon={<FileJson />} label="Schema Markup" value={result.hasSchema ? 'Found' : 'Not Found'} passed={result.hasSchema} recommendation="Implement Schema.org markup to help search engines understand your content and enable rich snippets." details="Structured data helps create rich search results."/>
-                </div>
-            </div>
-          </div>
         </section>
       )}
     </div>

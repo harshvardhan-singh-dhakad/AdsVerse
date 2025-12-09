@@ -3,26 +3,40 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
+// Interfaces for structured results
+export interface SeoCategoryScores {
+  onPage: { score: number, grade: string };
+  performance: { score: number, grade: string };
+  usability: { score: number, grade: string };
+  social: { score: number, grade: string };
+}
+
+export interface Recommendation {
+  id: string;
+  check: string;
+  description: string;
+  category: 'On-Page SEO' | 'Performance' | 'Usability' | 'Social';
+  priority: 'High' | 'Medium' | 'Low';
+  passed: boolean;
+}
+
 export interface AnalysisResult {
   url: string;
-  score: number;
+  overallScore: { score: number, grade: string };
+  categoryScores: SeoCategoryScores;
+  recommendations: Recommendation[];
   title: string;
   metaDescription: string;
   h1s: string[];
-  headings: { h1: number; h2: number; h3: number; h4: number };
-  isHttps: boolean;
-  loadTime: number;
-  images: {
-    total: number;
-    withAlt: number;
-  };
-  links: {
-    internal: number;
-    external: number;
-  };
-  hasRobotsTxt: boolean;
-  hasSchema: boolean;
-  wordCount: number;
+}
+
+function getGrade(score: number): string {
+  if (score >= 90) return 'A+';
+  if (score >= 80) return 'A';
+  if (score >= 70) return 'B';
+  if (score >= 60) return 'C';
+  if (score >= 50) return 'D';
+  return 'F';
 }
 
 export async function analyzeUrl(url: string): Promise<AnalysisResult> {
@@ -37,9 +51,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   try {
     const startTime = Date.now();
     const response = await axios.get(url, {
-      headers: {
-        'User-Agent': 'AdsVerse SEO Audit Tool/1.0',
-      },
+      headers: { 'User-Agent': 'AdsVerse SEO Audit Tool/1.0' },
       timeout: 15000,
     });
     const endTime = Date.now();
@@ -56,96 +68,98 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const $ = cheerio.load(html);
   const siteUrl = new URL(finalUrl);
 
-  // --- Start Analysis ---
+  const checks: Record<string, boolean> = {};
+
+  // --- Analysis ---
   const title = $('title').text().trim();
   const metaDescription = $('meta[name="description"]').attr('content')?.trim() || '';
   const h1s = $('h1').map((_, el) => $(el).text().trim()).get();
-  const headings = {
-    h1: $('h1').length,
-    h2: $('h2').length,
-    h3: $('h3').length,
-    h4: $('h4').length,
-  };
   
-  const isHttps = siteUrl.protocol === 'https:';
+  const wordCount = $('body').text().split(/\s+/).filter(Boolean).length;
+  checks.wordCountOk = wordCount > 300;
+  
+  checks.titleOk = title.length > 10 && title.length < 70;
+  checks.metaDescriptionOk = metaDescription.length > 70 && metaDescription.length < 160;
+  checks.h1Ok = h1s.length === 1;
 
   const images = {
     total: $('img').length,
     withAlt: $('img[alt][alt!=""]').length,
   };
+  checks.altTagsOk = images.total === 0 || images.withAlt / images.total > 0.8;
 
-  const internalLinks = new Set<string>();
-  const externalLinks = new Set<string>();
-  $('a[href]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (href) {
-      try {
-        const linkUrl = new URL(href, finalUrl);
-        if (linkUrl.hostname === siteUrl.hostname) {
-          internalLinks.add(linkUrl.href);
-        } else {
-          externalLinks.add(linkUrl.href);
-        }
-      } catch (e) {
-        // Ignore invalid URLs
-      }
-    }
-  });
-  const links = {
-    internal: internalLinks.size,
-    external: externalLinks.size,
-  };
+  checks.isHttps = siteUrl.protocol === 'https:';
+  checks.loadTimeOk = loadTime < 2.5;
 
-  // --- New Advanced Checks ---
   let hasRobotsTxt = false;
   try {
-      const robotsUrl = `${siteUrl.protocol}//${siteUrl.hostname}/robots.txt`;
-      const robotsRes = await axios.get(robotsUrl, { timeout: 5000 });
-      if (robotsRes.status === 200) {
-        hasRobotsTxt = true;
-      }
-  } catch (e) {
-    //
-  }
+    const robotsRes = await axios.get(`${siteUrl.protocol}//${siteUrl.hostname}/robots.txt`, { timeout: 5000 });
+    hasRobotsTxt = robotsRes.status === 200;
+  } catch (e) { /* ignore */ }
+  checks.robotsTxtOk = hasRobotsTxt;
 
-  const hasSchema = $('script[type="application/ld+json"]').length > 0;
-  const wordCount = $('body').text().split(/\s+/).filter(Boolean).length;
+  checks.hasSchema = $('script[type="application/ld+json"]').length > 0;
 
-  // --- Scoring Logic ---
-  let score = 0;
-  // On-page
-  if (title.length > 10 && title.length < 70) score += 10;
-  if (metaDescription.length > 70 && metaDescription.length < 160) score += 10;
-  if (headings.h1 === 1) score += 10;
-  if (headings.h2 > 0) score += 5;
-  if (wordCount > 300) score += 10;
+  const viewport = $('meta[name="viewport"]').attr('content');
+  checks.mobileFriendly = !!viewport && viewport.includes('width=device-width');
   
-  // Technical
-  if (isHttps) score += 10;
-  if (loadTime < 1) score += 10; else if (loadTime < 2.5) score += 5;
-  if (hasRobotsTxt) score += 5;
-  if (hasSchema) score += 5;
+  const ogTitle = $('meta[property="og:title"]').attr('content');
+  const twitterTitle = $('meta[name="twitter:title"]').attr('content');
+  checks.socialTagsOk = !!(ogTitle && twitterTitle);
 
-  // Content
-  if (images.total > 0 && (images.withAlt / images.total) > 0.9) score += 10; else if (images.total > 0) score += 5;
-  if (links.internal > 5) score += 5;
-  if (links.external > 0) score += 5;
+
+  // --- Scoring ---
+  const onPageScore = (
+    (checks.titleOk ? 25 : 0) +
+    (checks.metaDescriptionOk ? 20 : 0) +
+    (checks.h1Ok ? 20 : 0) +
+    (checks.altTagsOk ? 15 : 5) +
+    (checks.wordCountOk ? 20 : 5)
+  );
+
+  const performanceScore = (checks.loadTimeOk ? 100 : 40);
   
-  score = Math.min(100, Math.max(0, Math.round(score)));
+  const usabilityScore = (
+      (checks.isHttps ? 50 : 0) +
+      (checks.mobileFriendly ? 50 : 0)
+  );
+
+  const socialScore = (
+    (checks.socialTagsOk ? 70 : 10) +
+    (checks.hasSchema ? 30 : 0) // Schema helps with rich snippets on social too
+  );
+
+  const totalPossible = onPageScore + performanceScore + usabilityScore + socialScore;
+  const overallScoreVal = Math.round((totalPossible / 400) * 100);
+
+  const categoryScores: SeoCategoryScores = {
+    onPage: { score: onPageScore, grade: getGrade(onPageScore) },
+    performance: { score: performanceScore, grade: getGrade(performanceScore) },
+    usability: { score: usabilityScore, grade: getGrade(usabilityScore) },
+    social: { score: socialScore, grade: getGrade(socialScore) },
+  };
+
+  const recommendations: Recommendation[] = [
+    { id: 'title', check: 'Improve Title Tag', description: 'Ensure title is between 10 and 70 characters.', category: 'On-Page SEO', priority: 'High', passed: checks.titleOk },
+    { id: 'meta', check: 'Improve Meta Description', description: 'Meta description should be between 70 and 160 characters.', category: 'On-Page SEO', priority: 'High', passed: checks.metaDescriptionOk },
+    { id: 'h1', check: 'Use a Single H1 Tag', description: 'Your page should have exactly one H1 tag.', category: 'On-Page SEO', priority: 'High', passed: checks.h1Ok },
+    { id: 'speed', check: 'Improve Site Load Speed', description: 'Aim for a page load time under 2.5 seconds.', category: 'Performance', priority: 'High', passed: checks.loadTimeOk },
+    { id: 'https', check: 'Enable HTTPS', description: 'Secure your site with an SSL certificate.', category: 'Usability', priority: 'High', passed: checks.isHttps },
+    { id: 'content', check: 'Increase Page Text Content', description: 'Aim for at least 300 words of valuable content.', category: 'On-Page SEO', priority: 'Medium', passed: checks.wordCountOk },
+    { id: 'alt', check: 'Add Alt Text to Images', description: 'Ensure all important images have descriptive alt text.', category: 'On-Page SEO', priority: 'Medium', passed: checks.altTagsOk },
+    { id: 'mobile', check: 'Ensure Mobile-Friendliness', description: 'Add a viewport meta tag for responsive design.', category: 'Usability', priority: 'Medium', passed: checks.mobileFriendly },
+    { id: 'schema', check: 'Add Local Business Schema', description: 'Implement Schema.org markup to enable rich snippets.', category: 'On-Page SEO', priority: 'Low', passed: checks.hasSchema },
+    { id: 'robots', check: 'Implement a robots.txt file', description: 'Guide search engines on how to crawl your site.', category: 'Usability', priority: 'Low', passed: checks.robotsTxtOk },
+    { id: 'social', check: 'Add Social Media Meta Tags', description: 'Add Open Graph (for Facebook) and Twitter Card tags.', category: 'Social', priority: 'Low', passed: checks.socialTagsOk },
+  ];
 
   return {
     url: finalUrl,
-    score,
+    overallScore: { score: overallScoreVal, grade: getGrade(overallScoreVal) },
+    categoryScores,
+    recommendations,
     title,
     metaDescription,
-    h1s,
-    headings,
-    isHttps,
-    loadTime,
-    images,
-    links,
-    hasRobotsTxt,
-    hasSchema,
-    wordCount
+    h1s
   };
 }
