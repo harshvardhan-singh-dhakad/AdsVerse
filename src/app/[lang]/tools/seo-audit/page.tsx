@@ -4,21 +4,32 @@ import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, Search, Download } from 'lucide-react';
+import { Loader2, Search, Download, ShieldAlert } from 'lucide-react';
 import { analyzeUrl, AnalysisResult, Recommendation } from './actions';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer,
+    Tooltip
+} from 'recharts';
 
-const ScoreGauge = ({ score, grade, size = 180, strokeWidth = 12 }: { score: number, grade: string, size?: number, strokeWidth?: number }) => {
+const ScoreDonut = ({ score, grade, size = 180, strokeWidth = 12 }: { score: number, grade: string, size?: number, strokeWidth?: number }) => {
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (score / 100) * circumference;
 
     const getColor = (s: number) => {
-        if (s >= 80) return 'text-green-500';
-        if (s >= 60) return 'text-yellow-500';
+        if (s >= 90) return 'text-green-500';
+        if (s >= 70) return 'text-yellow-500';
+        if (s >= 50) return 'text-orange-500'
         return 'text-red-500';
     };
 
@@ -43,11 +54,12 @@ const ScoreGauge = ({ score, grade, size = 180, strokeWidth = 12 }: { score: num
                     r={radius}
                     cx={size / 2}
                     cy={size / 2}
-                    style={{ strokeDasharray: circumference, strokeDashoffset: offset, transition: 'stroke-dashoffset 0.5s ease-out' }}
+                    style={{ strokeDasharray: circumference, strokeDashoffset: offset, transition: 'stroke-dashoffset 0.8s ease-out' }}
                 />
             </svg>
             <div className="absolute flex flex-col items-center justify-center">
-                <span className="text-5xl font-bold">{grade}</span>
+                <span className={`text-5xl font-bold ${getColor(score)}`}>{score}</span>
+                <span className="text-sm font-semibold text-muted-foreground">/ 100</span>
             </div>
         </div>
     );
@@ -61,7 +73,7 @@ const MiniScoreGauge = ({ grade, label }: { grade: string, label: string }) => {
         return 'border-red-500 text-red-500';
     }
     return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 text-center">
             <div className={`flex items-center justify-center w-20 h-20 rounded-full border-4 ${getGradeColor(grade)} bg-card/50`}>
                 <span className="text-3xl font-bold">{grade}</span>
             </div>
@@ -101,7 +113,12 @@ const SeoAuditPage = () => {
       const analysisResult = await analyzeUrl(url);
       setResult(analysisResult);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+       const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred.';
+       if (errorMessage.includes('Failed to fetch')) {
+           setError("Analysis failed. This might happen if the website is blocking automated tools (e.g., using Cloudflare), or if it's a JavaScript-heavy Single-Page Application (SPA) that our current tool cannot fully parse. Please try another website.");
+       } else {
+           setError(errorMessage);
+       }
     } finally {
       setLoading(false);
     }
@@ -116,21 +133,33 @@ const SeoAuditPage = () => {
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-    let heightLeft = imgHeight;
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    const ratio = imgWidth / pdfWidth;
+    const canvasHeightInPdf = imgHeight / ratio;
+    
+    let heightLeft = canvasHeightInPdf;
     let position = 0;
     
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-    heightLeft -= pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, canvasHeightInPdf);
+    heightLeft -= pdfHeight;
 
     while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
+      position = -heightLeft;
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, canvasHeightInPdf);
+      heightLeft -= pdfHeight;
     }
     pdf.save(`seo-audit-report-${new URL(result?.url || url).hostname}.pdf`);
   };
+
+  const radarData = result ? [
+    { subject: 'On-Page', A: result.categoryScores.onPage.score, fullMark: 100 },
+    { subject: 'Usability', A: result.categoryScores.usability.score, fullMark: 100 },
+    { subject: 'Performance', A: result.categoryScores.performance.score, fullMark: 100 },
+    { subject: 'Social', A: result.categoryScores.social.score, fullMark: 100 },
+  ] : [];
 
   return (
     <div className="container mx-auto py-16 px-4">
@@ -156,7 +185,15 @@ const SeoAuditPage = () => {
             <span className="ml-2 hidden md:inline">Analyze</span>
           </Button>
         </form>
-        {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
+        {error && 
+          <Alert variant="destructive" className="mt-4">
+              <ShieldAlert className="h-4 w-4" />
+              <AlertTitle>Analysis Error</AlertTitle>
+              <AlertDescription>
+                {error}
+              </AlertDescription>
+          </Alert>
+        }
       </section>
 
       {loading && (
@@ -175,54 +212,88 @@ const SeoAuditPage = () => {
                 </div>
                 <Button onClick={downloadPdf} variant="outline" className="w-full sm:w-auto">
                     <Download className="h-4 w-4 mr-2" />
-                    Download PDF
+                    Download PDF Report
                 </Button>
             </div>
           
             <Card className="bg-card/50 mb-8 p-6">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="flex flex-col items-center">
-                        <ScoreGauge score={result.overallScore.score} grade={result.overallScore.grade} />
-                        <p className="mt-4 text-lg text-center font-semibold">Your page could be better</p>
-                        <p className="text-sm text-muted-foreground">Recommendations: {result.recommendations.filter(r => !r.passed).length}</p>
+                <div className="grid md:grid-cols-3 gap-8 items-center">
+                    <div className="flex flex-col justify-center items-center p-6">
+                        <h3 className="text-xl font-bold mb-4">Overall Score</h3>
+                        <ScoreDonut score={result.overallScore.score} grade={result.overallScore.grade} />
                     </div>
-                    <div>
-                      <Card className="bg-background/50">
-                        <CardHeader>
-                          <CardTitle>Website Preview</CardTitle>
-                          <CardDescription>A snapshot of your website's homepage.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="aspect-video w-full overflow-hidden rounded-md border">
-                              <img 
-                                  src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}?w=800`} 
-                                  alt="Website screenshot" 
-                                  className="w-full h-full object-cover object-top" 
-                              />
-                          </div>
-                        </CardContent>
-                      </Card>
+                    <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        <MiniScoreGauge label="On-Page SEO" grade={result.categoryScores.onPage.grade} />
+                        <MiniScoreGauge label="Usability" grade={result.categoryScores.usability.grade} />
+                        <MiniScoreGauge label="Performance" grade={result.categoryScores.performance.grade} />
+                        <MiniScoreGauge label="Social" grade={result.categoryScores.social.grade} />
                     </div>
                 </div>
-                <div className="mt-8 pt-6 border-t border-border/50 flex flex-wrap justify-around gap-6">
-                    <MiniScoreGauge label="On-Page SEO" grade={result.categoryScores.onPage.grade} />
-                    <MiniScoreGauge label="Usability" grade={result.categoryScores.usability.grade} />
-                    <MiniScoreGauge label="Performance" grade={result.categoryScores.performance.grade} />
-                    <MiniScoreGauge label="Social" grade={result.categoryScores.social.grade} />
+                 <div className="mt-8 h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                            <PolarGrid />
+                            <PolarAngleAxis dataKey="subject" />
+                            <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                            <Radar name="Score" dataKey="A" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
+                            <Tooltip contentStyle={{
+                                backgroundColor: 'hsl(var(--card))',
+                                borderColor: 'hsl(var(--border))'
+                            }}/>
+                        </RadarChart>
+                    </ResponsiveContainer>
                 </div>
             </Card>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <Card className="bg-card/50">
+                    <CardHeader>
+                        <CardTitle>Website Preview</CardTitle>
+                        <CardDescription>A snapshot of your website's homepage.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="aspect-video w-full overflow-hidden rounded-md border">
+                          <img 
+                              src={`https://s0.wp.com/mshots/v1/${encodeURIComponent(result.url)}?w=800`} 
+                              alt="Website screenshot" 
+                              className="w-full h-full object-cover object-top" 
+                          />
+                      </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card/50">
+                     <CardHeader>
+                        <CardTitle>Content Analysis</CardTitle>
+                        <CardDescription>Key content metrics from your page.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="space-y-3 text-sm">
+                            <li className="flex justify-between items-center"><span>Title Tag:</span> <Badge variant="outline" className="truncate max-w-xs">{result.title || 'Not Found'}</Badge></li>
+                             <li className="flex justify-between items-center"><span>Meta Description:</span> <Badge variant={result.metaDescription ? 'outline' : 'destructive'} className="whitespace-normal text-left">{result.metaDescription || 'Not Found'}</Badge></li>
+                             <li className="flex justify-between items-center"><span>Word Count:</span> <Badge variant="outline">{result.wordCount}</Badge></li>
+                             <li className="flex justify-between items-center"><span>H1 Tags:</span> <Badge variant={result.h1s.length === 1 ? 'outline' : 'destructive'}>{result.h1s.length}</Badge></li>
+                             <li className="flex justify-between items-center"><span>H2 Tags:</span> <Badge variant="outline">{result.h2s.length}</Badge></li>
+                             <li className="flex justify-between items-center"><span>H3 Tags:</span> <Badge variant="outline">{result.h3s.length}</Badge></li>
+                             <li className="flex justify-between items-center"><span>H4 Tags:</span> <Badge variant="outline">{result.h4s.length}</Badge></li>
+                             <li className="flex justify-between items-center"><span>Robots.txt:</span> <Badge variant={result.hasRobotsTxt ? 'default' : 'destructive'}>{result.hasRobotsTxt ? 'Found' : 'Missing'}</Badge></li>
+                             <li className="flex justify-between items-center"><span>Schema Markup:</span> <Badge variant={result.hasSchema ? 'default' : 'destructive'}>{result.hasSchema ? 'Found' : 'Missing'}</Badge></li>
+                        </ul>
+                    </CardContent>
+                </Card>
+            </div>
 
 
             <Card className="bg-card/50 p-6">
                 <CardHeader className="p-0 mb-4">
-                    <CardTitle className="font-headline text-2xl">Recommendations</CardTitle>
+                    <CardTitle className="font-headline text-2xl">Recommendations ({result.recommendations.filter(r => !r.passed).length} issues found)</CardTitle>
+                    <CardDescription>Follow these suggestions to improve your SEO score.</CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Check</TableHead>
-                                <TableHead className="hidden md:table-cell">Category</TableHead>
+                                <TableHead className="hidden md:table-cell">Suggestion</TableHead>
                                 <TableHead className="text-right">Priority</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -231,10 +302,19 @@ const SeoAuditPage = () => {
                                 <TableRow key={rec.id}>
                                     <TableCell>
                                         <p className="font-semibold">{rec.check}</p>
-                                        <p className="text-xs text-muted-foreground">{rec.description}</p>
+                                        <p className="text-xs text-muted-foreground md:hidden">{rec.fix}</p>
                                     </TableCell>
-                                    <TableCell className="hidden md:table-cell">{rec.category}</TableCell>
+                                    <TableCell className="hidden md:table-cell text-xs text-muted-foreground">{rec.fix}</TableCell>
                                     <TableCell className="text-right"><PriorityBadge priority={rec.priority} /></TableCell>
+                                </TableRow>
+                            ))}
+                            {result.recommendations.filter(r => r.passed).map(rec => (
+                                <TableRow key={rec.id} className="opacity-50">
+                                    <TableCell>
+                                        <p className="font-semibold">{rec.check}</p>
+                                    </TableCell>
+                                    <TableCell className="hidden md:table-cell text-xs text-muted-foreground">Passed</TableCell>
+                                    <TableCell className="text-right"><Badge variant="default" className="bg-green-500/20 text-green-400 border-green-500/30">Passed</Badge></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
