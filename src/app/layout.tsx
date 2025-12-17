@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: 'https://github.com/harshvardhan-singh-dhakad/image/blob/main/favicon.jpeg?raw=true',
+    icon: '/favicon.png',
   },
 };
 
