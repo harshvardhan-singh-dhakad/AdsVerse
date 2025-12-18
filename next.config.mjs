@@ -1,19 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async redirects() {
-    return [
+  images: {
+    remotePatterns: [
       {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'www.adsverse.in',
-          },
-        ],
-        destination: 'https://adsverse.in/:path*',
-        permanent: true,
+        protocol: 'https',
+        hostname: 'github.com',
+        port: '',
+        pathname: '/**',
       },
-    ]
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 };
 
