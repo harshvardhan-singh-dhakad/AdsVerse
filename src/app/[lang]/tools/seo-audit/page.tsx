@@ -2,9 +2,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { db, auth } from '@/lib/firebase';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { 
   Search, BarChart2, Smartphone, Zap, Share2, 
   CheckCircle, XCircle, AlertTriangle, ChevronDown, ChevronUp,
@@ -14,6 +14,30 @@ import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationT
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+/* ===========================================
+  FIREBASE CONFIGURATION
+  ===========================================
+*/
+let db: any, auth: any, app: any;
+const appId = 'seo-audit-app';
+
+try {
+    const firebaseConfig = {
+        apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAKBFrXeU5o0o5tMaqeN-wAlF-KwVKtFJQ",
+        authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "synergyflow-digital-p7c0g.firebaseapp.com",
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "synergyflow-digital-p7c0g",
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "synergyflow-digital-p7c0g.appspot.com",
+        messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "867205490601",
+        appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:867205490601:web:a4b9a8f0cd5c93f79346b8"
+    };
+    app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+    db = getFirestore(app);
+    auth = getAuth(app);
+} catch (e) {
+  console.error("Firebase Init Error:", e);
+}
+
 
 /* ===========================================
   CUSTOM SVG CHARTS & VISUALS
