@@ -2,9 +2,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { db, auth } from '@/lib/firebase';
 import { 
   Search, BarChart2, Smartphone, Zap, Share2, 
   CheckCircle, XCircle, AlertTriangle, ChevronDown, ChevronUp,
@@ -199,21 +196,7 @@ const SEOAuditPage = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [report, setReport] = useState<AnalysisResult | null>(null);
-  const [user, setUser] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Auth
-  useEffect(() => {
-    if (!auth) return;
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-            setUser(currentUser);
-        } else {
-            signInAnonymously(auth).catch(console.error);
-        }
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Loading Animation
   useEffect(() => {
@@ -242,13 +225,6 @@ const SEOAuditPage = () => {
       setProgress(100);
       setReport(res);
       
-      if (db && user) {
-        await addDoc(collection(db, "audits", user.uid, "reports"), {
-          ...res,
-          recommendations: res.recommendations.map(r => ({...r})), // Convert to plain objects
-          createdAt: serverTimestamp()
-        });
-      }
     } catch(e: any) {
         setError("Analysis failed. The target website might be blocking automated tools (e.g., using Cloudflare), or it might be a JavaScript-heavy Single-Page Application (SPA) that our tool cannot fully parse at the moment. Please try again with a different website.");
     } finally {
@@ -275,7 +251,6 @@ const SEOAuditPage = () => {
              {report && (
                <Button onClick={() => setReport(null)} variant="ghost" className="text-sm font-medium text-muted-foreground hover:text-primary">New Audit</Button>
              )}
-             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold">Login</Button>
           </div>
         </div>
       </nav>
