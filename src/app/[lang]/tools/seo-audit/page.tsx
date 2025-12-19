@@ -11,6 +11,9 @@ import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationT
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { db, auth } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 
 /* ===========================================
   CUSTOM SVG CHARTS & VISUALS
@@ -197,7 +200,7 @@ const SEOAuditPage = () => {
   const [progress, setProgress] = useState(0);
   const [report, setReport] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  
   // Loading Animation
   useEffect(() => {
     if (loading) {
@@ -238,7 +241,7 @@ const SEOAuditPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
+    <div className="min-h-screen font-sans text-foreground">
       
       {/* NAVBAR */}
       <nav className="bg-card border-b border-border sticky top-0 z-50">
@@ -257,7 +260,7 @@ const SEOAuditPage = () => {
 
       {/* SEARCH / LOADING */}
       {!report && (
-        <div className="pt-20 pb-32 text-center px-4 bg-gradient-to-b from-background to-background/80">
+        <div className="pt-20 pb-32 text-center px-4">
           <h1 className="text-3xl md:text-5xl font-extrabold text-foreground mb-4">
             SEO Audit & Reporting Tool
           </h1>
