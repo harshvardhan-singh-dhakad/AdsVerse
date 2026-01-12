@@ -200,6 +200,20 @@ const SEOAuditPage = () => {
   const [progress, setProgress] = useState(0);
   const [report, setReport] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+            setUser(currentUser);
+        } else {
+            signInAnonymously(auth).catch((error) => {
+                console.error("Anonymous sign-in failed:", error);
+                setError("Could not initialize analysis session. Please try again later.");
+            });
+        }
+    });
+  }, []);
   
   // Loading Animation
   useEffect(() => {
@@ -217,7 +231,11 @@ const SEOAuditPage = () => {
 
   const handleAudit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url) return;
+    if (!url || !user) {
+        if (!user) setError("Analysis session not ready. Please wait a moment and try again.");
+        return;
+    };
+
     setLoading(true);
     setReport(null);
     setError(null);
@@ -227,6 +245,19 @@ const SEOAuditPage = () => {
       const res = await analyzeUrl(url);
       setProgress(100);
       setReport(res);
+
+      // Save report to Firestore
+      try {
+        await addDoc(collection(db, "audits"), {
+            userId: user.uid,
+            url: res.url,
+            score: res.overallScore.score,
+            createdAt: serverTimestamp()
+        });
+      } catch (dbError) {
+        console.warn("Could not save audit report to Firestore:", dbError);
+        // We don't show this error to the user as the main analysis was successful.
+      }
       
     } catch(e: any) {
         setError("Analysis failed. The target website might be blocking automated tools (e.g., using Cloudflare), or it might be a JavaScript-heavy Single-Page Application (SPA) that our tool cannot fully parse at the moment. Please try again with a different website.");
@@ -276,7 +307,7 @@ const SEOAuditPage = () => {
                value={url}
                onChange={e => setUrl(e.target.value)}
              />
-             <Button type="submit" disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 font-bold flex items-center gap-2 rounded-md">
+             <Button type="submit" disabled={loading || !user} className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 font-bold flex items-center gap-2 rounded-md">
                {loading ? 'ANALYSING...' : 'AUDIT'} <Search size={18} />
              </Button>
           </form>
@@ -409,3 +440,5 @@ const SEOAuditPage = () => {
 };
 
 export default SEOAuditPage;
+
+    
