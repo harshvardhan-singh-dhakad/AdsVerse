@@ -1,22 +1,11 @@
 
+"use client";
+
 import { Check } from "lucide-react";
-import { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-    title: "Complete Digital Marketing Services | AdsVerse",
-    description: "TOP Digital Marketing Services for Small Business | Pricing, Plans & packages| SEO, PPC, Ads, Social media & CRM integration",
-    alternates: {
-        canonical: '/our-services',
-        languages: {
-            'en': '/en/our-services',
-            'hi': '/hi/our-services',
-        },
-    },
-};
 
 const digitalMarketingServices = [
   {
