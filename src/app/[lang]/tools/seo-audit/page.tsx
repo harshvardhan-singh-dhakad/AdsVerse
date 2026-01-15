@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import Link from 'next/link';
 
 interface jsPDFWithAutoTable extends jsPDF {
   autoTable: (options: any) => jsPDF;
@@ -484,3 +485,5 @@ const SEOAuditPage = () => {
 };
 
 export default SEOAuditPage;
+
+    
