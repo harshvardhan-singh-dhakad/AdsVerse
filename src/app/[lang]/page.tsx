@@ -292,7 +292,7 @@ export default function HomePage() {
               <Link href="/contact">Get Your Free Proposal</Link>
             </Button>
             <Button asChild size="lg" variant="link" className="text-accent">
-              <Link href="/services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
+              <Link href="/our-services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>
         </div>
