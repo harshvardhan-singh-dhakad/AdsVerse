@@ -331,7 +331,8 @@ export default function HomePage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {featuredServices.map(service => (
-                       <Card key={service.title} className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden group">
+                     <Link key={service.title} href={service.link} className="block group">
+                       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden h-full">
                            <CardHeader>
                               <div className="flex items-center gap-4">
                                 {service.icon}
@@ -341,14 +342,8 @@ export default function HomePage() {
                            <CardContent className="flex-grow">
                                <p className="text-foreground/90">{service.description}</p>
                            </CardContent>
-                           <CardFooter>
-                               <Button asChild variant="link" className="p-0 text-accent font-semibold">
-                                 <Link href={service.link}>
-                                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                                 </Link>
-                               </Button>
-                           </CardFooter>
                        </Card>
+                     </Link>
                   ))}
               </div>
           </div>
