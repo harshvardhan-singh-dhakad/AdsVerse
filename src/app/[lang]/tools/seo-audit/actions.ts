@@ -1,16 +1,16 @@
 
 'use server';
 
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend } from 'recharts';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
 // Interfaces for structured results
 export interface SeoCategoryScores {
-  onPage: { score: number, grade: string };
-  performance: { score: number, grade: string };
-  usability: { score: number, grade: string };
-  social: { score: number, grade: string };
+  onPage: { score: number; grade: string };
+  technical: { score: number; grade: string };
+  performance: { score: number; grade: string };
+  accessibility: { score: number; grade: string };
+  social: { score: number; grade: string };
 }
 
 export interface Recommendation {
@@ -18,14 +18,20 @@ export interface Recommendation {
   check: string;
   description: string;
   fix: string;
-  category: 'On-Page SEO' | 'Performance' | 'Usability' | 'Social' | 'Technical SEO';
+  category: 'On-Page SEO' | 'Performance' | 'Accessibility' | 'Social' | 'Technical SEO';
   priority: 'High' | 'Medium' | 'Low';
   passed: boolean;
 }
 
+export interface LinkCounts {
+    internal: number;
+    external: number;
+    nofollow: number;
+}
+
 export interface AnalysisResult {
   url: string;
-  overallScore: { score: number, grade: string };
+  overallScore: { score: number; grade: string };
   categoryScores: SeoCategoryScores;
   recommendations: Recommendation[];
   title: string;
@@ -35,8 +41,13 @@ export interface AnalysisResult {
   h3s: string[];
   h4s: string[];
   wordCount: number;
+  linkCounts: LinkCounts;
   hasSchema: boolean;
   hasRobotsTxt: boolean;
+  hasSitemapInRobots: boolean;
+  lang: string | undefined;
+  canonical: string | undefined;
+  loadTime: number;
 }
 
 function getGrade(score: number): string {
@@ -90,31 +101,40 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const h2s = $('h2').map((_, el) => $(el).text().trim()).get();
   const h3s = $('h3').map((_, el) => $(el).text().trim()).get();
   const h4s = $('h4').map((_, el) => $(el).text().trim()).get();
+  const lang = $('html').attr('lang');
+  const canonical = $('link[rel="canonical"]').attr('href');
   
-  const wordCount = $('body').text().split(/\s+/).filter(Boolean).length;
+  const wordCount = $('body').text().replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, "").replace(/<style[^>]*>([\S\s]*?)<\/style>/gmi, "").split(/\s+/).filter(Boolean).length;
   checks.wordCountOk = wordCount > 300;
   
   checks.titleOk = title.length > 10 && title.length < 60;
   checks.metaDescriptionOk = metaDescription.length > 70 && metaDescription.length < 160;
-  checks.h1Ok = h1s.length === 1;
+  checks.h1Ok = h1s.length === 1 && !!h1s[0];
 
   const images = {
     total: $('img').length,
     withAlt: $('img[alt][alt!=""]').length,
   };
-  checks.altTagsOk = images.total === 0 || (images.withAlt / images.total > 0.8 && images.withAlt > 0);
+  checks.altTagsOk = images.total === 0 || (images.withAlt / images.total >= 0.9);
 
   checks.isHttps = siteUrl.protocol === 'https:';
   checks.loadTimeOk = loadTime < 2.5;
 
+  let robotsTxtContent = '';
   let hasRobotsTxt = false;
   try {
     const robotsRes = await axios.get(`${siteUrl.protocol}//${siteUrl.hostname}/robots.txt`, { timeout: 5000 });
-    hasRobotsTxt = robotsRes.status === 200;
+    if (robotsRes.status === 200 && robotsRes.data) {
+      hasRobotsTxt = true;
+      robotsTxtContent = robotsRes.data;
+    }
   } catch (e) { /* ignore */ }
   checks.robotsTxtOk = hasRobotsTxt;
+  checks.sitemapInRobotsOk = hasRobotsTxt && /sitemap/i.test(robotsTxtContent);
 
   checks.hasSchema = $('script[type="application/ld+json"]').length > 0;
+  checks.langOk = !!lang;
+  checks.canonicalOk = !!canonical;
 
   const viewport = $('meta[name="viewport"]').attr('content');
   checks.mobileFriendly = !!viewport && viewport.includes('width=device-width');
@@ -123,51 +143,94 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const twitterTitle = $('meta[name="twitter:title"]').attr('content');
   checks.socialTagsOk = !!(ogTitle && twitterTitle);
 
+  const linkCounts: LinkCounts = { internal: 0, external: 0, nofollow: 0 };
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (!href) return;
+    
+    if ($(el).attr('rel')?.includes('nofollow')) {
+        linkCounts.nofollow++;
+    }
+
+    try {
+        const linkUrl = new URL(href, siteUrl.href);
+        if (linkUrl.hostname === siteUrl.hostname) {
+            linkCounts.internal++;
+        } else {
+            linkCounts.external++;
+        }
+    } catch (e) {
+        // Invalid URL, treat as internal/relative
+        if (!href.startsWith('http') && !href.startsWith('//')) {
+            linkCounts.internal++;
+        }
+    }
+  });
+
 
   // --- Scoring ---
   let onPagePoints = 0;
-  if (checks.titleOk) onPagePoints += 25;
-  if (checks.metaDescriptionOk) onPagePoints += 20;
-  if (checks.h1Ok) onPagePoints += 20;
-  if (checks.altTagsOk) onPagePoints += 15; else if (images.withAlt > 0) onPagePoints += 5;
-  if (checks.wordCountOk) onPagePoints += 20; else if (wordCount > 100) onPagePoints += 5;
-  const onPageScore = onPagePoints;
+  if (checks.titleOk) onPagePoints += 20;
+  if (checks.metaDescriptionOk) onPagePoints += 15;
+  if (checks.h1Ok) onPagePoints += 15;
+  if (checks.wordCountOk) onPagePoints += 15;
+  if (linkCounts.internal > 10) onPagePoints += 10;
+  if (lang) onPagePoints += 5;
+  if ($('h2').length > 0) onPagePoints += 5;
+  if ($('h3').length > 0) onPagePoints += 5;
+  const onPageScore = Math.min(100, onPagePoints);
 
+  let technicalPoints = 0;
+  if (checks.isHttps) technicalPoints += 30;
+  if (checks.robotsTxtOk) technicalPoints += 20;
+  if (checks.sitemapInRobotsOk) technicalPoints += 10;
+  if (checks.canonicalOk) technicalPoints += 20;
+  if (!/index/.test(robotsTxtContent)) technicalPoints += 10; // Basic check for disallowing indexing
+  if (!/\//.test(robotsTxtContent)) technicalPoints += 10;
+  const technicalScore = Math.min(100, technicalPoints);
+  
   let performancePoints = 0;
-  if (checks.loadTimeOk) performancePoints += 100; else if (loadTime < 4) performancePoints += 60; else performancePoints += 20;
+  if (checks.loadTimeOk) performancePoints += 100; 
+  else if (loadTime < 4) performancePoints += 60; 
+  else performancePoints += 20;
   const performanceScore = performancePoints;
   
-  let usabilityPoints = 0;
-  if (checks.isHttps) usabilityPoints += 50;
-  if (checks.mobileFriendly) usabilityPoints += 50;
-  const usabilityScore = usabilityPoints;
+  let accessibilityPoints = 0;
+  if (checks.mobileFriendly) accessibilityPoints += 50;
+  if (checks.altTagsOk) accessibilityPoints += 50;
+  const accessibilityScore = accessibilityPoints;
 
   let socialPoints = 0;
-  if (checks.socialTagsOk) socialPoints += 70; else if(ogTitle || twitterTitle) socialPoints += 20;
+  if (checks.socialTagsOk) socialPoints += 70; 
+  else if(ogTitle || twitterTitle) socialPoints += 30;
   if (checks.hasSchema) socialPoints += 30;
   const socialScore = socialPoints;
 
-  const overallScoreVal = Math.round((onPageScore + performanceScore + usabilityScore + socialScore) / 4);
+  const overallScoreVal = Math.round((onPageScore + technicalScore + performanceScore + accessibilityScore + socialScore) / 5);
 
   const categoryScores: SeoCategoryScores = {
     onPage: { score: onPageScore, grade: getGrade(onPageScore) },
+    technical: { score: technicalScore, grade: getGrade(technicalScore) },
     performance: { score: performanceScore, grade: getGrade(performanceScore) },
-    usability: { score: usabilityScore, grade: getGrade(usabilityScore) },
+    accessibility: { score: accessibilityScore, grade: getGrade(accessibilityScore) },
     social: { score: socialScore, grade: getGrade(socialScore) },
   };
 
   const recommendations: Recommendation[] = [
-    { id: 'https', check: 'HTTPS Enabled', description: 'Your site is served over a secure (HTTPS) connection.', fix: 'Ensure your entire site uses HTTPS to protect user data and build trust.', category: 'Usability', priority: 'High', passed: checks.isHttps },
-    { id: 'speed', check: 'Page Load Speed', description: `Your page loaded in ${loadTime.toFixed(2)} seconds.`, fix: 'Optimize images, leverage browser caching, and minify CSS/JS to get your load time under 2.5 seconds.', category: 'Performance', priority: 'High', passed: checks.loadTimeOk },
-    { id: 'title', check: 'Title Tag Length', description: 'Your title tag is the main headline in search results.', fix: 'Ensure your title is between 10 and 60 characters long to avoid being cut off in search results.', category: 'On-Page SEO', priority: 'High', passed: checks.titleOk },
-    { id: 'meta', check: 'Meta Description', description: 'The meta description summarizes your page content in search results.', fix: 'Write a compelling meta description between 70 and 160 characters to encourage clicks.', category: 'On-Page SEO', priority: 'High', passed: checks.metaDescriptionOk },
-    { id: 'h1', check: 'Single H1 Tag', description: 'The H1 tag is the main heading on your page.', fix: 'Your page should have exactly one H1 tag to clearly define its main topic for search engines.', category: 'On-Page SEO', priority: 'High', passed: checks.h1Ok },
-    { id: 'mobile', check: 'Mobile-Friendliness', description: 'A mobile-friendly site is essential for modern SEO.', fix: 'Ensure your site has a responsive design and a viewport meta tag.', category: 'Usability', priority: 'High', passed: checks.mobileFriendly },
-    { id: 'content', check: 'Content Word Count', description: 'Sufficient content helps search engines understand your page.', fix: 'Aim for at least 300 words of valuable, relevant content on your most important pages.', category: 'On-Page SEO', priority: 'Medium', passed: checks.wordCountOk },
-    { id: 'alt', check: 'Image Alt Text', description: 'Alt text describes your images to search engines and visually impaired users.', fix: 'Add descriptive alt text to all important images to improve accessibility and image SEO.', category: 'On-Page SEO', priority: 'Medium', passed: checks.altTagsOk },
-    { id: 'robots', check: 'Robots.txt File', description: 'A robots.txt file guides search engines on how to crawl your site.', fix: 'Create a robots.txt file to control which parts of your site search engines can and cannot access.', category: 'Technical SEO', priority: 'Low', passed: checks.robotsTxtOk },
-    { id: 'schema', check: 'Schema Markup', description: 'Schema markup helps search engines understand your content better.', fix: 'Implement structured data (like LocalBusiness or Article schema) to enable rich snippets in search results.', category: 'On-Page SEO', priority: 'Low', passed: checks.hasSchema },
-    { id: 'social', check: 'Social Meta Tags', description: 'Open Graph and Twitter Cards control how your content appears when shared.', fix: 'Add Open Graph (for Facebook/LinkedIn) and Twitter Card tags to all pages to optimize for social sharing.', category: 'Social', priority: 'Low', passed: checks.socialTagsOk },
+    { id: 'https', check: 'HTTPS Enabled', description: 'Your site is served over a secure (HTTPS) connection, which is crucial for trust and SEO.', fix: 'Ensure your entire site uses HTTPS. Check for mixed content errors where some resources (like images) are loaded over HTTP.', category: 'Technical SEO', priority: 'High', passed: checks.isHttps },
+    { id: 'speed', check: 'Page Load Speed', description: `Your page loaded in ${loadTime.toFixed(2)} seconds. A fast website improves user experience and rankings.`, fix: 'Optimize images, leverage browser caching, minify CSS/JS, and use a Content Delivery Network (CDN) to get your load time under 2.5 seconds.', category: 'Performance', priority: 'High', passed: checks.loadTimeOk },
+    { id: 'title', check: 'Title Tag', description: 'Your title tag is the main headline in search results and should be concise and descriptive.', fix: 'Write a unique and compelling title between 10 and 60 characters long. Include your main target keyword near the beginning.', category: 'On-Page SEO', priority: 'High', passed: checks.titleOk },
+    { id: 'meta', check: 'Meta Description', description: 'The meta description summarizes your page content, encouraging users to click from search results.', fix: 'Write a unique and engaging meta description between 70 and 160 characters. Think of it as ad copy for your page.', category: 'On-Page SEO', priority: 'High', passed: checks.metaDescriptionOk },
+    { id: 'h1', check: 'Single H1 Tag', description: 'The H1 tag is the main heading on your page, telling users and search engines what the page is about.', fix: 'Your page should have exactly one H1 tag that is descriptive and contains your primary keyword.', category: 'On-Page SEO', priority: 'High', passed: checks.h1Ok },
+    { id: 'mobile', check: 'Mobile-Friendliness', description: 'A mobile-friendly site is essential for modern SEO as most users search on mobile devices.', fix: 'Ensure your site has a responsive design and includes the viewport meta tag. Test your site on various mobile devices.', category: 'Accessibility', priority: 'High', passed: checks.mobileFriendly },
+    { id: 'content', check: 'Content Word Count', description: `Your page has ${wordCount} words. In-depth content tends to rank better.`, fix: 'For important pages, aim for at least 300 words of valuable, relevant, and well-structured content that fully answers a user\'s query.', category: 'On-Page SEO', priority: 'Medium', passed: checks.wordCountOk },
+    { id: 'alt', check: 'Image Alt Text', description: `You are using alt text on ${images.withAlt} of your ${images.total} images.`, fix: 'Add descriptive alt text to all important images to improve accessibility for visually impaired users and help search engines understand image content.', category: 'Accessibility', priority: 'Medium', passed: checks.altTagsOk },
+    { id: 'robots', check: 'Robots.txt File', description: 'A robots.txt file guides search engines on how to crawl your site.', fix: 'Create a valid robots.txt file in your root directory. Ensure you aren\'t accidentally blocking important pages or resources.', category: 'Technical SEO', priority: 'Medium', passed: checks.robotsTxtOk },
+    { id: 'sitemap', check: 'Sitemap in Robots.txt', description: 'Including your sitemap in robots.txt helps search engines find all your pages.', fix: 'Add a line to your robots.txt file like: "Sitemap: https://yourdomain.com/sitemap.xml".', category: 'Technical SEO', priority: 'Low', passed: checks.sitemapInRobotsOk },
+    { id: 'canonical', check: 'Canonical Tag', description: 'A canonical tag prevents duplicate content issues by specifying the "preferred" version of a page.', fix: 'Ensure all pages have a self-referencing canonical tag, or a tag pointing to the original version if the content is syndicated.', category: 'Technical SEO', priority: 'Medium', passed: checks.canonicalOk },
+    { id: 'lang', check: 'Language Declaration', description: 'Declaring the language of the page helps search engines and browsers.', fix: 'Add a "lang" attribute to your <html> tag, for example: <html lang="en">.', category: 'On-Page SEO', priority: 'Low', passed: checks.langOk },
+    { id: 'schema', check: 'Schema Markup', description: 'Schema markup helps search engines understand your content better and can enable rich snippets.', fix: 'Implement structured data (e.g., LocalBusiness, Article, Product schema) using JSON-LD to enhance your search appearance.', category: 'Social', priority: 'Low', passed: checks.hasSchema },
+    { id: 'social', check: 'Social Meta Tags', description: 'Open Graph and Twitter Cards control how your content appears when shared on social media.', fix: 'Add Open Graph (og:title, og:description, og:image) and Twitter Card tags to all shareable pages for optimized social sharing.', category: 'Social', priority: 'Low', passed: checks.socialTagsOk },
   ];
 
   return {
@@ -179,9 +242,12 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     metaDescription,
     h1s, h2s, h3s, h4s,
     wordCount,
+    linkCounts,
     hasSchema: checks.hasSchema,
     hasRobotsTxt: checks.robotsTxtOk,
+    hasSitemapInRobots: checks.sitemapInRobotsOk,
+    lang,
+    canonical,
+    loadTime
   };
 }
-
-    
