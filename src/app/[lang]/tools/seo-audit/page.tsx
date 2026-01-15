@@ -11,6 +11,14 @@ import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationT
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+// Extend jsPDF with autoTable
+interface jsPDFWithAutoTable extends jsPDF {
+  autoTable: (options: any) => jsPDF;
+}
+
 
 /* ===========================================
   CUSTOM SVG CHARTS & VISUALS
@@ -240,6 +248,56 @@ const SEOAuditPage = () => {
       return report.recommendations.filter(r => r.category === category);
   }
 
+  const generatePdf = () => {
+    if (!report) return;
+    const doc = new jsPDF() as jsPDFWithAutoTable;
+
+    // Title
+    doc.setFontSize(22);
+    doc.text("SEO Audit Report", 105, 20, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text(`For: ${report.url}`, 105, 30, { align: 'center' });
+    doc.line(15, 35, 195, 35);
+
+    // Overall Score
+    doc.setFontSize(18);
+    doc.text("Overall Score", 105, 45, { align: 'center' });
+    doc.setFontSize(40);
+    let scoreColor = '#ff0000';
+    if(report.overallScore.score >= 70) scoreColor = '#ffc107';
+    if(report.overallScore.score >= 90) scoreColor = '#4caf50';
+    doc.setTextColor(scoreColor);
+    doc.text(report.overallScore.grade, 105, 65, { align: 'center' });
+    doc.setTextColor(0);
+    doc.line(15, 75, 195, 75);
+
+    // Summary
+    doc.setFontSize(14);
+    doc.text("On-Page Summary", 20, 85);
+    doc.setFontSize(10);
+    doc.text(`Title: ${report.title}`, 20, 95);
+    doc.text(`Meta Description: ${doc.splitTextToSize(report.metaDescription, 170)}`, 20, 102);
+    doc.text(`Word Count: ${report.wordCount}`, 20, 115);
+    doc.text(`H1 Count: ${report.h1s.length}`, 20, 122);
+    doc.line(15, 130, 195, 130);
+    
+    // Recommendations
+    const highPriority = report.recommendations.filter(r => !r.passed && r.priority === 'High');
+    const mediumPriority = report.recommendations.filter(r => !r.passed && r.priority === 'Medium');
+
+    doc.setFontSize(14);
+    doc.text("Top Recommendations", 20, 140);
+    doc.autoTable({
+        startY: 145,
+        head: [['Priority', 'Recommendation', 'Category']],
+        body: [...highPriority, ...mediumPriority].map(rec => [rec.priority, rec.fix, rec.category]),
+        theme: 'striped',
+        headStyles: { fillColor: [41, 128, 185] },
+    });
+
+    doc.save(`SEO_Audit_${new URL(report.url).hostname}.pdf`);
+  };
+
   return (
     <div className="min-h-screen font-sans text-foreground">
       
@@ -367,7 +425,7 @@ const SEOAuditPage = () => {
                   ))}
                 </nav>
                 <div className="p-4 border-t mt-2">
-                  <Button className="w-full bg-primary text-primary-foreground py-2 rounded font-bold text-sm mb-2 flex items-center justify-center gap-2">
+                   <Button onClick={generatePdf} className="w-full bg-primary text-primary-foreground py-2 rounded font-bold text-sm mb-2 flex items-center justify-center gap-2">
                     <Download size={14} /> PDF
                   </Button>
                 </div>
