@@ -9,6 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
 import { Input } from "@/components/ui/input";
+import { AnimatedCounter } from "@/components/pages/animated-counter";
 
 export const metadata: Metadata = {
   title: "AdsVerse | Digital Marketing That Drives Results",
@@ -358,19 +359,27 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">400%</p>
+              <div className="text-5xl font-extrabold text-primary">
+                <AnimatedCounter target={400} suffix="%" />
+              </div>
               <p className="text-muted-foreground mt-2">Increase in Organic Traffic</p>
             </Card>
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">3x</p>
+              <div className="text-5xl font-extrabold text-primary">
+                <AnimatedCounter target={3} suffix="x" />
+              </div>
               <p className="text-muted-foreground mt-2">Higher Conversion Rates</p>
             </Card>
             <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">50%</p>
+              <div className="text-5xl font-extrabold text-primary">
+                <AnimatedCounter target={50} suffix="%" />
+              </div>
               <p className="text-muted-foreground mt-2">Reduction in Ad Spend</p>
             </Card>
              <Card className="bg-primary/20 text-center p-6">
-              <p className="text-5xl font-extrabold text-primary">10x</p>
+              <div className="text-5xl font-extrabold text-primary">
+                <AnimatedCounter target={10} suffix="x" />
+              </div>
               <p className="text-muted-foreground mt-2">Return on Investment</p>
             </Card>
           </div>
