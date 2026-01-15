@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -45,7 +46,7 @@ export function FloatingActionButton() {
     <>
       <div className="fixed bottom-6 right-5 z-50">
         <div className="relative flex flex-col items-center gap-2">
-          {socialLinks.map((link, index) => (
+          {isOpen && socialLinks.map((link, index) => (
             <div
               key={link.label}
               className={cn(
@@ -54,7 +55,7 @@ export function FloatingActionButton() {
                   ? "translate-y-0 opacity-100"
                   : "translate-y-4 opacity-0 pointer-events-none"
               )}
-              style={{ transitionDelay: isOpen ? `${index * 50}ms` : "0ms" }}
+              style={{ transitionDelay: `${index * 50}ms` }}
             >
               <Button
                 asChild
