@@ -277,7 +277,7 @@ const SEOAuditPage = () => {
         head: [['Status', 'Check', 'Priority', 'Category']],
         body: report.recommendations.map(rec => [rec.passed ? 'PASS' : 'FAIL', rec.check, rec.priority, rec.category]),
         theme: 'striped',
-        didParseCell: function(data) {
+        didParseCell: function(data: any) {
           if (data.column.index === 0 && data.cell.section === 'body') {
             if (data.cell.raw === 'PASS') {
               data.cell.styles.textColor = '#16a34a'; // green
