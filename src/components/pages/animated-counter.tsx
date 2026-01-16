@@ -40,7 +40,7 @@ export function AnimatedCounter({
           observer.disconnect();
         }
       },
-      { threshold: 0.1, triggerOnce: true }
+      { threshold: 0.1 }
     );
 
     if (ref.current) {
