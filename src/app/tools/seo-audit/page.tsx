@@ -6,7 +6,7 @@ import {
   Search, Smartphone, Zap, Share2, Wrench, CheckCircle, XCircle, AlertTriangle, 
   ChevronDown, ChevronUp, Download, Info
 } from 'lucide-react';
-import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationType } from './actions';
+import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationType } from '../../[lang]/tools/seo-audit/actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
