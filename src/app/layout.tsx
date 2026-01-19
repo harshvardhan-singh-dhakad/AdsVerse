@@ -69,14 +69,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico?v=7', sizes: 'any', type: 'image/x-icon' },
-      { url: '/favicon-16x16.png?v=7', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png?v=7', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico?v=8', sizes: 'any', type: 'image/x-icon' },
+      { url: '/favicon-16x16.png?v=8', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png?v=8', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png?v=7', sizes: '180x180' },
+      { url: '/apple-touch-icon.png?v=8', sizes: '180x180' },
     ],
-    shortcut: '/favicon.ico?v=7',
+    shortcut: '/favicon.ico?v=8',
   },
 };
 
