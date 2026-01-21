@@ -213,6 +213,11 @@ const jsonLd = {
         "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=",
         "https://wa.me/919977646156"
       ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "11"
+      },
       "review": testimonials.map(t => ({
         "@type": "Review",
         "author": {
