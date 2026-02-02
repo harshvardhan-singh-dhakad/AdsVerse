@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, Smartphone, Zap, Share2, Wrench, CheckCircle, XCircle, AlertTriangle, 
-  ChevronDown, ChevronUp, Download, Info
+  ChevronDown, ChevronUp, Download, Info, ShieldCheck
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationType } from './actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 interface jsPDFWithAutoTable extends jsPDF {
   autoTable: (options: any) => jsPDF;
@@ -209,7 +210,7 @@ const SEOAuditPage = () => {
         doc.setFontSize(22);
         doc.text("SEO Audit Report", 105, 20, { align: 'center' });
         doc.setFontSize(12);
-        doc.text(report.url, 105, 28, { align: 'center' });
+        doc.text(report.finalUrl, 105, 28, { align: 'center' });
         doc.line(15, 35, 195, 35);
     };
 
@@ -245,7 +246,7 @@ const SEOAuditPage = () => {
         head: [['Category', 'Score', 'Grade']],
         body: Object.entries(report.categoryScores).map(([key, value]) => [key.charAt(0).toUpperCase() + key.slice(1), `${value.score}/100`, value.grade]),
         theme: 'striped',
-        headStyles: { fillColor: [41, 128, 185] },
+        headStyles: { fillColor: [142, 68, 173] }, // purple
     });
     yPos = (doc as any).lastAutoTable.finalY + 15;
     
@@ -289,7 +290,6 @@ const SEOAuditPage = () => {
           }
         },
     });
-    yPos = (doc as any).lastAutoTable.finalY + 15;
     
     // Fixes for failed checks
     const failedChecks = report.recommendations.filter(r => !r.passed);
@@ -310,7 +310,7 @@ const SEOAuditPage = () => {
     }
 
     addFooter();
-    doc.save(`SEO_Audit_${new URL(report.url).hostname}.pdf`);
+    doc.save(`SEO_Audit_${new URL(report.finalUrl).hostname}.pdf`);
   };
 
   const categoryIcons = {
@@ -319,6 +319,7 @@ const SEOAuditPage = () => {
       performance: Zap,
       accessibility: Smartphone,
       social: Share2,
+      security: ShieldCheck,
   }
 
   return (
@@ -332,7 +333,7 @@ const SEOAuditPage = () => {
           </Link>
           <div className="flex gap-4">
              {report && (
-               <Button onClick={() => setReport(null)} variant="ghost" className="text-sm font-medium text-muted-foreground hover:text-primary">New Audit</Button>
+               <Button onClick={() => { setReport(null); setUrl(''); }} variant="ghost" className="text-sm font-medium text-muted-foreground hover:text-primary">New Audit</Button>
              )}
           </div>
         </div>
@@ -388,7 +389,8 @@ const SEOAuditPage = () => {
           <div className="bg-card rounded-xl shadow-sm border border-border p-6 md:p-8 mb-8">
             <div className="flex flex-col lg:flex-row gap-8 items-center">
               <div className="flex flex-col items-center text-center lg:w-1/3">
-                 <h2 className="text-xl font-bold text-foreground mb-6 break-all">Report for: {report.url}</h2>
+                 <h2 className="text-xl font-bold text-foreground mb-2 break-all">Report for: {report.finalUrl}</h2>
+                 {report.redirected && <Badge variant="secondary" className='mb-4'>Redirected from {report.url}</Badge>}
                  <GradeCircle grade={report.overallScore.grade} score={report.overallScore.score} />
                  <p className={`mt-4 font-bold px-3 py-1 rounded text-sm ${report.overallScore.score < 70 ? 'text-red-500 bg-red-50 dark:bg-red-500/10' : 'text-green-500 bg-green-50 dark:bg-green-500/10'}`}>
                    {report.overallScore.score < 70 ? 'Needs Improvement' : 'Good Results!'}
@@ -425,11 +427,12 @@ const SEOAuditPage = () => {
               <div className="bg-card rounded-lg shadow-sm border border-border sticky top-24">
                 <div className="p-4 border-b bg-card-foreground/5 font-bold text-foreground">Audit Sections</div>
                 <nav className="p-2 text-sm">
-                  {Object.keys(report.categoryScores).map((key) => (
-                    <a key={key} href={`#${key}`} className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1 capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </a>
-                  ))}
+                  <a href="#on-page-seo" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">On-Page SEO</a>
+                  <a href="#technical-seo" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">Technical SEO</a>
+                  <a href="#performance" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">Performance</a>
+                  <a href="#accessibility" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">Accessibility</a>
+                   <a href="#security" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">Security</a>
+                  <a href="#social" className="block px-3 py-2 text-muted-foreground hover:bg-accent/10 hover:text-primary rounded mb-1">Structured Data & Social</a>
                 </nav>
               </div>
             </aside>
@@ -475,7 +478,21 @@ const SEOAuditPage = () => {
 
               <ReportSection id="accessibility" icon={categoryIcons.accessibility} title="Accessibility" data={{...report.categoryScores.accessibility, recommendations: getRecsByCategory('Accessibility')}} />
 
-              <ReportSection id="social" icon={categoryIcons.social} title="Social" data={{...report.categoryScores.social, recommendations: getRecsByCategory('Social')}} />
+              <ReportSection id="security" icon={categoryIcons.security} title="Security" data={{...report.categoryScores.social /* temp score */, recommendations: getRecsByCategory('Security')}} />
+
+              <ReportSection id="social" icon={categoryIcons.social} title="Structured Data & Social" data={{...report.categoryScores.social, recommendations: getRecsByCategory('Social')}} />
+              
+              <div id="off-page-seo" className="bg-card rounded-lg shadow-sm border border-border p-6 scroll-mt-24">
+                <CardHeader className="p-0 mb-4">
+                  <CardTitle className="text-lg font-bold text-foreground">Off-Page SEO</CardTitle>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <p className='text-sm text-muted-foreground'>
+                    Off-page SEO analysis, which includes checking backlinks and referring domains, requires access to massive, constantly updated databases of web data. These checks are beyond the scope of a real-time analysis tool and are best performed using specialized subscription services like Ahrefs or SEMrush.
+                  </p>
+                </CardContent>
+              </div>
+
             </main>
           </div>
         </div>
@@ -485,4 +502,3 @@ const SEOAuditPage = () => {
 };
 
 export default SEOAuditPage;
-
