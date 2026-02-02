@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /*?_rsc=*
+Disallow: /api/
+Disallow: /?_rsc=*
 
 Sitemap: https://adsverse.in/sitemap.xml
