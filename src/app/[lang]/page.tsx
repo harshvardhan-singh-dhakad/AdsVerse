@@ -208,15 +208,9 @@ const jsonLd = {
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       "opens": "09:00",
-      "closes": "18:00"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": "Saturday",
-      "opens": "10:00",
-      "closes": "15:00"
+      "closes": "19:30"
     }
   ],
   "aggregateRating": {
@@ -228,7 +222,12 @@ const jsonLd = {
     "@type": "Review",
     "author": { "@type": "Person", "name": t.name },
     "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-    "reviewBody": t.text
+    "reviewBody": t.text,
+    "itemReviewed": {
+      "@type": "LocalBusiness",
+      "name": "AdsVerse",
+      "url": "https://adsverse.in"
+    }
   })),
   "paymentAccepted": ["Cash", "Credit Card", "UPI", "NetBanking"],
   "service": [
