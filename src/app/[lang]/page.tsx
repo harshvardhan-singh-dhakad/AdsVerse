@@ -200,10 +200,11 @@ const jsonLd = {
             "Wednesday",
             "Thursday",
             "Friday",
-            "Saturday"
+            "Saturday",
+            "Sunday"
           ],
           "opens": "09:00",
-          "closes": "18:00"
+          "closes": "19:30"
         }
       ],
       "contactPoint": {
