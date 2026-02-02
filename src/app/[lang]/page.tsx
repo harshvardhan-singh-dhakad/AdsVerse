@@ -154,14 +154,6 @@ const testimonials = [
     }
 ];
 
-const clientLogos = [
-    { name: "TechCorp", logo: "https://picsum.photos/seed/logo1/120/40?grayscale" },
-    { name: "Innovate Inc.", logo: "https://picsum.photos/seed/logo2/120/40?grayscale" },
-    { name: "Quantum Leap", logo: "https://picsum.photos/seed/logo3/120/40?grayscale" },
-    { name: "Stellar Solutions", logo: "https://picsum.photos/seed/logo4/120/40?grayscale" },
-    { name: "Apex Industries", logo: "https://picsum.photos/seed/logo5/120/40?grayscale" },
-];
-
 const faqs = [
     {
       question: "How long does it take to see results from SEO?",
@@ -184,111 +176,69 @@ const faqs = [
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
+  "@type": "LocalBusiness",
+  "name": "Adsverse | Top Digital Marketing agency | Automation agency in Indore",
+  "description": "Professional digital marketing, SEO, Social media automation & branding services in Indore, Madhya Pradesh.",
+  "url": "https://adsverse.in",
+  "telephone": "+919685123339",
+  "email": "contact@adsverse.in",
+  "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/insta%26facbook%20card.jpeg?raw=true",
+  "hasMap": "https://maps.app.goo.gl/uT39bw6amkjFBuBUA",
+  "sameAs": [
+    "https://www.facebook.com/share/1E56NG5ZZL/",
+    "https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09",
+    "https://www.linkedin.com/company/dmafia/",
+    "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=",
+    "https://wa.me/919685123339"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "stree no.11 , Near Marriot Hotel",
+    "addressLocality": "Indore",
+    "addressRegion": "MP",
+    "postalCode": "452010",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 22.7503073,
+    "longitude": 75.8824535
+  },
+  "openingHoursSpecification": [
     {
-      "@type": "LocalBusiness",
-      "name": "AdsVerse",
-      "url": "https://adsverse.in",
-      "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
-      "description": "AdsVerse is a full-service digital marketing agency specializing in SEO, Paid Ads, Social Media Management, and Web Development. We help businesses grow online.",
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ],
-          "opens": "09:00",
-          "closes": "19:30"
-        }
-      ],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+91-9685123339",
-        "contactType": "Customer Service",
-        "email": "contact@adsverse.in",
-        "areaServed": "IN",
-        "availableLanguage": ["en", "hi"]
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Scheme No. 54, Vijay Nagar",
-        "addressLocality": "Indore",
-        "postalCode": "452010",
-        "addressCountry": "IN"
-      },
-      "sameAs": [
-        "https://www.facebook.com/share/1E56NG5ZZL/",
-        "https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09",
-        "https://www.linkedin.com/company/dmafia/",
-        "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=",
-        "https://wa.me/919977646156"
-      ],
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "reviewCount": "11"
-      },
-      "review": testimonials.map(t => ({
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": t.name
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "reviewBody": t.text,
-        "itemReviewed": {
-          "@type": "Organization",
-          "name": "AdsVerse",
-           "url": "https://adsverse.in"
-        }
-      }))
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
     },
     {
-      "@type": "WebSite",
-      "url": "https://adsverse.in",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://adsverse.in/search?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "WebPage",
-      "url": "https://adsverse.in",
-      "name": "AdsVerse | Digital Marketing That Drives Results",
-      "description": "We are a data-driven digital marketing agency specializing in SEO, Paid Ads, and Web Development. Partner with us to achieve measurable growth and dominate your market.",
-      "isPartOf": {
-        "@id": "https://adsverse.in/#website"
-      },
-      "breadcrumb": {
-        "@id": "https://adsverse.in/#breadcrumb"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://adsverse.in/#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "10:00",
+      "closes": "15:00"
     }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "11"
+  },
+  "review": testimonials.map(t => ({
+    "@type": "Review",
+    "author": { "@type": "Person", "name": t.name },
+    "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+    "reviewBody": t.text
+  })),
+  "paymentAccepted": ["Cash", "Credit Card", "UPI", "NetBanking"],
+  "service": [
+    {"@type": "Service", "name": "Search Engine Optimization (SEO)"},
+    {"@type": "Service", "name": "Social Media Marketing"},
+    {"@type": "Service", "name": "Paid Advertising (PPC)"},
+    {"@type": "Service", "name": "Website Development"},
+    {"@type": "Service", "name": "Marketing Automation"},
+    {"@type": "Service", "name": "Brand Strategy"},
+    {"@type": "Service", "name": "Content Marketing"}
   ]
 };
 
