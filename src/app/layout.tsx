@@ -69,16 +69,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico?v=10', sizes: 'any', type: 'image/x-icon' },
-      { url: '/favicon-16x16.png?v=10', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png?v=10', sizes: '32x32', type: 'image/png' },
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
-    apple: [
-      { url: '/apple-touch-icon.png?v=10', sizes: '180x180' },
-    ],
-    shortcut: '/favicon.ico?v=10',
+    apple: "/apple-touch-icon.png",
   },
-  manifest: '/manifest.json?v=10',
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
