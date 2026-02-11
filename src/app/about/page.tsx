@@ -96,6 +96,32 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="mb-24">
+        <Card className="bg-card/50 backdrop-blur-sm overflow-hidden border-primary/20">
+          <div className="grid md:grid-cols-3 items-center">
+            <div className="md:col-span-1 h-full">
+              <Image
+                src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/DEEPAK.ABOUT.png?raw=true"
+                alt="Deepak Dhakad"
+                width={400}
+                height={600}
+                data-ai-hint="man professional"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div className="md:col-span-2 p-8 md:p-12">
+              <h2 className="text-3xl font-bold font-headline text-primary mb-2">About Me</h2>
+              <p className="text-xl font-semibold text-accent mb-4">I'm Deepak Dhakad – a Digital Marketing Expert who turns ideas into impactful online experiences.</p>
+              <div className="space-y-4 text-muted-foreground">
+                <p>I specialize in helping businesses grow through strategic digital marketing solutions. From SEO and Social Media Marketing to Paid Advertising, Website & App Development, and cutting-edge AI-powered solutions – I bring a complete package of skills to elevate your brand in the digital world.</p>
+                <p>With deep expertise across every aspect of digital marketing, I don't just create campaigns; I build strategies that drive real results. Whether you're looking to increase your online visibility, engage your audience, or boost conversions, I craft customized solutions tailored to your unique business goals.</p>
+                <p>My approach is simple: understand your vision, leverage the right technologies, and deliver measurable growth. I stay ahead of industry trends, embrace innovation, and focus on what matters most – your success</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </section>
+
       {/* <section className="mb-24">
         <h2 className="text-4xl font-bold text-center mb-12 font-headline">Meet the Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
