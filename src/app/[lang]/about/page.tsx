@@ -107,7 +107,7 @@ export default function AboutPage() {
                 width={400}
                 height={600}
                 data-ai-hint="man professional"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-top rounded-b-[5rem]"
               />
             </div>
             <div className="md:col-span-2 p-8 md:p-12">
