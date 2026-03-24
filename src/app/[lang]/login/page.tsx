@@ -21,6 +21,7 @@ import { Loader2 } from "lucide-react";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [reenterPassword, setReenterPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { toast } = useToast();
@@ -48,6 +49,16 @@ export default function LoginPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    if (password !== reenterPassword) {
+      toast({
+        variant: "destructive",
+        title: "Sign Up Failed",
+        description: "Passwords do not match.",
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       toast({ title: "Sign Up Successful", description: "You are now logged in." });
@@ -82,12 +93,18 @@ export default function LoginPage() {
     }
   };
 
-  const emailPasswordForm = (handler: (e: React.FormEvent) => Promise<void>, buttonText: string) => (
+  const clearForm = () => {
+    setEmail("");
+    setPassword("");
+    setReenterPassword("");
+  };
+
+  const emailPasswordForm = (handler: (e: React.FormEvent) => Promise<void>, buttonText: string, isSignUp = false) => (
     <form onSubmit={handler} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor={`email-${isSignUp ? 'signup' : 'login'}`}>Email</Label>
         <Input
-          id="email"
+          id={`email-${isSignUp ? 'signup' : 'login'}`}
           type="email"
           placeholder="admin@example.com"
           value={email}
@@ -96,15 +113,27 @@ export default function LoginPage() {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor={`password-${isSignUp ? 'signup' : 'login'}`}>Password</Label>
         <Input
-          id="password"
+          id={`password-${isSignUp ? 'signup' : 'login'}`}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
+      {isSignUp && (
+         <div className="space-y-2">
+            <Label htmlFor="reenter-password">Re-enter Password</Label>
+            <Input
+              id="reenter-password"
+              type="password"
+              value={reenterPassword}
+              onChange={(e) => setReenterPassword(e.target.value)}
+              required
+            />
+          </div>
+      )}
       <Button type="submit" className="w-full" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {buttonText}
@@ -120,7 +149,7 @@ export default function LoginPage() {
           <CardDescription>Login or Sign Up to access the dashboard.</CardDescription>
         </CardHeader>
         <CardContent>
-           <Tabs defaultValue="login" className="w-full">
+           <Tabs defaultValue="login" className="w-full" onValueChange={clearForm}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -129,7 +158,7 @@ export default function LoginPage() {
               {emailPasswordForm(handleLogin, "Login")}
             </TabsContent>
             <TabsContent value="signup" className="pt-4">
-              {emailPasswordForm(handleSignUp, "Sign Up")}
+              {emailPasswordForm(handleSignUp, "Sign Up", true)}
             </TabsContent>
           </Tabs>
 
