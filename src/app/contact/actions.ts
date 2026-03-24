@@ -2,8 +2,8 @@
 "use server";
 
 import { z } from "zod";
-import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
-import { initializeFirebase } from "@/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { initializeFirebase } from "@/firebase/server"; // Use server-side initialization
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -42,6 +42,7 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
     console.error("Failed to submit contact form:", errorMessage);
+    // In a real app, you might want to log this to a proper error monitoring service
     return {
       success: false,
       error: "There was a problem submitting your form. Please try again later.",

@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Service": {
@@ -6,10 +7,6 @@
       "type": "object",
       "description": "Represents a digital marketing service offered by SynergyFlow Digital.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Service entity."
-        },
         "name": {
           "type": "string",
           "description": "The name of the service (e.g., 'SEO Optimization')."
@@ -18,15 +15,9 @@
           "type": "string",
           "description": "A detailed description of what the service entails."
         },
-        "iconUrl": {
+        "iconName": {
           "type": "string",
-          "description": "URL to an SVG or other image icon representing the service.",
-          "format": "uri"
-        },
-        "animationJsonUrl": {
-          "type": "string",
-          "description": "URL to a Lottie animation JSON file for the service, if applicable.",
-          "format": "uri"
+          "description": "Name of the Lucide icon to display (e.g., 'TrendingUp')."
         },
         "displayOrder": {
           "type": "number",
@@ -34,10 +25,9 @@
         }
       },
       "required": [
-        "id",
         "name",
         "description",
-        "iconUrl",
+        "iconName",
         "displayOrder"
       ]
     },
@@ -47,61 +37,34 @@
       "type": "object",
       "description": "Represents a project item in the company's portfolio showcasing past work.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the PortfolioItem entity."
-        },
         "title": {
           "type": "string",
           "description": "The title of the portfolio project."
         },
         "description": {
           "type": "string",
-          "description": "A detailed description of the project and its outcomes."
+          "description": "A detailed description of the project and its outcomes. Can contain HTML."
         },
         "category": {
           "type": "string",
-          "description": "The category of the project (e.g., 'Web Design', 'Branding', 'Meta Ads')."
+          "description": "The category of the project (e.g., 'web', 'seo', 'branding')."
         },
         "imageUrl": {
           "type": "string",
           "description": "URL to the main image or thumbnail representing the project.",
           "format": "uri"
         },
-        "clientName": {
-          "type": "string",
-          "description": "The name of the client for whom the project was completed."
-        },
         "projectDate": {
           "type": "string",
           "description": "The completion date of the project.",
           "format": "date"
-        },
-        "liveDemoUrl": {
-          "type": "string",
-          "description": "Optional URL to a live demo or deployed version of the project.",
-          "format": "uri"
-        },
-        "caseStudyUrl": {
-          "type": "string",
-          "description": "Optional URL to a detailed case study document or page for the project.",
-          "format": "uri"
-        },
-        "technologiesUsed": {
-          "type": "array",
-          "description": "A list of technologies, tools, or platforms used in the project.",
-          "items": {
-            "type": "string"
-          }
         }
       },
       "required": [
-        "id",
         "title",
         "description",
         "category",
         "imageUrl",
-        "clientName",
         "projectDate"
       ]
     },
@@ -111,10 +74,6 @@
       "type": "object",
       "description": "Defines a pricing plan or package for digital marketing services.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the PricingPlan entity."
-        },
         "name": {
           "type": "string",
           "description": "The name of the pricing plan (e.g., 'Starter', 'Professional', 'Enterprise')."
@@ -124,12 +83,12 @@
           "description": "A short description or tagline for the pricing plan."
         },
         "price": {
-          "type": "number",
-          "description": "The numerical price of the plan."
-        },
-        "currency": {
           "type": "string",
-          "description": "The currency code for the price (e.g., 'USD', 'EUR')."
+          "description": "The price of the plan, as a string (e.g., '₹9,999' or 'Custom')."
+        },
+        "frequency": {
+          "type": "string",
+          "description": "The frequency of the price (e.g., '/month', 'one-time')."
         },
         "features": {
           "type": "array",
@@ -152,11 +111,9 @@
         }
       },
       "required": [
-        "id",
         "name",
         "description",
         "price",
-        "currency",
         "features",
         "isPopular",
         "callToAction",
@@ -169,10 +126,6 @@
       "type": "object",
       "description": "Represents an inquiry or contact form submission from a potential client.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Lead entity."
-        },
         "name": {
           "type": "string",
           "description": "The name of the person submitting the inquiry."
@@ -186,9 +139,9 @@
           "type": "string",
           "description": "The optional phone number provided by the inquirer."
         },
-        "company": {
+        "subject": {
           "type": "string",
-          "description": "The optional company name provided by the inquirer."
+          "description": "The subject or service of interest."
         },
         "message": {
           "type": "string",
@@ -205,125 +158,20 @@
         }
       },
       "required": [
-        "id",
         "name",
         "email",
+        "subject",
         "message",
         "submissionDate",
         "isRead"
-      ]
-    },
-    "BlogPost": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "BlogPost",
-      "type": "object",
-      "description": "Represents an article or post published on the company's blog.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the BlogPost entity."
-        },
-        "title": {
-          "type": "string",
-          "description": "The title of the blog post."
-        },
-        "slug": {
-          "type": "string",
-          "description": "A URL-friendly identifier for the blog post."
-        },
-        "author": {
-          "type": "string",
-          "description": "The name of the author of the blog post."
-        },
-        "publishDate": {
-          "type": "string",
-          "description": "The date and time when the blog post was initially published.",
-          "format": "date-time"
-        },
-        "updateDate": {
-          "type": "string",
-          "description": "The date and time when the blog post was last updated, if applicable.",
-          "format": "date-time"
-        },
-        "content": {
-          "type": "string",
-          "description": "The full content of the blog post, potentially in HTML or Markdown format."
-        },
-        "excerpt": {
-          "type": "string",
-          "description": "A short summary or preview of the blog post content."
-        },
-        "imageUrl": {
-          "type": "string",
-          "description": "URL to the main image or header image for the blog post.",
-          "format": "uri"
-        },
-        "category": {
-          "type": "string",
-          "description": "The primary category of the blog post (e.g., 'SEO', 'Content Marketing')."
-        },
-        "tags": {
-          "type": "array",
-          "description": "A list of tags associated with the blog post for filtering and search.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "isPublished": {
-          "type": "boolean",
-          "description": "A flag indicating whether the blog post is live and publicly visible."
-        }
-      },
-      "required": [
-        "id",
-        "title",
-        "slug",
-        "author",
-        "publishDate",
-        "content",
-        "excerpt",
-        "imageUrl",
-        "category",
-        "isPublished"
-      ]
-    },
-    "NewsletterSubscriber": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "NewsletterSubscriber",
-      "type": "object",
-      "description": "Represents a user who has subscribed to the company's newsletter.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the NewsletterSubscriber entity."
-        },
-        "email": {
-          "type": "string",
-          "description": "The email address of the subscriber.",
-          "format": "email"
-        },
-        "subscribeDate": {
-          "type": "string",
-          "description": "The date and time when the user subscribed to the newsletter.",
-          "format": "date-time"
-        },
-        "isActive": {
-          "type": "boolean",
-          "description": "A flag indicating whether the newsletter subscription is currently active."
-        }
-      },
-      "required": [
-        "id",
-        "email",
-        "subscribeDate",
-        "isActive"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous"
+      "anonymous",
+      "google.com"
     ]
   },
   "firestore": {
@@ -335,7 +183,7 @@
           "schema": {
             "$ref": "#/backend/entities/Service"
           },
-          "description": "Stores details of various digital marketing services. Publicly readable for display on the website. Only administrators can create, update, or delete services. This collection supports QAPs for public listing. Includes 'displayOrder' for UI presentation."
+          "description": "Stores details of various digital marketing services. Publicly readable for display on the website. Only administrators can create, update, or delete services. Includes 'displayOrder' for UI presentation."
         }
       },
       {
@@ -345,7 +193,7 @@
           "schema": {
             "$ref": "#/backend/entities/PortfolioItem"
           },
-          "description": "Stores entries for the company's portfolio showcasing past work. Publicly readable for display on the website. Only administrators can create, update, or delete portfolio items. This collection supports QAPs for public listing."
+          "description": "Stores entries for the company's portfolio showcasing past work. Publicly readable for display on the website. Only administrators can create, update, or delete portfolio items."
         }
       },
       {
@@ -355,7 +203,7 @@
           "schema": {
             "$ref": "#/backend/entities/PricingPlan"
           },
-          "description": "Contains definitions for different pricing plans or packages. Publicly readable for display on the website. Only administrators can create, update, or delete pricing plans. This collection supports QAPs for public listing. Includes 'displayOrder' for UI presentation."
+          "description": "Contains definitions for different pricing plans or packages. Publicly readable for display on the website. Only administrators can create, update, or delete pricing plans. Includes 'displayOrder' for UI presentation."
         }
       },
       {
@@ -365,37 +213,7 @@
           "schema": {
             "$ref": "#/backend/entities/Lead"
           },
-          "description": "Stores inquiries or contact form submissions from potential clients. New leads can be created by anyone (public write). Only administrators can read, update (e.g., 'isRead' status), or delete leads for management in an admin panel. This collection supports QAPs for admin listing."
-        }
-      },
-      {
-        "path": "/blogPosts/{blogPostId}",
-        "definition": {
-          "entityName": "BlogPost",
-          "schema": {
-            "$ref": "#/backend/entities/BlogPost"
-          },
-          "description": "Master collection for all blog posts, including drafts and published content (managed via 'isPublished' field). Only administrators can read, create, update, or delete posts in this collection. When a post is published (isPublished: true), it is denormalized and copied to '/public_blogPosts/{blogPostId}' for public access. This collection supports QAPs for admin listing."
-        }
-      },
-      {
-        "path": "/public_blogPosts/{blogPostId}",
-        "definition": {
-          "entityName": "BlogPost",
-          "schema": {
-            "$ref": "#/backend/entities/BlogPost"
-          },
-          "description": "Contains only published blog posts, denormalized from '/blogPosts'. All documents in this collection are publicly readable. This segregation ensures Authorization Independence and supports QAPs for public 'list' operations without filtering logic in rules. The 'isPublished' field implicitly true or not relevant here."
-        }
-      },
-      {
-        "path": "/newsletterSubscribers/{subscriberId}",
-        "definition": {
-          "entityName": "NewsletterSubscriber",
-          "schema": {
-            "$ref": "#/backend/entities/NewsletterSubscriber"
-          },
-          "description": "Stores information for users who have subscribed to the newsletter. New subscribers can be created by anyone (public write). Only administrators can read, update (e.g., 'isActive' status), or delete subscribers. This collection supports QAPs for admin listing."
+          "description": "Stores inquiries or contact form submissions from potential clients. New leads can be created by anyone (public write). Only administrators can read, update (e.g., 'isRead' status), or delete leads."
         }
       },
       {
@@ -403,12 +221,16 @@
         "definition": {
           "entityName": "User",
           "schema": {
-            "$ref": "#/backend/entities/User"
+            "type": "object",
+            "properties": {
+              "isAdmin": {
+                "type": "boolean"
+              }
+            }
           },
-          "description": "A top-level collection used for Database Access Control (DBAC) to identify administrators. The existence of a document at `/roles_admin/{userId}` grants administrative privileges to that userId. This enables authorization independence by allowing direct checks for admin status in security rules without complex hierarchical lookups or custom claims. Only a root administrator should be able to manage this collection."
+          "description": "A top-level collection used for Database Access Control (DBAC) to identify administrators. The existence of a document at `/roles_admin/{userId}` grants administrative privileges to that userId."
         }
       }
-    ],
-    "reasoning": "The Firestore structure is designed to be secure, scalable, and easily debuggable, prioritizing Authorization Independence and adhering to Query As You Pay (QAP) principles. \n\n**Authorization Independence:**\n1.  **Admin Roles:** Administrator roles are established via a dedicated top-level collection, `/roles_admin/{adminId}`. This allows security rules to check for admin status directly and independently using `exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))` without requiring expensive `get()` calls or hierarchical dependencies. All admin-only operations (create/update/delete for services, portfolio items, pricing plans, leads, blog posts, newsletter subscribers) will leverage this independent role check.\n2.  **Public Content Segregation:** Publicly accessible content (Services, Portfolio Items, Pricing Plans) are stored in their own top-level collections (`/services`, `/portfolioItems`, `/pricingPlans`) where all documents inherently share a public read security posture. This eliminates the need for `get()` calls to check parent status or complex logical conditions within rules for public access.\n3.  **Blog Post Denormalization:** To ensure secure and efficient public listing, published blog posts are denormalized into `/public_blogPosts/{blogPostId}`. The primary, admin-managed collection is `/blogPosts/{blogPostId}`, which can contain both published and draft posts. When a post is marked `isPublished: true` in `/blogPosts`, it is copied/updated in `/public_blogPosts`. This ensures public `list` queries on `/public_blogPosts` are always secure, fast, and independent of any `isPublished` field checks or parent permissions, as every document in that collection is guaranteed to be public. This strategy completely avoids `get()` calls for public blog post reads.\n\n**Query As You Pay (QAP) Support:**\n1.  **Homogeneous Security Posture:** Collections like `/services`, `/portfolioItems`, `/pricingPlans`, and `/public_blogPosts` contain only documents intended for public read access. Their security rules are simple `allow read: if true;`, directly supporting efficient and secure `list` operations for the website's public sections. There are no mixed-security documents requiring filtering by rules, preventing 'rules are not filters' issues.\n2.  **Admin-Only Collections:** Collections like `/leads`, `/newsletterSubscribers`, and `/blogPosts` (the master collection for blog content) are exclusively for admin access. Their rules explicitly check for the admin role (e.g., `allow read: if exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));`). This ensures that any `list` operation performed by an authenticated admin is secure and efficient, as all documents within these collections are governed by the same access control.\n3.  **Path-Based Ownership for Roles:** The `/roles_admin/{adminId}` collection uses path-based ownership (`{adminId}` matches `request.auth.uid`) for self-management by the respective admin (though typically only root admins can add/remove other admins). This provides a clear, simple, and secure pattern for role-based access."
+    ]
   }
 }
