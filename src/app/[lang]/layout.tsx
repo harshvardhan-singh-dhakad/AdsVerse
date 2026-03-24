@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import { getDictionary } from "@/lib/get-dictionary";
-import { AuthProvider } from "@/hooks/use-auth";
+import { FirebaseClientProvider } from "@/firebase";
 
 export default async function LangLayout({
   children,
@@ -26,11 +26,11 @@ export default async function LangLayout({
   ];
 
   return (
-    <AuthProvider>
+    <FirebaseClientProvider>
       <Header navLinks={navLinks} lang={params.lang} />
       <main>{children}</main>
       <Footer />
       <FloatingActionButton />
-    </AuthProvider>
+    </FirebaseClientProvider>
   );
 }

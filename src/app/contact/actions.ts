@@ -1,8 +1,9 @@
+
 "use server";
 
 import { z } from "zod";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
+import { initializeFirebase } from "@/firebase";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -28,10 +29,11 @@ export async function submitContactForm(data: z.infer<typeof formSchema>): Promi
   }
 
   try {
-    const docRef = await addDoc(collection(db, "contacts"), {
+    const { firestore } = initializeFirebase();
+    const docRef = await addDoc(collection(firestore, "leads"), {
       ...validatedFields.data,
-      submittedAt: Timestamp.now(),
-      analysisStatus: 'disabled',
+      submissionDate: Timestamp.now(),
+      isRead: false
     });
     
     console.log("Contact form submitted with ID:", docRef.id);

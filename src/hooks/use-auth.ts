@@ -1,9 +1,11 @@
+
 "use client";
 
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, User, signOut as firebaseSignOut } from 'firebase/auth';
 import { app } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
+import { useFirebase } from '@/firebase';
 
 interface AuthContextType {
   user: User | null;
@@ -14,9 +16,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const { auth } = useFirebase();
+  const [user, setUser] = useState<User | null>(auth.currentUser);
   const [loading, setLoading] = useState(true);
-  const auth = getAuth(app);
   const router = useRouter();
 
   useEffect(() => {
