@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -8,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from "@/lib/firebase";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useAuth } from "@/firebase";
 import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
@@ -19,7 +18,7 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const auth = getAuth(app);
+  const auth = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

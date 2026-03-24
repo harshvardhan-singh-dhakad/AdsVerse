@@ -1,7 +1,7 @@
-
 "use client";
 
-import { useAuth } from "@/hooks/use-auth";
+import { useUser, useAuth } from "@/firebase";
+import { signOut as firebaseSignOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,8 @@ import { Loader2, LayoutDashboard } from "lucide-react";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 
 export default function AdminPage() {
-  const { user, loading, signOut } = useAuth();
+  const { user, isUserLoading: loading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -17,6 +18,11 @@ export default function AdminPage() {
       router.push("/login");
     }
   }, [user, loading, router]);
+
+  const handleSignOut = async () => {
+    await firebaseSignOut(auth);
+    router.push('/login');
+  };
 
   if (loading || !user) {
     return (
@@ -33,7 +39,7 @@ export default function AdminPage() {
           <LayoutDashboard className="w-8 h-8" />
           Admin Dashboard
         </h1>
-        <Button variant="destructive" onClick={signOut}>Logout</Button>
+        <Button variant="destructive" onClick={handleSignOut}>Logout</Button>
       </header>
 
       <AdminDashboard />
