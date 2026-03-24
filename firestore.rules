@@ -1,0 +1,182 @@
+/**
+ * Core Philosophy:
+ * This ruleset establishes a clear boundary between public-facing content and a private admin area.
+ * The primary security model is role-based, where administrative privileges grant broad content
+ * management capabilities. Public content is globally readable, while sensitive or backend data
+ * (like leads and blog drafts) is strictly protected.
+ *
+ * Data Structure:
+ * The data is organized into top-level collections, each serving a distinct purpose. There is no
+ * user-specific data nesting (e.g., /users/{userId}/...). Instead, collections like 'services',
+ * 'portfolioItems', and 'public_blogPosts' hold public information. Collections like 'leads'
+ * and 'blogPosts' are for internal admin use.
+ *
+ * Key Security Decisions:
+ * - Admin Access: A user is considered an 'admin' if their UID exists as a document ID in the
+ *   '/roles_admin' collection. This provides a fast and secure way to check for administrative
+ *   privileges across all other rules.
+ * - Public Data Segregation: Publicly viewable content is stored in dedicated collections
+ *   (e.g., /public_blogPosts) separate from admin-managed drafts (e.g., /blogPosts). This
+ *   prevents accidental data exposure and makes 'list' queries on public data simple and secure.
+ * - Public Submissions: Collections like '/leads' and '/newsletterSubscribers' are publicly
+ *   writable for 'create' operations, allowing anyone to submit data. However, reading or
+ *   modifying this submitted data is restricted to admins.
+ *
+ * Denormalization for Authorization:
+ * The security model relies heavily on the `/roles_admin/{adminId}` collection for authorization.
+ * Instead of checking a user's custom claims or reading a private user profile, rules can perform a
+ * fast `exists()` check on this dedicated collection. This is more performant and secure than
+ * alternative methods. Similarly, published blog posts are denormalized (copied) to the
+ * `/public_blogPosts` collection so that public 'list' operations do not need to filter by a
+ * 'isPublished' flag, adhering to the "rules are not filters" principle.
+ *
+ * Structural Segregation:
+ * The separation of `/blogPosts` (admin-only, contains drafts) and `/public_blogPosts` (publicly
+ * readable) is a core design choice. This ensures that public queries can never accidentally access
+ * draft content and simplifies the security rules for both collections, improving performance and
+ * security.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Checks if the user is a designated administrator.
+     * Admin status is determined by the existence of a document in the
+     * /roles_admin collection where the document ID matches the user's UID.
+     */
+    function isAdmin() {
+      // Ensure the user is authenticated before checking for admin role
+      return request.auth != null && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // -------------------------------------------------------------------------
+    // Collection Rules
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Stores digital marketing services. Publicly readable by all users.
+     * Writable only by administrators.
+     * @path /services/{serviceId}
+     * @allow (get, list) by any user, including anonymous, to view services.
+     * @allow (create, update, delete) by an authenticated admin to manage services.
+     * @deny (create, update, delete) by any non-admin or anonymous user.
+     * @principle Public read access for website content, with role-based admin writes.
+     */
+    match /services/{serviceId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores portfolio items. Publicly readable by all users.
+     * Writable only by administrators.
+     * @path /portfolioItems/{portfolioItemId}
+     * @allow (get, list) by any user, including anonymous, to view portfolio items.
+     * @allow (create, update, delete) by an authenticated admin to manage the portfolio.
+     * @deny (create, update, delete) by any non-admin or anonymous user.
+     * @principle Public read access for website content, with role-based admin writes.
+     */
+    match /portfolioItems/{portfolioItemId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores pricing plans. Publicly readable by all users.
+     * Writable only by administrators.
+     * @path /pricingPlans/{pricingPlanId}
+     * @allow (get, list) by any user, including anonymous, to view pricing plans.
+     * @allow (create, update, delete) by an authenticated admin to manage pricing.
+     * @deny (create, update, delete) by any non-admin or anonymous user.
+     * @principle Public read access for website content, with role-based admin writes.
+     */
+    match /pricingPlans/{pricingPlanId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores contact form submissions (leads). Anyone can submit a lead.
+     * Only administrators can read or manage leads.
+     * @path /leads/{leadId}
+     * @allow (create) by any user, including anonymous, to submit the contact form.
+     * @allow (get, list, update, delete) by an authenticated admin to review and manage leads.
+     * @deny (get, list, update, delete) by any non-admin or anonymous user.
+     * @principle Public write for data submission, but private read/manage for sensitive data.
+     */
+    match /leads/{leadId} {
+      allow get, list: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description The master collection for all blog posts, including drafts.
+     * Access is strictly limited to administrators for all operations.
+     * @path /blogPosts/{blogPostId}
+     * @allow (get, list, create, update, delete) by an authenticated admin to manage all aspects of blog content.
+     * @deny All operations by any non-admin or anonymous user.
+     * @principle Enforces strict admin-only control over backend content before it is published.
+     */
+    match /blogPosts/{blogPostId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores only published blog posts, denormalized from /blogPosts.
+     * This collection is publicly readable but cannot be written to by clients.
+     * @path /public_blogPosts/{blogPostId}
+     * @allow (get, list) by any user, including anonymous, to read published blog articles.
+     * @deny All write operations (create, update, delete) from any client. Data is managed by backend logic.
+     * @principle Structural segregation for security. Guarantees public queries are safe and efficient.
+     */
+    match /public_blogPosts/{blogPostId} {
+      allow get, list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Stores newsletter subscriber emails. Anyone can subscribe.
+     * Only administrators can view or manage the subscriber list.
+     * @path /newsletterSubscribers/{subscriberId}
+     * @allow (create) by any user, including anonymous, to sign up for the newsletter.
+     * @allow (get, list, update, delete) by an authenticated admin to manage the subscriber list.
+     * @deny (get, list, update, delete) by any non-admin or anonymous user.
+     * @principle Public write for data submission, but private read/manage for sensitive data.
+     */
+    match /newsletterSubscribers/{subscriberId} {
+      allow get, list: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Defines which users are administrators. The existence of a document
+     * with a user's UID grants them admin rights. This collection is read-only for admins
+     * and non-writable from clients to prevent privilege escalation.
+     * @path /roles_admin/{adminId}
+     * @allow (get, list) by an authenticated admin, e.g., to view the list of other admins.
+     * @deny All write operations (create, update, delete) from any client. This must be managed via the Firebase Console or a trusted server.
+     * @principle Secure, out-of-band management of roles to prevent tampering.
+     */
+    match /roles_admin/{adminId} {
+      allow get, list: if isAdmin();
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+  }
+}
