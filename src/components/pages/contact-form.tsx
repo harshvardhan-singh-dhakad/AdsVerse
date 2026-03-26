@@ -1,10 +1,9 @@
-
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +17,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { submitContactForm } from "@/app/contact/actions";
 import { Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useFirestore } from "@/firebase";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 const servicesData = [
   "Local SEO", "E-commerce SEO", "Technical SEO Audit", "Keyword Research & Strategy", "Link Building Campaign",
@@ -47,23 +49,12 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" disabled={pending} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-      {pending ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
-          </>
-        ) : "Send Message"}
-    </Button>
-  );
-}
 
 export function ContactForm() {
   const { toast } = useToast();
+  const firestore = useFirestore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,21 +67,39 @@ export function ContactForm() {
   });
 
   const processForm = async (data: FormData) => {
-    const result = await submitContactForm(data);
+    setIsSubmitting(true);
+    const leadsCollection = collection(firestore, "leads");
+    const leadData = {
+        ...data,
+        submissionDate: Timestamp.now(),
+        isRead: false
+    };
 
-    if (result.success) {
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for contacting us. We will get back to you shortly.",
+    addDoc(leadsCollection, leadData)
+      .then(() => {
+        toast({
+            title: "Message Sent!",
+            description: "Thank you for contacting us. We will get back to you shortly.",
+        });
+        form.reset();
+      })
+      .catch((e: any) => {
+          const permissionError = new FirestorePermissionError({
+            path: leadsCollection.path,
+            operation: 'create',
+            requestResourceData: leadData,
+          });
+          errorEmitter.emit('permission-error', permissionError);
+
+          toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem submitting your request. Please try again.",
+          });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-      form.reset();
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: result.error || "There was a problem with your request.",
-      });
-    }
   };
 
   return (
@@ -176,7 +185,14 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <SubmitButton />
+        <Button type="submit" disabled={isSubmitting} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+            {isSubmitting ? (
+                <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                </>
+            ) : "Send Message"}
+        </Button>
       </form>
     </Form>
   );
