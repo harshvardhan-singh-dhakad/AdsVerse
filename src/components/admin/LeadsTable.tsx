@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldAlert } from "lucide-react";
 import { format } from 'date-fns';
 
 export function LeadsTable() {
@@ -26,8 +26,61 @@ export function LeadsTable() {
     query(collection(firestore, "leads"), orderBy("submissionDate", "desc")),
     [firestore]
   );
-  const { data: leads, isLoading } = useCollection<Lead>(leadsQuery);
+  const { data: leads, isLoading, error } = useCollection<Lead>(leadsQuery);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
+  const renderContent = () => {
+    if (isLoading) {
+      return <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>;
+    }
+
+    if (error) {
+      return (
+        <div className="text-center py-10 px-4">
+          <div className="flex justify-center mb-4">
+            <ShieldAlert className="w-12 h-12 text-destructive" />
+          </div>
+          <h3 className="text-xl font-semibold text-destructive">Permission Denied</h3>
+          <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+            You do not have permission to view this data. This section is restricted to administrators. Please ensure you are logged in with an admin account.
+          </p>
+        </div>
+      );
+    }
+
+    if (!leads || leads.length === 0) {
+      return <p className="text-center text-muted-foreground py-8">No leads found.</p>;
+    }
+
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Date</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Subject</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {leads.map((lead) => (
+            <TableRow key={lead.id}>
+              <TableCell>{lead.submissionDate ? format(lead.submissionDate.toDate(), 'PPP') : 'N/A'}</TableCell>
+              <TableCell>{lead.name}</TableCell>
+              <TableCell>{lead.email}</TableCell>
+              <TableCell><Badge variant="secondary">{lead.subject}</Badge></TableCell>
+              <TableCell className="text-right">
+                <Button variant="outline" size="sm" onClick={() => setSelectedLead(lead)}>
+                  View Message
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  };
 
   return (
     <Card>
@@ -35,36 +88,7 @@ export function LeadsTable() {
         <CardTitle>Contact Form Leads</CardTitle>
       </CardHeader>
       <CardContent>
-        {isLoading && <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>}
-        {!isLoading && (!leads || leads.length === 0) && <p className="text-center text-muted-foreground py-8">No leads found.</p>}
-        {!isLoading && leads && leads.length > 0 && (
-            <Table>
-            <TableHeader>
-                <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {leads.map((lead) => (
-                <TableRow key={lead.id}>
-                    <TableCell>{lead.submissionDate ? format(lead.submissionDate.toDate(), 'PPP') : 'N/A'}</TableCell>
-                    <TableCell>{lead.name}</TableCell>
-                    <TableCell>{lead.email}</TableCell>
-                    <TableCell><Badge variant="secondary">{lead.subject}</Badge></TableCell>
-                    <TableCell className="text-right">
-                        <Button variant="outline" size="sm" onClick={() => setSelectedLead(lead)}>
-                            View Message
-                        </Button>
-                    </TableCell>
-                </TableRow>
-                ))}
-            </TableBody>
-            </Table>
-        )}
+        {renderContent()}
       </CardContent>
        <Dialog open={!!selectedLead} onOpenChange={(open) => !open && setSelectedLead(null)}>
         <DialogContent>
