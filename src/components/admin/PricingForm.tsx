@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -7,7 +6,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { type PricingPlan } from "@/lib/definitions";
@@ -20,7 +18,7 @@ const pricingPlanSchema = z.object({
   description: z.string().optional(),
   price: z.string().min(1, "Price is required."),
   frequency: z.string().optional(),
-  features: z.array(z.string().min(1, "Feature cannot be empty.")).min(1, "At least one feature is required."),
+  features: z.array(z.object({ value: z.string().min(1, "Feature cannot be empty.") })),
   isPopular: z.boolean().default(false),
   callToAction: z.string().min(1, "CTA is required."),
   displayOrder: z.coerce.number().min(0, "Order must be a positive number."),
@@ -38,12 +36,15 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
   const firestore = useFirestore();
   const form = useForm<PricingFormData>({
     resolver: zodResolver(pricingPlanSchema),
-    defaultValues: plan || {
+    defaultValues: plan ? {
+      ...plan,
+      features: plan.features.map(f => ({ value: f })),
+    } : {
       name: "",
       description: "",
       price: "",
       frequency: "/mo",
-      features: [""],
+      features: [{ value: "" }],
       isPopular: false,
       callToAction: "Get Started",
       displayOrder: 0,
@@ -58,12 +59,17 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
   const { isSubmitting } = form.formState;
 
   const processForm = async (data: PricingFormData) => {
+    const dataForFirestore = {
+      ...data,
+      features: data.features.map(f => f.value),
+    };
+
     try {
       if (plan) {
-        await setDoc(doc(firestore, "pricingPlans", plan.id), data, { merge: true });
+        await setDoc(doc(firestore, "pricingPlans", plan.id), dataForFirestore, { merge: true });
         toast({ title: "Success", description: "Pricing plan updated." });
       } else {
-        await addDoc(collection(firestore, "pricingPlans"), data);
+        await addDoc(collection(firestore, "pricingPlans"), dataForFirestore);
         toast({ title: "Success", description: "Pricing plan added." });
       }
       onFinished();
@@ -129,7 +135,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
                 <FormField
                 key={field.id}
                 control={form.control}
-                name={`features.${index}`}
+                name={`features.${index}.value`}
                 render={({ field }) => (
                     <FormItem className="flex items-center gap-2">
                         <FormControl><Input {...field} /></FormControl>
@@ -142,7 +148,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
                 />
             ))}
             </div>
-            <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append("")}>
+            <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ value: "" })}>
                 <PlusCircle className="mr-2 h-4 w-4" /> Add Feature
             </Button>
         </div>
