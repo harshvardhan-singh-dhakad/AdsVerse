@@ -5,17 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot, Search, Loader2 } from "lucide-react";
+import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
 import { Input } from "@/components/ui/input";
 import { AnimatedCounter } from "@/components/pages/animated-counter";
-import { useCollection, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy } from "firebase/firestore";
-import { useFirestore } from "@/firebase";
-import { type Service } from "@/lib/definitions";
 
 // Note: Metadata is usually handled in server components, but we'll keep it for static export context.
 // For dynamic metadata, you'd use the `generateMetadata` export.
@@ -30,6 +26,51 @@ const serviceIcons: { [key: string]: React.ReactNode } = {
   Bot: <Bot className="w-10 h-10 text-accent" />,
   Search: <Search className="w-10 h-10 text-accent" />,
 };
+
+const coreServices = [
+    {
+        id: 'seo',
+        name: 'SEO Optimization',
+        description: 'Rank higher on search engines and attract organic traffic with our proven SEO strategies.',
+        iconName: 'TrendingUp',
+        href: '/services/seo-optimization'
+    },
+    {
+        id: 'paid-ads',
+        name: 'Paid Ads',
+        description: 'Maximize your ROI with targeted ad campaigns on Google and Meta platforms.',
+        iconName: 'Megaphone',
+        href: '/services/paid-ads'
+    },
+    {
+        id: 'web-dev',
+        name: 'Web Development',
+        description: 'Get a beautiful, high-performing website that converts visitors into customers.',
+        iconName: 'Code',
+        href: '/services/web-design-development'
+    },
+    {
+        id: 'automation',
+        name: 'Automation & AI',
+        description: 'Streamline your business processes with custom bots and AI-powered solutions.',
+        iconName: 'Bot',
+        href: '/services/automation-tools'
+    },
+    {
+        id: 'content',
+        name: 'Content Marketing',
+        description: 'Engage your audience and build authority with valuable, SEO-optimized content.',
+        iconName: 'FileText',
+        href: '/services/content-marketing'
+    },
+    {
+        id: 'smm',
+        name: 'Social Media',
+        description: 'Build and nurture your online community through strategic social media management.',
+        iconName: 'Users',
+        href: '/services/social-media-management'
+    }
+];
 
 const testimonials = [
     {
@@ -82,13 +123,6 @@ const jsonLd = {
 };
 
 export default function HomePage() {
-  const firestore = useFirestore();
-  const servicesQuery = useMemoFirebase(() => 
-    query(collection(firestore, 'services'), orderBy('displayOrder', 'asc')),
-    [firestore]
-  );
-  const { data: services, isLoading: isLoadingServices } = useCollection<Service>(servicesQuery);
-
   return (
     <>
     <script
@@ -148,14 +182,9 @@ export default function HomePage() {
                   <h2 className="text-4xl font-bold font-headline text-primary">Our Core Services</h2>
                   <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
               </div>
-              {isLoadingServices ? (
-                 <div className="flex justify-center">
-                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                 </div>
-              ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services?.map(service => (
-                       <Link key={service.id} href={`/our-services`} className="block group">
+                    {coreServices.map(service => (
+                       <Link key={service.id} href={service.href} className="block group">
                          <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden h-full">
                              <CardHeader>
                                 <div className="flex items-center gap-4">
@@ -170,7 +199,13 @@ export default function HomePage() {
                        </Link>
                     ))}
                 </div>
-              )}
+                <div className="text-center mt-16">
+                    <Button asChild size="lg" variant="outline">
+                        <Link href="/our-services">
+                            View All Services <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
           </div>
       </section>
 
