@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Linkedin, Send } from "lucide-react";
+import { Github, Linkedin, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -50,6 +50,9 @@ export function Footer() {
               </Link>
               <Link href="https://www.linkedin.com/company/dmafia/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer nofollow">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" />
+              </Link>
+              <Link href="https://github.com/harshvardhan-singh-dhakad" aria-label="GitHub" target="_blank" rel="noopener noreferrer nofollow">
+                <Github className="h-6 w-6 text-muted-foreground hover:text-primary" />
               </Link>
             </div>
           </div>
