@@ -1,21 +1,14 @@
 {
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
-    }
-  ],
+  "apphosting": {
+    "backendId": "synergyflow-digital-p7c0g",
+    "rootDir": ".",
+    "ignore": [
+      "src/app/api/seed-blogs/**",
+      "src/app/api/seed-pricing/**",
+      "src/app/api/seed-portfolio/**",
+      "src/app/[lang]/seed/**"
+    ]
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"

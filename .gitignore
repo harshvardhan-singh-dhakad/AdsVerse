@@ -43,3 +43,9 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+
+# ignore locked seed directories during deployment
+src/app/api/seed-blogs/
+src/app/api/seed-pricing/
+src/app/api/seed-portfolio/
+src/app/[lang]/seed/

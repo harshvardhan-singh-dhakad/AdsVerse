@@ -34,6 +34,7 @@ interface BlogFormProps {
 }
 
 export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
+  const { toast } = useToast();
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
     defaultValues: initialData ? {
@@ -59,19 +60,19 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           ...values,
           updatedAt: serverTimestamp(),
         });
-        toast.success('Blog post updated successfully');
+        toast({ title: 'Success', description: 'Blog post updated successfully' });
       } else {
         await addDoc(collection(db, 'blogPosts'), {
           ...values,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         });
-        toast.success('Blog post created successfully');
+        toast({ title: 'Success', description: 'Blog post created successfully' });
       }
       onSuccess?.();
     } catch (error) {
       console.error(error);
-      toast.error('Something went wrong');
+      toast({ title: 'Error', description: 'Something went wrong', variant: 'destructive' });
     }
   };
 
