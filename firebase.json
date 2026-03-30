@@ -1,6 +1,6 @@
 {
   "apphosting": {
-    "backendId": "synergyflow-digital-p7c0g",
+    "backendId": "studio",
     "rootDir": ".",
     "ignore": [
       "src/app/api/seed-blogs/**",
