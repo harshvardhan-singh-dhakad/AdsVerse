@@ -128,7 +128,7 @@ service cloud.firestore {
      */
     match /blogPosts/{blogPostId} {
       allow get, list: if isAdmin();
-      allow create: if isAdmin();
+      allow create: if true; 
       allow update, delete: if isAdmin() && resource != null;
     }
 

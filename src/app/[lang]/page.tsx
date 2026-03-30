@@ -12,6 +12,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Metadata } from "next";
 import { Input } from "@/components/ui/input";
 import { AnimatedCounter } from "@/components/pages/animated-counter";
+import { Badge } from "@/components/ui/badge";
 
 // Note: Metadata is usually handled in server components, but we'll keep it for static export context.
 // For dynamic metadata, you'd use the `generateMetadata` export.
@@ -118,8 +119,55 @@ const faqs = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Adsverse | Top Digital Marketing agency | Automation agency in Indore",
-  // ... (rest of JSON-LD is the same)
+  "name": "AdsVerse | Top Digital Marketing & Automation Agency in Indore",
+  "image": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+  "@id": "https://adsverse.in/#localbusiness",
+  "url": "https://adsverse.in",
+  "telephone": "+91-9109033301",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Vijay Nagar",
+    "addressLocality": "Indore",
+    "addressRegion": "MP",
+    "postalCode": "452010",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 22.7533,
+    "longitude": 75.8937
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "opens": "10:00",
+    "closes": "20:00"
+  },
+  "sameAs": [
+    "https://facebook.com/adsverse",
+    "https://instagram.com/adsverse_in"
+  ]
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
 };
 
 export default function HomePage() {
@@ -129,6 +177,10 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+    />
     <main>
       {/* Hero Section */}
       <section className="py-24 sm:py-32">
@@ -137,7 +189,7 @@ export default function HomePage() {
             Automate. Elevate. Dominate.
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-            The Future of Digital Marketing is Here.
+            AdsVerse: The Future of AI-Powered Digital Marketing & Automation is Here.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
@@ -146,6 +198,40 @@ export default function HomePage() {
             <Button asChild size="lg" variant="link" className="text-accent">
               <Link href="/our-services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Search Optimization Section (AEO/GEO) */}
+      <section className="py-12 bg-primary/5 border-y border-primary/10">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1">
+              <Badge variant="outline" className="mb-4 border-accent text-accent">AI & SEARCH INSIGHTS</Badge>
+              <h2 className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best AI & Automation Partner in Indore</h2>
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  <strong>Contextual Performance:</strong> We don't just rank keywords; we optimize for intent. Our strategies ensure your business appears as a top answer in AI-driven search results (Answer Engine Optimization).
+                </p>
+                <p>
+                  <strong>Hyper-Local Growth:</strong> Headquartered in Vijay Nagar, Indore, we leverage precise geo-signals to dominate "near me" and regional business queries across Central India.
+                </p>
+                <p>
+                  <strong>Automation ROI:</strong> By integrating AI into every marketing funnel, we reduce manual overhead and provide measurable 2026-ready ROI for traditional and modern enterprises.
+                </p>
+              </div>
+            </div>
+            <div className="flex-shrink-0 w-full md:w-64">
+              <Card className="bg-card/50 backdrop-blur-sm p-6 border-accent/20 text-center">
+                <h3 className="font-bold text-accent mb-2">Key Takeaways</h3>
+                <ul className="text-sm space-y-2 list-none p-0 opacity-80">
+                  <li>🚀 AI-Powered SEO</li>
+                  <li>🤖 Sales Automation</li>
+                  <li>📈 ROI-Focused PPC</li>
+                  <li>📍 Local Indore Pro</li>
+                </ul>
+              </Card>
+            </div>
           </div>
         </div>
       </section>

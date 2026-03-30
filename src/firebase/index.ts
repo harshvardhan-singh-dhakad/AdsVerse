@@ -28,9 +28,13 @@ export function initializeFirebase() {
     return getSdks(firebaseApp);
   }
 
-  // If already initialized, return the SDKs with the already initialized App
   return getSdks(getApp());
 }
+
+// Singleton instances for easy import
+const sdks = initializeFirebase();
+export const auth = sdks.auth;
+export const db = sdks.firestore;
 
 export function getSdks(firebaseApp: FirebaseApp) {
   return {

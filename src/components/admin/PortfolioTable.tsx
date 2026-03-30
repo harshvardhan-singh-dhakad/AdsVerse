@@ -47,7 +47,7 @@ export function PortfolioTable() {
   };
 
   return (
-    <Card>
+    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
       <CardHeader>
         <CardTitle>Manage Portfolio Items</CardTitle>
         <CardDescription>Add, edit, or delete portfolio projects.</CardDescription>

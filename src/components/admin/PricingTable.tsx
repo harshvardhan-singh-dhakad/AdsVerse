@@ -46,7 +46,7 @@ export function PricingTable() {
   };
 
   return (
-    <Card>
+    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
       <CardHeader>
         <CardTitle>Manage Pricing Plans</CardTitle>
         <CardDescription>Add, edit, or delete pricing plans for your services.</CardDescription>
@@ -58,6 +58,7 @@ export function PricingTable() {
             <TableHeader>
                 <TableRow>
                 <TableHead>Order</TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Popular</TableHead>
@@ -68,6 +69,7 @@ export function PricingTable() {
                 {plans?.map((plan) => (
                 <TableRow key={plan.id}>
                     <TableCell>{plan.displayOrder}</TableCell>
+                    <TableCell><Badge variant="secondary">{plan.category}</Badge></TableCell>
                     <TableCell className="font-medium">{plan.name}</TableCell>
                     <TableCell>{plan.price} {plan.frequency}</TableCell>
                     <TableCell>

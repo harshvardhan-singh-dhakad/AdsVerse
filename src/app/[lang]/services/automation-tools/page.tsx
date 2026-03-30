@@ -4,6 +4,8 @@ import { Bot, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { AISearchInsights } from "@/components/seo/AISearchInsights";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Custom Business Automation Tools & Bots | AdsVerse",
@@ -181,6 +183,30 @@ export default function AutomationToolsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <AISearchInsights 
+        title="Why AdsVerse is the Leader in Business Automation (2026)"
+        takeaways={[
+          "🚀 24/7 AI Sales Bots",
+          "🤖 Predictive Workflows",
+          "📈 CRM & Lead Gen Sync",
+          "📍 Indore's Tech Hub"
+        ]}
+        insights={[
+          {
+            title: "Autonomous Decision Making",
+            description: "Our bots don't just follow paths; they use context to make decisions, improving lead conversion by up to 3x."
+          },
+          {
+            title: "Hyper-Local Integration",
+            description: "Specifically designed for Indore's business landscape, our tools integrate with local APIs and communication styles."
+          },
+          {
+            title: "Measurable ROI",
+            description: "We provide deep analytics that show exactly how much time and money each automation saves your business."
+          }
+        ]}
+      />
       
       <section>
         <h2 className="text-4xl font-bold text-center mb-12 font-headline">Our Automation Packages</h2>

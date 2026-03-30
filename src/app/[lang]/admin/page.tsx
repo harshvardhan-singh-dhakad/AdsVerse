@@ -6,12 +6,16 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { AdminSidebar, type AdminTab } from "@/components/admin/AdminSidebar";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 
 export default function AdminPage() {
   const { user, isUserLoading: loading } = useUser();
   const auth = useAuth();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<AdminTab>("leads");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -33,19 +37,31 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container mx-auto py-12">
-      <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-        <div>
-          <h1 className="text-4xl font-bold font-headline text-primary">
-            Welcome, {user.displayName?.split(' ')[0] || 'Admin'}!
-          </h1>
-          <p className="text-muted-foreground mt-1">Manage your website's content and leads from this dashboard.</p>
-        </div>
-        <Button variant="destructive" onClick={handleSignOut}>Logout</Button>
-      </header>
-
-      <AdminDashboard />
-
-    </div>
+    <SidebarProvider defaultOpen>
+      <div className="flex min-h-screen w-full bg-background/95">
+        <AdminSidebar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+          onLogout={handleSignOut} 
+          userName={user.displayName || user.email || "Admin"}
+        />
+        <SidebarInset className="flex flex-col flex-1">
+          <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-border/40 bg-card/30 backdrop-blur-md px-6 shadow-sm">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="-ml-1" />
+              <div className="h-4 w-px bg-border/40" />
+              <h2 className="text-xl font-bold font-headline text-primary capitalize">{activeTab}</h2>
+            </div>
+            <div className="flex items-center gap-4">
+               {/* Additional header actions can go here */}
+            </div>
+          </header>
+          
+          <main className="flex-1 p-6 lg:p-10 overflow-auto">
+             <AdminDashboard activeTab={activeTab} />
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 }

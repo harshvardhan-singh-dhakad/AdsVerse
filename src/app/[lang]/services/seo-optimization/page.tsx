@@ -4,6 +4,7 @@ import { TrendingUp, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { AISearchInsights } from "@/components/seo/AISearchInsights";
 
 export const metadata: Metadata = {
   title: "Expert SEO Optimization Services to Rank Higher | AdsVerse",
@@ -192,6 +193,30 @@ export default function SeoOptimizationPage() {
           </div>
         </CardContent>
       </Card>
+
+      <AISearchInsights 
+        title="Predictive SEO & AEO Strategy for 2026"
+        takeaways={[
+          "🔍 AI Answer Optimization",
+          "📊 Intent-Based Search",
+          "🛡️ EEAT-Focused Authority",
+          "📈 Conversion-Driven SEO"
+        ]}
+        insights={[
+          {
+            title: "Generative Engine Optimization (GEO)",
+            description: "We optimize your content to be cited by AI search engines like Perplexity, ChatGPT, and Gemini."
+          },
+          {
+            title: "Semantic Content Clusters",
+            description: "Moving beyond keywords to topic authority, ensuring you dominate entire search categories."
+          },
+          {
+            title: "Core Web Vitals Max",
+            description: "LCP and CLS optimization for the best user experience and highest ranking signals."
+          }
+        ]}
+      />
     </div>
     </>
   );

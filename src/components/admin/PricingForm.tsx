@@ -12,12 +12,27 @@ import { type PricingPlan } from "@/lib/definitions";
 import { useFirestore } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const CATEGORIES = [
+  "SEO",
+  "Paid Ads",
+  "Social Media",
+  "Content Marketing",
+  "Branding & Design",
+  "Web Development",
+  "Automation & AI",
+  "Analytics & Reputation",
+  "Election Special",
+];
 
 const pricingPlanSchema = z.object({
   name: z.string().min(3, "Name is required."),
   description: z.string().optional(),
   price: z.string().min(1, "Price is required."),
   frequency: z.string().optional(),
+  category: z.string().min(1, "Category is required."),
+  subCategory: z.string().optional(),
   features: z.array(z.object({ value: z.string().min(1, "Feature cannot be empty.") })),
   isPopular: z.boolean().default(false),
   callToAction: z.string().min(1, "CTA is required."),
@@ -44,6 +59,8 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       description: "",
       price: "",
       frequency: "/mo",
+      category: "SEO",
+      subCategory: "",
       features: [{ value: "" }],
       isPopular: false,
       callToAction: "Get Started",
@@ -92,6 +109,42 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
             </FormItem>
           )}
         />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {CATEGORIES.map(cat => (
+                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="subCategory"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Sub-Category (Optional)</FormLabel>
+                <FormControl><Input placeholder="e.g., Local SEO" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="description"

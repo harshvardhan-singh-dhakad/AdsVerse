@@ -1,11 +1,12 @@
 
-"use client";
-
 import { Check } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+import { Badge } from "@/components/ui/badge";
+import { AISearchInsights } from "@/components/seo/AISearchInsights";
 
 const digitalMarketingServices = [
   {
@@ -136,111 +137,197 @@ const automationPackages = [
     { title: "Enterprise Automation Suite", price: "₹79,999 – ₹1,49,999", features: ["Custom AI agent", "Voice bot", "Complex workflows", "Multi-channel automation", "End-to-end automation dashboard"], isPopular: false },
 ];
 
+export const metadata: Metadata = {
+    title: "Best Digital Marketing & Automation Services in Indore | AdsVerse",
+    description: "Explore Indore's most comprehensive digital marketing and automation services. From SEO and Meta Ads to AI chatbots and CRM automation, we scale your ROI.",
+    alternates: {
+        canonical: '/our-services',
+    }
+};
+
 export default function OurServicesPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Digital Marketing & Business Automation",
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": "AdsVerse",
+            "image": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Vijay Nagar",
+                "addressLocality": "Indore",
+                "addressRegion": "MP",
+                "postalCode": "452010",
+                "addressCountry": "IN"
+            }
+        },
+        "areaServed": {
+            "@type": "City",
+            "name": "Indore"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Digital Services",
+            "itemListElement": digitalMarketingServices.map((s, i) => ({
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": s.category
+                }
+            }))
+        }
+    };
+
     return (
-        <div className="container mx-auto py-16 px-4">
-            <header className="text-center mb-16">
-                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">Our Services</h1>
-                <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
-                    A complete range of digital solutions to empower your brand and drive growth.
-                </p>
-            </header>
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <div className="container mx-auto py-16 px-4">
+                <header className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
+                    <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight font-headline text-primary mb-6">Our Services</h1>
+                    <p className="max-w-2xl mx-auto text-xl text-muted-foreground leading-relaxed">
+                        Indore's Premier Hub for Digital Excellence & AI-Driven Business Automation.
+                    </p>
+                </header>
 
-            <Tabs defaultValue="digital-marketing" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="digital-marketing">Digital Marketing</TabsTrigger>
-                    <TabsTrigger value="automation-services">Automation Services</TabsTrigger>
-                </TabsList>
-                <TabsContent value="digital-marketing" className="mt-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold font-headline text-primary">Complete Digital Marketing Services</h2>
-                        <p className="text-lg text-muted-foreground mt-2">All the tools you need to succeed online.</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {digitalMarketingServices.map((serviceCategory) => (
-                            <div key={serviceCategory.category} className="bg-card/50 backdrop-blur-sm rounded-lg p-6 border border-border/40">
-                                <h3 className="text-2xl font-bold font-headline text-accent mb-4">
-                                    <span className="mr-2">{serviceCategory.emoji}</span>
-                                    {serviceCategory.category}
-                                </h3>
-                                <ul className="space-y-2">
-                                    {serviceCategory.items.map((item) => (
-                                        <li key={item} className="flex items-center gap-3 text-muted-foreground">
-                                            <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                </TabsContent>
-                <TabsContent value="automation-services" className="mt-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold font-headline text-primary">Automation Services (2025 Edition)</h2>
-                        <p className="text-lg text-muted-foreground mt-2">Automate Everything. Grow Smarter.</p>
-                    </div>
+                <Tabs defaultValue="digital-marketing" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-12">
+                        <TabsTrigger value="digital-marketing" className="text-lg py-3">Digital Marketing</TabsTrigger>
+                        <TabsTrigger value="automation-services" className="text-lg py-3">Automation Services</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="digital-marketing" className="mt-8 animate-in fade-in duration-500">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold font-headline text-primary">State-of-the-Art Marketing Hub</h2>
+                            <p className="text-lg text-muted-foreground mt-2">Engineered for visibility, built for conversions.</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {digitalMarketingServices.map((serviceCategory) => (
+                                <div key={serviceCategory.category} className="bg-card/40 backdrop-blur-md rounded-2xl p-8 border border-primary/10 hover:border-accent/40 transition-all duration-300 hover:shadow-xl group">
+                                    <h3 className="text-2xl font-bold font-headline text-accent mb-6 flex items-center gap-3 group-hover:translate-x-1 transition-transform">
+                                        <span className="p-2 bg-accent/10 rounded-lg">{serviceCategory.emoji}</span>
+                                        {serviceCategory.category}
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        {serviceCategory.items.map((item) => (
+                                            <li key={item} className="flex items-center gap-3 text-muted-foreground group-hover:text-foreground transition-colors">
+                                                <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                                <span className="text-sm">{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </TabsContent>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                        {automationServiceCategories.map((category) => (
-                            <Card key={category.name} className="bg-card/50 backdrop-blur-sm flex flex-col">
-                                <CardHeader>
-                                    <CardTitle className="text-xl font-headline text-accent">⭐ {category.name}</CardTitle>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-4">
-                                    <div>
-                                        <h4 className="font-semibold mb-2 text-foreground">Services:</h4>
-                                        <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
-                                            {category.services.map((service, index) => <li key={index}>{service}</li>)}
-                                        </ol>
-                                    </div>
-                                    <div className="pt-4 border-t border-border/40">
-                                        <h4 className="font-semibold mb-2 text-foreground">Pricing:</h4>
-                                        <div className="space-y-1 text-sm">
-                                            {category.pricing.map(p => (
-                                                <div key={p.tier} className="flex justify-between">
-                                                    <span className="text-muted-foreground">{p.tier}:</span>
-                                                    <span className="font-semibold text-primary">{p.price}</span>
-                                                </div>
-                                            ))}
+                    <TabsContent value="automation-services" className="mt-8 animate-in fade-in duration-500">
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-bold font-headline text-primary">Automation & AI Hub (2026 Edition)</h2>
+                            <p className="text-lg text-muted-foreground mt-2">Zero Overhead. Maximum Scalability.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                            {automationServiceCategories.map((category) => (
+                                <Card key={category.name} className="bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-300 rounded-2xl overflow-hidden">
+                                    <CardHeader className="bg-primary/5 border-b border-primary/5">
+                                        <CardTitle className="text-xl font-headline text-accent flex items-center gap-2">
+                                            <span className="text-primary">⭐</span> {category.name}
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="p-6 space-y-6">
+                                        <div>
+                                            <h4 className="font-bold mb-3 text-foreground/90 flex items-center gap-2">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-primary" /> Core Offerings:
+                                            </h4>
+                                            <ol className="space-y-2 text-sm text-muted-foreground">
+                                                {category.services.map((service, index) => (
+                                                    <li key={index} className="flex items-start gap-2">
+                                                        <span className="text-primary/60 font-mono">{index + 1}.</span>
+                                                        {service}
+                                                    </li>
+                                                ))}
+                                            </ol>
                                         </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
+                                        <div className="pt-6 border-t border-primary/5">
+                                            <h4 className="font-bold mb-3 text-foreground/90">Market Pricing:</h4>
+                                            <div className="space-y-2">
+                                                {category.pricing.map(p => (
+                                                    <div key={p.tier} className="flex justify-between items-center bg-background/40 p-2 rounded-lg">
+                                                        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{p.tier}</span>
+                                                        <span className="font-bold text-primary">{p.price}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
 
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold font-headline text-primary">AdsVerse Automation Packages</h2>
-                        <p className="text-lg text-muted-foreground mt-2">Agency-Level Bundles for Maximum Impact</p>
-                    </div>
-                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {automationPackages.map((pkg) => (
-                        <Card key={pkg.title} className={`bg-card/70 backdrop-blur-md flex flex-col ${pkg.isPopular ? 'border-2 border-accent shadow-2xl shadow-accent/20' : 'border-border/40'}`}>
-                          <CardHeader>
-                            <CardTitle className="text-2xl font-headline text-primary">{pkg.title}</CardTitle>
-                          </CardHeader>
-                          <CardContent className="flex-grow space-y-4">
-                            <p className="text-3xl font-bold text-accent">{pkg.price}</p>
-                            <ul className="space-y-2 text-muted-foreground">
-                              {pkg.features.map((feature, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </CardContent>
-                          <CardFooter>
-                             <Button asChild className="w-full bg-accent hover:bg-accent/90">
-                                <Link href="/contact">Get Started</Link>
-                             </Button>
-                          </CardFooter>
-                        </Card>
-                        ))}
-                    </div>
-                </TabsContent>
-            </Tabs>
-        </div>
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-extrabold font-headline text-primary">Strategic Automation Bundles</h2>
+                            <p className="text-lg text-muted-foreground mt-2">Engineered for Rapid ROI & Market Dominance</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {automationPackages.map((pkg) => (
+                                <Card key={pkg.title} className={`bg-card/60 backdrop-blur-xl flex flex-col rounded-2xl transition-all duration-500 overflow-hidden ${pkg.isPopular ? 'border-2 border-accent shadow-2xl shadow-accent/20 scale-105 z-10' : 'border-primary/10 hover:border-primary/30'}`}>
+                                    {pkg.isPopular && (
+                                        <div className="bg-accent text-white text-[10px] font-bold uppercase tracking-widest text-center py-1.5">
+                                            Most Recommended for Indore Businesses
+                                        </div>
+                                    )}
+                                    <CardHeader className="p-8">
+                                        <CardTitle className="text-2xl font-headline text-primary leading-tight">{pkg.title}</CardTitle>
+                                        <div className="mt-4">
+                                            <p className="text-4xl font-black text-accent">{pkg.price}</p>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="p-8 pt-0 flex-grow">
+                                        <ul className="space-y-4">
+                                            {pkg.features.map((feature, i) => (
+                                                <li key={i} className="flex items-start gap-3">
+                                                    <div className="mt-1 bg-green-500/20 p-0.5 rounded-full">
+                                                        <Check className="w-3.5 h-3.5 text-green-500" />
+                                                    </div>
+                                                    <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </CardContent>
+                                    <CardFooter className="p-8 bg-primary/5">
+                                        <Button asChild className={`w-full py-6 rounded-xl font-bold transition-all duration-300 ${pkg.isPopular ? 'bg-accent hover:bg-accent/90 shadow-lg' : 'bg-primary/10 text-primary hover:bg-primary hover:text-white'}`}>
+                                            <Link href="/contact" className="flex items-center justify-center gap-2">
+                                                Activate Growth <Check className="w-4 h-4" />
+                                            </Link>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    </TabsContent>
+                </Tabs>
+
+                <section className="mt-32 max-w-4xl mx-auto">
+                    <AISearchInsights 
+                        title="Digital Marketing & Automation ROI"
+                        insights={[
+                            { title: "Cost Efficiency", description: "AI-driven lead qualification reduces cost-per-lead by up to 40% in the current 2026 market landscape." },
+                            { title: "Local Impact", description: "Hyper-local SEO in Indore is the primary driver for high-intent queries in real estate and specialized retail." },
+                            { title: "Scalability", description: "Multi-channel automation (WhatsApp + Meta) ensures 24/7 engagement without scaling operational headcount." }
+                        ]}
+                        takeaways={[
+                            "40% Lower CPL",
+                            "Indore SEO Focus",
+                            "24/7 AI Engagement"
+                        ]}
+                    />
+                </section>
+            </div>
+        </>
     );
 }

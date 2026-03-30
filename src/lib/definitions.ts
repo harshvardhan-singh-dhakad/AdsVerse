@@ -26,6 +26,8 @@ export type PricingPlan = BaseDoc & {
     description?: string;
     price: string;
     frequency?: string;
+    category: string;
+    subCategory?: string;
     features: string[];
     isPopular: boolean;
     callToAction: string;
@@ -40,4 +42,18 @@ export type Lead = BaseDoc & {
     message: string;
     submissionDate: Timestamp;
     isRead: boolean;
+}
+
+export type BlogPost = BaseDoc & {
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string; // HTML content
+    imageUrl: string;
+    category: string;
+    author: string;
+    publishedDate: string; // ISO string
+    isPublished: boolean;
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
 }

@@ -83,7 +83,7 @@ export function LeadsTable() {
   };
 
   return (
-    <Card>
+    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
       <CardHeader>
         <CardTitle>Contact Form Leads</CardTitle>
       </CardHeader>

@@ -3,8 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, User, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { firebaseConfig } from "@/firebase/config";
+
+// Initialize Firebase (Server Side)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
 
 export const metadata: Metadata = {
   title: "Digital Marketing Insights & Trends | AdsVerse Blog",
@@ -18,134 +26,24 @@ export const metadata: Metadata = {
   },
 };
 
-const featuredArticles = [
-  {
-    slug: "tata-sierra-2025-viral-marketing-case-study",
-    title: "The Legend Returns: Why the Tata Sierra 2025 went Viral Overnight?",
-    description: "A marketing case study on how Tata Motors used nostalgia, disruptive pricing, and unique design to make the Sierra 2025 launch a massive viral success.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?raw=true",
-    hint: "suv car"
-  },
-  {
-    slug: "indore-real-estate-case-study",
-    title: "Case Study: How an Indore Real Estate Project Sold 40% Units via Digital Marketing",
-    description: "Discover the digital marketing strategy that led to a 5X ROI and sold 40% of units for a real estate project in Indore in just 3 months.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Case%20Study%20How%20an%20Indore%20Real%20Estate%20Project%20Sold%2040%25%20Units%20via%20Digital%20Marketing%20Case%20Study.jpg?raw=true",
-    hint: "real estate success"
-  },
-  {
-    slug: "lead-generation-guide-indore",
-    title: "A Complete Lead Generation Guide for Your Business in Indore",
-    description: "Learn effective lead generation strategies for your Indore business. This guide covers local SEO, social media, paid ads, and automation to help you get more customers.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Lead%20Generation%20Guide%20for%20Your%20business%20in%20Indore.jpg?raw=true",
-    hint: "business strategy meeting"
-  },
-  {
-    slug: "facebook-instagram-ads-for-indore-builders",
-    title: "A Builder's Guide to Winning with Facebook & Instagram Ads in Indore",
-    description: "Learn how real estate builders in Indore can leverage Facebook and Instagram ads to generate high-quality leads, target the right homebuyers, and boost property sales.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Facebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?raw=true",
-    hint: "real estate marketing"
-  },
-  {
-    slug: "best-social-media-strategies-for-indore-businesses",
-    title: "Best Social Media Strategies for Indore's Local Businesses",
-    description: "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with real examples from the city.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
-    hint: "social media marketing"
-  },
-  {
-    slug: "future-of-automation-in-indore",
-    title: "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
-    description: "Indore's businesses are on the verge of an automation revolution. Discover how integrated CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true",
-    hint: "city future technology"
-  },
-  {
-    slug: "what-are-automation-tools",
-    title: "What Are Automation Tools and Why Adsverse Is the Best for It",
-    description: "In today’s fast-moving digital era, automation tools have become the backbone of modern businesses. They simplify repetitive tasks, save time, and reduce human errors.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20Tool%201.jpeg?raw=true",
-    hint: "gears robots"
-  },
-  {
-    slug: "why-automation-is-essential",
-    title: "Why Automation is Essential for Modern Companies",
-    description: "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true",
-    hint: "gears automation"
-  },
-  {
-    slug: "best-digital-marketing-services-in-indore",
-    title: "Best Digital Marketing Services in Indore – Grow Your Business",
-    description: "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true",
-    hint: "cityscape marketing"
-  },
-  {
-    slug: "best-automation-tools-for-business",
-    title: "Best Automation Tools for Business – Save Time and Boost Productivity",
-    description: "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true",
-    hint: "automation tools"
-  },
-  {
-    slug: "demystifying-seo",
-    title: "Demystifying SEO: A Beginner's Guide to Ranking Higher",
-    description: "Learn the fundamentals of Search Engine Optimization and how to apply them to your website to attract more organic traffic.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true",
-    hint: "laptop analytics"
-  },
-  {
-    slug: "content-is-king",
-    title: "Why Content is Still King in 2024",
-    description: "Explore the importance of a robust content marketing strategy and how it builds brand authority and drives conversions.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true",
-    hint: "writing content"
-  },
-  {
-    slug: "paid-ads-roi",
-    title: "The Art of Paid Ads: Maximizing Your ROI",
-    description: "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true",
-    hint: "charts graphs"
-  },
-  {
-    slug: "how-local-seo-works-for-indore-businesses",
-    title: "How Digital Marketing Helps Small Businesses in Indore",
-    description: "Local SEO is no longer optional—it's a survival strategy for every business in Indore.",
-    image: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/How%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?raw=true",
-    hint: "map business"
-  },
-];
+async function getBlogPosts() {
+  const q = query(collection(db, "blogPosts"), orderBy("publishedDate", "desc"));
+  const snap = await getDocs(q);
+  return snap.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  })) as any[];
+}
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Digital Marketing Insights & Trends | AdsVerse Blog",
-  "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
-  "url": "https://adsverse.in/blog",
-  "publisher": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
-    }
-  },
-  "blogPost": featuredArticles.map(article => ({
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://adsverse.in/blog/${article.slug}`
-    },
-    "headline": article.title,
-    "description": article.description,
-    "image": article.image,
-    "author": {
-      "@type": "Organization",
-      "name": "AdsVerse"
-    },
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Digital Marketing Insights & Trends | AdsVerse Blog",
+    "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
+    "url": "https://adsverse.in/blog",
     "publisher": {
       "@type": "Organization",
       "name": "AdsVerse",
@@ -153,57 +51,76 @@ const jsonLd = {
         "@type": "ImageObject",
         "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
       }
-    }
-  }))
-};
+    },
+    "blogPost": posts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "image": post.imageUrl,
+      "datePublished": post.publishedDate,
+      "author": {
+        "@type": "Organization",
+        "name": post.author
+      }
+    }))
+  };
 
-
-export default function BlogPage() {
   return (
     <>
-    <script
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-    <div className="container mx-auto py-16 px-4">
-      <section className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">Our Insights</h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
-          Stay ahead of the curve with the latest news, trends, and strategies in digital marketing.
-        </p>
-      </section>
+      />
+      <div className="container mx-auto py-16 px-4">
+        <section className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight font-headline text-primary mb-6">Our Insights</h1>
+          <p className="max-w-2xl mx-auto text-xl text-muted-foreground leading-relaxed">
+            Expert strategies, industry trends, and actionable insights to scale your digital presence in 2026 and beyond.
+          </p>
+        </section>
 
-      <section className="mb-24">
-        <h2 className="text-4xl font-bold text-center mb-8 font-headline">Latest Articles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredArticles.map((article, index) => (
-            <Card key={article.slug} className="flex flex-col overflow-hidden group bg-card/50 backdrop-blur-sm">
-              <Image 
-                src={article.image}
-                alt={article.title}
-                width={600}
-                height={400}
-                data-ai-hint={article.hint}
-                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                priority={index < 3}
-              />
-              <CardHeader>
-                <CardTitle className="font-headline">{article.title}</CardTitle>
-                <CardDescription className="pt-2">{article.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow"></CardContent>
-              <CardFooter>
-                 <Button asChild variant="link" className="p-0 text-accent">
-                   <Link href={`/blog/${article.slug}`}>
-                     Read More <ArrowRight className="ml-2 h-4 w-4" />
-                   </Link>
-                 </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </section>
-    </div>
+        <section className="mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {posts.map((post, index) => (
+              <Card key={post.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                <div className="relative h-64 w-full overflow-hidden">
+                  <Image 
+                    src={post.imageUrl}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    priority={index < 3}
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1">
+                      {post.category}
+                    </Badge>
+                  </div>
+                </div>
+                <CardHeader className="space-y-4">
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {new Date(post.publishedDate).toLocaleDateString()}</span>
+                    <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author}</span>
+                  </div>
+                  <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
+                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  </CardTitle>
+                  <CardDescription className="line-clamp-3 text-sm leading-relaxed">
+                    {post.excerpt}
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto pt-6 border-t border-primary/5">
+                  <Button asChild variant="link" className="p-0 text-accent group-hover:gap-3 transition-all">
+                    <Link href={`/blog/${post.slug}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
+                      Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </section>
+      </div>
     </>
   );
 }
