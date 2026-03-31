@@ -8,9 +8,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
 import { Input } from "@/components/ui/input";
-import { AnimatedCounter } from "@/components/pages/animated-counter";
 import { Badge } from "@/components/ui/badge";
-import { ShareButtons } from "@/components/layout/share-buttons";
+import dynamic from 'next/dynamic';
+
+const AnimatedCounter = dynamic(() => import('@/components/pages/animated-counter').then(mod => mod.AnimatedCounter), { ssr: false });
+const ShareButtons = dynamic(() => import('@/components/layout/share-buttons').then(mod => mod.ShareButtons), { ssr: false });
 
 export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
   const isHi = lang === 'hi';
@@ -198,8 +200,11 @@ export default function HomePage() {
       <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-primary">
-            Automate. Elevate. Dominate.
+            AdsVerse: Best AI-Powered Digital Marketing Agency in Indore
           </h1>
+          <p className="mt-4 text-2xl sm:text-3xl font-bold text-accent font-headline">
+            Automate. Elevate. Dominate.
+          </p>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground whitespace-pre-line">
             AdsVerse: The Future of **AI-Powered Digital Marketing & Automation in Indore** is here.
             From **automated lead generation** to **predictive SEO**, we drive 10x ROI for your business.

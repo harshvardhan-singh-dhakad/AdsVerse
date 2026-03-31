@@ -43,13 +43,15 @@ export function Header({ navLinks, lang }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <Link href={getLangPath('/')} className="mr-6 flex items-center space-x-2">
-           <Image 
+            <Image 
               src={currentLogo}
-              alt="AdsVerse Logo"
+              alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
               width={120}
               height={30}
               className="h-8 w-auto"
               key={currentLogo}
+              priority
+              loading="eager"
             />
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-2">
@@ -84,7 +86,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
                     <Link href={getLangPath('/')} className="flex items-center space-x-2">
                        <Image 
                           src={currentLogo}
-                          alt="AdsVerse Logo"
+                          alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
                           width={120}
                           height={30}
                           className="h-8 w-auto"

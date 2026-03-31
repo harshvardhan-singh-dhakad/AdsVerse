@@ -35,7 +35,7 @@ export function Footer() {
             <Link href={`/${lang}`} className="flex items-center space-x-2">
               <Image 
                 src={currentLogo}
-                alt="AdsVerse Logo"
+                alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
                 width={120}
                 height={30}
                 className="h-8 w-auto"

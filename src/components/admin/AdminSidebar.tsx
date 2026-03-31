@@ -38,12 +38,12 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
     <Sidebar variant="inset" className="border-r border-border/40 bg-card/50 backdrop-blur-xl">
       <SidebarHeader className="p-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl shadow-lg shadow-primary/20">
-            A
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-black text-2xl shadow-lg shadow-primary/20">
+            S
           </div>
           <div>
-            <h2 className="font-headline font-bold text-lg text-primary leading-tight">AdsVerse</h2>
-            <p className="text-xs text-muted-foreground">Admin Dashboard</p>
+            <h2 className="font-headline font-black text-xl text-primary leading-tight tracking-tighter">SynergyFlow</h2>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Admin Command</p>
           </div>
         </div>
       </SidebarHeader>

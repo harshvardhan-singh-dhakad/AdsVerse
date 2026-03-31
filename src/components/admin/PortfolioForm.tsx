@@ -9,10 +9,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 import { type PortfolioItem } from "@/lib/definitions";
-import { useFirestore } from "@/firebase";
+import { useFirestore, storage } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useState } from "react";
+import { Upload, ImageIcon, Loader2, Link as LinkIcon } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 const portfolioSchema = z.object({
   title: z.string().min(3, "Title is required."),
@@ -34,6 +38,10 @@ interface PortfolioFormProps {
 export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
   const { toast } = useToast();
   const firestore = useFirestore();
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+
   const form = useForm<PortfolioFormData>({
     resolver: zodResolver(portfolioSchema),
     defaultValues: item ? {
@@ -47,6 +55,39 @@ export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
       projectDate: new Date().toISOString().split('T')[0],
     },
   });
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Error', description: 'Please select an image file', variant: 'destructive' });
+      return;
+    }
+
+    setUploading(true);
+    const storageRef = ref(storage, `portfolio/${Date.now()}-${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
+      },
+      (error) => {
+        console.error(error);
+        toast({ title: 'Error', description: 'Failed to upload image', variant: 'destructive' });
+        setUploading(false);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        form.setValue('imageUrl', downloadURL);
+        setUploading(false);
+        setProgress(0);
+        toast({ title: 'Success', description: 'Image uploaded successfully' });
+      }
+    );
+  };
 
   const { isSubmitting } = form.formState;
 
@@ -84,8 +125,74 @@ export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
-              <FormControl><Input placeholder="https://example.com/image.png" {...field} /></FormControl>
+              <FormLabel className="flex items-center justify-between">
+                <span>Project Image</span>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowUrlInput(!showUrlInput)}
+                  className="text-xs text-primary h-7"
+                >
+                  {showUrlInput ? <Upload className="h-3 w-3 mr-1" /> : <LinkIcon className="h-3 w-3 mr-1" />}
+                  {showUrlInput ? 'Upload Image' : 'Use URL instead'}
+                </Button>
+              </FormLabel>
+              <FormControl>
+                <div className="space-y-4">
+                  {showUrlInput ? (
+                    <Input placeholder="https://..." {...field} />
+                  ) : (
+                    <div className={cn(
+                      "relative border-2 border-dashed rounded-xl p-8 transition-all duration-300 group overflow-hidden",
+                      uploading ? "bg-muted" : "hover:bg-primary/5 hover:border-primary/50",
+                      field.value ? "border-primary/50" : "border-muted-foreground/20"
+                    )}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                        onChange={handleImageUpload}
+                        disabled={uploading}
+                      />
+                      
+                      <div className="flex flex-col items-center justify-center space-y-3 text-center">
+                        {uploading ? (
+                          <>
+                            <div className="relative">
+                              <Loader2 className="h-10 w-10 text-primary animate-spin" />
+                              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold">
+                                {Math.round(progress)}%
+                              </span>
+                            </div>
+                            <div className="space-y-1 w-full max-w-[200px]">
+                              <p className="text-sm font-medium">Uploading image...</p>
+                              <Progress value={progress} className="h-1" />
+                            </div>
+                          </>
+                        ) : field.value ? (
+                          <div className="relative w-full max-w-sm aspect-video rounded-lg overflow-hidden group-hover:opacity-75 transition-opacity">
+                            <img src={field.value} alt="Preview" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                              <p className="text-white text-xs font-medium">Change Image</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="p-3 rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform">
+                              <Upload className="h-6 w-6" />
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-sm font-medium">Click or drag to upload project image</p>
+                              <p className="text-xs text-muted-foreground">Supported format: JPG, PNG, WEBP</p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

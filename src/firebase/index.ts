@@ -3,7 +3,8 @@
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
@@ -31,16 +32,47 @@ export function initializeFirebase() {
   return getSdks(getApp());
 }
 
-// Singleton instances for easy import
-const sdks = initializeFirebase();
-export const auth = sdks.auth;
-export const db = sdks.firestore;
+// Lazy-load singleton instances using a Proxy
+let _sdks: ReturnType<typeof getSdks> | undefined;
+
+function getLazySdks() {
+  if (!_sdks) {
+    _sdks = initializeFirebase();
+  }
+  return _sdks;
+}
+
+// Proxy-based exports to initialize on first access
+export const auth = new Proxy({} as any, {
+  get(_, prop) {
+    const instance = getLazySdks().auth;
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  }
+});
+
+export const db = new Proxy({} as any, {
+  get(_, prop) {
+    const instance = getLazySdks().firestore;
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  }
+});
+
+export const storage = new Proxy({} as any, {
+  get(_, prop) {
+    const instance = getLazySdks().storage;
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  }
+});
 
 export function getSdks(firebaseApp: FirebaseApp) {
   return {
     firebaseApp,
     auth: getAuth(firebaseApp),
-    firestore: getFirestore(firebaseApp)
+    firestore: getFirestore(firebaseApp),
+    storage: getStorage(firebaseApp)
   };
 }
 

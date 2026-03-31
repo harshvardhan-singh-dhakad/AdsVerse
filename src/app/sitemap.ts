@@ -1,11 +1,29 @@
-
 import { MetadataRoute } from 'next'
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { firebaseConfig } from "@/firebase/config";
 
 const BASE_URL = 'https://adsverse.in';
+const locales = ['en', 'hi'];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    // Static routes
-    const staticRoutes = [
+// Initialize Firebase (Server Side)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
+
+async function getBlogSlugs() {
+    try {
+        const snap = await getDocs(collection(db, "blogPosts"));
+        return snap.docs.map(doc => doc.data().slug).filter(Boolean);
+    } catch (e) {
+        console.error("Sitemap: Error fetching blog slugs:", e);
+        return [];
+    }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const blogSlugs = await getBlogSlugs();
+    // Static base routes (without locale prefix)
+    const staticBaseRoutes = [
         '',
         '/about',
         '/our-services',
@@ -16,12 +34,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/privacy-policy',
         '/terms-of-service',
         '/tools/seo-audit',
-        '/login',
-        '/admin',
     ];
 
-    // Service pages
-    const serviceRoutes = [
+    // Service base routes
+    const serviceBaseRoutes = [
         '/services/automation-tools',
         '/services/brand-strategy',
         '/services/paid-ads',
@@ -31,30 +47,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services/web-design-development',
     ];
 
-    // Blog pages
-    const blogRoutes = [
-        '/blog/tata-sierra-2025-viral-marketing-case-study',
-        '/blog/indore-real-estate-case-study',
-        '/blog/lead-generation-guide-indore',
-        '/blog/what-are-automation-tools',
-        '/blog/why-automation-is-essential',
-        '/blog/best-automation-tools-for-business',
-        '/blog/demystifying-seo',
-        '/blog/content-is-king',
-        '/blog/paid-ads-roi',
-        '/blog/best-digital-marketing-services-in-indore',
-        '/blog/how-local-seo-works-for-indore-businesses',
-        '/blog/future-of-automation-in-indore',
-        '/blog/best-social-media-strategies-for-indore-businesses',
-        '/blog/facebook-instagram-ads-for-indore-builders',
-    ];
+    const sitemapEntries: MetadataRoute.Sitemap = [];
 
-    const allRoutes = [...staticRoutes, ...serviceRoutes, ...blogRoutes];
+    // Combine and generate localized routes
+    const allBaseRoutes = [...staticBaseRoutes, ...serviceBaseRoutes];
 
-    return allRoutes.map((route) => ({
-        url: `${BASE_URL}${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: route === '' ? 1 : 0.8,
-    }));
+    locales.forEach(lang => {
+        allBaseRoutes.forEach(route => {
+            sitemapEntries.push({
+                url: `${BASE_URL}/${lang}${route}`,
+                lastModified: new Date(),
+                changeFrequency: 'monthly' as const,
+                priority: route === '' ? 1 : 0.8,
+            });
+        });
+
+        blogSlugs.forEach(slug => {
+            sitemapEntries.push({
+                url: `${BASE_URL}/${lang}/blog/${slug}`,
+                lastModified: new Date(),
+                changeFrequency: 'weekly' as const,
+                priority: 0.7,
+            });
+        });
+    });
+
+    return sitemapEntries;
 }
+

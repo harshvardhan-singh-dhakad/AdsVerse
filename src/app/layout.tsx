@@ -5,8 +5,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
-import Script from "next/script";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
+import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -88,30 +89,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={params.lang ?? 'en'} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://picsum.photos" />
+      </head>
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",
         inter.variable, 
         playfairDisplay.variable
       )}>
-        <Script id="meta-pixel" strategy="lazyOnload">
-          {`!function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', 'YOUR_PIXEL_ID_HERE');
-          fbq('track', 'PageView');`}
-        </Script>
-        <Script id="google-tag-manager" strategy="lazyOnload">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-M6GV59XL');`}
-        </Script>
+        <ScriptOptimizer />
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -133,13 +121,8 @@ export default function RootLayout({
               alt=""
             />
           </noscript>
-          <div className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden">
-            <div className="glow-effect"></div>
-            <div className="stars stars-sm"></div>
-            <div className="stars stars-md"></div>
-            <div className="stars stars-lg"></div>
-          </div>
           <div className="relative z-10">
+            <BackgroundEffects />
             {children}
             <Toaster />
           </div>
