@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "Future of Automation in Indore: How CRM, WhatsApp & Funnels Are Changing the Game",
   "description": "Indore's businesses are adopting automation. Discover how CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth and customer engagement.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FFuture%20of%20Automation%20in%20Indore%20(CRM%2C%20WhatsApp%20Chatbots%2C%20Funnels).jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function FutureOfAutomationPage() {
+export default function FutureOfAutomationPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function FutureOfAutomationPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function FutureOfAutomationPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Future%20of%20Automation%20in%20Indore%20(CRM,%20WhatsApp%20Chatbots,%20Funnels).jpg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FFuture%20of%20Automation%20in%20Indore%20(CRM%2C%20WhatsApp%20Chatbots%2C%20Funnels).jpg?alt=media"
         alt="Future of Automation in Indore"
         width={1200}
         height={600}
@@ -107,7 +107,7 @@ export default function FutureOfAutomationPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          Indore, the commercial capital of Madhya Pradesh, is buzzing with entrepreneurial energy. From traditional businesses to modern startups, everyone is looking for a competitive edge. In this new era, <Link href="/services/automation-tools" className="text-accent hover:underline">automation</Link> is no longer a futuristic concept—it's the key to survival and growth. Specifically, the integration of CRM, WhatsApp chatbots, and automated funnels is set to redefine how businesses in Indore operate.
+          Indore, the commercial capital of Madhya Pradesh, is buzzing with entrepreneurial energy. From traditional businesses to modern startups, everyone is looking for a competitive edge. In this new era, <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automation</Link> is no longer a futuristic concept—it's the key to survival and growth. Specifically, the integration of CRM, WhatsApp chatbots, and automated funnels is set to redefine how businesses in Indore operate.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">The Old Way vs. The New Way</h2>
@@ -117,7 +117,7 @@ export default function FutureOfAutomationPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. CRM: The Central Brain of Your Business</h2>
         <p>
-          A <Link href="/services/automation-tools" className="text-accent hover:underline">Customer Relationship Management (CRM)</Link> system is becoming the non-negotiable core for smart businesses in Indore. Instead of just a contact list, a CRM acts as a central database for all customer interactions.
+          A <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">Customer Relationship Management (CRM)</Link> system is becoming the non-negotiable core for smart businesses in Indore. Instead of just a contact list, a CRM acts as a central database for all customer interactions.
         </p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Automated Lead Capture:</strong> Leads from your website, social media, and Google Ads are automatically fed into the CRM. No more manual data entry.</li>
@@ -129,7 +129,7 @@ export default function FutureOfAutomationPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">2. WhatsApp Chatbots: Your 24/7 Sales Assistant</h2>
         <p>
-          With over 500 million users in India, WhatsApp is where your customers are. <Link href="/services/automation-tools" className="text-accent hover:underline">WhatsApp automation</Link> is the most powerful tool for direct customer engagement.
+          With over 500 million users in India, WhatsApp is where your customers are. <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">WhatsApp automation</Link> is the most powerful tool for direct customer engagement.
         </p>
         <p>Imagine a customer visits your Instagram page at midnight:</p>
         <ol className="list-decimal pl-6 space-y-2">
@@ -164,7 +164,7 @@ export default function FutureOfAutomationPage() {
         
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-          The future of business growth in Indore lies in smart automation. Integrating your <Link href="/services/automation-tools" className="text-accent hover:underline">CRM, implementing WhatsApp chatbots, and building automated sales funnels</Link> are no longer just for big tech companies. They are accessible, affordable, and absolutely essential for any Indore-based business looking to scale, improve efficiency, and dominate its market in 2025 and beyond. The revolution is here—don't get left behind.
+          The future of business growth in Indore lies in smart automation. Integrating your <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">CRM, implementing WhatsApp chatbots, and building automated sales funnels</Link> are no longer just for big tech companies. They are accessible, affordable, and absolutely essential for any Indore-based business looking to scale, improve efficiency, and dominate its market in 2025 and beyond. The revolution is here—don't get left behind.
         </p>
       </div>
     </article>

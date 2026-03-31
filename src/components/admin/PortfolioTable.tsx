@@ -22,7 +22,7 @@ export function PortfolioTable() {
     query(collection(firestore, "portfolioItems"), orderBy("projectDate", "desc")),
     [firestore]
   );
-  const { data: items, isLoading } = useCollection<PortfolioItem>(itemsQuery);
+  const { data: items, isLoading, error } = useCollection<PortfolioItem>(itemsQuery);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
@@ -54,7 +54,15 @@ export function PortfolioTable() {
       </CardHeader>
       <CardContent>
         {isLoading && <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>}
-        {!isLoading && (
+        {error && (
+          <div className="text-center py-10 px-4">
+            <h3 className="text-xl font-semibold text-destructive">Permission Denied</h3>
+            <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+              You do not have permission to view this data. Please ensure you are logged in with an admin account.
+            </p>
+          </div>
+        )}
+        {!isLoading && !error && (
             <Table>
             <TableHeader>
                 <TableRow>

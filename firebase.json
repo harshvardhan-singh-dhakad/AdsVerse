@@ -6,11 +6,21 @@
       "src/app/api/seed-blogs/**",
       "src/app/api/seed-pricing/**",
       "src/app/api/seed-portfolio/**",
-      "src/app/[lang]/seed/**"
-    ]
+      "src/app/[lang]/seed/**",
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ],
+    "alwaysDeployFromSource": true
   },
   "firestore": {
     "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+    "indexes": "firestore.indexes.json",
+    "database": "(default)"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

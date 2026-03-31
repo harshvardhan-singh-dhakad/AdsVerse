@@ -84,8 +84,41 @@ export function LeadsTable() {
 
   return (
     <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle>Contact Form Leads</CardTitle>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => {
+            if (!leads) return;
+            const headers = ["Date", "Name", "Email", "Phone", "Subject", "Message"];
+            const csvContent = [
+              headers.join(","),
+              ...leads.map(lead => [
+                lead.submissionDate ? format(lead.submissionDate.toDate(), 'yyyy-MM-dd') : 'N/A',
+                `"${lead.name.replace(/"/g, '""')}"`,
+                lead.email,
+                lead.phone || 'N/A',
+                `"${lead.subject.replace(/"/g, '""')}"`,
+                `"${lead.message.replace(/"/g, '""')}"`
+              ].join(","))
+            ].join("\n");
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `adsverse_leads_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}
+          disabled={!leads || leads.length === 0}
+          className="ml-auto"
+        >
+          Download CSV
+        </Button>
       </CardHeader>
       <CardContent>
         {renderContent()}

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: { slug: string, lan
     title: `${post.title} | AdsVerse Blog`,
     description: post.excerpt,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: `https://adsverse.in/${params.lang}/blog/${post.slug}`,
     }
   };
 }
@@ -61,20 +61,20 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     "image": post.imageUrl,
     "author": {
       "@type": "Organization",
-      "name": post.author
+      "name": post.author || "AdsVerse Expert Team"
     },
     "publisher": {
       "@type": "Organization",
       "name": "AdsVerse",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+        "url": "https://adsverse.in/images/logo-white.png"
       }
     },
     "datePublished": post.publishedDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://adsverse.in/blog/${post.slug}`
+      "@id": `https://adsverse.in/${params.lang}/blog/${post.slug}`
     }
   };
 
@@ -86,19 +86,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://adsverse.in"
+        "item": `https://adsverse.in/${params.lang}`
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "https://adsverse.in/blog"
+        "item": `https://adsverse.in/${params.lang}/blog`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": post.title,
-        "item": `https://adsverse.in/blog/${post.slug}`
+        "item": `https://adsverse.in/${params.lang}/blog/${post.slug}`
       }
     ]
   };
@@ -117,7 +117,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
       />
       <div className="container mx-auto py-16 px-4 max-w-4xl">
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
-          <Link href="/blog">
+          <Link href={`/${params.lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
             <div className="flex flex-wrap items-center gap-6 text-muted-foreground pt-2">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-accent" />
-                <span>{post.author}</span>
+                <span>{post.author || "AdsVerse Expert Team"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-accent" />

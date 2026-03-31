@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
-export type AdminTab = "leads" | "services" | "portfolio" | "pricing" | "blogs";
+export type AdminTab = "dashboard" | "leads" | "services" | "portfolio" | "pricing" | "blogs";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -26,9 +26,10 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: AdminSidebarProps) {
   const menuItems = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "leads", label: "Leads", icon: Users },
-    { id: "services", label: "Services", icon: LayoutDashboard },
-    { id: "portfolio", label: "Portfolio", icon: Briefcase },
+    { id: "services", label: "Services", icon: Briefcase },
+    { id: "portfolio", label: "Portfolio", icon: ChevronRight },
     { id: "pricing", label: "Pricing", icon: IndianRupee },
     { id: "blogs", label: "Blogs", icon: FileText },
   ];

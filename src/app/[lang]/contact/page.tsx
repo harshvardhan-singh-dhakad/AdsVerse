@@ -29,7 +29,7 @@ const jsonLd = {
     "@type": "Organization",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+    "logo": "https://adsverse.in/images/logo-white.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+91-9685123339",

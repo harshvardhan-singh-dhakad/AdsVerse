@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 };
 
 const teamMembers = [
-  { name: "Deepak Dhakad", role: "Ads, Ai Automation, GEO & SEO Specialist", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/HSD01.jpeg?raw=true", hint: "man portrait" },
-  { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/MANU.jpg?raw=true", hint: "woman portrait" },
-  { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Aarsh.JPG?raw=true", hint: "man portrait" },
+  { name: "Deepak Dhakad", role: "Ads, Ai Automation, GEO & SEO Specialist", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHSD01.jpeg?alt=media", hint: "man portrait" },
+  { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FMANU.jpg?alt=media", hint: "woman portrait" },
+  { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FAarsh.JPG?alt=media", hint: "man portrait" },
 ];
 
 const timelineEvents = [
@@ -40,7 +40,7 @@ const jsonLd = {
     "@type": "Organization",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "logo": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+    "logo": "https://adsverse.in/images/logo-white.png",
     "member": teamMembers.map(member => ({
       "@type": "Person",
       "name": member.name,
@@ -102,7 +102,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 items-center">
             <div className="md:col-span-1 h-full">
               <Image
-                src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/DEEPAK.ABOUT.png?raw=true"
+                src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
                 alt="Deepak Dhakad"
                 width={400}
                 height={600}

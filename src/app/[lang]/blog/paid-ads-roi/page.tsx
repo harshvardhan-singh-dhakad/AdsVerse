@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "The Art of Paid Ads: Maximizing Your ROI on Google & Meta",
   "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FThe%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -69,7 +69,7 @@ const jsonLd = {
 };
 
 
-export default function PaidAdsRoiPage() {
+export default function PaidAdsRoiPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -81,7 +81,7 @@ export default function PaidAdsRoiPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -98,7 +98,7 @@ export default function PaidAdsRoiPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Google%20Ads.jpeg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FThe%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?alt=media"
         alt="Paid Ads ROI"
         width={1200}
         height={600}
@@ -108,7 +108,7 @@ export default function PaidAdsRoiPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In the world of digital marketing, <Link href="/services/paid-ads" className="text-accent hover:underline">paid advertising</Link> is the accelerator pedal. While organic strategies like SEO and content marketing build momentum over time, paid ads on platforms like Google and Meta offer an immediate, powerful way to reach your target audience. However, simply throwing money at ads is a recipe for disaster. The true art lies in a strategic approach focused on one critical metric: Return on Investment (ROI). Maximizing your ROI ensures that every dollar you spend is working hard to grow your business.
+          In the world of digital marketing, <Link href={`/${lang}/services/paid-ads`} className="text-accent hover:underline">paid advertising</Link> is the accelerator pedal. While organic strategies like SEO and content marketing build momentum over time, paid ads on platforms like Google and Meta offer an immediate, powerful way to reach your target audience. However, simply throwing money at ads is a recipe for disaster. The true art lies in a strategic approach focused on one critical metric: Return on Investment (ROI). Maximizing your ROI ensures that every dollar you spend is working hard to grow your business.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">Understanding the Paid Ads Landscape</h2>
@@ -146,7 +146,7 @@ export default function PaidAdsRoiPage() {
 
         <h3 className="text-2xl font-semibold text-accent font-headline">3. Optimized Landing Pages</h3>
         <p>
-          The ad is only half the battle. If a user clicks your ad and lands on a slow, confusing, or irrelevant page, you've wasted your money. Your <Link href="/services/web-design-development" className="text-accent hover:underline">landing page</Link> must be a seamless continuation of your ad's promise.
+          The ad is only half the battle. If a user clicks your ad and lands on a slow, confusing, or irrelevant page, you've wasted your money. Your <Link href={`/${lang}/services/web-design-development`} className="text-accent hover:underline">landing page</Link> must be a seamless continuation of your ad's promise.
         </p>
          <ul className="list-disc pl-6 space-y-2">
           <li><strong>Message Match:</strong> The headline and offer on your landing page should directly match the ad that brought the user there.</li>

@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Best Automation Tools for Business – Save Time and Boost Productivity",
   "description": "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -69,7 +69,7 @@ const jsonLd = {
   }
 };
 
-export default function BestAutomationToolsPage() {
+export default function BestAutomationToolsPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -81,7 +81,7 @@ export default function BestAutomationToolsPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -98,7 +98,7 @@ export default function BestAutomationToolsPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Automation.jpeg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media"
         alt="Best Automation Tools for Business"
         width={1200}
         height={600}
@@ -108,7 +108,7 @@ export default function BestAutomationToolsPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In today’s digital era, businesses need to be faster, smarter, and more efficient. Whether you are running a startup, a small business, or a large enterprise, one thing is common—time is money. This is why <Link href="/services/automation-tools" className="text-accent hover:underline">automation tools</Link> have become a game-changer. They simplify repetitive tasks, reduce errors, and allow you to focus on what truly matters: growing your business.
+          In today’s digital era, businesses need to be faster, smarter, and more efficient. Whether you are running a startup, a small business, or a large enterprise, one thing is common—time is money. This is why <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automation tools</Link> have become a game-changer. They simplify repetitive tasks, reduce errors, and allow you to focus on what truly matters: growing your business.
         </p>
         <p>
           If you are searching for the best automation tools for your business or trying to understand how automation can transform your workflow, this article will guide you through everything. From benefits to features and choosing the right tool, let’s explore why automation is the future of business operations.
@@ -167,7 +167,7 @@ export default function BestAutomationToolsPage() {
             Here are some real-world examples of how businesses use automation tools:
         </p>
         <ul className="list-disc pl-6 space-y-2">
-            <li><Link href="/services/content-marketing" className="text-accent hover:underline">Marketing Automation</Link> – Send targeted email campaigns, schedule social media posts, and track customer journeys.</li>
+            <li><Link href={`/${lang}/services/content-marketing`} className="text-accent hover:underline">Marketing Automation</Link> – Send targeted email campaigns, schedule social media posts, and track customer journeys.</li>
             <li>Sales Automation – Auto-generate leads, send follow-up reminders, and update CRM data.</li>
             <li>Customer Support Automation – Chatbots that reply instantly to customer queries 24/7.</li>
             <li>Finance Automation – Automated invoice generation, expense tracking, and payment reminders.</li>
@@ -200,7 +200,7 @@ export default function BestAutomationToolsPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-            If you are serious about growing your business, investing in the <Link href="/services/automation-tools" className="text-accent hover:underline">best automation tools</Link> is no longer optional—it’s essential. From marketing campaigns to customer support, automation can handle tasks that used to take hours, in just a few minutes.
+            If you are serious about growing your business, investing in the <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">best automation tools</Link> is no longer optional—it’s essential. From marketing campaigns to customer support, automation can handle tasks that used to take hours, in just a few minutes.
         </p>
         <p>
             The right automation tool will not only save you time but also help your business scale faster with accuracy and efficiency. Instead of spending energy on repetitive work, you and your team can focus on creativity, strategy, and innovation.

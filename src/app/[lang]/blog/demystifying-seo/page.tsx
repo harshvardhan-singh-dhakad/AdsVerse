@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "Demystifying SEO: A Beginner's Guide to Ranking Higher in Search",
   "description": "A beginner's guide to understanding Search Engine Optimization (SEO) and how it can help your website rank higher in search results.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FDemystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function DemystifyingSeoPage() {
+export default function DemystifyingSeoPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function DemystifyingSeoPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function DemystifyingSeoPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Demystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FDemystifying%20SEO%20A%20Beginner's%20Guide%20to%20Ranking%20Higher.jpg?alt=media"
         alt="Demystifying SEO"
         width={1200}
         height={600}
@@ -107,7 +107,7 @@ export default function DemystifyingSeoPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In the vast, ever-expanding universe of the internet, how do you ensure your voice is heard? How do you connect with the people actively searching for the solutions you provide? The answer lies in mastering a powerful, often misunderstood discipline: <Link href="/services/seo-optimization" className="text-accent hover:underline">Search Engine Optimization (SEO)</Link>. For many, "SEO" is an intimidating acronym shrouded in technical jargon. But at its core, it's about making your website more visible to search engines like Google, and in turn, to your potential customers.
+          In the vast, ever-expanding universe of the internet, how do you ensure your voice is heard? How do you connect with the people actively searching for the solutions you provide? The answer lies in mastering a powerful, often misunderstood discipline: <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">Search Engine Optimization (SEO)</Link>. For many, "SEO" is an intimidating acronym shrouded in technical jargon. But at its core, it's about making your website more visible to search engines like Google, and in turn, to your potential customers.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">What is SEO, Really?</h2>

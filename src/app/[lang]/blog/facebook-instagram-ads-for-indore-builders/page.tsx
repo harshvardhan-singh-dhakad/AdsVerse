@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "A Builder's Guide to Winning with Facebook & Instagram Ads in Indore",
   "description": "Learn how real estate builders in Indore can leverage Facebook and Instagram ads to generate high-quality leads, target the right homebuyers, and boost property sales.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Facebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FFacebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function IndoreBuildersAdsPage() {
+export default function IndoreBuildersAdsPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function IndoreBuildersAdsPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function IndoreBuildersAdsPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Facebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FFacebook%20%26%20Instagram%20Ads%20for%20Indore%20Builders.jpg?alt=media"
         alt="Facebook & Instagram Ads for Indore Builders"
         width={1200}
         height={600}
@@ -112,7 +112,7 @@ export default function IndoreBuildersAdsPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Why Facebook & Instagram Are a Goldmine for Indore's Builders</h2>
         <p>
-            Real estate is a visual sell. People want to see beautiful images of their future homes, lifestyle videos, and walkthroughs. Facebook and Instagram are the perfect platforms for this. They allow you to showcase your property in a way that print ads never can. More importantly, they offer powerful <Link href="/services/paid-ads" className="text-accent hover:underline">targeting tools</Link> to reach the exact buyers you want.
+            Real estate is a visual sell. People want to see beautiful images of their future homes, lifestyle videos, and walkthroughs. Facebook and Instagram are the perfect platforms for this. They allow you to showcase your property in a way that print ads never can. More importantly, they offer powerful <Link href={`/${lang}/services/paid-ads`} className="text-accent hover:underline">targeting tools</Link> to reach the exact buyers you want.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Key Strategies for High-Quality Leads</h2>
@@ -142,7 +142,7 @@ export default function IndoreBuildersAdsPage() {
         
         <h3 className="text-2xl font-semibold text-accent font-headline">4. The Follow-Up Funnel (Lead Ko Customer Banao)</h3>
         <p>
-            Generating a lead is only the first step. A winning strategy includes an <Link href="/services/automation-tools" className="text-accent hover:underline">automated follow-up system</Link>.
+            Generating a lead is only the first step. A winning strategy includes an <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automated follow-up system</Link>.
         </p>
         <ol className="list-decimal pl-6 space-y-2">
             <li>A lead submits the form.</li>
@@ -154,7 +154,7 @@ export default function IndoreBuildersAdsPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-            For builders in Indore, Facebook and Instagram are no longer optional. They are the most powerful tools for reaching a targeted audience, generating high-quality leads, and closing deals faster. By combining smart targeting, beautiful creatives, and an <Link href="/services/automation-tools" className="text-accent hover:underline">automated follow-up process</Link>, you can build a predictable pipeline of customers for your projects and stay ahead of the competition in Indore's dynamic real estate market.
+            For builders in Indore, Facebook and Instagram are no longer optional. They are the most powerful tools for reaching a targeted audience, generating high-quality leads, and closing deals faster. By combining smart targeting, beautiful creatives, and an <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automated follow-up process</Link>, you can build a predictable pipeline of customers for your projects and stay ahead of the competition in Indore's dynamic real estate market.
         </p>
       </div>
     </article>

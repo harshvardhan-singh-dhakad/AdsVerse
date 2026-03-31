@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Best Digital Marketing Services in Indore – Grow Your Business with the Best Digital Marketing Agency",
   "description": "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency in Indore for your business.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FDigital%20Marketing%20Indore.jpeg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -69,7 +69,7 @@ const jsonLd = {
   }
 };
 
-export default function BestDigitalMarketingServicesInIndorePage() {
+export default function BestDigitalMarketingServicesInIndorePage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -81,7 +81,7 @@ export default function BestDigitalMarketingServicesInIndorePage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -98,7 +98,7 @@ export default function BestDigitalMarketingServicesInIndorePage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Digital%20Marketing%20Indore.jpeg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FDigital%20Marketing%20Indore.jpeg?alt=media"
         alt="Best Digital Marketing Services in Indore"
         width={1200}
         height={600}
@@ -132,27 +132,27 @@ export default function BestDigitalMarketingServicesInIndorePage() {
 
         <h3 className="text-2xl font-semibold text-accent font-headline">1. Search Engine Optimization (SEO)</h3>
         <p>
-            <Link href="/services/seo-optimization" className="text-accent hover:underline">SEO</Link> helps your website rank higher on Google search results. With proper keyword optimization, content marketing, and link-building strategies, SEO ensures that your business appears when potential customers search for your products or services.
+            <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">SEO</Link> helps your website rank higher on Google search results. With proper keyword optimization, content marketing, and link-building strategies, SEO ensures that your business appears when potential customers search for your products or services.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">2. Social Media Marketing (SMM)</h3>
         <p>
-            <Link href="/services/social-media-management" className="text-accent hover:underline">Social media platforms</Link> like Facebook, Instagram, and LinkedIn are powerful tools to build brand awareness. Creative campaigns, engaging reels, and consistent posting help connect with your target audience.
+            <Link href={`/${lang}/services/social-media-management`} className="text-accent hover:underline">Social media platforms</Link> like Facebook, Instagram, and LinkedIn are powerful tools to build brand awareness. Creative campaigns, engaging reels, and consistent posting help connect with your target audience.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">3. Pay-Per-Click Advertising (PPC)</h3>
         <p>
-            <Link href="/services/paid-ads" className="text-accent hover:underline">Google Ads and social media ads</Link> allow you to directly target potential customers. A well-managed PPC campaign can bring instant traffic and conversions to your business.
+            <Link href={`/${lang}/services/paid-ads`} className="text-accent hover:underline">Google Ads and social media ads</Link> allow you to directly target potential customers. A well-managed PPC campaign can bring instant traffic and conversions to your business.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">4. Website Design and Development</h3>
         <p>
-            A professional, mobile-friendly <Link href="/services/web-design-development" className="text-accent hover:underline">website</Link> is the foundation of every digital marketing strategy. The best agencies in Indore not only design websites but also ensure they are SEO-friendly and user-focused.
+            A professional, mobile-friendly <Link href={`/${lang}/services/web-design-development`} className="text-accent hover:underline">website</Link> is the foundation of every digital marketing strategy. The best agencies in Indore not only design websites but also ensure they are SEO-friendly and user-focused.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">5. Content Marketing</h3>
         <p>
-            High-quality blogs, articles, videos, and infographics help in building trust with customers. <Link href="/services/content-marketing" className="text-accent hover:underline">Content</Link> is the backbone of digital marketing as it improves brand authority and SEO rankings.
+            High-quality blogs, articles, videos, and infographics help in building trust with customers. <Link href={`/${lang}/services/content-marketing`} className="text-accent hover:underline">Content</Link> is the backbone of digital marketing as it improves brand authority and SEO rankings.
         </p>
 
         <h3 className="text-2xl font-semibold text-accent font-headline">6. Email & WhatsApp Marketing</h3>

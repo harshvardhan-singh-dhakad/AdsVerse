@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Why Automation is No Longer a Luxury, It's Essential for Business",
   "description": "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth and innovation.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -39,7 +39,7 @@ const jsonLd = {
     "name": "AdsVerse",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+      "url": "https://adsverse.in/images/logo-white.png"
     }
   },
   "datePublished": "2024-08-20",
@@ -69,7 +69,7 @@ const jsonLd = {
   }
 };
 
-export default function WhyAutomationIsEssentialPage() {
+export default function WhyAutomationIsEssentialPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -81,7 +81,7 @@ export default function WhyAutomationIsEssentialPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -98,7 +98,7 @@ export default function WhyAutomationIsEssentialPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/automation%20tool%202.jpeg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media"
         alt="Business automation concept"
         width={1200}
         height={600}
@@ -108,7 +108,7 @@ export default function WhyAutomationIsEssentialPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In any growing business, time is the most valuable asset. Teams often find themselves buried under repetitive, manual tasks like data entry, sending follow-up emails, or managing spreadsheets. While necessary, these jobs consume hours that could be spent on strategy, customer relationships, and innovation. This is where <Link href="/services/automation-tools" className="text-accent hover:underline">automation tools</Link> come in as a game-changer.
+          In any growing business, time is the most valuable asset. Teams often find themselves buried under repetitive, manual tasks like data entry, sending follow-up emails, or managing spreadsheets. While necessary, these jobs consume hours that could be spent on strategy, customer relationships, and innovation. This is where <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automation tools</Link> come in as a game-changer.
         </p>
         <p>
           Automation is no longer a complex technology reserved for large corporations. It is now an accessible and essential tool for companies of all sizes. But why is it so important?
@@ -126,7 +126,7 @@ export default function WhyAutomationIsEssentialPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">3. It Boosts Overall Productivity and Efficiency</h2>
         <p>
-          When your team isn’t bogged down by manual work, they can get more done. Automation streamlines workflows, ensuring that processes run smoothly and quickly without delays. For example, when a customer fills out a contact form, an <Link href="/services/automation-tools" className="text-accent hover:underline">automation tool</Link> can instantly assign the lead to a sales representative and add it to your CRM. This speed and efficiency lead to faster response times and a more productive operation.
+          When your team isn’t bogged down by manual work, they can get more done. Automation streamlines workflows, ensuring that processes run smoothly and quickly without delays. For example, when a customer fills out a contact form, an <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">automation tool</Link> can instantly assign the lead to a sales representative and add it to your CRM. This speed and efficiency lead to faster response times and a more productive operation.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">The Smart Move for Growth</h2>

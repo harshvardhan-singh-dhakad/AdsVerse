@@ -138,10 +138,14 @@ const automationPackages = [
 ];
 
 export const metadata: Metadata = {
-    title: "Best Digital Marketing & Automation Services in Indore | AdsVerse",
+    title: "Best Digital Marketing & Automation Services in Indore",
     description: "Explore Indore's most comprehensive digital marketing and automation services. From SEO and Meta Ads to AI chatbots and CRM automation, we scale your ROI.",
     alternates: {
-        canonical: '/our-services',
+        canonical: '/en/our-services',
+        languages: {
+            'en': '/en/our-services',
+            'hi': '/hi/our-services',
+        },
     }
 };
 
@@ -153,7 +157,7 @@ export default function OurServicesPage() {
         "provider": {
             "@type": "LocalBusiness",
             "name": "AdsVerse",
-            "image": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+            "image": "https://adsverse.in/images/logo-white.png",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Vijay Nagar",

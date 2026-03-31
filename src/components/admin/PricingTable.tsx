@@ -21,7 +21,7 @@ export function PricingTable() {
     query(collection(firestore, "pricingPlans"), orderBy("displayOrder", "asc")),
     [firestore]
   );
-  const { data: plans, isLoading } = useCollection<PricingPlan>(plansQuery);
+  const { data: plans, isLoading, error } = useCollection<PricingPlan>(plansQuery);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
 
@@ -53,7 +53,15 @@ export function PricingTable() {
       </CardHeader>
       <CardContent>
         {isLoading && <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>}
-        {!isLoading && (
+        {error && (
+          <div className="text-center py-10 px-4">
+            <h3 className="text-xl font-semibold text-destructive">Permission Denied</h3>
+            <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+              You do not have permission to view this data. Please ensure you are logged in with an admin account.
+            </p>
+          </div>
+        )}
+        {!isLoading && !error && (
             <Table>
             <TableHeader>
                 <TableRow>

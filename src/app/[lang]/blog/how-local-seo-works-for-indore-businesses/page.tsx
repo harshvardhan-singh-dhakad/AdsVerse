@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "How Digital Marketing Helps Small Businesses in Indore",
   "description": "Local SEO is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/How%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHow%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function LocalSeoIndorePage() {
+export default function LocalSeoIndorePage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function LocalSeoIndorePage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function LocalSeoIndorePage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/How%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHow%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?alt=media"
         alt="How Local SEO works for Indore Businesses"
         width={1200}
         height={600}
@@ -107,7 +107,7 @@ export default function LocalSeoIndorePage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          <Link href="/services/seo-optimization" className="text-accent hover:underline">Local SEO</Link> is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.
+          <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">Local SEO</Link> is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. Your Google Business Profile: The Digital Shopfront</h2>
@@ -164,7 +164,7 @@ export default function LocalSeoIndorePage() {
         <p>Fresh content signals that your business is active, relevant, and trustworthy.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
-        <p>To win the <Link href="/services/seo-optimization" className="text-accent hover:underline">Local SEO</Link> game in Indore, remember: Complete and accurate information, high-quality photos & videos, strong customer reviews, regular content updates, and full GBP optimization.</p>
+        <p>To win the <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">Local SEO</Link> game in Indore, remember: Complete and accurate information, high-quality photos & videos, strong customer reviews, regular content updates, and full GBP optimization.</p>
         <p>Google rewards businesses that stay active and trustworthy. With this playbook, your business can dominate local search results in Indore.</p>
       </div>
     </article>

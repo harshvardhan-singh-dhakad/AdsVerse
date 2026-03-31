@@ -1,6 +1,3 @@
-
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -13,10 +10,24 @@ import { Metadata } from "next";
 import { Input } from "@/components/ui/input";
 import { AnimatedCounter } from "@/components/pages/animated-counter";
 import { Badge } from "@/components/ui/badge";
+import { ShareButtons } from "@/components/layout/share-buttons";
 
-// Note: Metadata is usually handled in server components, but we'll keep it for static export context.
-// For dynamic metadata, you'd use the `generateMetadata` export.
-// export const metadata: Metadata = { ... };
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const isHi = lang === 'hi';
+  return {
+    title: isHi ? "इंदौर में सर्वश्रेष्ठ डिजिटल मार्केटिंग एजेंसी" : "Best Digital Marketing Agency in Indore | AI & Automation",
+    description: isHi 
+      ? "AdsVerse इंदौर की अग्रणी AI मार्केटिंग एजेंसी है। हम सर्च इंजन ऑप्टिमाइजेशन (SEO), फेसबुक/इंस्टाग्राम विज्ञापन और बिजनेस ऑटोमेशन के साथ आपके व्यवसाय को बढ़ाने में मदद करते हैं।"
+      : "AdsVerse is Indore's premier AI-powered digital marketing agency. We specialize in SEO, Google & Meta Ads, and Sales Automation to drive 10x ROI for local businesses.",
+    alternates: {
+      canonical: `https://adsverse.in/${lang}`,
+      languages: {
+        'en': 'https://adsverse.in/en',
+        'hi': 'https://adsverse.in/hi',
+      },
+    },
+  };
+}
 
 const serviceIcons: { [key: string]: React.ReactNode } = {
   TrendingUp: <TrendingUp className="w-10 h-10 text-accent" />,
@@ -120,10 +131,10 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "AdsVerse | Top Digital Marketing & Automation Agency in Indore",
-  "image": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true",
+  "image": "https://adsverse.in/images/logo-white.png",
   "@id": "https://adsverse.in/#localbusiness",
   "url": "https://adsverse.in",
-  "telephone": "+91-9109033301",
+  "telephone": "+91-9685123339",
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
@@ -153,7 +164,8 @@ const jsonLd = {
   },
   "sameAs": [
     "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse_in"
+    "https://instagram.com/adsverse_in",
+    "https://share.google/oD8AK0iJzCz64Nm7k"
   ]
 };
 
@@ -188,8 +200,9 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-primary">
             Automate. Elevate. Dominate.
           </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-            AdsVerse: The Future of AI-Powered Digital Marketing & Automation is Here.
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground whitespace-pre-line">
+            AdsVerse: The Future of **AI-Powered Digital Marketing & Automation in Indore** is here.
+            From **automated lead generation** to **predictive SEO**, we drive 10x ROI for your business.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
@@ -208,16 +221,16 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
               <Badge variant="outline" className="mb-4 border-accent text-accent">AI & SEARCH INSIGHTS</Badge>
-              <h2 className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best AI & Automation Partner in Indore</h2>
+            <h2 className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best Digital Marketing & AI Agency in Indore</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
                   <strong>Contextual Performance:</strong> We don't just rank keywords; we optimize for intent. Our strategies ensure your business appears as a top answer in AI-driven search results (Answer Engine Optimization).
                 </p>
                 <p>
-                  <strong>Hyper-Local Growth:</strong> Headquartered in Vijay Nagar, Indore, we leverage precise geo-signals to dominate "near me" and regional business queries across Central India.
+                  <strong>Hyper-Local SEO Growth:</strong> Headquartered in Vijay Nagar, Indore, we leverage precise geo-signals to dominate "near me" and regional business queries across Central India, outranking standard SEO providers.
                 </p>
                 <p>
-                  <strong>Automation ROI:</strong> By integrating AI into every marketing funnel, we reduce manual overhead and provide measurable 2026-ready ROI for traditional and modern enterprises.
+                  <strong>Automated ROI:</strong> We don't just 'do marketing'. By integrating **AI powered sales automation** into every funnel, we provide measurable, 2026-ready results for Indore startups and established brands alike.
                 </p>
               </div>
             </div>
@@ -327,6 +340,57 @@ export default function HomePage() {
               </div>
               <p className="text-muted-foreground mt-2">Return on Investment</p>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Share Section */}
+      <section className="py-24 bg-primary/5">
+        <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold font-headline text-primary mb-8">Spread the Word</h2>
+            <p className="text-muted-foreground mb-8 text-lg">Love what we're doing? Help other businesses discover the future of marketing automation.</p>
+            <ShareButtons />
+        </div>
+      </section>
+
+      {/* Strategy Section (SEO Content Expansion) */}
+      <section className="py-24 bg-primary/5">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-5xl font-bold font-headline text-primary mb-8 text-center">Our 2026 Growth Strategy for Digital Marketing in Indore</h2>
+            <div className="prose prose-invert prose-lg max-w-none text-muted-foreground space-y-6">
+              <p>
+                As the <strong>best digital marketing agency in Indore</strong>, AdsVerse stays ahead of the curve by integrating 
+                <strong>AI-driven automation</strong> with traditional performance marketing. Our process is designed to ensure 
+                sustained growth for businesses across <strong>Vijay Nagar, Bhawarkua, and the wider Indore region</strong>.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-foreground">1. Predictive SEO Optimization</h3>
+              <p>
+                In 2026, standard SEO is no longer enough. We focus on <strong>Answer Engine Optimization (AEO)</strong> and 
+                <strong>Generative Engine Optimization (GEO)</strong>. This means your brand doesn't just rank on page 1—it becomes the 
+                definitive answer in AI-driven search results from Google Gemini, Perplexity, and OpenAI Search.
+              </p>
+
+              <h3 className="text-2xl font-bold text-foreground">2. High-Conversion Paid Ads</h3>
+              <p>
+                Our <strong>PPC and Meta Ads strategies</strong> are built on data, not guesswork. We utilize advanced audience 
+                modeling and automated sales funnels to reduce your Cost Per Acquisition (CPA) while maximizing high-ticket lead generation.
+              </p>
+
+              <h3 className="text-2xl font-bold text-foreground">3. Full-Stack Business Automation</h3>
+              <p>
+                We believe marketing is most effective when it is automated. From custom CRM integrations to AI chatbots that 
+                handle your 24/7 customer queries, AdsVerse provides the technical infrastructure to let your business scale 
+                without increasing manual workload.
+              </p>
+
+              <p className="text-lg font-medium border-l-4 border-accent pl-4">
+                Whether you're looking for <strong>SEO services in Indore</strong>, high-performing 
+                <strong>Google Ads management</strong>, or cutting-edge <strong>web development</strong>, our team 
+                combines local market insights with global technical standards to deliver 10x ROI.
+              </p>
+            </div>
           </div>
         </div>
       </section>

@@ -27,15 +27,20 @@ export const metadata: Metadata = {
 };
 
 async function getBlogPosts() {
-  const q = query(collection(db, "blogPosts"), orderBy("publishedDate", "desc"));
-  const snap = await getDocs(q);
-  return snap.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  })) as any[];
+  try {
+    const q = query(collection(db, "blogPosts"), orderBy("publishedDate", "desc"));
+    const snap = await getDocs(q);
+    return snap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as any[];
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    return [];
+  }
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({ params: { lang } }: { params: { lang: string } }) {
   const posts = await getBlogPosts();
 
   const jsonLd = {
@@ -43,13 +48,13 @@ export default async function BlogPage() {
     "@type": "Blog",
     "name": "Digital Marketing Insights & Trends | AdsVerse Blog",
     "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
-    "url": "https://adsverse.in/blog",
+    "url": `https://adsverse.in/${lang}/blog`,
     "publisher": {
       "@type": "Organization",
       "name": "AdsVerse",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+        "url": "https://adsverse.in/images/logo-white.png"
       }
     },
     "blogPost": posts.map(post => ({
@@ -60,7 +65,7 @@ export default async function BlogPage() {
       "datePublished": post.publishedDate,
       "author": {
         "@type": "Organization",
-        "name": post.author
+        "name": post.author || "AdsVerse Editorial Team"
       }
     }))
   };
@@ -80,45 +85,52 @@ export default async function BlogPage() {
         </section>
 
         <section className="mb-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {posts.map((post, index) => (
-              <Card key={post.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                <div className="relative h-64 w-full overflow-hidden">
-                  <Image 
-                    src={post.imageUrl}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    priority={index < 3}
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1">
-                      {post.category}
-                    </Badge>
+          {posts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {posts.map((post, index) => (
+                <Card key={post.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="relative h-64 w-full overflow-hidden">
+                    <Image 
+                      src={post.imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      priority={index < 3}
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1">
+                        {post.category}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-                <CardHeader className="space-y-4">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {new Date(post.publishedDate).toLocaleDateString()}</span>
-                    <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author}</span>
-                  </div>
-                  <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
-                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                  </CardTitle>
-                  <CardDescription className="line-clamp-3 text-sm leading-relaxed">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="mt-auto pt-6 border-t border-primary/5">
-                  <Button asChild variant="link" className="p-0 text-accent group-hover:gap-3 transition-all">
-                    <Link href={`/blog/${post.slug}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
-                      Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+                  <CardHeader className="space-y-4">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {new Date(post.publishedDate).toLocaleDateString()}</span>
+                      <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "AdsVerse Team"}</span>
+                    </div>
+                    <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
+                      <Link href={`/${lang}/blog/${post.slug}`}>{post.title}</Link>
+                    </CardTitle>
+                    <CardDescription className="line-clamp-3 text-sm leading-relaxed">
+                      {post.excerpt}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter className="mt-auto pt-6 border-t border-primary/5">
+                    <Button asChild variant="link" className="p-0 text-accent group-hover:gap-3 transition-all">
+                      <Link href={`/${lang}/blog/${post.slug}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
+                        Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-card/20 backdrop-blur-sm rounded-2xl border border-primary/5">
+              <h3 className="text-2xl font-headline text-primary mb-4">No insights found yet.</h3>
+              <p className="text-muted-foreground">Stay tuned for our latest digital marketing trends and strategies.</p>
+            </div>
+          )}
         </section>
       </div>
     </>

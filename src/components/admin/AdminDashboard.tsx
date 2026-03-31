@@ -2,6 +2,7 @@
 "use client";
 
 import { LeadsTable } from "./LeadsTable";
+import { DashboardStats } from "./DashboardStats";
 import { ServicesTable } from "./ServicesTable";
 import { PortfolioTable } from "./PortfolioTable";
 import { PricingTable } from "./PricingTable";
@@ -14,6 +15,8 @@ interface AdminDashboardProps {
 
 export function AdminDashboard({ activeTab }: AdminDashboardProps) {
   switch (activeTab) {
+    case "dashboard":
+      return <DashboardStats />;
     case "leads":
       return <LeadsTable />;
     case "services":
@@ -25,6 +28,6 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
     case "blogs":
       return <BlogTable />;
     default:
-      return <LeadsTable />;
+      return <DashboardStats />;
   }
 }

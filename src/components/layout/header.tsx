@@ -34,8 +34,8 @@ export function Header({ navLinks, lang }: HeaderProps) {
 
   const getLangPath = (href: string) => `/${lang}${href === '/' ? '' : href}`;
 
-  const darkLogo = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
-  const lightLogo = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Logo-Black.png?raw=true";
+  const darkLogo = "/images/logo-white.png";
+  const lightLogo = "/images/logo-black.png";
   
   const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
 

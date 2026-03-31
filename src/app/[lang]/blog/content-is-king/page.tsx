@@ -28,7 +28,7 @@ const jsonLd = {
   },
   "headline": "Why Content is Still King in 2024 for Digital Marketing",
   "description": "In the ever-shifting landscape of digital marketing, one principle has remained remarkably constant: Content is King. Learn why this still holds true in 2024.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FWhy%20Content%20is%20Still%20King%20in%202024.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -69,7 +69,7 @@ const jsonLd = {
   }
 };
 
-export default function ContentIsKingPage() {
+export default function ContentIsKingPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -81,7 +81,7 @@ export default function ContentIsKingPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -98,7 +98,7 @@ export default function ContentIsKingPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/content%20in%202024.jpeg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FWhy%20Content%20is%20Still%20King%20in%202024.jpg?alt=media"
         alt="Content is King"
         width={1200}
         height={600}
@@ -109,7 +109,7 @@ export default function ContentIsKingPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          In the ever-shifting landscape of digital marketing, where trends appear and vanish like fireflies in the night, one principle has remained remarkably constant: <Link href="/services/content-marketing" className="text-accent hover:underline">Content is King</Link>. Coined by Bill Gates in a 1996 essay, this phrase has become a mantra for marketers worldwide. But in 2024, an era of AI, fleeting attention spans, and algorithm-driven feeds, does the old adage still hold true? The answer is a resounding yes—perhaps more so than ever before.
+          In the ever-shifting landscape of digital marketing, where trends appear and vanish like fireflies in the night, one principle has remained remarkably constant: <Link href={`/${lang}/services/content-marketing`} className="text-accent hover:underline">Content is King</Link>. Coined by Bill Gates in a 1996 essay, this phrase has become a mantra for marketers worldwide. But in 2024, an era of AI, fleeting attention spans, and algorithm-driven feeds, does the old adage still hold true? The answer is a resounding yes—perhaps more so than ever before.
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">The Enduring Power of Quality Content</h2>
@@ -117,7 +117,7 @@ export default function ContentIsKingPage() {
           Content is the very fabric of the internet. It's the blog posts we read, the videos we watch, the podcasts we listen to, and the social media updates we scroll through. Without content, the digital world would be a hollow shell. For businesses, content is the primary vehicle for communicating with their audience. It's how you build trust, demonstrate expertise, and provide value long before a customer ever makes a purchase.
         </p>
         <p>
-          While marketing tactics like <Link href="/services/paid-ads" className="text-accent hover:underline">paid ads</Link> and <Link href="/services/seo-optimization" className="text-accent hover:underline">technical SEO</Link> are crucial, they are ultimately channels of distribution. Content is the substance that flows through those channels. A brilliant ad campaign will fall flat if it leads to a webpage with weak, unhelpful content. A technically perfect website is useless if it has nothing valuable to say.
+          While marketing tactics like <Link href={`/${lang}/services/paid-ads`} className="text-accent hover:underline">paid ads</Link> and <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">technical SEO</Link> are crucial, they are ultimately channels of distribution. Content is the substance that flows through those channels. A brilliant ad campaign will fall flat if it leads to a webpage with weak, unhelpful content. A technically perfect website is useless if it has nothing valuable to say.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">What Makes Content "King"?</h2>
@@ -143,10 +143,10 @@ export default function ContentIsKingPage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">The Future of the Monarchy: Content in the Age of AI</h2>
         <p>
-          Some argue that the rise of AI threatens content's reign. On the contrary, AI is making high-quality, human-driven content even more valuable. <Link href="/services/automation-tools" className="text-accent hover:underline">AI tools</Link> can be powerful assistants for research, brainstorming, and overcoming writer's block. However, they lack the capacity for genuine empathy, unique perspective, and creative storytelling that defines truly great content.
+          Some argue that the rise of AI threatens content's reign. On the contrary, AI is making high-quality, human-driven content even more valuable. <Link href={`/${lang}/services/automation-tools`} className="text-accent hover:underline">AI tools</Link> can be powerful assistants for research, brainstorming, and overcoming writer's block. However, they lack the capacity for genuine empathy, unique perspective, and creative storytelling that defines truly great content.
         </p>
         <p>
-          The future of <Link href="/services/content-marketing" className="text-accent hover:underline">content marketing</Link> isn't about replacing humans with AI; it's about leveraging AI to enhance human creativity. The brands that will succeed are those that use technology to scale their efforts while doubling down on the authenticity, strategic insight, and deep audience understanding that only humans can provide. Content remains king, but the throne now demands a wiser, more strategic, and more authentically human ruler than ever before.
+          The future of <Link href={`/${lang}/services/content-marketing`} className="text-accent hover:underline">content marketing</Link> isn't about replacing humans with AI; it's about leveraging AI to enhance human creativity. The brands that will succeed are those that use technology to scale their efforts while doubling down on the authenticity, strategic insight, and deep audience understanding that only humans can provide. Content remains king, but the throne now demands a wiser, more strategic, and more authentically human ruler than ever before.
         </p>
       </div>
     </article>

@@ -8,8 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { useParams } from "next/navigation";
 
 export function Footer() {
+  const params = useParams();
+  const lang = params?.lang || 'en';
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -19,8 +22,8 @@ export function Footer() {
     setMounted(true);
   }, []);
 
-  const darkLogo = "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true";
-  const lightLogo = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Logo-Black.png?raw=true";
+  const darkLogo = "/images/logo-white.png";
+  const lightLogo = "/images/logo-black.png";
   
   const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
 
@@ -29,7 +32,7 @@ export function Footer() {
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href={`/${lang}`} className="flex items-center space-x-2">
               <Image 
                 src={currentLogo}
                 alt="AdsVerse Logo"
@@ -59,19 +62,19 @@ export function Footer() {
           <div className="md:pl-4">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href="/our-services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
-              <li><Link href="/portfolio" className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
-              <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href={`/${lang}/about`} className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href={`/${lang}/our-services`} className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
+              <li><Link href={`/${lang}/portfolio`} className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
+              <li><Link href={`/${lang}/blog`} className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href={`/${lang}/pricing`} className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href={`/${lang}/contact`} className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div className="md:pl-4">
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
-              <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href={`/${lang}/privacy-policy`} className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+              <li><Link href={`/${lang}/terms-of-service`} className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
             </ul>
           </div>
           <div>

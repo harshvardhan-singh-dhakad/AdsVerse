@@ -127,9 +127,7 @@ service cloud.firestore {
      * @principle Enforces strict admin-only control over backend content before it is published.
      */
     match /blogPosts/{blogPostId} {
-      allow get, list: if isAdmin();
-      allow create: if true; 
-      allow update, delete: if isAdmin() && resource != null;
+      allow get, list, create, update, delete: if isAdmin();
     }
 
     /**

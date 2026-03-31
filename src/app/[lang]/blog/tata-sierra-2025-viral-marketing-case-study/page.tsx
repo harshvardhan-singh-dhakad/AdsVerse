@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "The Legend Returns: Why the Tata Sierra 2025 went Viral Overnight? (A Marketing Case Study)",
   "description": "A marketing case study on how Tata Motors used nostalgia, disruptive pricing, and unique design to make the Sierra 2025 launch a massive viral success.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FThe%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function TataSierraPage() {
+export default function TataSierraPage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function TataSierraPage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function TataSierraPage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/The%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FThe%20Legend%20Returns%20Why%20the%20Tata%20Sierra%202025%20went%20Viral%20Overnight.jpg?alt=media"
         alt="Tata Sierra 2025"
         width={1200}
         height={600}
@@ -121,7 +121,7 @@ export default function TataSierraPage() {
           Marketing isn't always about selling a product; sometimes, it's about selling a memory. Tata Motors didn't just launch a new SUV; they revived a legacy. By keeping the iconic nameplate, they instantly tapped into a loyal fanbase aged 30 to 50.
         </p>
         <p><strong>The Hook:</strong> They targeted the people who couldn't afford a Sierra in 1995 but have the purchasing power in 2025.</p>
-        <p><strong>The Viral Factor:</strong> <Link href="/services/social-media-management" className="text-accent hover:underline">Social media</Link> flooded with "My dad had this car" or "This was my childhood dream" posts. This organic <Link href="/services/content-marketing" className="text-accent hover:underline">user-generated content (UGC)</Link> gave them millions of impressions for free.</p>
+        <p><strong>The Viral Factor:</strong> <Link href={`/${lang}/services/social-media-management`} className="text-accent hover:underline">Social media</Link> flooded with "My dad had this car" or "This was my childhood dream" posts. This organic <Link href={`/${lang}/services/content-marketing`} className="text-accent hover:underline">user-generated content (UGC)</Link> gave them millions of impressions for free.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">2. Design: Mixing Retro with 'Cyberpunk'</h2>
         <p>
@@ -136,7 +136,7 @@ export default function TataSierraPage() {
           Let's talk numbers. Everyone expected this "Legendary" car to come with a premium "Legendary" price tag, likely touching ₹20 Lakhs. Tata pulled a classic disruption move. Starting Price: ₹11.49 Lakh (Ex-Showroom).
         </p>
         <p>This price point places the Sierra right in the middle of the fiercely competitive mid-size SUV segment (challenging the Creta, Seltos, and Grand Vitara).</p>
-        <p>The result? Curiosity turned into serious purchase intent. The low entry barrier made the car "attainable" for the masses, driving massive <Link href="/services/seo-optimization" className="text-accent hover:underline">search traffic on Google</Link>.</p>
+        <p>The result? Curiosity turned into serious purchase intent. The low entry barrier made the car "attainable" for the masses, driving massive <Link href={`/${lang}/services/seo-optimization`} className="text-accent hover:underline">search traffic on Google</Link>.</p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">4. Future-Proofing (EV + ICE)</h2>
         <p>
@@ -144,11 +144,11 @@ export default function TataSierraPage() {
         </p>
         
         <h2 className="text-3xl font-bold text-primary font-headline">Why This Matters for Marketers</h2>
-        <p>The Tata Sierra 2025 case study teaches us three simple rules of <Link href="/services/social-media-management" className="text-accent hover:underline">viral marketing</Link>:</p>
+        <p>The Tata Sierra 2025 case study teaches us three simple rules of <Link href={`/${lang}/services/social-media-management`} className="text-accent hover:underline">viral marketing</Link>:</p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Respect the Legacy:</strong> If you have a strong brand history, use it. Don't reinvent the wheel; just polish it.</li>
             <li><strong>Product is King:</strong> No amount of ads can beat a product that looks different and solves a desire (the desire to stand out).</li>
-            <li><strong>Surprise with Value:</strong> Great <Link href="/services/brand-strategy" className="text-accent hover:underline">branding</Link> + Shocking pricing = Instant Market Disruption.</li>
+            <li><strong>Surprise with Value:</strong> Great <Link href={`/${lang}/services/brand-strategy`} className="text-accent hover:underline">branding</Link> + Shocking pricing = Instant Market Disruption.</li>
         </ul>
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>

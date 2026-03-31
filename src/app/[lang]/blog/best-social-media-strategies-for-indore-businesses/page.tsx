@@ -27,7 +27,7 @@ const jsonLd = {
   },
   "headline": "Best Social Media Strategies for Indore's Local Businesses",
   "description": "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with examples from Indore's market.",
-  "image": "https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true",
+  "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?alt=media",
   "author": {
     "@type": "Organization",
     "name": "AdsVerse",
@@ -68,7 +68,7 @@ const jsonLd = {
   }
 };
 
-export default function SocialMediaIndorePage() {
+export default function SocialMediaIndorePage({ params: { lang } }: { params: { lang: string } }) {
   const currentDate = new Date(jsonLd.datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -80,7 +80,7 @@ export default function SocialMediaIndorePage() {
     <article className="container mx-auto py-16 px-4 max-w-4xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/blog">
+          <Link href={`/${lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -97,7 +97,7 @@ export default function SocialMediaIndorePage() {
       </header>
 
       <Image
-        src="https://github.com/harshvardhan-singh-dhakad/image/blob/main/Best%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?raw=true"
+        src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Social%20Media%20Strategies%20for%20Indore%20Local%20Businesses.jpg?alt=media"
         alt="Social Media Strategies for Indore Businesses"
         width={1200}
         height={600}
@@ -107,7 +107,7 @@ export default function SocialMediaIndorePage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-6">
         <p className="text-xl leading-8">
-          Indore is a city that loves to connect, whether it's over a plate of poha-jalebi or through a smartphone screen. For local businesses, this means <Link href="/services/social-media-management" className="text-accent hover:underline">social media</Link> isn't just an option; it's the new "chauraha" where your customers hang out. But how do you turn scrolls into sales? Here are some simple, effective social media strategies tailored for the Indori market.
+          Indore is a city that loves to connect, whether it's over a plate of poha-jalebi or through a smartphone screen. For local businesses, this means <Link href={`/${lang}/services/social-media-management`} className="text-accent hover:underline">social media</Link> isn't just an option; it's the new "chauraha" where your customers hang out. But how do you turn scrolls into sales? Here are some simple, effective social media strategies tailored for the Indori market.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. Choose Your Platform Wisely (Har Jagah Hona Zaruri Nahi)</h2>
@@ -129,7 +129,7 @@ export default function SocialMediaIndorePage() {
         </ul>
 
         <h2 className="text-3xl font-bold text-primary font-headline">3. Run Hyper-Local Ads</h2>
-        <p>Don’t waste money showing your ads to people in Mumbai. Use the power of <Link href="/services/paid-ads" className="text-accent hover:underline">location targeting</Link>.</p>
+        <p>Don’t waste money showing your ads to people in Mumbai. Use the power of <Link href={`/${lang}/services/paid-ads`} className="text-accent hover:underline">location targeting</Link>.</p>
         <ul className="list-disc pl-6 space-y-2">
             <li><strong>Geo-targeting:</strong> On Facebook and Instagram, you can target your ads to specific pin codes or even a 1-2 km radius around your store. A salon in Vijay Nagar can target ads only to people living in that area.</li>
             <li><strong>Local Interests:</strong> Target people who have shown interest in local pages like "Indore Food Explorer" or have attended events at Phoenix Citadel mall.</li>
@@ -153,7 +153,7 @@ export default function SocialMediaIndorePage() {
 
         <h2 className="text-3xl font-bold text-primary font-headline">Final Thoughts</h2>
         <p>
-            For an Indore-based business, social media success is about being authentic, local, and engaging. Understand the Indori vibe, create content that resonates with the city's spirit, and talk to your customers like they're your friends. By following these simple <Link href="/services/social-media-management" className="text-accent hover:underline">social media strategies</Link>, you can build a strong community online that translates into real business growth.
+            For an Indore-based business, social media success is about being authentic, local, and engaging. Understand the Indori vibe, create content that resonates with the city's spirit, and talk to your customers like they're your friends. By following these simple <Link href={`/${lang}/services/social-media-management`} className="text-accent hover:underline">social media strategies</Link>, you can build a strong community online that translates into real business growth.
         </p>
       </div>
     </article>

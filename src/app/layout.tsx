@@ -22,15 +22,16 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const defaultImage = "https://github.com/harshvardhan-singh-dhakad/image/blob/main/insta%26facbook%20card.jpeg?raw=true";
+const defaultImage = "https://adsverse.in/images/og-image.png";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "AdsVerse | Digital Marketing That Drives Results",
+    default: "AdsVerse | AI-Powered Digital Marketing & Automation Agency",
     template: "%s | AdsVerse",
   },
-  description: description,
+  description: "AdsVerse is a premier digital marketing agency in Indore specializing in SEO, Paid Ads, and AI Automation to drive measurable business growth.",
+  keywords: ["AI Marketing Automation Indore", "Best Digital Marketing Agency Indore", "SEO Services Indore", "ROI Focused Marketing", "AI powered Lead Generation", "Marketing Automation Agency India", "Performance Marketing Indore"],
   openGraph: {
     title: {
       default: "AdsVerse | Digital Marketing That Drives Results",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     siteName: siteName,
     images: [
       {
-        url: defaultImage,
+        url: "/images/og-image.png",
         width: 1200,
         height: 630,
         alt: "AdsVerse - Digital Marketing Agency",
@@ -58,10 +59,10 @@ export const metadata: Metadata = {
     },
     description: description,
     creator: twitterHandle,
-    images: [defaultImage],
+    images: ["/images/og-image.png"],
   },
   alternates: {
-    canonical: '/',
+    canonical: siteUrl,
     languages: {
       'en': '/en',
       'hi': '/hi',
@@ -92,7 +93,19 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable
       )}>
-        <Script id="google-tag-manager" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload">
+          {`!function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', 'YOUR_PIXEL_ID_HERE');
+          fbq('track', 'PageView');`}
+        </Script>
+        <Script id="google-tag-manager" strategy="lazyOnload">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -110,8 +123,15 @@ export default function RootLayout({
               src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
               height="0" 
               width="0" 
-              style={{display: 'none', visibility: 'hidden'}}
+              className="sr-only hidden"
             ></iframe>
+            <img 
+              height="1" 
+              width="1" 
+              style={{display: 'none'}} 
+              src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1" 
+              alt=""
+            />
           </noscript>
           <div className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden">
             <div className="glow-effect"></div>

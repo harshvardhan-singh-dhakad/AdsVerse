@@ -15,7 +15,7 @@ export default function AdminPage() {
   const { user, isUserLoading: loading } = useUser();
   const auth = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<AdminTab>("leads");
+  const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
 
   useEffect(() => {
     if (!loading && !user) {

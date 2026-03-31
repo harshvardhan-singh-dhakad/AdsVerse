@@ -16,13 +16,15 @@ export function AnimatedCounter({
   prefix = '',
   suffix = '',
 }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(target);
+  const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !hasStarted) {
+          setHasStarted(true);
           let start = 0;
           const end = target;
           const increment = end / (duration / 16); 
@@ -36,6 +38,7 @@ export function AnimatedCounter({
               setCount(end);
             }
           };
+          setCount(0); // Reset to 0 just before starting animation
           requestAnimationFrame(counter);
           observer.disconnect();
         }
