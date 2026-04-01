@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     "image": post.imageUrl,
     "author": {
       "@type": "Organization",
-      "name": post.author || "SynergyFlow Expert Team"
+      "name": post.author || "AdsVerse Expert Team"
     },
     "publisher": {
       "@type": "Organization",

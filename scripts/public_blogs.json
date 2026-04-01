@@ -1,0 +1,38 @@
+[
+  {
+    "id": "digital-marketing-trends-2024",
+    "content": "<p>2024 is seeing a massive shift towards AI-powered marketing and personalized content...</p>",
+    "imageUrl": "/images/blog/marketing-trends.png",
+    "isPublished": true,
+    "author": "Harshvardhan Singh Dhakad",
+    "publishedDate": "2024-03-20T10:00:00Z",
+    "title": "Digital Marketing Trends 2024",
+    "category": "Digital Marketing",
+    "slug": "digital-marketing-trends-2024",
+    "excerpt": "Stay ahead of the curve with the top digital marketing trends to watch in 2024."
+  },
+  {
+    "id": "future-of-automation-in-indore",
+    "category": "Automation",
+    "excerpt": "Explore how automation is reshaping the business landscape in Indore.",
+    "slug": "future-of-automation-in-indore",
+    "imageUrl": "/images/blog/automation-indore.png",
+    "content": "<p>Indore is becoming a hub for digital transformation. The future of automation in Indore is bright...</p>",
+    "author": "Harshvardhan Singh Dhakad",
+    "isPublished": true,
+    "title": "The Future of Automation in Indore",
+    "publishedDate": "2024-03-25T10:00:00Z"
+  },
+  {
+    "id": "seo-optimization-guide-2024",
+    "publishedDate": "2024-03-15T10:00:00Z",
+    "title": "SEO Optimization Guide 2024",
+    "isPublished": true,
+    "author": "Harshvardhan Singh Dhakad",
+    "content": "<p>Search Engine Optimization is not just about keywords; it's about providing value to your users...</p>",
+    "imageUrl": "/images/blog/seo-guide.png",
+    "slug": "seo-optimization-guide-2024",
+    "excerpt": "Master the art of SEO with our comprehensive optimization guide for 2024.",
+    "category": "SEO"
+  }
+]

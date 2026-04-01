@@ -42,7 +42,7 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
             S
           </div>
           <div>
-            <h2 className="font-headline font-black text-xl text-primary leading-tight tracking-tighter">SynergyFlow</h2>
+            <h2 className="font-headline font-black text-xl text-primary leading-tight tracking-tighter">AdsVerse</h2>
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Admin Command</p>
           </div>
         </div>

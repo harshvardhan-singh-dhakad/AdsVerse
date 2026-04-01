@@ -140,9 +140,7 @@ service cloud.firestore {
      */
     match /public_blogPosts/{blogPostId} {
       allow get, list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow write: if false;
     }
 
     /**

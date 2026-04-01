@@ -16,7 +16,7 @@ const db = getFirestore(app);
 
 export const metadata: Metadata = {
   title: "Digital Marketing Insights & Trends | AdsVerse Blog",
-  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the SynergyFlow team. Explore articles on SEO, paid ads, and content.",
+  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team. Explore articles on SEO, paid ads, and content.",
   alternates: {
     canonical: '/blog',
     languages: {
@@ -47,7 +47,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
     "@context": "https://schema.org",
     "@type": "Blog",
     "name": "Digital Marketing Insights & Trends | AdsVerse Blog",
-    "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the SynergyFlow team.",
+    "description": "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team.",
     "url": `https://adsverse.in/${lang}/blog`,
     "publisher": {
       "@type": "Organization",
@@ -65,7 +65,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
       "datePublished": post.publishedDate,
       "author": {
         "@type": "Organization",
-        "name": post.author || "SynergyFlow Editorial Team"
+        "name": post.author || "AdsVerse Editorial Team"
       }
     }))
   };

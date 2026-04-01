@@ -125,7 +125,7 @@ export function DashboardStats() {
                     S
                 </div>
                 <div>
-                   <CardTitle className="text-3xl font-black font-headline tracking-tight">SynergyFlow Admin</CardTitle>
+                   <CardTitle className="text-3xl font-black font-headline tracking-tight">AdsVerse Admin</CardTitle>
                    <p className="text-muted-foreground font-medium">Elevating your digital presence with precision.</p>
                 </div>
             </div>
