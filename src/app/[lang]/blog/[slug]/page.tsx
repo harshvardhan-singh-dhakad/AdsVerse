@@ -27,7 +27,7 @@ interface BlogPost {
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  const q = query(collection(db, "blogPosts"), where("slug", "==", slug));
+  const q = query(collection(db, "public_blogPosts"), where("slug", "==", slug));
   const snap = await getDocs(q);
   if (snap.empty) return null;
   return snap.docs[0].data() as BlogPost;
@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     "image": post.imageUrl,
     "author": {
       "@type": "Organization",
-      "name": post.author || "AdsVerse Expert Team"
+      "name": post.author || "SynergyFlow Expert Team"
     },
     "publisher": {
       "@type": "Organization",

@@ -19,8 +19,8 @@ const jsonLd = {
   "url": "https://adsverse.in",
   "logo": "https://adsverse.in/images/logo-white.png",
   "sameAs": [
-    "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse_in"
+    "https://facebook.com/synergyflow",
+    "https://instagram.com/synergyflow_digital"
   ],
   "contactPoint": {
     "@type": "ContactPoint",

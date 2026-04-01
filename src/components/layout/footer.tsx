@@ -31,19 +31,17 @@ export function Footer() {
     <footer className="bg-card/50 border-t border-border/40">
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <Link href={`/${lang}`} className="flex items-center space-x-2">
-              <Image 
-                src={currentLogo}
-                alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
-                width={120}
-                height={30}
-                className="h-8 w-auto"
-                key={currentLogo}
-              />
+          <div className="flex flex-col gap-6">
+            <Link href={`/${lang}`} className="flex items-center gap-2 group">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000" />
+                <span className="relative text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                  AdsVerse
+                </span>
+              </div>
             </Link>
-            <p className="text-muted-foreground text-sm">
-              Blending creativity with data to drive measurable results and elevate brands.
+            <p className="max-w-xs text-sm text-muted-foreground leading-relaxed">
+              AdsVerse is a forward-thinking digital marketing agency specializing in AI-powered growth strategies.
             </p>
             <div className="flex space-x-4">
               <Link href="https://x.com/Adsverse1?t=vG0NYqyjhKobVoztl4xIPw&s=09" aria-label="Twitter" target="_blank" rel="noopener noreferrer nofollow">
@@ -89,7 +87,9 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} AdsVerse. All Rights Reserved.</p>
+          <p className="text-xs text-muted-foreground opacity-70">
+            &copy; {new Date().getFullYear()} AdsVerse. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

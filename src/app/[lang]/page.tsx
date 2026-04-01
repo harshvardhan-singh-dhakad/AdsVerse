@@ -199,15 +199,15 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-headline text-primary">
-            AdsVerse: Best AI-Powered Digital Marketing Agency in Indore
+          <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter font-headline mb-6">
+            Accelerate Your <span className="text-primary italic">Growth</span> with AdsVerse
           </h1>
           <p className="mt-4 text-2xl sm:text-3xl font-bold text-accent font-headline">
             Automate. Elevate. Dominate.
           </p>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground whitespace-pre-line">
-            AdsVerse: The Future of **AI-Powered Digital Marketing & Automation in Indore** is here.
-            From **automated lead generation** to **predictive SEO**, we drive 10x ROI for your business.
+            AdsVerse: The Future of AI-Powered Digital Marketing & Automation in Indore is here.
+            From automated lead generation to predictive SEO, we drive 10x ROI for your business.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
@@ -235,7 +235,7 @@ export default function HomePage() {
                   <strong>Hyper-Local SEO Growth:</strong> Headquartered in Vijay Nagar, Indore, we leverage precise geo-signals to dominate "near me" and regional business queries across Central India, outranking standard SEO providers.
                 </p>
                 <p>
-                  <strong>Automated ROI:</strong> We don't just 'do marketing'. By integrating **AI powered sales automation** into every funnel, we provide measurable, 2026-ready results for Indore startups and established brands alike.
+                  <strong>Automated ROI:</strong> We don't just 'do marketing'. By integrating AI powered sales automation into every funnel, we provide measurable, 2026-ready results for Indore startups and established brands alike.
                 </p>
               </div>
             </div>
@@ -258,7 +258,7 @@ export default function HomePage() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <Card className="bg-card/50 backdrop-blur-sm p-8 md:p-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-4">Free SEO Audit Tool</h2>
+            <h2 className="text-4xl md:text-6xl font-bold font-headline mb-6">Ready to Scale with AdsVerse?</h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Uncover technical issues & on-page optimization opportunities. Enter your website URL to get an instant, comprehensive SEO analysis.
             </p>
