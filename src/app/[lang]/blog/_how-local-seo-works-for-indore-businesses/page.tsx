@@ -29,9 +29,11 @@ const jsonLd = {
   "description": "Local SEO is no longer optional—it's a survival strategy for every business in Indore. If you want to appear in “near me” searches, attract more customers, and build a strong local presence, this playbook will put you ahead of your competition.",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHow%20Local%20SEO%20Works%20for%20Indore%20Businesses.png?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",

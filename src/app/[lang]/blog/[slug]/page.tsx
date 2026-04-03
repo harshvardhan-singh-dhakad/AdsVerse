@@ -142,7 +142,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
             <div className="flex flex-wrap items-center gap-6 text-muted-foreground pt-2">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-accent" />
-                <span>{post.author || "AdsVerse Expert Team"}</span>
+                <span>{post.author || "Deepak Dhakad"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-accent" />

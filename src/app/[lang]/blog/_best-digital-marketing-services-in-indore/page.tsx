@@ -32,8 +32,9 @@ const jsonLd = {
   "author": {
     "@type": "Person",
     "name": "Deepak Dhakad",
-    "jobTitle": "Digital Marketing Expert & Founder",
-    "url": "https://adsverse.in/about"
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",

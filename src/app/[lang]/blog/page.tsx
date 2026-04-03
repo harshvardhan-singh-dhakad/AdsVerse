@@ -68,8 +68,11 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
       "image": post.imageUrl,
       "datePublished": post.publishedDate,
       "author": {
-        "@type": "Organization",
-        "name": post.author || "AdsVerse Editorial Team"
+        "@type": "Person",
+        "name": post.author || "Deepak Dhakad",
+        "jobTitle": "Digital Marketing & AI Automation Expert",
+        "url": "https://adsverse.in/about",
+        "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
       }
     }))
   };
@@ -110,7 +113,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
                   <CardHeader className="space-y-4">
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {new Date(post.publishedDate).toLocaleDateString()}</span>
-                      <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "AdsVerse Team"}</span>
+                      <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "Deepak Dhakad"}</span>
                     </div>
                     <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
                       <Link href={`/${lang}/blog/${post.slug}`}>{post.title}</Link>

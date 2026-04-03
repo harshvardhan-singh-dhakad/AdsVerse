@@ -30,9 +30,11 @@ const jsonLd = {
   "description": "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth and innovation.",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",

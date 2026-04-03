@@ -30,9 +30,11 @@ const jsonLd = {
   "description": "Discover how automation tools can streamline your workflow, reduce errors, and free up time to focus on growing your business.",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FBest%20Automation.jpeg?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",

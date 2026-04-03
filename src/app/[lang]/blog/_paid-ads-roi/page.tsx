@@ -29,9 +29,11 @@ const jsonLd = {
   "description": "A deep dive into creating effective paid advertising campaigns on Google and Meta that deliver measurable results and a high return on investment (ROI).",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FThe%20Art%20of%20Paid%20Ads%20Maximizing%20Your%20ROI.jpg?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",

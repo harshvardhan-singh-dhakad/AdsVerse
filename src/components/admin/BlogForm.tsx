@@ -56,7 +56,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
       content: '',
       imageUrl: '',
       category: 'Marketing',
-      author: 'AdsVerse Team',
+      author: 'Deepak Dhakad',
       publishedDate: new Date().toISOString().split('T')[0],
       isPublished: false,
     },

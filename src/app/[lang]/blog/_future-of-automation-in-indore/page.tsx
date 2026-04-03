@@ -29,9 +29,11 @@ const jsonLd = {
   "description": "Indore's businesses are adopting automation. Discover how CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth and customer engagement.",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FFuture%20of%20Automation%20in%20Indore%20(CRM%2C%20WhatsApp%20Chatbots%2C%20Funnels).jpg?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing & AI Automation Expert",
+    "url": "https://adsverse.in/about",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
   },
   "publisher": {
     "@type": "Organization",
