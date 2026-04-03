@@ -23,7 +23,7 @@ import { format } from 'date-fns';
 export function LeadsTable() {
   const firestore = useFirestore();
   const leadsQuery = useMemoFirebase(() =>
-    query(collection(firestore, "leads"), orderBy("submissionDate", "desc")),
+    query(collection(firestore, "contacts"), orderBy("submittedAt", "desc")),
     [firestore]
   );
   const { data: leads, isLoading, error } = useCollection<Lead>(leadsQuery);
@@ -96,14 +96,16 @@ export function LeadsTable() {
                 const headers = ["Date", "Name", "Email", "Phone", "Subject", "Message"];
                 const csvContent = [
                   headers.join(","),
-                  ...leads.map(lead => [
-                    lead.submissionDate ? format(lead.submissionDate.toDate(), 'yyyy-MM-dd') : 'N/A',
+                  ...leads.map(lead => {
+                    const date = lead.submittedAt || lead.submissionDate;
+                    return [
+                      date ? format(date.toDate(), 'yyyy-MM-dd') : 'N/A',
                     `"${lead.name.replace(/"/g, '""')}"`,
                     lead.email,
                     lead.phone || 'N/A',
                     `"${lead.subject.replace(/"/g, '""')}"`,
-                    `"${lead.message.replace(/"/g, '""')}"`
-                  ].join(","))
+                    ].join(",");
+                  })
                 ].join("\n");
                 
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -124,24 +126,46 @@ export function LeadsTable() {
 
         <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
             <div className="overflow-x-auto">
-                <Table>
-                    <TableHeader className="bg-white/2 border-b border-white/5">
-                        <TableRow className="hover:bg-transparent border-none">
-                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Timestamp</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Identity</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Contact Channel</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Subject</TableHead>
-                            <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {leads.map((lead) => (
-                            <TableRow key={lead.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
-                                <TableCell className="pl-8">
-                                    <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
-                                        {lead.submissionDate ? format(lead.submissionDate.toDate(), 'PPP') : 'N/A'}
-                                    </span>
-                                </TableCell>
+                {isLoading ? (
+                    <div className="flex justify-center items-center py-20">
+                        <Loader2 className="h-12 w-12 text-primary animate-spin" />
+                    </div>
+                ) : error ? (
+                    <div className="text-center py-20 px-8">
+                        <ShieldAlert className="w-16 h-16 text-destructive mx-auto mb-6 opacity-50" />
+                        <h3 className="text-2xl font-black text-white font-headline tracking-tight">Access Restricted</h3>
+                        <p className="text-sm text-muted-foreground/60 mt-2 max-w-sm mx-auto font-bold uppercase tracking-widest leading-relaxed">
+                            You lack permission to view this data. Admin privileges required.
+                        </p>
+                    </div>
+                ) : !leads || leads.length === 0 ? (
+                    <div className="text-center py-20 px-8">
+                        <p className="text-sm text-muted-foreground/40 font-black uppercase tracking-[0.2em]">No inbound intelligence found.</p>
+                    </div>
+                ) : (
+                    <Table>
+                        <TableHeader className="bg-white/2 border-b border-white/5">
+                            <TableRow className="hover:bg-transparent border-none">
+                                <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Timestamp</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Identity</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Contact Channel</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Subject</TableHead>
+                                <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {leads.map((lead) => (
+                                <TableRow key={lead.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
+                                    <TableCell className="pl-8">
+                                        <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
+                                            {(() => {
+                                                const date = lead.submittedAt || lead.submissionDate;
+                                                return date && typeof date.toDate === 'function' 
+                                                    ? format(date.toDate(), 'PPP') 
+                                                    : 'N/A';
+                                            })()}
+                                        </span>
+                                    </TableCell>
                                 <TableCell>
                                     <span className="font-bold text-white/90 group-hover/row:text-primary transition-colors">
                                         {lead.name}
@@ -170,8 +194,9 @@ export function LeadsTable() {
                                 </TableCell>
                             </TableRow>
                         ))}
-                    </TableBody>
-                </Table>
+                        </TableBody>
+                    </Table>
+                )}
             </div>
         </div>
 
@@ -185,7 +210,7 @@ export function LeadsTable() {
                         <div>
                             <DialogTitle className="text-2xl font-black font-headline tracking-tighter text-white">Lead Detail: {selectedLead?.name}</DialogTitle>
                             <DialogDescription className="text-muted-foreground/60 font-bold uppercase tracking-widest text-[9px]">
-                                Received {selectedLead?.submissionDate ? format(selectedLead.submissionDate.toDate(), 'PPP p') : ''}
+                                Received {selectedLead?.submissionDate && typeof selectedLead.submissionDate.toDate === 'function' ? format(selectedLead.submissionDate.toDate(), 'PPP p') : ''}
                             </DialogDescription>
                         </div>
                     </div>

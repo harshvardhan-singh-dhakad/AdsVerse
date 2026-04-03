@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Brand Strategy & Identity Design Services | AdsVerse",
-  description: "Craft a unique brand identity that resonates with your audience. Our brand strategy services include discovery workshops, logo design, and comprehensive brand guidelines.",
+  title: "Brand Strategy & Logo Design Agency India | AdsVerse",
+  description: "Build a powerful brand identity for your business with AdsVerse. We offer brand strategy, logo design & brand guidelines — crafted for Indian startups and growing businesses in Indore.",
+  keywords: [
+    "brand strategy agency India", "logo design Indore", "brand identity design India",
+    "branding agency Indore", "startup branding India", "brand guidelines design",
+    "corporate identity design India", "visual identity agency Indore",
+    "brand consultant India", "professional logo design India"
+  ],
   alternates: {
-    canonical: '/services/brand-strategy',
+    canonical: 'https://adsverse.in/en/services/brand-strategy',
     languages: {
-      'en': '/en/services/brand-strategy',
-      'hi': '/hi/services/brand-strategy',
+      'en': 'https://adsverse.in/en/services/brand-strategy',
+      'hi': 'https://adsverse.in/hi/services/brand-strategy',
     },
   },
 };
@@ -103,24 +109,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Brand Strategy & Identity",
-          "item": "https://adsverse.in/services/brand-strategy"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Brand Strategy & Identity", "item": "https://adsverse.in/en/services/brand-strategy" }
       ]
     },
     service.faq

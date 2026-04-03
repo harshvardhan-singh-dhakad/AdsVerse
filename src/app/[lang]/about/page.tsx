@@ -5,19 +5,24 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About The AdsVerse Team & Our Mission",
-  description: "Learn about the mission, vision, and the passionate team of marketers, strategists, and creators at AdsVerse dedicated to helping your brand thrive in the digital world.",
+  title: "About AdsVerse — Digital Marketing Agency in Indore Since 2018",
+  description: "AdsVerse is Indore's #1 AI-powered digital marketing agency founded in 2018. Meet the team behind 47+ successful brands — specializing in SEO, Paid Ads, AI Automation & Web Development across India.",
+  keywords: [
+    "digital marketing agency Indore", "best marketing agency Indore",
+    "AdsVerse team", "Deepak Dhakad digital marketing",
+    "digital marketing expert Indore", "marketing agency founded 2018 India"
+  ],
   alternates: {
-    canonical: '/about',
+    canonical: 'https://adsverse.in/en/about',
     languages: {
-      'en': '/en/about',
-      'hi': '/hi/about',
+      'en': 'https://adsverse.in/en/about',
+      'hi': 'https://adsverse.in/hi/about',
     },
   },
 };
 
 const teamMembers = [
-  { name: "Deepak Dhakad", role: "Ads, Ai Automation, GEO & SEO Specialist", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHSD01.jpeg?alt=media", hint: "man portrait" },
+  { name: "Deepak Dhakad", role: "Ads, AI Automation, GEO & SEO Specialist", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHSD01.jpeg?alt=media", hint: "man portrait" },
   { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FMANU.jpg?alt=media", hint: "woman portrait" },
   { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FAarsh.JPG?alt=media", hint: "man portrait" },
 ];
@@ -103,7 +108,7 @@ export default function AboutPage() {
             <div className="md:col-span-1 h-full">
               <Image
                 src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
-                alt="Deepak Dhakad"
+                alt="Deepak Dhakad - Digital Marketing Expert and Founder, AdsVerse Indore"
                 width={400}
                 height={600}
                 data-ai-hint="man professional"

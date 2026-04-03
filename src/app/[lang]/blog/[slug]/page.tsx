@@ -27,7 +27,11 @@ interface BlogPost {
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  const q = query(collection(db, "public_blogPosts"), where("slug", "==", slug));
+  const q = query(
+    collection(db, "blogPosts"), 
+    where("slug", "==", slug), 
+    where("isPublished", "==", true)
+  );
   const snap = await getDocs(q);
   if (snap.empty) return null;
   return snap.docs[0].data() as BlogPost;
@@ -60,8 +64,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     "description": post.excerpt,
     "image": post.imageUrl,
     "author": {
-      "@type": "Organization",
-      "name": post.author || "AdsVerse Expert Team"
+      "@type": "Person",
+      "name": post.author || "Deepak Dhakad",
+      "jobTitle": "Digital Marketing & AI Automation Expert",
+      "url": "https://adsverse.in/about",
+      "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
     },
     "publisher": {
       "@type": "Organization",

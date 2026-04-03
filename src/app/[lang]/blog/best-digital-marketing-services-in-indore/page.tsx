@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   title: "Best Digital Marketing Services in Indore | AdsVerse",
   description: "Looking for the best digital marketing services in Indore? This guide covers why it matters, what to look for, and how to find the right agency for your business.",
   alternates: {
-    canonical: '/blog/best-digital-marketing-services-in-indore',
+    canonical: 'https://adsverse.in/en/blog/best-digital-marketing-services-in-indore',
     languages: {
-      'en': '/en/blog/best-digital-marketing-services-in-indore',
-      'hi': '/hi/blog/best-digital-marketing-services-in-indore',
+      'en': 'https://adsverse.in/en/blog/best-digital-marketing-services-in-indore',
+      'hi': 'https://adsverse.in/hi/blog/best-digital-marketing-services-in-indore',
     },
   },
 };
@@ -21,29 +21,30 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://adsverse.in/blog/best-digital-marketing-services-in-indore"
+    "@id": "https://adsverse.in/en/blog/best-digital-marketing-services-in-indore"
   },
   "headline": "Best Digital Marketing Services in Indore – Grow Your Business with the Best Digital Marketing Agency",
   "description": "A guide on why digital marketing matters for businesses in Indore, what services to look for, and how to find the best digital marketing agency in Indore for your business.",
   "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FDigital%20Marketing%20Indore.jpeg?alt=media",
   "author": {
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in"
+    "@type": "Person",
+    "name": "Deepak Dhakad",
+    "jobTitle": "Digital Marketing Expert & Founder",
+    "url": "https://adsverse.in/about"
   },
   "publisher": {
     "@type": "Organization",
     "name": "AdsVerse",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://github.com/HSDmarketing/Adsverse.image/blob/main/adsverse.png?raw=true"
+      "url": "https://adsverse.in/images/logo-white.png"
     }
   },
   "datePublished": "2024-05-19",
-  "dateModified": "2024-05-19",
+  "dateModified": "2026-04-03",
    "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [

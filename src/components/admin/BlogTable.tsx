@@ -11,6 +11,7 @@ import { Edit2, Trash2, Plus, Eye, EyeOff, FileText } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { BlogForm } from './BlogForm';
 import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
 
 export function BlogTable() {
     const { toast } = useToast();
@@ -21,7 +22,7 @@ export function BlogTable() {
     const [error, setError] = useState<any>(null);
 
     useEffect(() => {
-        const q = query(collection(db, 'public_blogPosts'), orderBy('publishedDate', 'desc'));
+        const q = query(collection(db, 'blogPosts'), orderBy('publishedDate', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const postsData = snapshot.docs.map(doc => ({
                 id: doc.id,
@@ -41,7 +42,11 @@ export function BlogTable() {
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this post?')) return;
         try {
-            await deleteDoc(doc(db, 'public_blogPosts', id));
+            // Delete from master
+            await deleteDoc(doc(db, 'blogPosts', id));
+            // Delete from public projection (if it exists)
+            await deleteDoc(doc(db, 'public_blogPosts', id)).catch(() => {});
+            
             toast({ title: 'Success', description: 'Post deleted successfully' });
         } catch (error) {
             toast({ title: 'Error', description: 'Failed to delete post', variant: 'destructive' });
@@ -50,12 +55,33 @@ export function BlogTable() {
 
     const togglePublish = async (post: BlogPost) => {
         try {
-            await updateDoc(doc(db, 'public_blogPosts', post.id), {
-                isPublished: !post.isPublished,
+            const newPublishedStatus = !post.isPublished;
+            // Update master record
+            await updateDoc(doc(db, 'blogPosts', post.id), {
+                isPublished: newPublishedStatus,
                 updatedAt: new Date()
             });
-            toast({ title: 'Success', description: post.isPublished ? 'Post unpublished' : 'Post published' });
+
+            // Update public projection
+            if (newPublishedStatus) {
+                // If now published, copy to public_blogPosts
+                const publicData = { ...post, isPublished: true, updatedAt: new Date() };
+                delete (publicData as any).id; // ID will be the doc ID
+                await updateDoc(doc(db, 'public_blogPosts', post.id), publicData)
+                    .catch(async (err) => {
+                        // If it doesn't exist yet, we need to use setDoc or just updateDoc might fail
+                        // But since we have the ID, we can use setDoc
+                        const { setDoc } = await import('firebase/firestore');
+                        await setDoc(doc(db, 'public_blogPosts', post.id), publicData);
+                    });
+            } else {
+                // If now unpublished, remove from public_blogPosts
+                await deleteDoc(doc(db, 'public_blogPosts', post.id)).catch(() => {});
+            }
+
+            toast({ title: 'Success', description: newPublishedStatus ? 'Post published' : 'Post unpublished' });
         } catch (error) {
+            console.error("Toggle publish error:", error);
             toast({ title: 'Error', description: 'Failed to update status', variant: 'destructive' });
         }
     };
@@ -167,11 +193,15 @@ export function BlogTable() {
                                             </TableCell>
                                             <TableCell className="text-center">
                                                 <span className="text-sm font-bold text-muted-foreground/60">
-                                                    {new Date(post.publishedDate).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        year: 'numeric'
-                                                    })}
+                                                    {(() => {
+                                                        try {
+                                                            if (!post.publishedDate) return "N/A";
+                                                            const date = new Date(post.publishedDate);
+                                                            return isNaN(date.getTime()) ? "Invalid Date" : format(date, 'MMM d, yyyy');
+                                                        } catch (e) {
+                                                            return "N/A";
+                                                        }
+                                                    })()}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="text-center">

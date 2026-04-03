@@ -40,7 +40,8 @@ export type Lead = BaseDoc & {
     phone?: string;
     subject: string;
     message: string;
-    submissionDate: Timestamp;
+    submittedAt?: Timestamp;
+    submissionDate?: Timestamp;
     isRead: boolean;
 }
 

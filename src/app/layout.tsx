@@ -31,8 +31,29 @@ export const metadata: Metadata = {
     default: "AdsVerse | AI-Powered Digital Marketing & Automation Agency",
     template: "%s | AdsVerse",
   },
-  description: "AdsVerse is a premier digital marketing agency in Indore specializing in SEO, Paid Ads, and AI Automation to drive measurable business growth.",
-  keywords: ["AI Marketing Automation Indore", "Best Digital Marketing Agency Indore", "SEO Services Indore", "ROI Focused Marketing", "AI powered Lead Generation", "Marketing Automation Agency India", "Performance Marketing Indore"],
+  description: "AdsVerse is Indore's #1 AI-powered digital marketing agency specializing in SEO, Performance Marketing, Meta & Google Ads, and Business Automation to drive measurable growth for Indian businesses.",
+  keywords: [
+    "digital marketing agency in Indore",
+    "best digital marketing agency Indore",
+    "SEO services Indore",
+    "performance marketing agency India",
+    "Google Ads management India",
+    "Meta ads agency India",
+    "AI marketing automation India",
+    "WhatsApp bot for business India",
+    "marketing automation agency Indore",
+    "social media marketing Indore",
+    "web design company Indore",
+    "lead generation agency Indore",
+    "ROI focused digital marketing",
+    "AdsVerse Indore",
+    "digital marketing agency Madhya Pradesh",
+    "n8n automation agency India",
+    "paid ads agency Indore",
+    "content marketing agency India",
+    "local SEO services Indore",
+    "affordable digital marketing India"
+  ],
   openGraph: {
     title: {
       default: "AdsVerse | Digital Marketing That Drives Results",
@@ -49,7 +70,8 @@ export const metadata: Metadata = {
         alt: "AdsVerse - Digital Marketing Agency",
       },
     ],
-    locale: 'en_US',
+    locale: 'en_IN',
+    alternateLocale: ['hi_IN'],
     type: 'website',
   },
   twitter: {
@@ -65,8 +87,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
     languages: {
-      'en': '/en',
-      'hi': '/hi',
+      'en': `${siteUrl}/en`,
+      'hi': `${siteUrl}/hi`,
     },
   },
   icons: {
@@ -92,7 +114,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
-        <link rel="preconnect" href="https://picsum.photos" />
+        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       </head>
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",
@@ -117,7 +141,7 @@ export default function RootLayout({
               height="1" 
               width="1" 
               style={{display: 'none'}} 
-              src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1" 
+              src="https://www.facebook.com/tr?id=1234567890&ev=PageView&noscript=1" 
               alt=""
             />
           </noscript>

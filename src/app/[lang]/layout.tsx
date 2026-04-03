@@ -6,13 +6,9 @@ import { getDictionary } from "@/lib/get-dictionary";
 import { FirebaseClientProvider } from "@/firebase";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "https://adsverse.in",
-  },
-};
 
-const jsonLd = {
+
+const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "AdsVerse",
@@ -20,7 +16,9 @@ const jsonLd = {
   "logo": "https://adsverse.in/images/logo-white.png",
   "sameAs": [
     "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse"
+    "https://instagram.com/adsverse",
+    "https://x.com/Adsverse1",
+    "https://www.linkedin.com/company/dmafia/"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
@@ -37,6 +35,51 @@ const jsonLd = {
     "postalCode": "452010",
     "addressCountry": "IN"
   }
+};
+
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "AdsVerse",
+  "image": "https://adsverse.in/images/logo-white.png",
+  "@id": "https://adsverse.in",
+  "url": "https://adsverse.in",
+  "telephone": "+91-9685123339",
+  "email": "contact@adsverse.in",
+  "priceRange": "₹₹",
+  "description": "AdsVerse is Indore's leading AI-powered digital marketing agency offering SEO, Google Ads, Meta Ads, Social Media Marketing, Web Development, and Business Automation.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Scheme No. 54, Vijay Nagar",
+    "addressLocality": "Indore",
+    "addressRegion": "Madhya Pradesh",
+    "postalCode": "452010",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 22.7289,
+    "longitude": 75.8919
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "10:00",
+    "closes": "19:00"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "47",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "sameAs": [
+    "https://facebook.com/adsverse",
+    "https://instagram.com/adsverse",
+    "https://x.com/Adsverse1",
+    "https://www.linkedin.com/company/dmafia/"
+  ]
 };
 
 export default async function LangLayout({
@@ -63,7 +106,11 @@ export default async function LangLayout({
     <FirebaseClientProvider>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <Header navLinks={navLinks} lang={params.lang} />
       <main>{children}</main>

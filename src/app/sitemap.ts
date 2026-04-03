@@ -22,21 +22,10 @@ async function getBlogSlugs() {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogSlugs = await getBlogSlugs();
-    // Static base routes (without locale prefix)
-    const staticBaseRoutes = [
-        '',
-        '/about',
-        '/our-services',
-        '/portfolio',
-        '/pricing',
-        '/blog',
-        '/contact',
-        '/privacy-policy',
-        '/terms-of-service',
-        '/tools/seo-audit',
-    ];
 
-    // Service base routes
+    // Homepage
+    const homepageRoutes = [''];
+    // High-value service pages
     const serviceBaseRoutes = [
         '/services/automation-tools',
         '/services/brand-strategy',
@@ -45,33 +34,80 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/services/content-marketing',
         '/services/social-media-management',
         '/services/web-design-development',
+        '/services/whatsapp-bot',
+        '/services/lead-generation',
+    ];
+    // Standard pages
+    const standardRoutes = [
+        '/about',
+        '/our-services',
+        '/portfolio',
+        '/pricing',
+        '/blog',
+        '/contact',
+        '/tools/seo-audit',
+    ];
+    // Legal pages (low priority)
+    const legalRoutes = [
+        '/privacy-policy',
+        '/terms-of-service',
     ];
 
     const sitemapEntries: MetadataRoute.Sitemap = [];
 
-    // Combine and generate localized routes
-    const allBaseRoutes = [...staticBaseRoutes, ...serviceBaseRoutes];
-
     locales.forEach(lang => {
-        allBaseRoutes.forEach(route => {
+        // Homepage — highest priority
+        homepageRoutes.forEach(route => {
+            sitemapEntries.push({
+                url: `${BASE_URL}/${lang}${route}`,
+                lastModified: new Date(),
+                changeFrequency: 'weekly' as const,
+                priority: 1.0,
+            });
+        });
+
+        // Service pages — very high priority
+        serviceBaseRoutes.forEach(route => {
             sitemapEntries.push({
                 url: `${BASE_URL}/${lang}${route}`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly' as const,
-                priority: route === '' ? 1 : 0.8,
+                priority: 0.9,
             });
         });
 
+        // Standard pages
+        standardRoutes.forEach(route => {
+            sitemapEntries.push({
+                url: `${BASE_URL}/${lang}${route}`,
+                lastModified: new Date(),
+                changeFrequency: 'monthly' as const,
+                priority: 0.7,
+            });
+        });
+
+        // Legal pages — minimal crawl budget
+        legalRoutes.forEach(route => {
+            sitemapEntries.push({
+                url: `${BASE_URL}/${lang}${route}`,
+                lastModified: new Date(),
+                changeFrequency: 'yearly' as const,
+                priority: 0.3,
+            });
+        });
+
+        // Blog posts — high priority, crawled weekly for freshness
         blogSlugs.forEach(slug => {
             sitemapEntries.push({
                 url: `${BASE_URL}/${lang}/blog/${slug}`,
                 lastModified: new Date(),
                 changeFrequency: 'weekly' as const,
-                priority: 0.7,
+                priority: 0.8,
             });
         });
     });
 
     return sitemapEntries;
 }
+
 

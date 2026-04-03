@@ -8,13 +8,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Contact AdsVerse | Digital Marketing Agency",
-  description: "Get in touch with the AdsVerse team. Whether you have a project in mind, need a quote, or just want to say hello, we'd love to hear from you.",
+  title: "Contact AdsVerse — Digital Marketing Agency Indore | Free Consultation",
+  description: "Contact AdsVerse — Indore's #1 AI-powered digital marketing agency. Get a FREE consultation for SEO, Paid Ads, or Automation. Call +91-9685123339 or email contact@adsverse.in.",
+  keywords: [
+    "contact digital marketing agency Indore", "AdsVerse contact", "digital marketing consultation India",
+    "free SEO audit India", "hire digital marketing agency Indore"
+  ],
   alternates: {
-    canonical: '/contact',
+    canonical: 'https://adsverse.in/en/contact',
     languages: {
-      'en': '/en/contact',
-      'hi': '/hi/contact',
+      'en': 'https://adsverse.in/en/contact',
+      'hi': 'https://adsverse.in/hi/contact',
     },
   },
 };

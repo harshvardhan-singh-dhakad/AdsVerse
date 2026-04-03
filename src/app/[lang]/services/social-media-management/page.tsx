@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Social Media Management Services | AdsVerse",
-  description: "Build and nurture your online community with our expert social media management services. We handle content creation, daily engagement, and performance reporting.",
+  title: "Social Media Marketing Agency India — Instagram & Facebook | AdsVerse",
+  description: "Grow your brand on Instagram, Facebook & LinkedIn with AdsVerse's expert social media management. We create content, manage communities & run ads for Indian businesses in Indore.",
+  keywords: [
+    "social media marketing Indore", "Instagram marketing agency India", "Facebook marketing India",
+    "social media management India", "SMM agency Indore", "social media content creation India",
+    "LinkedIn marketing agency India", "social media manager India",
+    "Instagram growth agency Indore", "social media strategy India"
+  ],
   alternates: {
-    canonical: '/services/social-media-management',
+    canonical: 'https://adsverse.in/en/services/social-media-management',
     languages: {
-      'en': '/en/services/social-media-management',
-      'hi': '/hi/services/social-media-management',
+      'en': 'https://adsverse.in/en/services/social-media-management',
+      'hi': 'https://adsverse.in/hi/services/social-media-management',
     },
   },
 };
@@ -103,24 +109,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Social Media Management",
-          "item": "https://adsverse.in/services/social-media-management"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Social Media Management", "item": "https://adsverse.in/en/services/social-media-management" }
       ]
     },
     service.faq

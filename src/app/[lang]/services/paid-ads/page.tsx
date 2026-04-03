@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Meta & Google Ads Management Services | AdsVerse",
-  description: "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google. We handle setup, optimization, and reporting.",
+  title: "Meta & Google Ads Management Agency India | AdsVerse",
+  description: "Maximize ROI with expert Meta (Facebook/Instagram) & Google Ads management from AdsVerse. We run data-driven paid ad campaigns for Indian businesses — driving leads, sales & measurable results.",
+  keywords: [
+    "Google Ads management India", "Meta ads agency India", "Facebook ads agency Indore",
+    "paid advertising services India", "performance marketing agency Indore",
+    "Google Ads consultant India", "Instagram ads India", "PPC agency India",
+    "ROI focused ads India", "paid ads management Indore"
+  ],
   alternates: {
-    canonical: '/services/paid-ads',
+    canonical: 'https://adsverse.in/en/services/paid-ads',
     languages: {
-      'en': '/en/services/paid-ads',
-      'hi': '/hi/services/paid-ads',
+      'en': 'https://adsverse.in/en/services/paid-ads',
+      'hi': 'https://adsverse.in/hi/services/paid-ads',
     },
   },
 };
@@ -103,24 +109,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Meta & Google Ads",
-          "item": "https://adsverse.in/services/paid-ads"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Meta & Google Ads", "item": "https://adsverse.in/en/services/paid-ads" }
       ]
     },
     service.faq

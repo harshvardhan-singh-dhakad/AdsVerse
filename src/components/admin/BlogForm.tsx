@@ -98,20 +98,36 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
 
   const onSubmit = async (values: BlogFormValues) => {
     try {
+      const { setDoc, deleteDoc } = await import('firebase/firestore');
+      
+      let docRef;
       if (initialData?.id) {
-        await updateDoc(doc(db, 'public_blogPosts', initialData.id), {
+        docRef = doc(db, 'blogPosts', initialData.id);
+        await updateDoc(docRef, {
           ...values,
           updatedAt: serverTimestamp(),
         });
         toast({ title: 'Success', description: 'Blog post updated successfully' });
       } else {
-        await addDoc(collection(db, 'public_blogPosts'), {
+        docRef = await addDoc(collection(db, 'blogPosts'), {
           ...values,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         });
         toast({ title: 'Success', description: 'Blog post created successfully' });
       }
+
+      // Sync to public_blogPosts
+      const docId = initialData?.id || docRef.id;
+      if (values.isPublished) {
+        await setDoc(doc(db, 'public_blogPosts', docId), {
+          ...values,
+          updatedAt: serverTimestamp(),
+        });
+      } else {
+        await deleteDoc(doc(db, 'public_blogPosts', docId)).catch(() => {});
+      }
+
       onSuccess?.();
     } catch (error) {
       console.error(error);

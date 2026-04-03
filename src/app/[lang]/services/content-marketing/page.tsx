@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Content Marketing & Strategy Services | AdsVerse",
-  description: "Engage your audience with valuable content marketing from AdsVerse. Our services include blog writing, content strategy, and SEO optimization to build authority.",
+  title: "Content Marketing Agency India — Blog Writing & SEO Content | AdsVerse",
+  description: "Grow your authority with AdsVerse's content marketing services. We create SEO-optimized blog posts, articles & content strategy for Indian businesses — driving organic traffic and brand trust.",
+  keywords: [
+    "content marketing agency India", "blog writing services India", "SEO content writing India",
+    "content strategy agency Indore", "article writing services India",
+    "digital content marketing India", "content creation agency Indore",
+    "copywriting services India", "content marketing for startups India", "blog management India"
+  ],
   alternates: {
-    canonical: '/services/content-marketing',
+    canonical: 'https://adsverse.in/en/services/content-marketing',
     languages: {
-      'en': '/en/services/content-marketing',
-      'hi': '/hi/services/content-marketing',
+      'en': 'https://adsverse.in/en/services/content-marketing',
+      'hi': 'https://adsverse.in/hi/services/content-marketing',
     },
   },
 };
@@ -103,24 +109,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Content Marketing",
-          "item": "https://adsverse.in/services/content-marketing"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Content Marketing", "item": "https://adsverse.in/en/services/content-marketing" }
       ]
     },
     service.faq

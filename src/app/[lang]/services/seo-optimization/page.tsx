@@ -7,13 +7,19 @@ import { Metadata } from "next";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
 
 export const metadata: Metadata = {
-  title: "Expert SEO Optimization Services to Rank Higher | AdsVerse",
-  description: "Improve your search engine rankings and attract organic traffic with AdsVerse's expert SEO services, including technical audits, keyword research, and link building.",
+  title: "Expert SEO Services in India to Rank Higher on Google | AdsVerse",
+  description: "Boost your website's Google rankings with AdsVerse's expert SEO services in India. We offer Technical SEO, Keyword Research, On-Page Optimization & Link Building — delivering 3x organic traffic growth.",
+  keywords: [
+    "SEO services India", "SEO agency Indore", "best SEO company Indore",
+    "local SEO Indore", "technical SEO services India", "keyword research India",
+    "on-page SEO optimization", "link building services India", "SEO consultant India",
+    "affordable SEO packages India"
+  ],
   alternates: {
-    canonical: '/services/seo-optimization',
+    canonical: 'https://adsverse.in/en/services/seo-optimization',
     languages: {
-      'en': '/en/services/seo-optimization',
-      'hi': '/hi/services/seo-optimization',
+      'en': 'https://adsverse.in/en/services/seo-optimization',
+      'hi': 'https://adsverse.in/hi/services/seo-optimization',
     },
   },
 };
@@ -104,24 +110,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "SEO Optimization",
-          "item": "https://adsverse.in/services/seo-optimization"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "SEO Optimization", "item": "https://adsverse.in/en/services/seo-optimization" }
       ]
     },
     service.faq

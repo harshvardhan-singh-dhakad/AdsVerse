@@ -7,7 +7,7 @@ import { ArrowRight, Calendar, User, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { getFirestore, collection, query, orderBy, getDocs, where } from "firebase/firestore";
 import { firebaseConfig } from "@/firebase/config";
 
 // Initialize Firebase (Server Side)
@@ -28,7 +28,11 @@ export const metadata: Metadata = {
 
 async function getBlogPosts() {
   try {
-    const q = query(collection(db, "public_blogPosts"), orderBy("publishedDate", "desc"));
+    const q = query(
+      collection(db, "blogPosts"), 
+      where("isPublished", "==", true), 
+      orderBy("publishedDate", "desc")
+    );
     const snap = await getDocs(q);
     return snap.docs.map(doc => ({
       id: doc.id,

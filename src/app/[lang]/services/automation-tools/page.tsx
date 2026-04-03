@@ -8,13 +8,19 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
-  title: "Custom Business Automation Tools & Bots | AdsVerse",
-  description: "Unlock peak efficiency with custom automation tools and bots from AdsVerse. Streamline your business processes, eliminate repetitive tasks, and boost productivity.",
+  title: "AI & WhatsApp Business Automation Agency India | AdsVerse",
+  description: "Automate your business 24/7 with AdsVerse's custom AI bots, WhatsApp automation & n8n workflows. Save time, generate leads, and scale faster — built for Indian businesses in Indore.",
+  keywords: [
+    "WhatsApp bot for business India", "AI automation agency India", "n8n automation Indore",
+    "business automation tools India", "WhatsApp marketing automation",
+    "AI chatbot for business India", "CRM automation Indore", "workflow automation India",
+    "custom bot development India", "marketing automation agency Indore"
+  ],
   alternates: {
-    canonical: '/services/automation-tools',
+    canonical: 'https://adsverse.in/en/services/automation-tools',
     languages: {
-      'en': '/en/services/automation-tools',
-      'hi': '/hi/services/automation-tools',
+      'en': 'https://adsverse.in/en/services/automation-tools',
+      'hi': 'https://adsverse.in/hi/services/automation-tools',
     },
   },
 };
@@ -125,24 +131,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Custom Automation Tools",
-          "item": "https://adsverse.in/services/automation-tools"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Custom Automation Tools", "item": "https://adsverse.in/en/services/automation-tools" }
       ]
     },
     service.faq

@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Web Design & Development Services | AdsVerse",
-  description: "Get a beautiful, functional, and high-performing website from AdsVerse. We create digital experiences that captivate users and convert visitors into customers.",
+  title: "Web Design & Development Company Indore India | AdsVerse",
+  description: "Get a high-performing, SEO-optimized website for your business from AdsVerse — Indore's top web design & development company. Custom websites built on Next.js for speed, design & conversions.",
+  keywords: [
+    "web design company Indore", "website development India", "web development agency Indore",
+    "affordable website design India", "Next.js development India", "custom website design Indore",
+    "e-commerce website development India", "responsive website design India",
+    "website developer Indore", "professional website design India"
+  ],
   alternates: {
-    canonical: '/services/web-design-development',
+    canonical: 'https://adsverse.in/en/services/web-design-development',
     languages: {
-      'en': '/en/services/web-design-development',
-      'hi': '/hi/services/web-design-development',
+      'en': 'https://adsverse.in/en/services/web-design-development',
+      'hi': 'https://adsverse.in/hi/services/web-design-development',
     },
   },
 };
@@ -103,24 +109,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://adsverse.in"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Services",
-          "item": "https://adsverse.in/our-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Web Design & Development",
-          "item": "https://adsverse.in/services/web-design-development"
-        }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Web Design & Development", "item": "https://adsverse.in/en/services/web-design-development" }
       ]
     },
     service.faq
