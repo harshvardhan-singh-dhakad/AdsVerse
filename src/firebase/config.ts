@@ -1,8 +1,9 @@
 export const firebaseConfig = {
-  "projectId": "AdsVerse-digital-p7c0g",
+  "projectId": "synergyflow-digital-p7c0g",
   "appId": "1:867205490601:web:a4b9a8f0cd5c93f79346b8",
+  "storageBucket": "synergyflow-digital-p7c0g.firebasestorage.app",
   "apiKey": "AIzaSyAO1xYAhh9ONCZjZI2zliUn_dEPdfaZr2Y",
-  "authDomain": "AdsVerse-digital-p7c0g.firebaseapp.com",
-  "measurementId": "",
+  "authDomain": "synergyflow-digital-p7c0g.firebaseapp.com",
   "messagingSenderId": "867205490601"
 };
+
