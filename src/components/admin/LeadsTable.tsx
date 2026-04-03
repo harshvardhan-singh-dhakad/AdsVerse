@@ -23,7 +23,7 @@ import { format } from 'date-fns';
 export function LeadsTable() {
   const firestore = useFirestore();
   const leadsQuery = useMemoFirebase(() =>
-    query(collection(firestore, "contacts"), orderBy("submittedAt", "desc")),
+    query(collection(firestore, "leads"), orderBy("submissionDate", "desc")),
     [firestore]
   );
   const { data: leads, isLoading, error } = useCollection<Lead>(leadsQuery);
@@ -97,9 +97,9 @@ export function LeadsTable() {
                 const csvContent = [
                   headers.join(","),
                   ...leads.map(lead => {
-                    const date = lead.submittedAt || lead.submissionDate;
+                    const date = lead.submissionDate || lead.submittedAt;
                     return [
-                      date ? format(date.toDate(), 'yyyy-MM-dd') : 'N/A',
+                      date && typeof date.toDate === 'function' ? format(date.toDate(), 'yyyy-MM-dd') : 'N/A',
                     `"${lead.name.replace(/"/g, '""')}"`,
                     lead.email,
                     lead.phone || 'N/A',
@@ -159,7 +159,7 @@ export function LeadsTable() {
                                     <TableCell className="pl-8">
                                         <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
                                             {(() => {
-                                                const date = lead.submittedAt || lead.submissionDate;
+                                                const date = lead.submissionDate || lead.submittedAt;
                                                 return date && typeof date.toDate === 'function' 
                                                     ? format(date.toDate(), 'PPP') 
                                                     : 'N/A';
