@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Loader2, PlusCircle, Trash2, Edit, CheckCircle, XCircle } from "lucide-react";
 import { PricingForm } from "./PricingForm";
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 export function PricingTable() {
   const { toast } = useToast();
@@ -45,67 +45,95 @@ export function PricingTable() {
     }
   };
 
-  return (
-    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
-      <CardHeader>
-        <CardTitle>Manage Pricing Plans</CardTitle>
-        <CardDescription>Add, edit, or delete pricing plans for your services.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading && <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>}
-        {error && (
-          <div className="text-center py-10 px-4">
-            <h3 className="text-xl font-semibold text-destructive">Permission Denied</h3>
-            <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-              You do not have permission to view this data. Please ensure you are logged in with an admin account.
-            </p>
-          </div>
-        )}
-        {!isLoading && !error && (
-            <Table>
-            <TableHeader>
-                <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Popular</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {plans?.map((plan) => (
-                <TableRow key={plan.id}>
-                    <TableCell>{plan.displayOrder}</TableCell>
-                    <TableCell><Badge variant="secondary">{plan.category}</Badge></TableCell>
-                    <TableCell className="font-medium">{plan.name}</TableCell>
-                    <TableCell>{plan.price} {plan.frequency}</TableCell>
-                    <TableCell>
-                      {plan.isPopular ? 
-                        <Badge><CheckCircle className="w-4 h-4 mr-1"/> Popular</Badge> : 
-                        <Badge variant="outline"><XCircle className="w-4 h-4 mr-1"/> Not Popular</Badge>}
-                    </TableCell>
-                    <TableCell className="text-right space-x-2">
-                        <Button variant="outline" size="icon" onClick={() => handleEdit(plan)}><Edit className="h-4 w-4" /></Button>
-                        <Button variant="destructive" size="icon" onClick={() => handleDelete(plan.id)}><Trash2 className="h-4 w-4" /></Button>
-                    </TableCell>
-                </TableRow>
-                ))}
-            </TableBody>
-            </Table>
-        )}
-      </CardContent>
-      <CardFooter className="border-t pt-6">
-        <Button onClick={handleAddNew}><PlusCircle className="mr-2 h-4 w-4"/>Add New Plan</Button>
-      </CardFooter>
-       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>{selectedPlan ? "Edit Pricing Plan" : "Add New Pricing Plan"}</DialogTitle>
-          </DialogHeader>
-          <PricingForm plan={selectedPlan} onFinished={() => setIsDialogOpen(false)} />
-        </DialogContent>
-      </Dialog>
-    </Card>
-  );
+    return (
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-1">
+                <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Value Architect</h2>
+                <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Define and refine the commercial value propositions of AdsVerse.</p>
+            </div>
+            <Button 
+                onClick={handleAddNew}
+                className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
+            >
+                <PlusCircle className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> 
+                Draft New Plan
+            </Button>
+        </div>
+
+        <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+            <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader className="bg-white/2 border-b border-white/5">
+                        <TableRow className="hover:bg-transparent border-none">
+                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Sequence</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Plan Identity</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Commercial Value</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Market Status</TableHead>
+                            <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {!isLoading && plans?.map((plan) => (
+                            <TableRow key={plan.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
+                                <TableCell className="pl-8">
+                                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-black text-xs text-primary">
+                                        {plan.displayOrder}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Badge variant="secondary" className="bg-white/5 text-muted-foreground/80 border-white/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
+                                        {plan.category}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="text-center font-bold text-white/90 group-hover/row:text-primary transition-colors">
+                                    {plan.name}
+                                </TableCell>
+                                <TableCell className="text-center font-black text-white/80">
+                                    {plan.price} <span className="text-[10px] text-muted-foreground/40 uppercase tracking-widest">{plan.frequency}</span>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    {plan.isPopular ? 
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                            <span className="text-primary font-black text-[9px] uppercase tracking-widest">Market Leader</span>
+                                        </div> : 
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
+                                            <span className="text-muted-foreground/40 font-black text-[9px] uppercase tracking-widest">Standard Tier</span>
+                                        </div>
+                                    }
+                                </TableCell>
+                                <TableCell className="text-right pr-8">
+                                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
+                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(plan)} className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(plan.id)} className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="max-w-4xl bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+                    <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                        {selectedPlan ? "Refine Pricing Strategy" : "Initialize New Commercial Plan"}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className="p-8">
+                    <PricingForm plan={selectedPlan} onFinished={() => setIsDialogOpen(false)} />
+                </div>
+            </DialogContent>
+        </Dialog>
+      </div>
+    );
 }

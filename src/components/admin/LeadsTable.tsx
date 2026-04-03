@@ -82,65 +82,138 @@ export function LeadsTable() {
     );
   };
 
-  return (
-    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle>Contact Form Leads</CardTitle>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => {
-            if (!leads) return;
-            const headers = ["Date", "Name", "Email", "Phone", "Subject", "Message"];
-            const csvContent = [
-              headers.join(","),
-              ...leads.map(lead => [
-                lead.submissionDate ? format(lead.submissionDate.toDate(), 'yyyy-MM-dd') : 'N/A',
-                `"${lead.name.replace(/"/g, '""')}"`,
-                lead.email,
-                lead.phone || 'N/A',
-                `"${lead.subject.replace(/"/g, '""')}"`,
-                `"${lead.message.replace(/"/g, '""')}"`
-              ].join(","))
-            ].join("\n");
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `adsverse_leads_${format(new Date(), 'yyyy-MM-dd')}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }}
-          disabled={!leads || leads.length === 0}
-          className="ml-auto"
-        >
-          Download CSV
-        </Button>
-      </CardHeader>
-      <CardContent>
-        {renderContent()}
-      </CardContent>
-       <Dialog open={!!selectedLead} onOpenChange={(open) => !open && setSelectedLead(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Lead from {selectedLead?.name}</DialogTitle>
-            <DialogDescription>
-              {selectedLead?.submissionDate ? format(selectedLead.submissionDate.toDate(), 'PPP p') : ''}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div><strong>Email:</strong> {selectedLead?.email}</div>
-            {selectedLead?.phone && <div><strong>Phone:</strong> {selectedLead.phone}</div>}
-            <div><strong>Subject:</strong> <Badge variant="outline">{selectedLead?.subject}</Badge></div>
-            <div className="p-4 bg-muted rounded-md">
-                <p className="text-sm text-muted-foreground">{selectedLead?.message}</p>
+    return (
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-1">
+                <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Inbound Intelligence</h2>
+                <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Track and manage your potential client conversion funnel.</p>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </Card>
-  );
+            <Button 
+              className="h-12 px-8 bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20 font-black uppercase tracking-widest rounded-2xl transition-all active:scale-95 disabled:opacity-30"
+              onClick={() => {
+                if (!leads) return;
+                const headers = ["Date", "Name", "Email", "Phone", "Subject", "Message"];
+                const csvContent = [
+                  headers.join(","),
+                  ...leads.map(lead => [
+                    lead.submissionDate ? format(lead.submissionDate.toDate(), 'yyyy-MM-dd') : 'N/A',
+                    `"${lead.name.replace(/"/g, '""')}"`,
+                    lead.email,
+                    lead.phone || 'N/A',
+                    `"${lead.subject.replace(/"/g, '""')}"`,
+                    `"${lead.message.replace(/"/g, '""')}"`
+                  ].join(","))
+                ].join("\n");
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `adsverse_leads_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              disabled={!leads || leads.length === 0}
+            >
+              Export Intelligence (CSV)
+            </Button>
+        </div>
+
+        <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+            <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader className="bg-white/2 border-b border-white/5">
+                        <TableRow className="hover:bg-transparent border-none">
+                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Timestamp</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Identity</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Contact Channel</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Subject</TableHead>
+                            <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {leads.map((lead) => (
+                            <TableRow key={lead.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
+                                <TableCell className="pl-8">
+                                    <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
+                                        {lead.submissionDate ? format(lead.submissionDate.toDate(), 'PPP') : 'N/A'}
+                                    </span>
+                                </TableCell>
+                                <TableCell>
+                                    <span className="font-bold text-white/90 group-hover/row:text-primary transition-colors">
+                                        {lead.name}
+                                    </span>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-medium text-white/70">{lead.email}</span>
+                                        {lead.phone && <span className="text-[10px] font-bold text-muted-foreground/40">{lead.phone}</span>}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Badge variant="secondary" className="bg-white/5 text-muted-foreground/80 border-white/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
+                                        {lead.subject}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="text-right pr-8">
+                                    <Button 
+                                        variant="ghost" 
+                                        size="sm" 
+                                        onClick={() => setSelectedLead(lead)}
+                                        className="h-9 px-4 rounded-xl bg-primary/5 text-primary hover:bg-primary/10 font-black text-[10px] uppercase tracking-widest transition-all"
+                                    >
+                                        Inspect
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+
+        <Dialog open={!!selectedLead} onOpenChange={(open) => !open && setSelectedLead(null)}>
+            <DialogContent className="bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden max-w-2xl">
+                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xl">
+                            {selectedLead?.name.substring(0, 1).toUpperCase()}
+                        </div>
+                        <div>
+                            <DialogTitle className="text-2xl font-black font-headline tracking-tighter text-white">Lead Detail: {selectedLead?.name}</DialogTitle>
+                            <DialogDescription className="text-muted-foreground/60 font-bold uppercase tracking-widest text-[9px]">
+                                Received {selectedLead?.submissionDate ? format(selectedLead.submissionDate.toDate(), 'PPP p') : ''}
+                            </DialogDescription>
+                        </div>
+                    </div>
+                </DialogHeader>
+                <div className="p-8 space-y-6">
+                    <div className="grid grid-cols-2 gap-6">
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Email Address</p>
+                            <p className="text-sm font-bold text-white/80">{selectedLead?.email}</p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Phone Identity</p>
+                            <p className="text-sm font-bold text-white/80">{selectedLead?.phone || 'Not provided'}</p>
+                        </div>
+                    </div>
+                    <div className="space-y-1">
+                        <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Subject Matter</p>
+                        <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary h-6 px-3">{selectedLead?.subject}</Badge>
+                    </div>
+                    <div className="space-y-2">
+                        <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Message Body</p>
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <p className="text-sm text-white/70 leading-relaxed italic">"{selectedLead?.message}"</p>
+                        </div>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+      </div>
+    );
 }

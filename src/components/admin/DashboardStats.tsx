@@ -30,7 +30,7 @@ export function DashboardStats() {
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const collections = ["leads", "services", "portfolioItems", "blogPosts", "pricing"];
+        const collections = ["leads", "services", "portfolioItems", "public_blogPosts", "pricing"];
         const counts = await Promise.all(
           collections.map(async (colName) => {
             const snapshot = await getCountFromServer(collection(db, colName));
@@ -88,90 +88,94 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="space-y-10 pb-10">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div className="space-y-12 pb-12">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
-          <Card key={stat.label} className="group bg-card/30 backdrop-blur-xl border-border/40 shadow-xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-500 relative overflow-hidden">
-            <div className={`absolute top-0 right-0 w-24 h-24 -mt-10 -mr-10 rounded-full opacity-5 blur-3xl transition-opacity group-hover:opacity-20 ${stat.color.replace('text-', 'bg-')}`} />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-bold text-muted-foreground/60 uppercase tracking-widest">
+          <Card key={stat.label} className="group relative bg-[#12141c]/40 backdrop-blur-3xl border-white/5 shadow-2xl hover:border-primary/30 transition-all duration-500 overflow-hidden">
+            <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-0 blur-[60px] transition-all duration-700 group-hover:opacity-40 ${stat.color.replace('text-', 'bg-')}`} />
+            
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
                 {stat.label}
-              </CardTitle>
-              <div className={cn("p-2 rounded-lg bg-background/50 border border-border/40", stat.color)}>
+              </span>
+              <div className={cn("p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500", stat.color)}>
                 <stat.icon className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors">
-                {stat.count !== null ? stat.count : "0"}
+              <div className="text-4xl font-black tracking-tighter text-white/90 group-hover:text-primary transition-colors">
+                {stat.count !== null ? stat.count.toLocaleString() : "0"}
               </div>
-              <div className="flex items-center gap-1.5 mt-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
-                <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                  Live Sync
-                </p>
+              <div className="flex items-center gap-2 mt-4">
+                <div className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+                    <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Real-time</span>
+                </div>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2 bg-gradient-to-br from-card/50 to-card/20 backdrop-blur-3xl border-primary/10 shadow-2xl overflow-hidden relative group">
-          <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:32px_32px]" />
-          <CardHeader className="relative z-10 p-8 pb-4">
-            <div className="flex items-center gap-4 mb-2">
-                <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground font-black text-2xl shadow-2xl shadow-primary/40">
-                    S
-                </div>
-                <div>
-                   <CardTitle className="text-3xl font-black font-headline tracking-tight">AdsVerse Admin</CardTitle>
-                   <p className="text-muted-foreground font-medium">Elevating your digital presence with precision.</p>
+      <div className="grid gap-8 lg:grid-cols-12">
+        <Card className="lg:col-span-8 bg-gradient-to-br from-[#12141c]/60 to-[#0a0c10]/40 backdrop-blur-3xl border-white/5 shadow-inner-white p-10 overflow-hidden relative border border-white/5 group">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(142,68,173,0.15),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+            <div className="shrink-0">
+                <div className="w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white font-black text-4xl shadow-[0_20px_50px_rgba(142,68,173,0.3)]">
+                    A
                 </div>
             </div>
-          </CardHeader>
-          <CardContent className="relative z-10 p-8 pt-0 space-y-6">
-            <p className="text-lg text-muted-foreground/80 leading-relaxed max-w-2xl">
-              Welcome back to your high-performance command center. From here, you control the narrative of your brand. 
-              Analyze your leads, optimize your service delivery, and broadcast your expertise through the blog.
-            </p>
-            <div className="flex flex-wrap gap-3">
-                <Badge variant="outline" className="px-4 py-2 bg-primary/5 border-primary/20 text-primary font-bold text-xs uppercase tracking-widest">
-                    Performance Optimized
-                </Badge>
-                <Badge variant="outline" className="px-4 py-2 bg-secondary/5 border-secondary/20 text-muted-foreground font-bold text-xs uppercase tracking-widest">
-                    SEO Friendly
-                </Badge>
-                <Badge variant="outline" className="px-4 py-2 bg-accent/5 border-accent/20 text-accent font-bold text-xs uppercase tracking-widest">
-                    Real-time Data
-                </Badge>
+            <div className="space-y-3">
+               <h1 className="text-4xl md:text-5xl font-black font-headline tracking-tighter text-white">
+                AdsVerse <span className="text-primary italic font-serif opacity-90">Elite</span>
+               </h1>
+               <p className="text-lg text-muted-foreground max-w-xl font-medium leading-relaxed">
+                Welcome back to your digital command center. Every decision you make here fuels the next stage of growth.
+               </p>
             </div>
-          </CardContent>
+          </div>
+
+          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+             {[
+               { l: 'Performance', v: '98%', c: 'text-emerald-400' },
+               { l: 'SEO Score', v: '100', c: 'text-blue-400' },
+               { l: 'Leads Rate', v: '+24%', c: 'text-primary' },
+               { l: 'Stability', v: '99.9%', c: 'text-accent' },
+             ].map(i => (
+               <div key={i.l} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all cursor-default">
+                  <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">{i.l}</p>
+                  <p className={cn("text-xl font-black", i.c)}>{i.v}</p>
+               </div>
+             ))}
+          </div>
         </Card>
 
-        <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 backdrop-blur-xl group hover:bg-emerald-500/10 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500">
-                        <Users className="w-5 h-5" />
-                    </div>
-                    <h4 className="font-bold text-emerald-500 uppercase tracking-widest text-xs">Growth Opportunity</h4>
+        <div className="lg:col-span-4 space-y-6">
+            <div className="relative p-8 rounded-[2rem] bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20 overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-125 transition-transform">
+                    <Users className="w-16 h-16 text-emerald-500" />
                 </div>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-                    You have new leads waiting for review. Timely responses increase conversion rates by up to 40%.
+                <h4 className="font-black text-emerald-500 uppercase tracking-widest text-[11px] mb-4">Strategic Alert</h4>
+                <p className="text-base text-white/80 font-bold leading-tight mb-4">
+                    Conversion potential is high today. Review new leads for maximum impact.
                 </p>
+                <div className="w-full h-1 bg-emerald-500/20 rounded-full overflow-hidden">
+                    <div className="w-[60%] h-full bg-emerald-500" />
+                </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-blue-500/5 border border-blue-500/20 backdrop-blur-xl group hover:bg-blue-500/10 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-blue-500/20 text-blue-500">
-                        <FileText className="w-5 h-5" />
-                    </div>
-                    <h4 className="font-bold text-blue-500 uppercase tracking-widest text-xs">Content Strategy</h4>
+            <div className="relative p-8 rounded-[2rem] bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-125 transition-transform">
+                    <FileText className="w-16 h-16 text-primary" />
                 </div>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-                    Consistent blogging improves domain authority. Aim for at least one insight-driven post per week.
+                <h4 className="font-black text-primary uppercase tracking-widest text-[11px] mb-4">Content Pulse</h4>
+                <p className="text-base text-white/80 font-bold leading-tight mb-4">
+                    Your audience is engaging! Broadcast new insights to maintain authority.
                 </p>
+                <div className="w-full h-1 bg-primary/20 rounded-full overflow-hidden">
+                    <div className="w-[85%] h-full bg-primary" />
+                </div>
             </div>
         </div>
       </div>

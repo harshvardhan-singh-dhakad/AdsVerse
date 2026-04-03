@@ -99,13 +99,13 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
   const onSubmit = async (values: BlogFormValues) => {
     try {
       if (initialData?.id) {
-        await updateDoc(doc(db, 'blogPosts', initialData.id), {
+        await updateDoc(doc(db, 'public_blogPosts', initialData.id), {
           ...values,
           updatedAt: serverTimestamp(),
         });
         toast({ title: 'Success', description: 'Blog post updated successfully' });
       } else {
-        await addDoc(collection(db, 'blogPosts'), {
+        await addDoc(collection(db, 'public_blogPosts'), {
           ...values,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
@@ -130,18 +130,23 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
+              <FormItem className="space-y-2">
+                <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Article Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter post title" {...field} onBlur={generateSlug} />
+                  <Input 
+                    placeholder="Enter post title" 
+                    {...field} 
+                    onBlur={generateSlug} 
+                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-bold px-6"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
               </FormItem>
             )}
           />
@@ -149,40 +154,44 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             control={form.control}
             name="slug"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Slug</FormLabel>
+              <FormItem className="space-y-2">
+                <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Identifier (Slug)</FormLabel>
                 <FormControl>
-                  <Input placeholder="post-slug-url" {...field} />
+                  <Input 
+                    placeholder="post-slug-url" 
+                    {...field} 
+                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white/50 placeholder:text-muted-foreground/30 font-mono text-sm px-6"
+                  />
                 </FormControl>
-                <FormDescription>URL friendly version of the title</FormDescription>
-                <FormMessage />
+                <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">URL friendly version of the title</FormDescription>
+                <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
               </FormItem>
             )}
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
+              <FormItem className="space-y-2">
+                <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Content Vertical</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white font-bold px-6">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="SEO">SEO</SelectItem>
-                    <SelectItem value="Ads">Ads</SelectItem>
-                    <SelectItem value="Automation">Automation</SelectItem>
-                    <SelectItem value="Case Study">Case Study</SelectItem>
+                  <SelectContent className="bg-[#0d1017] border-white/10 rounded-2xl text-white">
+                    <SelectItem value="Marketing" className="focus:bg-primary/20 hover:bg-primary/10">Marketing</SelectItem>
+                    <SelectItem value="SEO" className="focus:bg-primary/20 hover:bg-primary/10">SEO</SelectItem>
+                    <SelectItem value="Ads" className="focus:bg-primary/20 hover:bg-primary/10">Ads</SelectItem>
+                    <SelectItem value="Automation" className="focus:bg-primary/20 hover:bg-primary/10">Automation</SelectItem>
+                    <SelectItem value="Case Study" className="focus:bg-primary/20 hover:bg-primary/10">Case Study</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
+                <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
               </FormItem>
             )}
           />
@@ -190,12 +199,15 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             control={form.control}
             name="author"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Author</FormLabel>
+              <FormItem className="space-y-2">
+                <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Strategic Author</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input 
+                    {...field} 
+                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white font-bold px-6"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
               </FormItem>
             )}
           />
@@ -205,68 +217,79 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           control={form.control}
           name="imageUrl"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center justify-between">
-                <span>Thumbnail Image</span>
+            <FormItem className="space-y-2">
+              <FormLabel className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">
+                <span>Visual Asset (Broadcasting Thumbnail)</span>
                 <Button 
                   type="button" 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setShowUrlInput(!showUrlInput)}
-                  className="text-xs text-primary h-7"
+                  className="text-[10px] text-primary h-7 uppercase tracking-[0.1em] font-black bg-primary/5 hover:bg-primary/10 rounded-lg"
                 >
-                  {showUrlInput ? <Upload className="h-3 w-3 mr-1" /> : <LinkIcon className="h-3 w-3 mr-1" />}
-                  {showUrlInput ? 'Upload Image' : 'Use URL instead'}
+                  {showUrlInput ? <Upload className="h-3 w-3 mr-2" /> : <LinkIcon className="h-3 w-3 mr-2" />}
+                  {showUrlInput ? 'Back to Upload' : 'Source from URL'}
                 </Button>
               </FormLabel>
               <FormControl>
                 <div className="space-y-4">
                   {showUrlInput ? (
-                    <Input placeholder="https://..." {...field} />
+                    <Input 
+                      placeholder="https://..." 
+                      {...field} 
+                      className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white px-6 font-mono text-xs" 
+                    />
                   ) : (
                     <div className={cn(
-                      "relative border-2 border-dashed rounded-xl p-8 transition-all duration-300 group overflow-hidden",
-                      uploading ? "bg-muted" : "hover:bg-primary/5 hover:border-primary/50",
-                      field.value ? "border-primary/50" : "border-muted-foreground/20"
+                      "relative border-2 border-dashed rounded-3xl p-12 transition-all duration-500 group overflow-hidden",
+                      uploading ? "bg-white/5" : "hover:bg-primary/5 hover:border-primary/50",
+                      field.value ? "border-primary/30" : "border-white/10"
                     )}>
                       <input
                         type="file"
                         accept="image/*"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
                         onChange={handleImageUpload}
                         disabled={uploading}
                       />
                       
-                      <div className="flex flex-col items-center justify-center space-y-3 text-center">
+                      <div className="flex flex-col items-center justify-center space-y-4 text-center">
                         {uploading ? (
                           <>
                             <div className="relative">
-                              <Loader2 className="h-10 w-10 text-primary animate-spin" />
-                              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold">
+                              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
+                              <Loader2 className="h-12 w-12 text-primary animate-spin relative" />
+                              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px] font-black text-white">
                                 {Math.round(progress)}%
                               </span>
                             </div>
-                            <div className="space-y-1 w-full max-w-[200px]">
-                              <p className="text-sm font-medium">Uploading image...</p>
-                              <Progress value={progress} className="h-1" />
+                            <div className="space-y-2 w-full max-w-[240px]">
+                              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Infiltrating Storage...</p>
+                              <Progress value={progress} className="h-1 bg-white/5" />
                             </div>
                           </>
                         ) : field.value ? (
-                          <div className="relative w-full max-w-sm aspect-video rounded-lg overflow-hidden group-hover:opacity-75 transition-opacity">
+                          <div className="relative w-full max-w-lg aspect-[21/9] rounded-2xl overflow-hidden group-hover/image:scale-[1.02] transition-transform duration-700 shadow-2xl border border-white/10">
                             <img src={field.value} alt="Preview" className="w-full h-full object-cover" />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <p className="text-white text-xs font-medium">Change Image</p>
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[2px]">
+                                <div className="p-4 rounded-full bg-white/10 border border-white/20">
+                                    <Upload className="h-6 w-10 text-white" />
+                                </div>
+                                <p className="text-white text-[10px] font-black uppercase tracking-[0.2em] mt-4">Replace Visual Asset</p>
                             </div>
                           </div>
                         ) : (
                           <>
-                            <div className="p-3 rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                              <Upload className="h-6 w-6" />
+                            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 text-primary group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-500">
+                              <Upload className="h-8 w-8" />
                             </div>
-                            <div className="space-y-1">
-                              <p className="text-sm font-medium">Click or drag to upload thumbnail</p>
-                              <p className="text-xs text-muted-foreground">Supported format: JPG, PNG, WEBP</p>
+                            <div className="space-y-1 text-center">
+                              <p className="text-sm font-black text-white tracking-widest uppercase">Drop Visual Asset here</p>
+                              <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.1em]">Intelligence compatible: JPG, PNG, WEBP</p>
                             </div>
+                            <Button type="button" variant="outline" className="mt-2 border-white/10 rounded-xl px-8 h-9 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5">
+                                Browse Intelligence
+                            </Button>
                           </>
                         )}
                       </div>
@@ -274,7 +297,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                   )}
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
             </FormItem>
           )}
         />
@@ -283,12 +306,16 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           control={form.control}
           name="excerpt"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Excerpt (Short Description)</FormLabel>
+            <FormItem className="space-y-2">
+              <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Strategic Intelligence Brief (Excerpt)</FormLabel>
               <FormControl>
-                <Textarea placeholder="Brief summary of the post..." {...field} className="h-20" />
+                <Textarea 
+                    placeholder="Brief summary of the post..." 
+                    {...field} 
+                    className="min-h-[100px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-medium px-6 py-4 resize-none" 
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
             </FormItem>
           )}
         />
@@ -297,45 +324,52 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Content (HTML Supported)</FormLabel>
+            <FormItem className="space-y-2">
+              <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Full intelligence Transmission (Content)</FormLabel>
               <FormControl>
                 <Textarea 
                   placeholder="<p>Full article content here...</p>" 
                   {...field} 
-                  className="h-64 font-mono text-sm" 
+                  className="min-h-[400px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-mono text-sm px-6 py-6 custom-scrollbar" 
                 />
               </FormControl>
-              <FormDescription>Use HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt; for styling.</FormDescription>
-              <FormMessage />
+              <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">Full HTML Injection is supported for complex narrative rendering.</FormDescription>
+              <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
             </FormItem>
           )}
         />
 
-        <div className="flex items-center justify-between p-4 rounded-lg bg-primary/5 border border-primary/10">
+        <div className="flex flex-col md:flex-row items-center justify-between p-8 rounded-[2rem] bg-white/2 border border-white/5 gap-8">
           <FormField
             control={form.control}
             name="isPublished"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-y-0">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Publish Status</FormLabel>
-                  <FormDescription>
-                    Make this post visible on the website immediately.
+              <FormItem className="flex flex-row items-center justify-between space-y-0 gap-6">
+                <div className="space-y-1">
+                  <FormLabel className="text-lg font-black text-white tracking-tighter">Broadcast Priority</FormLabel>
+                  <FormDescription className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/60">
+                    Immediately mobilize intelligence to the public domain.
                   </FormDescription>
                 </div>
                 <FormControl>
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-primary"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit" size="lg" className="bg-primary hover:bg-primary/80">
-            {initialData ? 'Update Post' : 'Create Post'}
-          </Button>
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full md:w-[240px] h-14 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.4)] transition-all active:scale-95"
+            >
+                {initialData ? 'Commit Update' : 'Initialize Broadcast'}
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

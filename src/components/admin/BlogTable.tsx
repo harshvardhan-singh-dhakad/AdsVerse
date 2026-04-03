@@ -21,7 +21,7 @@ export function BlogTable() {
     const [error, setError] = useState<any>(null);
 
     useEffect(() => {
-        const q = query(collection(db, 'blogPosts'), orderBy('createdAt', 'desc'));
+        const q = query(collection(db, 'public_blogPosts'), orderBy('publishedDate', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const postsData = snapshot.docs.map(doc => ({
                 id: doc.id,
@@ -41,7 +41,7 @@ export function BlogTable() {
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this post?')) return;
         try {
-            await deleteDoc(doc(db, 'blogPosts', id));
+            await deleteDoc(doc(db, 'public_blogPosts', id));
             toast({ title: 'Success', description: 'Post deleted successfully' });
         } catch (error) {
             toast({ title: 'Error', description: 'Failed to delete post', variant: 'destructive' });
@@ -50,7 +50,7 @@ export function BlogTable() {
 
     const togglePublish = async (post: BlogPost) => {
         try {
-            await updateDoc(doc(db, 'blogPosts', post.id), {
+            await updateDoc(doc(db, 'public_blogPosts', post.id), {
                 isPublished: !post.isPublished,
                 updatedAt: new Date()
             });
@@ -63,11 +63,11 @@ export function BlogTable() {
     if (loading) return <div className="p-8 text-center">Loading blogs...</div>;
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 className="text-3xl font-bold text-foreground font-headline tracking-tight">Blog Management</h2>
-                    <p className="text-sm text-muted-foreground mt-1">Manage your stories, drafts, and published content.</p>
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div className="space-y-1">
+                    <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Content Intelligence</h2>
+                    <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Manage your brand's narrative and industry authority.</p>
                 </div>
                 {!error && (
                     <Dialog open={isDialogOpen} onOpenChange={(open) => {
@@ -75,104 +75,126 @@ export function BlogTable() {
                         if (!open) setEditingPost(null);
                     }}>
                         <DialogTrigger asChild>
-                            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 transition-all active:scale-95">
-                                <Plus className="mr-2 h-4 w-4" /> New Article
+                            <Button className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group">
+                                <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> 
+                                Create Article
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-2xl border-primary/20 shadow-2xl">
-                            <DialogHeader>
-                                <DialogTitle className="text-2xl font-bold">{editingPost ? 'Edit Article' : 'Compose New Article'}</DialogTitle>
-                            </DialogHeader>
-                            <BlogForm 
-                                initialData={editingPost} 
-                                onSuccess={() => setIsDialogOpen(false)} 
-                            />
+                        <DialogContent className="max-w-5xl max-h-[92vh] overflow-hidden bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem]">
+                            <div className="flex flex-col h-full">
+                                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+                                    <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                                        {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}
+                                    </DialogTitle>
+                                </DialogHeader>
+                                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                                    <BlogForm 
+                                        initialData={editingPost} 
+                                        onSuccess={() => setIsDialogOpen(false)} 
+                                    />
+                                </div>
+                            </div>
                         </DialogContent>
                     </Dialog>
                 )}
             </div>
 
             {error ? (
-                <div className="text-center py-20 px-6 rounded-2xl border border-destructive/20 bg-destructive/5 backdrop-blur-xl transition-all hover:bg-destructive/10">
-                    <div className="flex justify-center mb-4">
-                        <div className="p-4 rounded-full bg-destructive/10">
-                            <EyeOff className="w-10 h-10 text-destructive" />
+                <div className="text-center py-24 px-8 rounded-[3rem] border border-destructive/20 bg-destructive/5 backdrop-blur-2xl transition-all">
+                    <div className="flex justify-center mb-6">
+                        <div className="p-5 rounded-[2rem] bg-destructive/10">
+                            <EyeOff className="w-12 h-12 text-destructive" />
                         </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-destructive">Restricted Access</h3>
-                    <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-                        Your account doesn't have the required administrative permissions to manage blog content. 
-                        Please contact the system administrator.
+                    <h3 className="text-3xl font-black text-destructive tracking-tighter">Access Restricted</h3>
+                    <p className="text-muted-foreground mt-3 max-w-md mx-auto font-medium">
+                        Your current authentication tier does not permit content management. 
+                        Elevate your credentials with the primary administrator.
                     </p>
                 </div>
             ) : (
-                <div className="rounded-2xl border border-border/40 bg-card/30 backdrop-blur-xl shadow-xl overflow-hidden">
+                <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
                     <div className="overflow-x-auto">
                         <Table>
-                            <TableHeader className="bg-muted/50 border-b border-border/40">
-                                <TableRow className="hover:bg-transparent">
-                                    <TableHead className="w-[40%] py-4 font-semibold text-foreground">Content Title</TableHead>
-                                    <TableHead className="font-semibold text-foreground">Category</TableHead>
-                                    <TableHead className="font-semibold text-foreground">Published Date</TableHead>
-                                    <TableHead className="font-semibold text-foreground">Status</TableHead>
-                                    <TableHead className="text-right py-4 font-semibold text-foreground">Actions</TableHead>
+                            <TableHeader className="bg-white/2 border-b border-white/5">
+                                <TableRow className="hover:bg-transparent border-none">
+                                    <TableHead className="w-[45%] py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Article Detail</TableHead>
+                                    <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
+                                    <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Broadcast Date</TableHead>
+                                    <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">State</TableHead>
+                                    <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {posts.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-20">
-                                            <div className="flex flex-col items-center gap-2">
-                                                <FileText className="h-12 w-12 text-muted-foreground/20" />
-                                                <p className="text-lg font-medium text-muted-foreground">Your blog library is empty</p>
-                                                <Button variant="outline" size="sm" onClick={() => setIsDialogOpen(true)}>Start Writing</Button>
+                                    <TableRow className="border-none">
+                                        <TableCell colSpan={5} className="text-center py-32">
+                                            <div className="flex flex-col items-center gap-6">
+                                                <div className="relative">
+                                                    <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
+                                                    <FileText className="relative h-20 w-20 text-muted-foreground/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <p className="text-2xl font-black text-white/20 tracking-tighter">No intelligence broadcasts found</p>
+                                                    <p className="text-sm text-muted-foreground/40 font-medium">Start your first strategic insight to populate the archive.</p>
+                                                </div>
+                                                <Button variant="outline" className="mt-4 border-white/10 text-white/40 hover:text-white hover:bg-white/5 rounded-xl px-8" onClick={() => setIsDialogOpen(true)}>
+                                                    Initialize Content
+                                                </Button>
                                             </div>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
                                     posts.map((post) => (
-                                        <TableRow key={post.id} className="group hover:bg-primary/[0.03] transition-all border-b border-border/20 last:border-0">
-                                            <TableCell className="py-5">
-                                                <div className="flex flex-col">
-                                                    <span className="font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">
-                                                        {post.title}
-                                                    </span>
-                                                    <span className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mt-1">ID: {post.id}</span>
+                                        <TableRow key={post.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-24">
+                                            <TableCell className="py-2 pl-8">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-white/10 shrink-0">
+                                                        <img src={post.imageUrl} className="w-full h-full object-cover grayscale group-hover/row:grayscale-0 transition-all duration-500" alt="" />
+                                                    </div>
+                                                    <div className="flex flex-col min-w-0">
+                                                        <span className="font-bold text-white/90 group-hover/row:text-primary transition-colors leading-tight truncate text-lg">
+                                                            {post.title}
+                                                        </span>
+                                                        <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em] mt-1.5">CID: {post.id.substring(0, 8)}</span>
+                                                    </div>
                                                 </div>
                                             </TableCell>
-                                            <TableCell>
-                                                <Badge variant="secondary" className="bg-secondary/40 text-secondary-foreground border-border/40 font-medium">
+                                            <TableCell className="text-center">
+                                                <Badge className="bg-white/5 text-muted-foreground/80 hover:text-white border-white/10 font-black text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
                                                     {post.category}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-muted-foreground font-medium">
-                                                {new Date(post.publishedDate).toLocaleDateString('en-US', {
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                    year: 'numeric'
-                                                })}
+                                            <TableCell className="text-center">
+                                                <span className="text-sm font-bold text-muted-foreground/60">
+                                                    {new Date(post.publishedDate).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        year: 'numeric'
+                                                    })}
+                                                </span>
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell className="text-center">
                                                 {post.isPublished ? (
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                                        <span className="text-emerald-500 font-bold text-xs uppercase tracking-widest">Live</span>
+                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                        <span className="text-emerald-500 font-black text-[9px] uppercase tracking-widest">Broadcast Live</span>
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 rounded-full bg-amber-500" />
-                                                        <span className="text-amber-500 font-bold text-xs uppercase tracking-widest">Draft</span>
+                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                                        <span className="text-amber-500 font-black text-[9px] uppercase tracking-widest">Strategic Draft</span>
                                                     </div>
                                                 )}
                                             </TableCell>
-                                            <TableCell className="text-right py-5">
-                                                <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <TableCell className="text-right py-2 pr-8">
+                                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
                                                     <Button 
                                                         variant="ghost" 
                                                         size="icon" 
                                                         onClick={() => togglePublish(post)}
-                                                        className="hover:bg-primary/10 hover:text-primary"
-                                                        title={post.isPublished ? 'Move to Drafts' : 'Publish Live'}
+                                                        className="w-10 h-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all"
+                                                        title={post.isPublished ? 'Return to Draft' : 'Launch Live'}
                                                     >
                                                         {post.isPublished ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                                     </Button>
@@ -183,14 +205,14 @@ export function BlogTable() {
                                                             setEditingPost(post);
                                                             setIsDialogOpen(true);
                                                         }}
-                                                        className="hover:bg-primary/10 hover:text-primary"
+                                                        className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all"
                                                     >
                                                         <Edit2 className="h-4 w-4" />
                                                     </Button>
                                                     <Button 
                                                         variant="ghost" 
                                                         size="icon" 
-                                                        className="text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10"
+                                                        className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all"
                                                         onClick={() => handleDelete(post.id)}
                                                     >
                                                         <Trash2 className="h-4 w-4" />

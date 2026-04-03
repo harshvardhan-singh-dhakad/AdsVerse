@@ -45,20 +45,33 @@ export default function AdminPage() {
           onLogout={handleSignOut} 
           userName={user.displayName || user.email || "Admin"}
         />
-        <SidebarInset className="flex flex-col flex-1">
-          <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-border/40 bg-card/30 backdrop-blur-md px-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="-ml-1" />
-              <div className="h-4 w-px bg-border/40" />
-              <h2 className="text-xl font-bold font-headline text-primary capitalize">{activeTab}</h2>
+        <SidebarInset className="flex flex-col flex-1 bg-gradient-to-br from-[#0a0c10] via-[#0d1017] to-[#0a0c10]">
+          <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center justify-between border-b border-white/5 bg-[#0a0c10]/60 backdrop-blur-3xl px-8 shadow-2xl">
+            <div className="flex items-center gap-6">
+              <div className="p-2 rounded-lg hover:bg-white/5 transition-colors">
+                <SidebarTrigger className="text-muted-foreground hover:text-primary transition-colors" />
+              </div>
+              <div className="h-6 w-px bg-white/10" />
+              <div className="flex flex-col">
+                <h2 className="text-2xl font-black font-headline text-white tracking-tighter capitalize leading-none mb-1">{activeTab}</h2>
+                <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest ml-0.5">Systems Management</p>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-               {/* Additional header actions can go here */}
+            <div className="flex items-center gap-6">
+               <div className="flex flex-col items-end mr-2">
+                  <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">System Status</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[11px] font-black text-emerald-500 uppercase tracking-tighter">Fully Operational</span>
+                  </div>
+               </div>
             </div>
           </header>
           
-          <main className="flex-1 p-6 lg:p-10 overflow-auto">
-             <AdminDashboard activeTab={activeTab} />
+          <main className="flex-1 p-8 lg:p-12 overflow-auto custom-scrollbar">
+             <div className="max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <AdminDashboard activeTab={activeTab} />
+             </div>
           </main>
         </SidebarInset>
       </div>

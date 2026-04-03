@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Loader2, PlusCircle, Trash2, Edit } from "lucide-react";
 import { PortfolioForm } from "./PortfolioForm";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { format } from "date-fns";
 
@@ -46,63 +47,84 @@ export function PortfolioTable() {
     }
   };
 
-  return (
-    <Card className="bg-card/40 backdrop-blur-xl border-border/40 shadow-xl shadow-primary/5">
-      <CardHeader>
-        <CardTitle>Manage Portfolio Items</CardTitle>
-        <CardDescription>Add, edit, or delete portfolio projects.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading && <div className="flex justify-center items-center py-8"><Loader2 className="h-8 w-8 animate-spin"/></div>}
-        {error && (
-          <div className="text-center py-10 px-4">
-            <h3 className="text-xl font-semibold text-destructive">Permission Denied</h3>
-            <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
-              You do not have permission to view this data. Please ensure you are logged in with an admin account.
-            </p>
-          </div>
-        )}
-        {!isLoading && !error && (
-            <Table>
-            <TableHeader>
-                <TableRow>
-                <TableHead>Image</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {items?.map((item) => (
-                <TableRow key={item.id}>
-                    <TableCell>
-                      <Image src={item.imageUrl} alt={item.title} width={64} height={48} className="rounded-md object-cover h-12 w-16" />
-                    </TableCell>
-                    <TableCell className="font-medium">{item.title}</TableCell>
-                    <TableCell>{item.category}</TableCell>
-                    <TableCell>{format(new Date(item.projectDate), "PPP")}</TableCell>
-                    <TableCell className="text-right space-x-2">
-                        <Button variant="outline" size="icon" onClick={() => handleEdit(item)}><Edit className="h-4 w-4" /></Button>
-                        <Button variant="destructive" size="icon" onClick={() => handleDelete(item.id)}><Trash2 className="h-4 w-4" /></Button>
-                    </TableCell>
-                </TableRow>
-                ))}
-            </TableBody>
-            </Table>
-        )}
-      </CardContent>
-      <CardFooter className="border-t pt-6">
-        <Button onClick={handleAddNew}><PlusCircle className="mr-2 h-4 w-4"/>Add New Item</Button>
-      </CardFooter>
-       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>{selectedItem ? "Edit Portfolio Item" : "Add New Portfolio Item"}</DialogTitle>
-          </DialogHeader>
-          <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
-        </DialogContent>
-      </Dialog>
-    </Card>
-  );
+    return (
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-1">
+                <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Portfolio Gallery</h2>
+                <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Showcase your architectural and digital masterpieces.</p>
+            </div>
+            <Button 
+                onClick={handleAddNew}
+                className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
+            >
+                <PlusCircle className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> 
+                Add New Case Study
+            </Button>
+        </div>
+
+        <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+            <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader className="bg-white/2 border-b border-white/5">
+                        <TableRow className="hover:bg-transparent border-none">
+                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Visual Representation</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Project Identity</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
+                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Execution Date</TableHead>
+                            <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {!isLoading && items?.map((item) => (
+                            <TableRow key={item.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-24">
+                                <TableCell className="py-2 pl-8">
+                                    <div className="relative w-24 h-16 rounded-xl overflow-hidden border border-white/10 shrink-0 shadow-lg">
+                                        <Image src={item.imageUrl} alt={item.title} fill className="object-cover grayscale group-hover/row:grayscale-0 transition-all duration-700" />
+                                    </div>
+                                </TableCell>
+                                <TableCell className="text-center font-bold text-white/90 group-hover/row:text-primary transition-colors text-lg">
+                                    {item.title}
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Badge className="bg-white/5 text-muted-foreground/80 hover:text-white border-white/10 font-bold text-[9px] uppercase tracking-[0.15em] px-3 py-1 rounded-lg">
+                                        {item.category}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
+                                        {format(new Date(item.projectDate), "PPP")}
+                                    </span>
+                                </TableCell>
+                                <TableCell className="text-right py-2 pr-8">
+                                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
+                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="max-w-4xl bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+                    <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                        {selectedItem ? "Edit Architectural Detail" : "Initialize New Case Study"}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className="p-8 max-h-[75vh] overflow-y-auto custom-scrollbar">
+                    <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
+                </div>
+            </DialogContent>
+        </Dialog>
+      </div>
+    );
 }
