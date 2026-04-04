@@ -140,7 +140,7 @@ service cloud.firestore {
      */
     match /public_blogPosts/{blogPostId} {
       allow get, list: if true;
-      allow write: if false;
+      allow create, update, delete: if isAdmin();
     }
 
     /**

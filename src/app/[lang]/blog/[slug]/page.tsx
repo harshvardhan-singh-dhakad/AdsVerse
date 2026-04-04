@@ -27,10 +27,10 @@ interface BlogPost {
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  // Use public_blogPosts — publicly readable, contains only published posts
   const q = query(
-    collection(db, "blogPosts"), 
-    where("slug", "==", slug), 
-    where("isPublished", "==", true)
+    collection(db, "public_blogPosts"),
+    where("slug", "==", slug)
   );
   const snap = await getDocs(q);
   if (snap.empty) return null;

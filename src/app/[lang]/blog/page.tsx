@@ -28,9 +28,9 @@ export const metadata: Metadata = {
 
 async function getBlogPosts() {
   try {
+    // Use public_blogPosts — publicly readable, contains only published posts
     const q = query(
-      collection(db, "blogPosts"), 
-      where("isPublished", "==", true), 
+      collection(db, "public_blogPosts"),
       orderBy("publishedDate", "desc")
     );
     const snap = await getDocs(q);

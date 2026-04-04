@@ -68,38 +68,45 @@ export function ContactForm() {
 
   const processForm = async (data: FormData) => {
     setIsSubmitting(true);
-    const leadsCollection = collection(firestore, "leads");
-    const leadData = {
-        ...data,
-        submissionDate: Timestamp.now(),
-        isRead: false
-    };
+    try {
+      const leadsCollection = collection(firestore, "leads");
+      const leadData = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          subject: data.subject,
+          message: data.message,
+          submissionDate: Timestamp.now(),
+          submittedAt: Timestamp.now(),
+          isRead: false,
+      };
 
-    addDoc(leadsCollection, leadData)
-      .then(() => {
-        toast({
-            title: "Message Sent!",
-            description: "Thank you for contacting us. We will get back to you shortly.",
-        });
-        form.reset();
-      })
-      .catch((e: any) => {
-          const permissionError = new FirestorePermissionError({
-            path: leadsCollection.path,
-            operation: 'create',
-            requestResourceData: leadData,
-          });
-          errorEmitter.emit('permission-error', permissionError);
+      await addDoc(leadsCollection, leadData);
 
-          toast({
-              variant: "destructive",
-              title: "Uh oh! Something went wrong.",
-              description: "There was a problem submitting your request. Please try again.",
-          });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+      toast({
+          title: "Message Sent! ✅",
+          description: "Thank you for contacting us. We will get back to you shortly.",
       });
+      form.reset();
+    } catch (e: any) {
+      console.error("Lead form submission error:", e);
+
+      const leadsCollection = collection(firestore, "leads");
+      const permissionError = new FirestorePermissionError({
+        path: leadsCollection.path,
+        operation: 'create',
+        requestResourceData: data,
+      });
+      errorEmitter.emit('permission-error', permissionError);
+
+      toast({
+          variant: "destructive",
+          title: "Submission Failed",
+          description: e?.message || "There was a problem submitting your request. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
