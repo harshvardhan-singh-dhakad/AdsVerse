@@ -51,7 +51,10 @@ service cloud.firestore {
      */
     function isAdmin() {
       // Ensure the user is authenticated before checking for admin role
-      return request.auth != null && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      return request.auth != null && (
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.token.email))
+      );
     }
 
     // -------------------------------------------------------------------------
