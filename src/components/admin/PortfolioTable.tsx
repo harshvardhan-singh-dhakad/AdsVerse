@@ -114,13 +114,13 @@ export function PortfolioTable() {
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="max-w-4xl bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+            <DialogContent className="max-w-4xl max-h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
                     <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
                         {selectedItem ? "Edit Architectural Detail" : "Initialize New Case Study"}
                     </DialogTitle>
                 </DialogHeader>
-                <div className="p-8 max-h-[75vh] overflow-y-auto custom-scrollbar">
+                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                     <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
                 </div>
             </DialogContent>

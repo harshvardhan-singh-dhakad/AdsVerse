@@ -134,22 +134,20 @@ export function BlogTable() {
                                 Create Article
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl max-h-[92vh] overflow-hidden bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem]">
-                            <div className="flex flex-col h-full">
-                                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
-                                    <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
-                                        {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}
-                                    </DialogTitle>
-                                </DialogHeader>
-                                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                                    <BlogForm
-                                        initialData={editingPost}
-                                        onSuccess={() => {
-                                            setIsDialogOpen(false);
-                                            setEditingPost(null);
-                                        }}
-                                    />
-                                </div>
+                        <DialogContent className="max-w-5xl max-h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
+                            <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
+                                <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                                    {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                                <BlogForm
+                                    initialData={editingPost}
+                                    onSuccess={() => {
+                                        setIsDialogOpen(false);
+                                        setEditingPost(null);
+                                    }}
+                                />
                             </div>
                         </DialogContent>
                     </Dialog>

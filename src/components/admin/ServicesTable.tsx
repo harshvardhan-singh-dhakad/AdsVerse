@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
@@ -12,11 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Loader2, PlusCircle, Trash2, Edit } from "lucide-react";
+import { PlusCircle, Trash2, Edit } from "lucide-react";
 import { ServiceForm } from "./ServiceForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -112,13 +110,13 @@ export function ServicesTable() {
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="max-w-3xl bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                <DialogHeader className="p-8 border-b border-white/5 bg-white/5">
+            <DialogContent className="max-w-3xl max-h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                <DialogHeader className="p-8 border-b border-white/5 bg-white/5 shrink-0">
                     <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
                         {selectedService ? "Refine Service" : "Initialize New Core Service"}
                     </DialogTitle>
                 </DialogHeader>
-                <div className="p-8">
+                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                     <ServiceForm service={selectedService} onFinished={() => setIsDialogOpen(false)} />
                 </div>
             </DialogContent>
