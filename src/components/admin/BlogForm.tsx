@@ -45,6 +45,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
@@ -101,7 +102,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
   const onSubmit = async (values: BlogFormValues) => {
     try {
       const { setDoc, deleteDoc } = await import('firebase/firestore');
-      
+
       let docRef;
       if (initialData?.id) {
         docRef = doc(db, 'blogPosts', initialData.id);
@@ -127,7 +128,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           updatedAt: serverTimestamp(),
         });
       } else {
-        await deleteDoc(doc(db, 'public_blogPosts', docId)).catch(() => {});
+        await deleteDoc(doc(db, 'public_blogPosts', docId)).catch(() => { });
       }
 
       onSuccess?.();
@@ -157,11 +158,20 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Article Title</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter post title" 
-                    {...field} 
-                    onBlur={generateSlug} 
-                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-bold px-6"
+                  <Input
+                    placeholder="Enter post title"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      if (!isSlugManuallyEdited) {
+                        const slug = e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, '-')
+                          .replace(/(^-|-$)+/g, '');
+                        form.setValue('slug', slug, { shouldValidate: true });
+                      }
+                    }}
+                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-bold px-6"
                   />
                 </FormControl>
                 <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
@@ -175,10 +185,14 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Identifier (Slug)</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="post-slug-url" 
-                    {...field} 
-                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white/50 placeholder:text-muted-foreground/30 font-mono text-sm px-6"
+                  <Input
+                    placeholder="post-slug-url"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setIsSlugManuallyEdited(true);
+                    }}
+                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white/70 placeholder:text-white/20 font-mono text-sm px-6"
                   />
                 </FormControl>
                 <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">URL friendly version of the title</FormDescription>
@@ -201,7 +215,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-[#0d1017] border-white/10 rounded-2xl text-white">
+                  <SelectContent className="bg-popover border-border rounded-2xl text-popover-foreground">
                     <SelectItem value="Marketing" className="focus:bg-primary/20 hover:bg-primary/10">Marketing</SelectItem>
                     <SelectItem value="SEO" className="focus:bg-primary/20 hover:bg-primary/10">SEO</SelectItem>
                     <SelectItem value="Ads" className="focus:bg-primary/20 hover:bg-primary/10">Ads</SelectItem>
@@ -220,8 +234,8 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
               <FormItem className="space-y-2">
                 <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Strategic Author</FormLabel>
                 <FormControl>
-                  <Input 
-                    {...field} 
+                  <Input
+                    {...field}
                     className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white font-bold px-6"
                   />
                 </FormControl>
@@ -238,10 +252,10 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             <FormItem className="space-y-2">
               <FormLabel className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">
                 <span>Visual Asset (Broadcasting Thumbnail)</span>
-                <Button 
-                  type="button" 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setShowUrlInput(!showUrlInput)}
                   className="text-[10px] text-primary h-7 uppercase tracking-[0.1em] font-black bg-primary/5 hover:bg-primary/10 rounded-lg"
                 >
@@ -252,16 +266,16 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
               <FormControl>
                 <div className="space-y-4">
                   {showUrlInput ? (
-                    <Input 
-                      placeholder="https://..." 
-                      {...field} 
-                      className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white px-6 font-mono text-xs" 
+                    <Input
+                      placeholder="https://..."
+                      {...field}
+                      className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white px-6 font-mono text-xs"
                     />
                   ) : (
                     <div className={cn(
                       "relative border-2 border-dashed rounded-3xl p-12 transition-all duration-500 group overflow-hidden",
-                      uploading ? "bg-white/5" : "hover:bg-primary/5 hover:border-primary/50",
-                      field.value ? "border-primary/30" : "border-white/10"
+                      uploading ? "bg-muted/30" : "hover:bg-primary/5 hover:border-primary/50",
+                      field.value ? "border-primary/30" : "border-border/50"
                     )}>
                       <input
                         type="file"
@@ -270,43 +284,43 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                         onChange={handleImageUpload}
                         disabled={uploading}
                       />
-                      
+
                       <div className="flex flex-col items-center justify-center space-y-4 text-center">
                         {uploading ? (
                           <>
                             <div className="relative">
                               <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
                               <Loader2 className="h-12 w-12 text-primary animate-spin relative" />
-                              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px] font-black text-white">
+                              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px] font-black text-foreground">
                                 {Math.round(progress)}%
                               </span>
                             </div>
                             <div className="space-y-2 w-full max-w-[240px]">
                               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Infiltrating Storage...</p>
-                              <Progress value={progress} className="h-1 bg-white/5" />
+                              <Progress value={progress} className="h-1 bg-muted/30" />
                             </div>
                           </>
                         ) : field.value ? (
-                          <div className="relative w-full max-w-lg aspect-[21/9] rounded-2xl overflow-hidden group-hover/image:scale-[1.02] transition-transform duration-700 shadow-2xl border border-white/10">
+                          <div className="relative w-full max-w-lg aspect-[21/9] rounded-2xl overflow-hidden group-hover/image:scale-[1.02] transition-transform duration-700 shadow-2xl border border-border/50">
                             <img src={field.value} alt="Preview" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[2px]">
-                                <div className="p-4 rounded-full bg-white/10 border border-white/20">
-                                    <Upload className="h-6 w-10 text-white" />
-                                </div>
-                                <p className="text-white text-[10px] font-black uppercase tracking-[0.2em] mt-4">Replace Visual Asset</p>
+                              <div className="p-4 rounded-full bg-background/20 border border-border/20">
+                                <Upload className="h-6 w-10 text-foreground" />
+                              </div>
+                              <p className="text-foreground text-[10px] font-black uppercase tracking-[0.2em] mt-4">Replace Visual Asset</p>
                             </div>
                           </div>
                         ) : (
                           <>
-                            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 text-primary group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-500">
+                            <div className="p-5 rounded-2xl bg-muted/30 border border-border/50 text-primary group-hover:scale-110 group-hover:bg-primary/10 transition-all duration-500">
                               <Upload className="h-8 w-8" />
                             </div>
                             <div className="space-y-1 text-center">
-                              <p className="text-sm font-black text-white tracking-widest uppercase">Drop Visual Asset here</p>
+                              <p className="text-sm font-black text-foreground tracking-widest uppercase">Drop Visual Asset here</p>
                               <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.1em]">Intelligence compatible: JPG, PNG, WEBP</p>
                             </div>
-                            <Button type="button" variant="outline" className="mt-2 border-white/10 rounded-xl px-8 h-9 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5">
-                                Browse Intelligence
+                            <Button type="button" variant="outline" className="mt-2 border-border/50 rounded-xl px-8 h-9 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-muted/30">
+                              Browse Intelligence
                             </Button>
                           </>
                         )}
@@ -327,10 +341,10 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             <FormItem className="space-y-2">
               <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Strategic Intelligence Brief (Excerpt)</FormLabel>
               <FormControl>
-                <Textarea 
-                    placeholder="Brief summary of the post..." 
-                    {...field} 
-                    className="min-h-[100px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-medium px-6 py-4 resize-none" 
+                <Textarea
+                  placeholder="Brief summary of the post..."
+                  {...field}
+                  className="min-h-[100px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-medium px-6 py-4 resize-none"
                 />
               </FormControl>
               <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
@@ -345,10 +359,10 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             <FormItem className="space-y-2">
               <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Full intelligence Transmission (Content)</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="<p>Full article content here...</p>" 
-                  {...field} 
-                  className="min-h-[400px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-muted-foreground/30 font-mono text-sm px-6 py-6 custom-scrollbar" 
+                <Textarea
+                  placeholder="<p>Full article content here...</p>"
+                  {...field}
+                  className="min-h-[400px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-mono text-sm px-6 py-6 custom-scrollbar"
                 />
               </FormControl>
               <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">Full HTML Injection is supported for complex narrative rendering.</FormDescription>
@@ -357,14 +371,14 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
           )}
         />
 
-        <div className="flex flex-col md:flex-row items-center justify-between p-8 rounded-[2rem] bg-white/2 border border-white/5 gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between p-8 rounded-[2rem] bg-muted/20 border border-border/40 gap-8">
           <FormField
             control={form.control}
             name="isPublished"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between space-y-0 gap-6">
                 <div className="space-y-1">
-                  <FormLabel className="text-lg font-black text-white tracking-tighter">Broadcast Priority</FormLabel>
+                  <FormLabel className="text-lg font-black text-foreground tracking-tighter">Broadcast Priority</FormLabel>
                   <FormDescription className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/60">
                     Immediately mobilize intelligence to the public domain.
                   </FormDescription>
@@ -380,12 +394,12 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             )}
           />
           <div className="flex items-center gap-4 w-full md:w-auto">
-            <Button 
-                type="submit" 
-                size="lg" 
-                className="w-full md:w-[240px] h-14 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.4)] transition-all active:scale-95"
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full md:w-[240px] h-14 bg-primary hover:bg-primary/80 text-primary-foreground font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30_rgba(142,68,173,0.4)] transition-all active:scale-95"
             >
-                {initialData ? 'Commit Update' : 'Initialize Broadcast'}
+              {initialData ? 'Commit Update' : 'Initialize Broadcast'}
             </Button>
           </div>
         </div>

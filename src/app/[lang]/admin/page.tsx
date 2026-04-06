@@ -39,13 +39,20 @@ export default function AdminPage() {
   return (
     <SidebarProvider defaultOpen>
       <div className="flex min-h-screen w-full bg-background/95">
-        <AdminSidebar 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab} 
-          onLogout={handleSignOut} 
+        <AdminSidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          onLogout={handleSignOut}
           userName={user.displayName || user.email || "Admin"}
         />
-        <SidebarInset className="flex flex-col flex-1 bg-gradient-to-br from-[#0a0c10] via-[#0d1017] to-[#0a0c10]">
+        <SidebarInset className="flex flex-col flex-1 bg-gradient-to-br from-[#0a0c10] via-[#0d1017] to-[#0a0c10] relative overflow-hidden">
+          {/* Animated Background Layers - Isolated to Admin Panel */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+            <div className="glow-effect" />
+            <div className="stars stars-sm opacity-20" />
+            <div className="stars stars-md opacity-10" />
+          </div>
+
           <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center justify-between border-b border-white/5 bg-[#0a0c10]/60 backdrop-blur-3xl px-8 shadow-2xl">
             <div className="flex items-center gap-6">
               <div className="p-2 rounded-lg hover:bg-white/5 transition-colors">
@@ -58,20 +65,20 @@ export default function AdminPage() {
               </div>
             </div>
             <div className="flex items-center gap-6">
-               <div className="flex flex-col items-end mr-2">
-                  <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">System Status</p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-black text-emerald-500 uppercase tracking-tighter">Fully Operational</span>
-                  </div>
-               </div>
+              <div className="flex flex-col items-end mr-2">
+                <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">System Status</p>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[11px] font-black text-emerald-500 uppercase tracking-tighter">Fully Operational</span>
+                </div>
+              </div>
             </div>
           </header>
-          
-          <main className="flex-1 p-8 lg:p-12 overflow-auto custom-scrollbar">
-             <div className="max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <AdminDashboard activeTab={activeTab} />
-             </div>
+
+          <main className="flex-1 p-8 lg:p-12 overflow-auto custom-scrollbar relative z-10">
+            <div className="max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <AdminDashboard activeTab={activeTab} />
+            </div>
           </main>
         </SidebarInset>
       </div>

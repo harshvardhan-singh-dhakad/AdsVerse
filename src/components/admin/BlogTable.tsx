@@ -62,7 +62,7 @@ export function BlogTable() {
         if (!confirm('Are you sure you want to delete this post?')) return;
         try {
             await deleteDoc(doc(db, 'blogPosts', id));
-            await deleteDoc(doc(db, 'public_blogPosts', id)).catch(() => {});
+            await deleteDoc(doc(db, 'public_blogPosts', id)).catch(() => { });
             toast({ title: 'Success', description: 'Post deleted successfully' });
         } catch {
             toast({ title: 'Error', description: 'Failed to delete post', variant: 'destructive' });
@@ -88,7 +88,7 @@ export function BlogTable() {
                     await setDoc(doc(db, 'public_blogPosts', post.id), publicData);
                 }
             } else {
-                await deleteDoc(doc(db, 'public_blogPosts', post.id)).catch(() => {});
+                await deleteDoc(doc(db, 'public_blogPosts', post.id)).catch(() => { });
             }
 
             toast({
@@ -134,7 +134,7 @@ export function BlogTable() {
                                 Create Article
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl max-h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
+                        <DialogContent className="max-w-5xl h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
                             <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
                                 <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
                                     {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}

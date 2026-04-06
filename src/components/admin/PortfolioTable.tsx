@@ -17,114 +17,114 @@ import Image from "next/image";
 import { format } from "date-fns";
 
 export function PortfolioTable() {
-  const { toast } = useToast();
-  const firestore = useFirestore();
-  const itemsQuery = useMemoFirebase(() =>
-    query(collection(firestore, "portfolioItems"), orderBy("projectDate", "desc")),
-    [firestore]
-  );
-  const { data: items, isLoading, error } = useCollection<PortfolioItem>(itemsQuery);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+    const { toast } = useToast();
+    const firestore = useFirestore();
+    const itemsQuery = useMemoFirebase(() =>
+        query(collection(firestore, "portfolioItems"), orderBy("projectDate", "desc")),
+        [firestore]
+    );
+    const { data: items, isLoading, error } = useCollection<PortfolioItem>(itemsQuery);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
-  const handleAddNew = () => {
-    setSelectedItem(null);
-    setIsDialogOpen(true);
-  };
+    const handleAddNew = () => {
+        setSelectedItem(null);
+        setIsDialogOpen(true);
+    };
 
-  const handleEdit = (item: PortfolioItem) => {
-    setSelectedItem(item);
-    setIsDialogOpen(true);
-  };
+    const handleEdit = (item: PortfolioItem) => {
+        setSelectedItem(item);
+        setIsDialogOpen(true);
+    };
 
-  const handleDelete = async (itemId: string) => {
-    if (!window.confirm("Are you sure you want to delete this portfolio item?")) return;
-    try {
-      await deleteDoc(doc(firestore, "portfolioItems", itemId));
-      toast({ title: "Success", description: "Portfolio item deleted successfully." });
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
-    }
-  };
+    const handleDelete = async (itemId: string) => {
+        if (!window.confirm("Are you sure you want to delete this portfolio item?")) return;
+        try {
+            await deleteDoc(doc(firestore, "portfolioItems", itemId));
+            toast({ title: "Success", description: "Portfolio item deleted successfully." });
+        } catch (error: any) {
+            toast({ variant: "destructive", title: "Error", description: error.message });
+        }
+    };
 
     return (
-      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div className="space-y-1">
-                <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Portfolio Gallery</h2>
-                <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Showcase your architectural and digital masterpieces.</p>
-            </div>
-            <Button 
-                onClick={handleAddNew}
-                className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
-            >
-                <PlusCircle className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" /> 
-                Add New Case Study
-            </Button>
-        </div>
-
-        <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
-            <div className="overflow-x-auto">
-                <Table>
-                    <TableHeader className="bg-white/2 border-b border-white/5">
-                        <TableRow className="hover:bg-transparent border-none">
-                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Visual Representation</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Project Identity</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
-                            <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Execution Date</TableHead>
-                            <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {!isLoading && items?.map((item) => (
-                            <TableRow key={item.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-24">
-                                <TableCell className="py-2 pl-8">
-                                    <div className="relative w-24 h-16 rounded-xl overflow-hidden border border-white/10 shrink-0 shadow-lg">
-                                        <Image src={item.imageUrl} alt={item.title} fill className="object-cover grayscale group-hover/row:grayscale-0 transition-all duration-700" />
-                                    </div>
-                                </TableCell>
-                                <TableCell className="text-center font-bold text-white/90 group-hover/row:text-primary transition-colors text-lg">
-                                    {item.title}
-                                </TableCell>
-                                <TableCell className="text-center">
-                                    <Badge className="bg-white/5 text-muted-foreground/80 hover:text-white border-white/10 font-bold text-[9px] uppercase tracking-[0.15em] px-3 py-1 rounded-lg">
-                                        {item.category}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell className="text-center">
-                                    <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
-                                        {format(new Date(item.projectDate), "PPP")}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="text-right py-2 pr-8">
-                                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
-                                        <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all">
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all">
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-        </div>
-
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="max-w-4xl max-h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
-                    <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
-                        {selectedItem ? "Edit Architectural Detail" : "Initialize New Case Study"}
-                    </DialogTitle>
-                </DialogHeader>
-                <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                    <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div className="space-y-1">
+                    <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Portfolio Gallery</h2>
+                    <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Showcase your architectural and digital masterpieces.</p>
                 </div>
-            </DialogContent>
-        </Dialog>
-      </div>
+                <Button
+                    onClick={handleAddNew}
+                    className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
+                >
+                    <PlusCircle className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                    Add New Case Study
+                </Button>
+            </div>
+
+            <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+                <div className="overflow-x-auto">
+                    <Table>
+                        <TableHeader className="bg-white/2 border-b border-white/5">
+                            <TableRow className="hover:bg-transparent border-none">
+                                <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Visual Representation</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Project Identity</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Execution Date</TableHead>
+                                <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {!isLoading && items?.map((item) => (
+                                <TableRow key={item.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-24">
+                                    <TableCell className="py-2 pl-8">
+                                        <div className="relative w-24 h-16 rounded-xl overflow-hidden border border-white/10 shrink-0 shadow-lg">
+                                            <Image src={item.imageUrl} alt={item.title} fill className="object-cover grayscale group-hover/row:grayscale-0 transition-all duration-700" />
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-center font-bold text-white/90 group-hover/row:text-primary transition-colors text-lg">
+                                        {item.title}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        <Badge className="bg-white/5 text-muted-foreground/80 hover:text-white border-white/10 font-bold text-[9px] uppercase tracking-[0.15em] px-3 py-1 rounded-lg">
+                                            {item.category}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
+                                            {format(new Date(item.projectDate), "PPP")}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell className="text-right py-2 pr-8">
+                                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
+                                            <Button variant="ghost" size="icon" onClick={() => handleEdit(item)} className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all">
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all">
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                    <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
+                        <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                            {selectedItem ? "Edit Architectural Detail" : "Initialize New Case Study"}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                        <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 }

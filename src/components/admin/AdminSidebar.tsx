@@ -1,17 +1,17 @@
 "use client";
 
 import { LayoutDashboard, Users, Briefcase, IndianRupee, LogOut, ChevronRight, FileText } from "lucide-react";
-import { 
-  Sidebar, 
-  SidebarContent, 
-  SidebarFooter, 
-  SidebarHeader, 
-  SidebarGroup, 
-  SidebarGroupContent, 
-  SidebarGroupLabel, 
-  SidebarMenu, 
-  SidebarMenuButton, 
-  SidebarMenuItem 
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
@@ -60,8 +60,8 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
                     isActive={activeTab === item.id}
                     className={cn(
                       "transition-all duration-200 group h-11 px-3 rounded-lg",
-                      activeTab === item.id 
-                        ? "bg-primary/10 text-primary hover:bg-primary/20" 
+                      activeTab === item.id
+                        ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                     )}
                   >
@@ -86,7 +86,7 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
         </div>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton 
+            <SidebarMenuButton
               onClick={onLogout}
               className="w-full justify-start text-destructive hover:bg-destructive/10 hover:text-destructive h-10 px-3 rounded-lg"
             >
