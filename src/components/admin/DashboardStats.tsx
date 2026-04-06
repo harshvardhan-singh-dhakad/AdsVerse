@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { collection, getCountFromServer } from "firebase/firestore";
-import { db } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, IndianRupee, FileText, Loader2, ShieldAlert, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ interface StatItem {
 }
 
 export function DashboardStats() {
+  const db = useFirestore();
   const [stats, setStats] = useState<StatItem[]>([
     { label: "Total Leads", count: null, icon: Users, color: "text-blue-500" },
     { label: "Active Services", count: null, icon: Briefcase, color: "text-purple-500" },

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc, updateDoc, setDoc, Timestamp } from 'firebase/firestore';
-import { db } from '@/firebase/index';
+import { useFirestore } from '@/firebase';
 import { BlogPost } from '@/lib/definitions';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
 export function BlogTable() {
+    const db = useFirestore();
     const { toast } = useToast();
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { type PortfolioItem } from "@/lib/definitions";
-import { useFirestore, storage } from "@/firebase";
+import { useFirestore, useStorage } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState } from "react";
@@ -38,6 +38,7 @@ interface PortfolioFormProps {
 export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
   const { toast } = useToast();
   const firestore = useFirestore();
+  const storage = useStorage();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showUrlInput, setShowUrlInput] = useState(false);

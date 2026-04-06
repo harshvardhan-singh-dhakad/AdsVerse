@@ -6,7 +6,7 @@ import * as z from 'zod';
 import { BlogPost } from '@/lib/definitions';
 import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/firebase/index';
+import { useFirestore, useStorage } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -39,6 +39,8 @@ interface BlogFormProps {
 }
 
 export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
+  const db = useFirestore();
+  const storage = useStorage();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
