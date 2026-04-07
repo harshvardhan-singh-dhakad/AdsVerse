@@ -5,17 +5,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { BlogPost } from '@/lib/definitions';
-import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, serverTimestamp, setDoc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { useFirestore, useStorage } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
+import { RichTextEditor } from './RichTextEditor';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Eye, Send, Link as LinkIcon } from 'lucide-react';
+import { Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Eye, Send, Link as LinkIcon, Type } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
@@ -37,10 +38,10 @@ const blogSchema = z.object({
   publishedDate: z.string(),
   status: z.enum(['publish', 'draft', 'schedule']).default('draft'),
   allowComments: z.boolean().default(true),
-  inSitemap: z.boolean().default(true),
+  includeInSitemap: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   schemaMarkup: z.boolean().default(true),
-  shareButtons: z.boolean().default(true),
+  whatsappShare: z.boolean().default(true),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -65,13 +66,13 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
     defaultValues: initialData ? {
       ...initialData,
       status: initialData.isPublished ? 'publish' : 'draft',
-      language: 'en',
-      tags: [],
-      allowComments: true,
-      inSitemap: true,
-      isFeatured: false,
-      schemaMarkup: true,
-      shareButtons: true,
+      language: initialData.language || 'en',
+      tags: initialData.tags || [],
+      allowComments: initialData.allowComments ?? true,
+      includeInSitemap: initialData.includeInSitemap ?? true,
+      isFeatured: initialData.isFeatured ?? false,
+      schemaMarkup: initialData.schemaMarkup ?? true,
+      whatsappShare: initialData.whatsappShare ?? true,
     } : {
       title: '',
       slug: '',
@@ -89,10 +90,10 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
       publishedDate: new Date().toISOString().slice(0, 16),
       status: 'draft',
       allowComments: true,
-      inSitemap: true,
+      includeInSitemap: true,
       isFeatured: false,
       schemaMarkup: true,
-      shareButtons: true,
+      whatsappShare: true,
     },
   });
 
@@ -178,8 +179,6 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
         return; 
     }
     try {
-      const { setDoc, deleteDoc } = await import('firebase/firestore');
-
       const isPublished = values.status === 'publish';
       const postData = { ...values, isPublished };
       delete (postData as any).status;
@@ -210,7 +209,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
       onSuccess?.();
     } catch (error) {
       console.error(error);
-      toast({ title: 'Error', description: 'Something went wrong', variant: 'destructive' });
+      toast({ title: 'Error', description: (error as Error).message || 'Something went wrong', variant: 'destructive' });
     }
   };
 
@@ -710,10 +709,10 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             <div className="space-y-3">
               {[
                 { name: 'allowComments', label: 'Allow Comments', sub: 'Readers can comment on the post' },
-                { name: 'inSitemap', label: 'Include in Sitemap', sub: 'Submit to Google Search Console mapping' },
+                { name: 'includeInSitemap', label: 'Include in Sitemap', sub: 'Submit to Google Search Console mapping' },
                 { name: 'isFeatured', label: 'Featured Post', sub: 'Highlight on homepage and blog listing' },
                 { name: 'schemaMarkup', label: 'Article Schema Markup (JSON-LD)', sub: 'Auto-generated structured data for rich results' },
-                { name: 'shareButtons', label: 'Social Share Buttons', sub: 'Show sharing options including WhatsApp' },
+                { name: 'whatsappShare', label: 'Social Share Buttons', sub: 'Show sharing options including WhatsApp' },
               ].map(opt => (
                 <FormField key={opt.name} control={form.control} name={opt.name as any} render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between p-4 bg-muted/20 border border-border/20 rounded-xl hover:border-border/40 transition-colors">

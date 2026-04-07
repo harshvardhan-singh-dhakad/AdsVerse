@@ -243,14 +243,72 @@
     -webkit-text-fill-color: transparent;
   }
 
-  .glass-studio {
-    background: rgba(14, 17, 24, 0.7);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(30, 35, 48, 0.5);
-  }
-
   .glass-studio:hover {
     border-color: rgba(79, 141, 255, 0.3);
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+
+  /* Tiptap Editor Styles */
+  .ProseMirror {
+    outline: none !important;
+  }
+
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #4b5563; /* text-gray-600 */
+    pointer-events: none;
+    height: 0;
+  }
+
+  .ProseMirror blockquote {
+    border-left: 4px solid hsl(var(--primary));
+    padding-left: 1.5rem;
+    font-style: italic;
+    background: hsla(var(--primary) / 0.05);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 0 0.75rem 0.75rem 0;
+    margin: 1.5rem 0;
+  }
+
+  .ProseMirror h2 {
+    font-family: var(--font-headline);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--foreground));
+  }
+
+  .ProseMirror h3 {
+    font-family: var(--font-headline);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: hsl(var(--foreground) / 0.9);
+  }
+
+  .ProseMirror ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .ProseMirror ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .ProseMirror li {
+    margin-bottom: 0.5rem;
+  }
+
+  .ProseMirror a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
