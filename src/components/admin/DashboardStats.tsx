@@ -31,7 +31,7 @@ export function DashboardStats() {
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const collections = ["leads", "services", "portfolioItems", "public_blogPosts", "pricing"];
+        const collections = ["leads", "services", "portfolioItems", "public_blogPosts", "pricingPlans"];
         const counts = await Promise.all(
           collections.map(async (colName) => {
             const snapshot = await getCountFromServer(collection(db, colName));
