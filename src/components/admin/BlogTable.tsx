@@ -104,7 +104,7 @@ export function BlogTable() {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-8">
-                <p className="text-white/60 text-sm font-medium animate-pulse">Loading blogs...</p>
+                <p className="text-foreground/60 text-sm font-medium animate-pulse">Loading blogs...</p>
             </div>
         );
     }
@@ -114,7 +114,7 @@ export function BlogTable() {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="space-y-1">
-                    <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Content Intelligence</h2>
+                    <h2 className="text-4xl font-black text-foreground font-headline tracking-tighter">Content Intelligence</h2>
                     <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">
                         Manage your brand's narrative and industry authority.
                     </p>
@@ -129,14 +129,14 @@ export function BlogTable() {
                         }}
                     >
                         <DialogTrigger asChild>
-                            <Button className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group">
+                            <Button className="h-12 px-8 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group">
                                 <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
                                 Create Article
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl h-[92vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
-                            <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
-                                <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                        <DialogContent className="max-w-5xl h-[92vh] flex flex-col bg-background/95 backdrop-blur-3xl border-border/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
+                            <DialogHeader className="p-8 border-b border-border/5 bg-muted/2 shrink-0">
+                                <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-foreground">
                                     {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}
                                 </DialogTitle>
                             </DialogHeader>
@@ -169,10 +169,10 @@ export function BlogTable() {
                     </p>
                 </div>
             ) : (
-                <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden">
+                <div className="rounded-[2.5rem] border border-border/5 bg-card/40 backdrop-blur-3xl shadow-2xl overflow-hidden">
                     <div className="overflow-x-auto">
                         <Table>
-                            <TableHeader className="bg-white/2 border-b border-white/5">
+                            <TableHeader className="bg-muted/2 border-b border-border/5">
                                 <TableRow className="hover:bg-transparent border-none">
                                     <TableHead className="w-[45%] py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
                                         Article Detail
@@ -202,7 +202,7 @@ export function BlogTable() {
                                                     <FileText className="relative h-20 w-20 text-muted-foreground/10" />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <p className="text-2xl font-black text-white/20 tracking-tighter">
+                                                    <p className="text-2xl font-black text-foreground/20 tracking-tighter">
                                                         No intelligence broadcasts found
                                                     </p>
                                                     <p className="text-sm text-muted-foreground/40 font-medium">
@@ -211,7 +211,7 @@ export function BlogTable() {
                                                 </div>
                                                 <Button
                                                     variant="outline"
-                                                    className="mt-4 border-white/10 text-white/40 hover:text-white hover:bg-white/5 rounded-xl px-8"
+                                                    className="mt-4 border-border/10 text-foreground/40 hover:text-foreground hover:bg-muted/5 rounded-xl px-8"
                                                     onClick={() => setIsDialogOpen(true)}
                                                 >
                                                     Initialize Content
@@ -223,12 +223,12 @@ export function BlogTable() {
                                     posts.map((post) => (
                                         <TableRow
                                             key={post.id}
-                                            className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-24"
+                                            className="group/row hover:bg-muted/2 transition-all border-b border-border/5 last:border-0 h-24"
                                         >
                                             {/* Title + Thumbnail */}
                                             <TableCell className="py-2 pl-8">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-white/5">
+                                                    <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-border/10 shrink-0 bg-muted/5">
                                                         {post.imageUrl ? (
                                                             <img
                                                                 src={post.imageUrl}
@@ -240,12 +240,12 @@ export function BlogTable() {
                                                             />
                                                         ) : (
                                                             <div className="w-full h-full flex items-center justify-center">
-                                                                <FileText className="w-6 h-6 text-white/20" />
+                                                                <FileText className="w-6 h-6 text-foreground/20" />
                                                             </div>
                                                         )}
                                                     </div>
                                                     <div className="flex flex-col min-w-0">
-                                                        <span className="font-bold text-white/90 group-hover/row:text-primary transition-colors leading-tight truncate text-lg">
+                                                        <span className="font-bold text-foreground/90 group-hover/row:text-primary transition-colors leading-tight truncate text-lg">
                                                             {post.title ?? 'Untitled'}
                                                         </span>
                                                         <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em] mt-1.5">
@@ -257,7 +257,7 @@ export function BlogTable() {
 
                                             {/* Category */}
                                             <TableCell className="text-center">
-                                                <Badge className="bg-white/5 text-muted-foreground/80 hover:text-white border-white/10 font-black text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
+                                                <Badge className="bg-muted/5 text-muted-foreground/80 hover:text-foreground border-border/10 font-black text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
                                                     {post.category ?? '—'}
                                                 </Badge>
                                             </TableCell>

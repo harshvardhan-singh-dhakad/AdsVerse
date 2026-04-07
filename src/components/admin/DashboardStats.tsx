@@ -92,19 +92,19 @@ export function DashboardStats() {
     <div className="space-y-12 pb-12">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
-          <Card key={stat.label} className="group relative bg-[#12141c]/40 backdrop-blur-3xl border-white/5 shadow-2xl hover:border-primary/30 transition-all duration-500 overflow-hidden">
+          <Card key={stat.label} className="group relative bg-card/40 backdrop-blur-3xl border-border/5 shadow-2xl hover:border-primary/30 transition-all duration-500 overflow-hidden">
             <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-0 blur-[60px] transition-all duration-700 group-hover:opacity-40 ${stat.color.replace('text-', 'bg-')}`} />
             
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
                 {stat.label}
               </span>
-              <div className={cn("p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500", stat.color)}>
+              <div className={cn("p-2.5 rounded-xl bg-muted/5 border border-border/10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500", stat.color)}>
                 <stat.icon className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-black tracking-tighter text-white/90 group-hover:text-primary transition-colors">
+              <div className="text-4xl font-black tracking-tighter text-foreground/90 group-hover:text-primary transition-colors">
                 {stat.count !== null ? stat.count.toLocaleString() : "0"}
               </div>
               <div className="flex items-center gap-2 mt-4">
@@ -118,17 +118,17 @@ export function DashboardStats() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-12">
-        <Card className="lg:col-span-8 bg-gradient-to-br from-[#12141c]/60 to-[#0a0c10]/40 backdrop-blur-3xl border-white/5 shadow-inner-white p-10 overflow-hidden relative border border-white/5 group">
+        <Card className="lg:col-span-8 bg-gradient-to-br from-[#12141c]/60 to-[#0a0c10]/40 backdrop-blur-3xl border-border/5 shadow-inner-white p-10 overflow-hidden relative border border-border/5 group">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(142,68,173,0.15),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
           
           <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
             <div className="shrink-0">
-                <div className="w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white font-black text-4xl shadow-[0_20px_50px_rgba(142,68,173,0.3)]">
+                <div className="w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-foreground font-black text-4xl shadow-[0_20px_50px_rgba(142,68,173,0.3)]">
                     A
                 </div>
             </div>
             <div className="space-y-3">
-               <h1 className="text-4xl md:text-5xl font-black font-headline tracking-tighter text-white">
+               <h1 className="text-4xl md:text-5xl font-black font-headline tracking-tighter text-foreground">
                 AdsVerse <span className="text-primary italic font-serif opacity-90">Elite</span>
                </h1>
                <p className="text-lg text-muted-foreground max-w-xl font-medium leading-relaxed">
@@ -144,7 +144,7 @@ export function DashboardStats() {
                { l: 'Leads Rate', v: '+24%', c: 'text-primary' },
                { l: 'Stability', v: '99.9%', c: 'text-accent' },
              ].map(i => (
-               <div key={i.l} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all cursor-default">
+               <div key={i.l} className="bg-muted/5 border border-border/10 rounded-2xl p-4 hover:bg-muted/10 transition-all cursor-default">
                   <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">{i.l}</p>
                   <p className={cn("text-xl font-black", i.c)}>{i.v}</p>
                </div>
@@ -158,7 +158,7 @@ export function DashboardStats() {
                     <Users className="w-16 h-16 text-emerald-500" />
                 </div>
                 <h4 className="font-black text-emerald-500 uppercase tracking-widest text-[11px] mb-4">Strategic Alert</h4>
-                <p className="text-base text-white/80 font-bold leading-tight mb-4">
+                <p className="text-base text-foreground/80 font-bold leading-tight mb-4">
                     Conversion potential is high today. Review new leads for maximum impact.
                 </p>
                 <div className="w-full h-1 bg-emerald-500/20 rounded-full overflow-hidden">
@@ -171,7 +171,7 @@ export function DashboardStats() {
                     <FileText className="w-16 h-16 text-primary" />
                 </div>
                 <h4 className="font-black text-primary uppercase tracking-widest text-[11px] mb-4">Content Pulse</h4>
-                <p className="text-base text-white/80 font-bold leading-tight mb-4">
+                <p className="text-base text-foreground/80 font-bold leading-tight mb-4">
                     Your audience is engaging! Broadcast new insights to maintain authority.
                 </p>
                 <div className="w-full h-1 bg-primary/20 rounded-full overflow-hidden">

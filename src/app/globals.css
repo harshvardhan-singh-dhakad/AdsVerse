@@ -221,4 +221,36 @@
       transform: translateY(-50%);
     }
   }
+
+  /* AdsVerse Studio Brand Tokens */
+  .adsverse-studio {
+    --bg-studio: #07090f;
+    --surface-studio: #0e1118;
+    --surface2-studio: #141820;
+    --border-studio: #1e2330;
+    --border-hi-studio: #2a3045;
+    --accent-studio: #4f8dff;
+    --accent2-studio: #00e5c3;
+  }
+
+  .bg-studio-gradient {
+    background: linear-gradient(135deg, #4f8dff 0%, #00e5c3 100%);
+  }
+
+  .text-studio-gradient {
+    background: linear-gradient(135deg, #4f8dff 0%, #00e5c3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass-studio {
+    background: rgba(14, 17, 24, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(30, 35, 48, 0.5);
+  }
+
+  .glass-studio:hover {
+    border-color: rgba(79, 141, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
 }

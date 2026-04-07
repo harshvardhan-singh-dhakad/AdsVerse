@@ -86,7 +86,7 @@ export function LeadsTable() {
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div className="space-y-1">
-                <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Inbound Intelligence</h2>
+                <h2 className="text-4xl font-black text-foreground font-headline tracking-tighter">Inbound Intelligence</h2>
                 <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Track and manage your potential client conversion funnel.</p>
             </div>
             <Button 
@@ -124,7 +124,7 @@ export function LeadsTable() {
             </Button>
         </div>
 
-        <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+        <div className="rounded-[2.5rem] border border-border/5 bg-card/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
             <div className="overflow-x-auto">
                 {isLoading ? (
                     <div className="flex justify-center items-center py-20">
@@ -133,7 +133,7 @@ export function LeadsTable() {
                 ) : error ? (
                     <div className="text-center py-20 px-8">
                         <ShieldAlert className="w-16 h-16 text-destructive mx-auto mb-6 opacity-50" />
-                        <h3 className="text-2xl font-black text-white font-headline tracking-tight">Access Restricted</h3>
+                        <h3 className="text-2xl font-black text-foreground font-headline tracking-tight">Access Restricted</h3>
                         <p className="text-sm text-muted-foreground/60 mt-2 max-w-sm mx-auto font-bold uppercase tracking-widest leading-relaxed">
                             You lack permission to view this data. Admin privileges required.
                         </p>
@@ -144,7 +144,7 @@ export function LeadsTable() {
                     </div>
                 ) : (
                     <Table>
-                        <TableHeader className="bg-white/2 border-b border-white/5">
+                        <TableHeader className="bg-muted/2 border-b border-border/5">
                             <TableRow className="hover:bg-transparent border-none">
                                 <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Timestamp</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Identity</TableHead>
@@ -155,7 +155,7 @@ export function LeadsTable() {
                         </TableHeader>
                         <TableBody>
                             {leads.map((lead) => (
-                                <TableRow key={lead.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
+                                <TableRow key={lead.id} className="group/row hover:bg-muted/2 transition-all border-b border-border/5 last:border-0 h-20">
                                     <TableCell className="pl-8">
                                         <span className="text-sm font-bold text-muted-foreground/60 tracking-tight">
                                             {(() => {
@@ -167,18 +167,18 @@ export function LeadsTable() {
                                         </span>
                                     </TableCell>
                                 <TableCell>
-                                    <span className="font-bold text-white/90 group-hover/row:text-primary transition-colors">
+                                    <span className="font-bold text-foreground/90 group-hover/row:text-primary transition-colors">
                                         {lead.name}
                                     </span>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-medium text-white/70">{lead.email}</span>
+                                        <span className="text-sm font-medium text-foreground/70">{lead.email}</span>
                                         {lead.phone && <span className="text-[10px] font-bold text-muted-foreground/40">{lead.phone}</span>}
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    <Badge variant="secondary" className="bg-white/5 text-muted-foreground/80 border-white/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
+                                    <Badge variant="secondary" className="bg-muted/5 text-muted-foreground/80 border-border/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
                                         {lead.subject}
                                     </Badge>
                                 </TableCell>
@@ -201,14 +201,14 @@ export function LeadsTable() {
         </div>
 
         <Dialog open={!!selectedLead} onOpenChange={(open) => !open && setSelectedLead(null)}>
-            <DialogContent className="bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden max-w-2xl">
-                <DialogHeader className="p-8 border-b border-white/5 bg-white/2">
+            <DialogContent className="bg-background/95 backdrop-blur-3xl border-border/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden max-w-2xl">
+                <DialogHeader className="p-8 border-b border-border/5 bg-muted/2">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xl">
                             {selectedLead?.name.substring(0, 1).toUpperCase()}
                         </div>
                         <div>
-                            <DialogTitle className="text-2xl font-black font-headline tracking-tighter text-white">Lead Detail: {selectedLead?.name}</DialogTitle>
+                            <DialogTitle className="text-2xl font-black font-headline tracking-tighter text-foreground">Lead Detail: {selectedLead?.name}</DialogTitle>
                             <DialogDescription className="text-muted-foreground/60 font-bold uppercase tracking-widest text-[9px]">
                                 Received {selectedLead?.submissionDate && typeof selectedLead.submissionDate.toDate === 'function' ? format(selectedLead.submissionDate.toDate(), 'PPP p') : ''}
                             </DialogDescription>
@@ -219,11 +219,11 @@ export function LeadsTable() {
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-1">
                             <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Email Address</p>
-                            <p className="text-sm font-bold text-white/80">{selectedLead?.email}</p>
+                            <p className="text-sm font-bold text-foreground/80">{selectedLead?.email}</p>
                         </div>
                         <div className="space-y-1">
                             <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Phone Identity</p>
-                            <p className="text-sm font-bold text-white/80">{selectedLead?.phone || 'Not provided'}</p>
+                            <p className="text-sm font-bold text-foreground/80">{selectedLead?.phone || 'Not provided'}</p>
                         </div>
                     </div>
                     <div className="space-y-1">
@@ -232,8 +232,8 @@ export function LeadsTable() {
                     </div>
                     <div className="space-y-2">
                         <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Message Body</p>
-                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
-                            <p className="text-sm text-white/70 leading-relaxed italic">"{selectedLead?.message}"</p>
+                        <div className="p-6 bg-muted/5 border border-border/10 rounded-2xl">
+                            <p className="text-sm text-foreground/70 leading-relaxed italic">"{selectedLead?.message}"</p>
                         </div>
                     </div>
                 </div>

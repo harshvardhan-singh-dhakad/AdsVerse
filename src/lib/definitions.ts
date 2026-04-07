@@ -55,6 +55,18 @@ export type BlogPost = BaseDoc & {
     author: string;
     publishedDate: string; // ISO string
     isPublished: boolean;
+    // Enhanced Metadata
+    tags: string[];
+    focusKeyword: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    language: 'en' | 'hi' | 'hinglish';
+    allowComments: boolean;
+    includeInSitemap: boolean;
+    isFeatured: boolean;
+    schemaMarkup: boolean;
+    whatsappShare: boolean;
+    // Timestamps
     createdAt: Timestamp;
     updatedAt: Timestamp;
 }

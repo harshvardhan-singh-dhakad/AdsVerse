@@ -171,7 +171,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                         form.setValue('slug', slug, { shouldValidate: true });
                       }
                     }}
-                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-bold px-6"
+                    className="h-14 bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground placeholder:text-foreground/20 font-bold px-6"
                   />
                 </FormControl>
                 <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
@@ -192,7 +192,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                       field.onChange(e);
                       setIsSlugManuallyEdited(true);
                     }}
-                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white/70 placeholder:text-white/20 font-mono text-sm px-6"
+                    className="h-14 bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground/70 placeholder:text-foreground/20 font-mono text-sm px-6"
                   />
                 </FormControl>
                 <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">URL friendly version of the title</FormDescription>
@@ -211,7 +211,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                 <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 ml-1">Content Vertical</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white font-bold px-6">
+                    <SelectTrigger className="h-14 bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground font-bold px-6">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                   </FormControl>
@@ -236,7 +236,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                 <FormControl>
                   <Input
                     {...field}
-                    className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white font-bold px-6"
+                    className="h-14 bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground font-bold px-6"
                   />
                 </FormControl>
                 <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
@@ -269,7 +269,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                     <Input
                       placeholder="https://..."
                       {...field}
-                      className="h-14 bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white px-6 font-mono text-xs"
+                      className="h-14 bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground px-6 font-mono text-xs"
                     />
                   ) : (
                     <div className={cn(
@@ -344,7 +344,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                 <Textarea
                   placeholder="Brief summary of the post..."
                   {...field}
-                  className="min-h-[100px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-medium px-6 py-4 resize-none"
+                  className="min-h-[100px] bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground placeholder:text-foreground/20 font-medium px-6 py-4 resize-none"
                 />
               </FormControl>
               <FormMessage className="text-[10px] font-bold text-red-400 ml-1" />
@@ -362,7 +362,7 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                 <Textarea
                   placeholder="<p>Full article content here...</p>"
                   {...field}
-                  className="min-h-[400px] bg-white/5 border-white/10 rounded-2xl focus:bg-white/10 transition-all text-white placeholder:text-white/20 font-mono text-sm px-6 py-6 custom-scrollbar"
+                  className="min-h-[400px] bg-muted/5 border-border/10 rounded-2xl focus:bg-muted/10 transition-all text-foreground placeholder:text-foreground/20 font-mono text-sm px-6 py-6 custom-scrollbar"
                 />
               </FormControl>
               <FormDescription className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest ml-1">Full HTML Injection is supported for complex narrative rendering.</FormDescription>

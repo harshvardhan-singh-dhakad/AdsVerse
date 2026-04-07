@@ -49,22 +49,22 @@ export function PricingTable() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="space-y-1">
-                    <h2 className="text-4xl font-black text-white font-headline tracking-tighter">Value Architect</h2>
+                    <h2 className="text-4xl font-black text-foreground font-headline tracking-tighter">Value Architect</h2>
                     <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">Define and refine the commercial value propositions of AdsVerse.</p>
                 </div>
                 <Button
                     onClick={handleAddNew}
-                    className="h-12 px-8 bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
+                    className="h-12 px-8 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
                 >
                     <PlusCircle className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
                     Draft New Plan
                 </Button>
             </div>
 
-            <div className="rounded-[2.5rem] border border-white/5 bg-[#12141c]/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+            <div className="rounded-[2.5rem] border border-border/5 bg-card/40 backdrop-blur-3xl shadow-2xl overflow-hidden group">
                 <div className="overflow-x-auto">
                     <Table>
-                        <TableHeader className="bg-white/2 border-b border-white/5">
+                        <TableHeader className="bg-muted/2 border-b border-border/5">
                             <TableRow className="hover:bg-transparent border-none">
                                 <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Sequence</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
@@ -76,21 +76,21 @@ export function PricingTable() {
                         </TableHeader>
                         <TableBody>
                             {!isLoading && plans?.map((plan) => (
-                                <TableRow key={plan.id} className="group/row hover:bg-white/2 transition-all border-b border-white/5 last:border-0 h-20">
+                                <TableRow key={plan.id} className="group/row hover:bg-muted/2 transition-all border-b border-border/5 last:border-0 h-20">
                                     <TableCell className="pl-8">
-                                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-black text-xs text-primary">
+                                        <div className="w-8 h-8 rounded-lg bg-muted/5 flex items-center justify-center font-black text-xs text-primary">
                                             {plan.displayOrder}
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-center">
-                                        <Badge variant="secondary" className="bg-white/5 text-muted-foreground/80 border-white/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
+                                        <Badge variant="secondary" className="bg-muted/5 text-muted-foreground/80 border-border/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">
                                             {plan.category}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="text-center font-bold text-white/90 group-hover/row:text-primary transition-colors">
+                                    <TableCell className="text-center font-bold text-foreground/90 group-hover/row:text-primary transition-colors">
                                         {plan.name}
                                     </TableCell>
-                                    <TableCell className="text-center font-black text-white/80">
+                                    <TableCell className="text-center font-black text-foreground/80">
                                         {plan.price} <span className="text-[10px] text-muted-foreground/40 uppercase tracking-widest">{plan.frequency}</span>
                                     </TableCell>
                                     <TableCell className="text-center">
@@ -99,7 +99,7 @@ export function PricingTable() {
                                                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                                                 <span className="text-primary font-black text-[9px] uppercase tracking-widest">Market Leader</span>
                                             </div> :
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted/5 border border-border/10">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
                                                 <span className="text-muted-foreground/40 font-black text-[9px] uppercase tracking-widest">Standard Tier</span>
                                             </div>
@@ -123,9 +123,9 @@ export function PricingTable() {
             </div>
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-4xl h-[85vh] flex flex-col bg-[#0d1017]/95 backdrop-blur-3xl border-white/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                    <DialogHeader className="p-8 border-b border-white/5 bg-white/2 shrink-0">
-                        <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-white">
+                <DialogContent className="max-w-4xl h-[85vh] flex flex-col bg-background/95 backdrop-blur-3xl border-border/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
+                    <DialogHeader className="p-8 border-b border-border/5 bg-muted/2 shrink-0">
+                        <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-foreground">
                             {selectedPlan ? "Refine Pricing Strategy" : "Initialize New Commercial Plan"}
                         </DialogTitle>
                     </DialogHeader>
