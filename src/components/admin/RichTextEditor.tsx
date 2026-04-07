@@ -10,7 +10,7 @@ import Image from '@tiptap/extension-image';
 import Typography from '@tiptap/extension-typography';
 import CharacterCount from '@tiptap/extension-character-count';
 import { 
-  Bold, Italic, List, ListOrdered, Quote, Heading2, Heading3, 
+  Bold, Italic, List, ListOrdered, Quote, Heading2, Heading3, Heading4,
   Underline as UnderlineIcon, Link as LinkIcon, Undo, Redo, Eraser,
   Type
 } from 'lucide-react';
@@ -59,7 +59,7 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: { levels: [2, 3] },
+        heading: { levels: [2, 3, 4] },
       }),
       Underline,
       Typography,
@@ -88,6 +88,8 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
         class: cn(
           'prose dark:prose-invert max-w-none min-h-[400px] p-6 focus:outline-none leading-relaxed text-foreground/80',
           'prose-headings:font-headline prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4',
+          'prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3',
+          'prose-h4:text-lg prose-h4:mt-4 prose-h4:mb-2',
           'prose-p:my-4 prose-p:leading-8',
           'prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:bg-primary/5 prose-blockquote:py-4 prose-blockquote:rounded-r-xl',
           'prose-ul:list-disc prose-ol:list-decimal prose-li:my-1'
@@ -108,7 +110,7 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
   return (
     <div className={cn('flex flex-col rounded-3xl border border-border/10 bg-muted/5 overflow-hidden ring-1 ring-white/5 shadow-2xl transition-all hover:border-border/20', className)}>
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 bg-background/40 backdrop-blur-md border-b border-border/10 sticky top-0 z-10">
+      <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/90 backdrop-blur-lg border-b border-border/20 sticky top-0 z-10">
         <div className="flex items-center gap-1 px-2 border-r border-border/10 mr-1">
           <MenuButton 
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
@@ -123,6 +125,13 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
             tooltip="Heading 3"
           >
             <Heading3 className="h-4 w-4" />
+          </MenuButton>
+          <MenuButton 
+            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+            isActive={editor.isActive('heading', { level: 4 })}
+            tooltip="Heading 4"
+          >
+            <Heading4 className="h-4 w-4" />
           </MenuButton>
           <MenuButton 
             onClick={() => editor.chain().focus().setParagraph().run()}
@@ -214,32 +223,72 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
         <EditorContent editor={editor} />
         {editor && (
           <BubbleMenu editor={editor} options={{ placement: 'top', offset: 8 }}>
-            <div className="flex items-center gap-1 p-1 bg-background/90 backdrop-blur-md rounded-xl border border-border/20 shadow-2xl">
-              <MenuButton 
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                isActive={editor.isActive('bold')}
-                tooltip="Bold"
-              >
-                <Bold className="h-4 w-4" />
-              </MenuButton>
-              <MenuButton 
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                isActive={editor.isActive('italic')}
-                tooltip="Italic"
-              >
-                <Italic className="h-4 w-4" />
-              </MenuButton>
-              <MenuButton 
-                onClick={() => editor.chain().focus().toggleLink({ href: prompt('URL') || '' }).run()}
-                isActive={editor.isActive('link')}
-                tooltip="Link"
-              >
-                <LinkIcon className="h-4 w-4" />
-              </MenuButton>
+            <div className="flex items-center gap-1 p-1 bg-muted/95 backdrop-blur-xl rounded-2xl border border-border/30 shadow-[0_20px_50px_rgba(0,0,0,0.3)] ring-1 ring-white/10">
+              <div className="flex items-center gap-1 px-1 border-r border-border/10">
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                  isActive={editor.isActive('heading', { level: 2 })}
+                  tooltip="H2"
+                >
+                  <Heading2 className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                  isActive={editor.isActive('heading', { level: 3 })}
+                  tooltip="H3"
+                >
+                  <Heading3 className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+                  isActive={editor.isActive('heading', { level: 4 })}
+                  tooltip="H4"
+                >
+                  <Heading4 className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().setParagraph().run()}
+                  isActive={editor.isActive('paragraph')}
+                  tooltip="Text"
+                >
+                  <Type className="h-3.5 w-3.5" />
+                </MenuButton>
+              </div>
+
+              <div className="flex items-center gap-1 px-1 border-r border-border/10">
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleBold().run()}
+                  isActive={editor.isActive('bold')}
+                  tooltip="Bold"
+                >
+                  <Bold className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleItalic().run()}
+                  isActive={editor.isActive('italic')}
+                  tooltip="Italic"
+                >
+                  <Italic className="h-3.5 w-3.5" />
+                </MenuButton>
+              </div>
+              
+              <div className="flex items-center gap-1 px-1">
+                <MenuButton 
+                  onClick={() => {
+                    const url = prompt('URL');
+                    if (url) editor.chain().focus().toggleLink({ href: url }).run();
+                  }}
+                  isActive={editor.isActive('link')}
+                  tooltip="Link"
+                >
+                  <LinkIcon className="h-3.5 w-3.5" />
+                </MenuButton>
+              </div>
             </div>
           </BubbleMenu>
         )}
       </div>
+
 
       {/* Character Count / Stats Footer */}
       <div className="flex items-center justify-between px-4 py-2 bg-muted/10 border-t border-border/10 text-[10px] uppercase font-bold tracking-widest text-muted-foreground/50">
