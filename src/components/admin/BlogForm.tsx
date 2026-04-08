@@ -338,10 +338,9 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
                     Blog Body <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder={`Write your full blog post here... Paste from Google Docs or type directly.\n\nTip: Include H2/H3 headings, bullet points, and your focus keyword naturally.`} 
-                      className="bg-muted/30 border-border/20 rounded-xl min-h-[250px] font-mono text-sm leading-relaxed"
-                      {...field}
+                    <RichTextEditor 
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
