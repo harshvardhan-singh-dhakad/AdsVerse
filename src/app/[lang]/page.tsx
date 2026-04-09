@@ -17,10 +17,10 @@ const ShareButtons = dynamic(() => import('@/components/layout/share-buttons').t
 export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
   const isHi = lang === 'hi';
   return {
-    title: isHi ? "इंदौर में सर्वश्रेष्ठ डिजिटल मार्केटिंग एजेंसी" : "Best Digital Marketing Agency in Indore | AI & Automation",
+    title: isHi ? "इंदौर में सर्वश्रेष्ठ डिजिटल मार्केटिंग एजेंसी" : "Best AI & Digital Marketing Agency in Indore",
     description: isHi
-      ? "AdsVerse इंदौर की अग्रणी AI मार्केटिंग एजेंसी है। हम सर्च इंजन ऑप्टिमाइजेशन (SEO), फेसबुक/इंस्टाग्राम विज्ञापन और बिजनेस ऑटोमेशन के साथ आपके व्यवसाय को बढ़ाने में मदद करते हैं।"
-      : "AdsVerse is Indore's premier AI-powered digital marketing agency. We specialize in SEO, Google & Meta Ads, and Sales Automation to drive 10x ROI for local businesses.",
+      ? "AdsVerse इंदौर की अग्रणी AI मार्केटिंग एजेंसी है। हम SEO, विज्ञापन और ऑटोमेशन के साथ आपके व्यवसाय को बढ़ाने में मदद करते हैं।"
+      : "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Paid Ads, and Automation to drive 10x ROI for your business.",
     alternates: {
       canonical: `https://adsverse.in/${lang}`,
       languages: {

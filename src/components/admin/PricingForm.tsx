@@ -78,6 +78,9 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
   const processForm = async (data: PricingFormData) => {
     const dataForFirestore = {
       ...data,
+      description: data.description || '',
+      frequency: data.frequency || '',
+      subCategory: data.subCategory || '',
       features: data.features.map(f => f.value),
     };
 

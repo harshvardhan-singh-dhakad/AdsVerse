@@ -3,8 +3,8 @@ import { PortfolioGrid } from "@/components/pages/portfolio-grid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Digital Marketing Portfolio & Success Stories | AdsVerse",
-  description: "We take pride in the results we drive. Explore some of our favorite projects and case studies showcasing our digital marketing expertise in SEO, web design, and branding.",
+  title: "Portfolio & Success Stories",
+  description: "Explore the successful digital marketing projects and case studies delivered by AdsVerse for brands across India.",
   alternates: {
     canonical: '/en/portfolio',
     languages: {

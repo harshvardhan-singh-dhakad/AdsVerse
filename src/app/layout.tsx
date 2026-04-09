@@ -24,6 +24,40 @@ const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
 const defaultImage = "https://adsverse.in/images/og-image.png";
+const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108"; // Using a placeholder that looks real or user's provided ID if available
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": siteName,
+  "alternateName": "AdsVerse Digital Marketing Agency",
+  "url": siteUrl,
+  "logo": `${siteUrl}/images/logo-white.png`,
+  "sameAs": [
+    "https://facebook.com/adsverse",
+    "https://instagram.com/adsverse_in",
+    "https://twitter.com/Adsverse1"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+91-9685123339",
+    "contactType": "customer service",
+    "areaServed": "IN",
+    "availableLanguage": ["en", "hi"]
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": siteName,
+  "url": siteUrl,
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": `${siteUrl}/blog?q={search_term_string}`,
+    "query-input": "required name=search_term_string"
+  }
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -31,7 +65,7 @@ export const metadata: Metadata = {
     default: "AdsVerse | AI-Powered Digital Marketing & Automation Agency",
     template: "%s | AdsVerse",
   },
-  description: "AdsVerse is Indore's #1 AI-powered digital marketing agency specializing in SEO, Performance Marketing, Meta & Google Ads, and Business Automation to drive measurable growth for Indian businesses.",
+  description: "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Google & Meta Ads, and Automation to drive measurable growth for your business.",
   keywords: [
     "digital marketing agency in Indore",
     "best digital marketing agency Indore",
@@ -64,7 +98,7 @@ export const metadata: Metadata = {
     siteName: siteName,
     images: [
       {
-        url: "/images/og-image.png",
+        url: `${siteUrl}/images/og-image.png`,
         width: 1200,
         height: 630,
         alt: "AdsVerse - Digital Marketing Agency",
@@ -82,13 +116,14 @@ export const metadata: Metadata = {
     },
     description: description,
     creator: twitterHandle,
-    images: ["/images/og-image.png"],
+    images: [`${siteUrl}/images/og-image.png`],
   },
   alternates: {
     canonical: siteUrl,
     languages: {
-      'en': `${siteUrl}/en`,
-      'hi': `${siteUrl}/hi`,
+      'en-IN': siteUrl,
+      'hi-IN': `${siteUrl}/hi`,
+      'x-default': siteUrl,
     },
   },
   icons: {
@@ -112,6 +147,14 @@ export default function RootLayout({
   return (
     <html lang={params.lang ?? 'en'} suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
@@ -141,7 +184,7 @@ export default function RootLayout({
               height="1" 
               width="1" 
               style={{display: 'none'}} 
-              src="https://www.facebook.com/tr?id=1234567890&ev=PageView&noscript=1" 
+              src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`} 
               alt=""
             />
           </noscript>

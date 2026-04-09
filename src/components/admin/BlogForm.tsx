@@ -181,7 +181,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     }
     try {
       const isPublished = values.status === 'publish';
-      const postData = { ...values, isPublished };
+      
+      // Clean undefined values for Firestore
+      const postData = {
+        ...values,
+        isPublished,
+        imageAlt: values.imageAlt || '',
+        focusKeyword: values.focusKeyword || '',
+        metaTitle: values.metaTitle || '',
+        metaDescription: values.metaDescription || '',
+      };
       delete (postData as any).status;
 
       let docRef;

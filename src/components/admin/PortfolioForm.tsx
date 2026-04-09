@@ -93,9 +93,12 @@ export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
   const { isSubmitting } = form.formState;
 
   const processForm = async (data: PortfolioFormData) => {
+    // Sanitize data to remove any undefined values
+    const sanitizedData = JSON.parse(JSON.stringify(data));
+    
     try {
       if (item) {
-        await setDoc(doc(firestore, "portfolioItems", item.id), data, { merge: true });
+        await setDoc(doc(firestore, "portfolioItems", item.id), sanitizedData, { merge: true });
         toast({ title: "Success", description: "Portfolio item updated." });
       } else {
         await addDoc(collection(firestore, "portfolioItems"), data);

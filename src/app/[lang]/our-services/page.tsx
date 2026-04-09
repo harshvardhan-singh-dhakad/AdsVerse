@@ -138,8 +138,8 @@ const automationPackages = [
 ];
 
 export const metadata: Metadata = {
-    title: "Best Digital Marketing & Automation Services in Indore",
-    description: "Explore Indore's most comprehensive digital marketing and automation services. From SEO and Meta Ads to AI chatbots and CRM automation, we scale your ROI.",
+    title: "Digital Marketing & Automation in Indore",
+    description: "Indore's best digital marketing and automation services. Grow your business with SEO, Meta Ads, AI chatbots, and CRM automation.",
     alternates: {
         canonical: '/en/our-services',
         languages: {

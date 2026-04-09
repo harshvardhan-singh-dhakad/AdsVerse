@@ -57,7 +57,8 @@ export type BlogPost = BaseDoc & {
     isPublished: boolean;
     // Enhanced Metadata
     tags: string[];
-    focusKeyword: string;
+    imageAlt?: string;
+    focusKeyword?: string;
     metaTitle?: string;
     metaDescription?: string;
     language: 'en' | 'hi' | 'hinglish';

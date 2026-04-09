@@ -15,8 +15,8 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
 export const metadata: Metadata = {
-  title: "Digital Marketing Insights & Trends | AdsVerse Blog",
-  description: "Stay ahead of the curve with the latest news, trends, and strategies in digital marketing from the AdsVerse team. Explore articles on SEO, paid ads, and content.",
+  title: "Insights & Digital Trends",
+  description: "Latest digital marketing trends and strategies from AdsVerse. Expert tips on SEO, Paid Ads, and AI Automation.",
   alternates: {
     canonical: '/blog',
     languages: {
@@ -25,6 +25,21 @@ export const metadata: Metadata = {
     },
   },
 };
+
+function formatPostDate(date: any) {
+  if (!date) return "N/A";
+  try {
+    // If it's a Firestore Timestamp
+    if (date && typeof date === 'object' && 'toDate' in date) {
+      return date.toDate().toLocaleDateString();
+    }
+    // If it's a string or number
+    const d = new Date(date);
+    return isNaN(d.getTime()) ? "N/A" : d.toLocaleDateString();
+  } catch (e) {
+    return "N/A";
+  }
+}
 
 async function getBlogPosts() {
   try {
@@ -112,7 +127,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
                   </div>
                   <CardHeader className="space-y-4">
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {new Date(post.publishedDate).toLocaleDateString()}</span>
+                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {formatPostDate(post.publishedDate)}</span>
                       <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "Deepak Dhakad"}</span>
                     </div>
                     <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">

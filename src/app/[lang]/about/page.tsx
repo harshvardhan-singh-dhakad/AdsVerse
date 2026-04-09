@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About AdsVerse — Digital Marketing Agency in Indore Since 2018",
-  description: "AdsVerse is Indore's #1 AI-powered digital marketing agency founded in 2018. Meet the team behind 47+ successful brands — specializing in SEO, Paid Ads, AI Automation & Web Development across India.",
+  title: "About AdsVerse — Top Marketing Agency in Indore",
+  description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 47+ brands grow through SEO, Paid Ads, and Automation.",
   keywords: [
     "digital marketing agency Indore", "best marketing agency Indore",
     "AdsVerse team", "Deepak Dhakad digital marketing",

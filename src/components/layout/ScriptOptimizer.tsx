@@ -4,11 +4,7 @@ import { useEffect } from "react";
 import Script from "next/script";
 
 export function ScriptOptimizer() {
-  useEffect(() => {
-    // This component renders the scripts after hydration.
-    // By using strategy="lazyOnload" in next/script, we are already doing well,
-    // but wrapping it here ensures it doesn't even start until the client-side hydration is complete.
-  }, []);
+  const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108";
 
   return (
     <>
@@ -21,7 +17,7 @@ export function ScriptOptimizer() {
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'YOUR_PIXEL_ID_HERE');
+        fbq('init', '${fbPixelId}');
         fbq('track', 'PageView');`}
       </Script>
       <Script id="google-tag-manager" strategy="lazyOnload">

@@ -44,10 +44,13 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
   const { isSubmitting } = form.formState;
 
   const processForm = async (data: ServiceFormData) => {
+    // Sanitize data to remove any undefined values
+    const sanitizedData = JSON.parse(JSON.stringify(data));
+    
     try {
       if (service) {
         // Update existing service
-        await setDoc(doc(firestore, "services", service.id), data, { merge: true });
+        await setDoc(doc(firestore, "services", service.id), sanitizedData, { merge: true });
         toast({ title: "Success", description: "Service updated successfully." });
       } else {
         // Add new service
