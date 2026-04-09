@@ -7,13 +7,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { firebaseConfig } from "@/firebase/config";
 
-// Initialize Firebase (Server Side)
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
+import { db } from "@/lib/firebase-server";
 
 interface BlogPost {
   title: string;
@@ -146,7 +142,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-accent" />
-                <span>{new Date(post.publishedDate).toLocaleDateString()}</span>
+                <span>{new Date(post.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
               </div>
             </div>
           </header>

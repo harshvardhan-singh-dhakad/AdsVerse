@@ -411,7 +411,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                          </div>
                       ) : field.value ? (
                         <div className="flex flex-col items-center gap-4 relative z-20 pointer-events-none">
-                           <img src={field.value} alt="Preview" className="max-h-[200px] rounded-lg border border-border/20 shadow-lg" />
+                           <img src={field.value} alt="Blog Post Image Preview" className="max-h-[200px] rounded-lg border border-border/20 shadow-lg" />
                            <p className="text-xs font-bold text-primary">Click or drop to replace image</p>
                         </div>
                       ) : (

@@ -6,13 +6,9 @@ import Link from "next/link";
 import { ArrowRight, Calendar, User, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
-import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, collection, query, orderBy, getDocs, where } from "firebase/firestore";
-import { firebaseConfig } from "@/firebase/config";
 
-// Initialize Firebase (Server Side)
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
+import { db } from "@/lib/firebase-server";
 
 export const metadata: Metadata = {
   title: "Insights & Digital Trends",
@@ -29,13 +25,22 @@ export const metadata: Metadata = {
 function formatPostDate(date: any) {
   if (!date) return "N/A";
   try {
+    let d: Date;
     // If it's a Firestore Timestamp
     if (date && typeof date === 'object' && 'toDate' in date) {
-      return date.toDate().toLocaleDateString();
+      d = date.toDate();
+    } else {
+      d = new Date(date);
     }
-    // If it's a string or number
-    const d = new Date(date);
-    return isNaN(d.getTime()) ? "N/A" : d.toLocaleDateString();
+    
+    if (isNaN(d.getTime())) return "N/A";
+    
+    // Use a stable, non-locale-dependent format for server/client consistency
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   } catch (e) {
     return "N/A";
   }
@@ -117,6 +122,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
                       alt={post.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       priority={index < 3}
                     />
                     <div className="absolute top-4 left-4">

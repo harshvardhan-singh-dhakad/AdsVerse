@@ -113,6 +113,7 @@ export default function AboutPage() {
                 height={600}
                 data-ai-hint="man professional"
                 className="w-full h-full object-cover object-top rounded-b-[5rem]"
+                sizes="(max-width: 768px) 100vw, 400px"
               />
             </div>
             <div className="md:col-span-2 p-8 md:p-12">

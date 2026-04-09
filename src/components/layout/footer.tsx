@@ -93,7 +93,7 @@ export function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
           <p className="text-xs text-muted-foreground opacity-70">
-            &copy; {new Date().getFullYear()} AdsVerse. All rights reserved.
+            &copy; {mounted ? currentYear : ''} AdsVerse. All rights reserved.
           </p>
         </div>
       </div>

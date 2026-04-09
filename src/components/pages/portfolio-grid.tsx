@@ -78,6 +78,7 @@ export function PortfolioGrid() {
                   height={400}
                   data-ai-hint={item.title}
                   className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={index < 3}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
@@ -96,9 +97,9 @@ export function PortfolioGrid() {
             <>
               <DialogHeader className="p-6 pb-0">
                 <DialogTitle className="text-3xl mb-2 font-headline">{selectedItem.title}</DialogTitle>
-                <DialogDescription>
+                <div className="text-sm text-muted-foreground">
                   <Badge variant="secondary" className="capitalize">{selectedItem.category}</Badge>
-                </DialogDescription>
+                </div>
               </DialogHeader>
               <ScrollArea className="max-h-[70vh]">
                 <div className="px-6 pb-6">
@@ -109,6 +110,7 @@ export function PortfolioGrid() {
                     height={500}
                     data-ai-hint={selectedItem.title}
                     className="rounded-lg mb-4 w-full h-auto object-cover"
+                    sizes="(max-width: 1200px) 100vw, 800px"
                   />
                   <div 
                     className="text-muted-foreground prose prose-sm dark:prose-invert" 

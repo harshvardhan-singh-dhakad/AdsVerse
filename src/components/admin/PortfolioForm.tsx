@@ -176,7 +176,7 @@ export function PortfolioForm({ item, onFinished }: PortfolioFormProps) {
                           </>
                         ) : field.value ? (
                           <div className="relative w-full max-w-sm aspect-video rounded-lg overflow-hidden group-hover:opacity-75 transition-opacity">
-                            <img src={field.value} alt="Preview" className="w-full h-full object-cover" />
+                            <img src={field.value} alt="Portfolio Project Image Preview" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <p className="text-foreground text-xs font-medium">Change Image</p>
                             </div>
