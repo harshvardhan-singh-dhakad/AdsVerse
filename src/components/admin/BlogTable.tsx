@@ -148,7 +148,7 @@ export function BlogTable() {
 
             {/* FULL PAGE EDITOR OVERLAY */}
             {isEditing && (
-                <div className="fixed inset-0 z-[10000] bg-background/98 overscroll-none fill-page-editor animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                <div className="fixed inset-0 z-[10000] bg-background overscroll-none fill-page-editor animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
                     <div className="min-h-screen py-12 px-4 md:px-12 relative bg-background">
                         <BlogForm
                             initialData={editingPost}

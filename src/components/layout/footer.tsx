@@ -8,10 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   const params = useParams();
+  
+  const isAdminPath = pathname?.includes('/admin');
+  if (isAdminPath) return null;
+
   const lang = params?.lang || 'en';
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const { theme, resolvedTheme } = useTheme();

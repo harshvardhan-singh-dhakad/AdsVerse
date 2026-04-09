@@ -127,7 +127,7 @@ export function PortfolioTable() {
 
             {/* FULL PAGE PORTFOLIO STUDIO OVERLAY */}
             {isDialogOpen && (
-                <div className="fixed inset-0 z-[10000] bg-background/98 overscroll-none animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                <div className="fixed inset-0 z-[10000] bg-background overscroll-none animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
                     <div className="min-h-screen py-12 px-4 md:px-12 relative bg-background">
                         <div className="max-w-4xl mx-auto space-y-8">
                             <div className="flex justify-between items-center border-b border-border/5 pb-8">

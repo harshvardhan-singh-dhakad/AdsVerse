@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, X, Phone, Mail, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const socialLinks = [
   { href: "https://www.instagram.com/adsverse.ai?igsh=bnl2aTJqZjB4Nm4=", icon: (
@@ -40,7 +41,12 @@ const socialLinks = [
 ];
 
 export function FloatingActionButton() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const isAdminPath = pathname?.includes('/admin');
+  if (isAdminPath) return null;
+
 
   return (
     <>
