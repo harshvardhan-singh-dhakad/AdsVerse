@@ -219,6 +219,68 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
                 >
                   <Italic className="h-3.5 w-3.5" />
                 </MenuButton>
+                
+                {/* Color Picker */}
+                <MenuButton 
+                  onClick={() => {}} 
+                  isActive={editor.isActive('textStyle', { color: editor.getAttributes('textStyle').color })}
+                  tooltip="Text Color"
+                >
+                  <label className="cursor-pointer flex items-center justify-center w-full h-full">
+                    <input 
+                      type="color" 
+                      className="sr-only"
+                      onInput={(e) => editor.chain().focus().setColor((e.target as HTMLInputElement).value).run()}
+                      value={editor.getAttributes('textStyle').color || '#ffffff'}
+                    />
+                    <Palette className="h-3.5 w-3.5" style={{ color: editor.getAttributes('textStyle').color || 'inherit' }} />
+                  </label>
+                </MenuButton>
+
+                {/* Font Size Selector */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-1.5 gap-0.5 text-muted-foreground hover:bg-muted-foreground/10 rounded-md"
+                      title="Font Size"
+                    >
+                      <span className="text-[10px] font-bold">
+                        {editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}
+                      </span>
+                      <ChevronDown className="h-2.5 w-2.5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-16 bg-muted/95 backdrop-blur-xl border-border/20 z-[10000]">
+                    {['12px', '14px', '16px', '18px', '20px', '24px', '30px', '36px'].map((size) => (
+                      <DropdownMenuItem 
+                        key={size}
+                        onClick={() => (editor as any).commands.setFontSize(size)}
+                        className="text-[10px] py-1 px-2 focus:bg-primary/20 focus:text-primary cursor-pointer font-bold"
+                      >
+                        {size.replace('px', '')}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              <div className="flex items-center gap-1 px-1 border-r border-border/10">
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleBulletList().run()}
+                  isActive={editor.isActive('bulletList')}
+                  tooltip="Bullet List"
+                >
+                  <List className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                  isActive={editor.isActive('orderedList')}
+                  tooltip="Number List"
+                >
+                  <ListOrdered className="h-3.5 w-3.5" />
+                </MenuButton>
               </div>
               
               <div className="flex items-center gap-1 px-1">
@@ -231,6 +293,13 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
                   tooltip="Link"
                 >
                   <LinkIcon className="h-3.5 w-3.5" />
+                </MenuButton>
+                <MenuButton 
+                  onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                  isActive={editor.isActive('blockquote')}
+                  tooltip="Quote"
+                >
+                  <Quote className="h-3.5 w-3.5" />
                 </MenuButton>
               </div>
             </div>
