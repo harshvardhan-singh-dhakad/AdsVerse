@@ -40,6 +40,18 @@ export function BlogTable() {
         return () => unsubscribe();
     }, []);
 
+    // NEW: Lock body scroll when editor is open to prevent "double scrolling"
+    useEffect(() => {
+        if (isEditing) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isEditing]);
+
     // Firestore Timestamp + string + number — sab handle karta hai
     const formatDate = (publishedDate: any): string => {
         try {
@@ -136,8 +148,8 @@ export function BlogTable() {
 
             {/* FULL PAGE EDITOR OVERLAY */}
             {isEditing && (
-                <div className="fixed inset-0 z-[999] bg-background overscroll-contain fill-page-editor animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
-                    <div className="min-h-screen p-4 md:p-12 relative bg-background">
+                <div className="fixed inset-0 z-[10000] bg-background/98 overscroll-none fill-page-editor animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                    <div className="min-h-screen py-12 px-4 md:px-12 relative bg-background">
                         <BlogForm
                             initialData={editingPost}
                             onSuccess={() => {

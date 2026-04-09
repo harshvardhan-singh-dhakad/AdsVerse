@@ -46,12 +46,7 @@ export default function AdminPage() {
           userName={user.displayName || user.email || "Admin"}
         />
         <SidebarInset className="flex flex-col flex-1 bg-background relative overflow-hidden">
-          {/* Animated Background Layers - Isolated to Admin Panel */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-            <div className="glow-effect" />
-            <div className="stars stars-sm opacity-20" />
-            <div className="stars stars-md opacity-10" />
-          </div>
+
 
           <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center justify-between border-b border-border/5 bg-background/60 backdrop-blur-3xl px-8 shadow-2xl">
             <div className="flex items-center gap-6">

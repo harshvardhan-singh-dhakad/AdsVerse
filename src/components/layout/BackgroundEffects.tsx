@@ -1,14 +1,16 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export function BackgroundEffects() {
   const pathname = usePathname();
+  const { theme } = useTheme();
   
-  // Disable background effects on admin and utility routes
+  // Disable background effects on admin and utility routes or in light mode
   const isAdminRoute = pathname?.includes("/admin") || pathname?.includes("/get-id");
 
-  if (isAdminRoute) return null;
+  if (isAdminRoute || theme === "light") return null;
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden pointer-events-none">
