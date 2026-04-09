@@ -8,8 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
-import { Loader2, PlusCircle, Trash2, Edit } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Loader2, PlusCircle, Trash2, Edit, XCircle } from "lucide-react";
 import { PortfolioForm } from "./PortfolioForm";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,18 @@ export function PortfolioTable() {
     const { data: items, isLoading, error } = useCollection<PortfolioItem>(itemsQuery);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+
+    // NEW: Lock body scroll when editor is open
+    useEffect(() => {
+        if (isDialogOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isDialogOpen]);
 
     const handleAddNew = () => {
         setSelectedItem(null);
@@ -113,18 +125,33 @@ export function PortfolioTable() {
                 </div>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-background/95 backdrop-blur-3xl border-border/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                    <DialogHeader className="p-8 border-b border-border/5 bg-muted/2 shrink-0">
-                        <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-foreground">
-                            {selectedItem ? "Edit Architectural Detail" : "Initialize New Case Study"}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                        <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
+            {/* FULL PAGE PORTFOLIO STUDIO OVERLAY */}
+            {isDialogOpen && (
+                <div className="fixed inset-0 z-[10000] bg-background/98 overscroll-none animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                    <div className="min-h-screen py-12 px-4 md:px-12 relative bg-background">
+                        <div className="max-w-4xl mx-auto space-y-8">
+                            <div className="flex justify-between items-center border-b border-border/5 pb-8">
+                                <div>
+                                    <h2 className="text-4xl font-black font-headline tracking-tighter text-primary">
+                                        {selectedItem ? "Refine Project Detail" : "Initialize New Case Study"}
+                                    </h2>
+                                    <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs mt-2">Portfolio Visual Engineering Studio</p>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => setIsDialogOpen(false)}
+                                    className="h-12 w-12 rounded-2xl hover:bg-destructive/10 hover:text-destructive transition-all"
+                                >
+                                    <XCircle className="h-6 w-6" />
+                                </Button>
+                            </div>
+                            <div className="bg-card/40 backdrop-blur-3xl border border-border/5 rounded-[2.5rem] p-8 shadow-2xl">
+                                <PortfolioForm item={selectedItem} onFinished={() => setIsDialogOpen(false)} />
+                            </div>
+                        </div>
                     </div>
-                </DialogContent>
-            </Dialog>
+                </div>
+            )}
         </div>
     );
 }

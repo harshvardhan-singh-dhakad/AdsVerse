@@ -15,8 +15,8 @@ import {
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
-import { Loader2, PlusCircle, Trash2, Edit } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Loader2, PlusCircle, Trash2, Edit, XCircle } from "lucide-react";
 import { ServiceForm } from "./ServiceForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,6 +30,18 @@ export function ServicesTable() {
     const { data: services, isLoading, error } = useCollection<Service>(servicesQuery);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedService, setSelectedService] = useState<Service | null>(null);
+
+    // NEW: Lock body scroll when editor is open
+    useEffect(() => {
+        if (isDialogOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isDialogOpen]);
 
     const handleAddNew = () => {
         setSelectedService(null);
@@ -111,18 +123,33 @@ export function ServicesTable() {
                 </div>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-3xl bg-background/95 backdrop-blur-3xl border-border/10 shadow-2xl rounded-[2rem] p-0 overflow-hidden">
-                    <DialogHeader className="p-8 border-b border-border/5 bg-muted/5">
-                        <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-foreground">
-                            {selectedService ? "Refine Service" : "Initialize New Core Service"}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className="p-8">
-                        <ServiceForm service={selectedService} onFinished={() => setIsDialogOpen(false)} />
+            {/* FULL PAGE SERVICE STUDIO OVERLAY */}
+            {isDialogOpen && (
+                <div className="fixed inset-0 z-[10000] bg-background/98 overscroll-none animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                    <div className="min-h-screen py-12 px-4 md:px-12 relative bg-background">
+                        <div className="max-w-3xl mx-auto space-y-8">
+                            <div className="flex justify-between items-center border-b border-border/5 pb-8">
+                                <div>
+                                    <h2 className="text-4xl font-black font-headline tracking-tighter text-primary">
+                                        {selectedService ? "Refine Service Identity" : "Initialize New Core Service"}
+                                    </h2>
+                                    <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs mt-2">Service Matrix Engineering Studio</p>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => setIsDialogOpen(false)}
+                                    className="h-12 w-12 rounded-2xl hover:bg-destructive/10 hover:text-destructive transition-all"
+                                >
+                                    <XCircle className="h-6 w-6" />
+                                </Button>
+                            </div>
+                            <div className="bg-card/40 backdrop-blur-3xl border border-border/5 rounded-[2.5rem] p-8 shadow-2xl">
+                                <ServiceForm service={selectedService} onFinished={() => setIsDialogOpen(false)} />
+                            </div>
+                        </div>
                     </div>
-                </DialogContent>
-            </Dialog>
+                </div>
+            )}
         </div>
     );
 }

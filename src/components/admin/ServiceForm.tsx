@@ -109,10 +109,24 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
             )}
             />
         </div>
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {service ? "Update Service" : "Add Service"}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border/5">
+          <Button 
+            type="button" 
+            variant="ghost" 
+            onClick={onFinished} 
+            className="flex-1 h-12 rounded-xl hover:bg-destructive/10 hover:text-destructive font-bold uppercase tracking-widest text-xs transition-all"
+          >
+            Discard Changes
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={isSubmitting} 
+            className="flex-[2] h-12 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95"
+          >
+            {isSubmitting && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+            {service ? "Update Service Matrix" : "Deploy Core Service"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
