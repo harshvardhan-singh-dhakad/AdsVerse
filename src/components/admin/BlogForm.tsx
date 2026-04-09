@@ -49,9 +49,10 @@ type BlogFormValues = z.infer<typeof blogSchema>;
 interface BlogFormProps {
   initialData?: BlogPost | null;
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
+export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const db = useFirestore();
   const storage = useStorage();
   const { toast } = useToast();
@@ -218,7 +219,22 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
   const strokeDashoffset = circumference - (circumference * seoStats.pct / 100);
 
   return (
-    <div className="max-w-[860px] mx-auto pb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+    <div className="w-full max-w-7xl mx-auto pb-32 animate-in fade-in slide-in-from-bottom-8 duration-1000 relative">
+      
+      {/* HEADER ACTIONS */}
+      {onCancel && (
+        <div className="flex justify-start mb-6">
+          <Button 
+            type="button" 
+            variant="ghost" 
+            onClick={onCancel}
+            className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all"
+          >
+            <X className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+            <span className="text-xs font-bold uppercase tracking-widest">Exit Studio</span>
+          </Button>
+        </div>
+      )}
       
       {/* HEADER */}
       <div className="text-center mb-10">
@@ -728,20 +744,36 @@ export function BlogForm({ initialData, onSuccess }: BlogFormProps) {
             </div>
           </div>
 
-          {/* Actions Menu */}
-          <div className="sticky bottom-6 z-50 flex flex-wrap gap-3 p-4 bg-card/90 backdrop-blur-xl border border-border/20 rounded-2xl shadow-2xl mt-8">
-            <Button type="button" variant="outline" className="h-12 px-6 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-xs font-bold uppercase tracking-widest hidden sm:flex" onClick={() => {
-              form.setValue('status', 'draft');
-              form.handleSubmit(onSubmit)();
-            }}>
-              <Save className="w-4 h-4 mr-2" /> Save Draft
-            </Button>
-            <Button type="button" className="h-12 px-6 rounded-xl bg-teal-500/10 text-teal-400 hover:bg-teal-500/20 transition-all text-xs font-bold uppercase tracking-widest hidden md:flex">
-              <Eye className="w-4 h-4 mr-2" /> Preview
-            </Button>
-            <Button type="submit" className="h-12 flex-1 rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-xs font-bold uppercase tracking-[0.15em]">
-               {initialData ? 'Update Document' : 'Publish on AdsVerse'} <Send className="w-4 h-4 ml-2" />
-            </Button>
+          {/* Actions Menu - Fixed at bottom for "Stable" UX */}
+          <div className="fixed bottom-0 left-0 right-0 z-[100] p-6 bg-background/80 backdrop-blur-2xl border-t border-border/10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+            <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-4">
+              <div className="hidden lg:flex flex-col mr-auto">
+                <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">Studio Status</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span className="text-xs font-bold text-primary uppercase">{initialData ? 'Editing Masterpiece' : 'Drafting Intelligence'}</span>
+                </div>
+              </div>
+
+              <Button type="button" variant="outline" className="h-12 px-6 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-xs font-bold uppercase tracking-widest" onClick={() => {
+                form.setValue('status', 'draft');
+                form.handleSubmit(onSubmit)();
+              }}>
+                <Save className="w-4 h-4 mr-2" /> Save Draft
+              </Button>
+              <Button type="button" className="h-12 px-6 rounded-xl bg-teal-500/10 text-teal-400 hover:bg-teal-500/20 transition-all text-xs font-bold uppercase tracking-widest">
+                <Eye className="w-4 h-4 mr-2" /> Preview
+              </Button>
+              <Button type="submit" className="h-12 min-w-[200px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all text-sm font-black uppercase tracking-[0.15em]">
+                {initialData ? 'Update Document' : 'Publish on AdsVerse'} <Send className="w-4 h-4 ml-2" />
+              </Button>
+              
+              {onCancel && (
+                <Button type="button" variant="ghost" className="h-12 w-12 rounded-xl border border-border/10 hover:bg-red-500/10 hover:text-red-500 transition-all lg:hidden" onClick={onCancel}>
+                  <X className="w-5 h-5" />
+                </Button>
+              )}
+            </div>
           </div>
 
         </form>

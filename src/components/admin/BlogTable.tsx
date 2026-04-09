@@ -18,8 +18,8 @@ export function BlogTable() {
     const { toast } = useToast();
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
     const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [error, setError] = useState<any>(null);
 
     useEffect(() => {
@@ -121,38 +121,37 @@ export function BlogTable() {
                 </div>
 
                 {!error && (
-                    <Dialog
-                        open={isDialogOpen}
-                        onOpenChange={(open) => {
-                            setIsDialogOpen(open);
-                            if (!open) setEditingPost(null);
+                    <Button 
+                        onClick={() => {
+                            setEditingPost(null);
+                            setIsEditing(true);
                         }}
+                        className="h-12 px-8 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group"
                     >
-                        <DialogTrigger asChild>
-                            <Button className="h-12 px-8 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95 group">
-                                <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-                                Create Article
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-5xl h-[92vh] flex flex-col bg-background/95 backdrop-blur-3xl border-border/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] p-0 rounded-[2rem] overflow-hidden">
-                            <DialogHeader className="p-8 border-b border-border/5 bg-muted/2 shrink-0">
-                                <DialogTitle className="text-3xl font-black font-headline tracking-tighter text-foreground">
-                                    {editingPost ? 'Edit Masterpiece' : 'Draft New Intelligence'}
-                                </DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                                <BlogForm
-                                    initialData={editingPost}
-                                    onSuccess={() => {
-                                        setIsDialogOpen(false);
-                                        setEditingPost(null);
-                                    }}
-                                />
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                        <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                        Create Article
+                    </Button>
                 )}
             </div>
+
+            {/* FULL PAGE EDITOR OVERLAY */}
+            {isEditing && (
+                <div className="fixed inset-0 z-[999] bg-background overscroll-contain fill-page-editor animate-in fade-in zoom-in-95 duration-300 overflow-y-auto custom-scrollbar">
+                    <div className="min-h-screen p-4 md:p-12 relative bg-background">
+                        <BlogForm
+                            initialData={editingPost}
+                            onSuccess={() => {
+                                setIsEditing(false);
+                                setEditingPost(null);
+                            }}
+                            onCancel={() => {
+                                setIsEditing(false);
+                                setEditingPost(null);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
 
             {/* Error State */}
             {error ? (
@@ -209,13 +208,13 @@ export function BlogTable() {
                                                         Start your first strategic insight to populate the archive.
                                                     </p>
                                                 </div>
-                                                <Button
-                                                    variant="outline"
-                                                    className="mt-4 border-border/10 text-foreground/40 hover:text-foreground hover:bg-muted/5 rounded-xl px-8"
-                                                    onClick={() => setIsDialogOpen(true)}
-                                                >
-                                                    Initialize Content
-                                                </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        className="mt-4 border-border/10 text-foreground/40 hover:text-foreground hover:bg-muted/5 rounded-xl px-8"
+                                                        onClick={() => setIsEditing(true)}
+                                                    >
+                                                        Initialize Content
+                                                    </Button>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -308,7 +307,7 @@ export function BlogTable() {
                                                         size="icon"
                                                         onClick={() => {
                                                             setEditingPost(post);
-                                                            setIsDialogOpen(true);
+                                                            setIsEditing(true);
                                                         }}
                                                         className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all"
                                                         title="Edit post"

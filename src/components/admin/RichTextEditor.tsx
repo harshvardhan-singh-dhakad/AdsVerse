@@ -12,8 +12,17 @@ import CharacterCount from '@tiptap/extension-character-count';
 import { 
   Bold, Italic, List, ListOrdered, Quote, Heading2, Heading3, Heading4,
   Underline as UnderlineIcon, Link as LinkIcon, Undo, Redo, Eraser,
-  Type
+  Type, Palette, ChevronDown
 } from 'lucide-react';
+import { Extension } from '@tiptap/core';
+import { TextStyle } from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-color';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
@@ -55,12 +64,56 @@ const MenuButton = ({
   </Button>
 );
 
+// Custom Font Size Extension
+const FontSize = Extension.create({
+  name: 'fontSize',
+  addGlobalAttributes() {
+    return [
+      {
+        types: ['textStyle'],
+        attributes: {
+          fontSize: {
+            default: null,
+            parseHTML: element => element.style.fontSize?.replace(/['"]+/g, ''),
+            renderHTML: attributes => {
+              if (!attributes.fontSize) {
+                return {};
+              }
+              return {
+                style: `font-size: ${attributes.fontSize}`,
+              };
+            },
+          },
+        },
+      },
+    ];
+  },
+  addCommands() {
+    return {
+      setFontSize: (fontSize: string) => ({ chain }: any) => {
+        return chain()
+          .setMark('textStyle', { fontSize })
+          .run();
+      },
+      unsetFontSize: () => ({ chain }: any) => {
+        return chain()
+          .setMark('textStyle', { fontSize: null })
+          .removeEmptyTextStyle()
+          .run();
+      },
+    } as any;
+  },
+});
+
 export function RichTextEditor({ value, onChange, className }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3, 4] },
       }),
+      TextStyle,
+      Color,
+      FontSize,
       Underline,
       Typography,
       Link.configure({
@@ -235,6 +288,59 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
           >
             <Italic className="h-4 w-4" />
           </MenuButton>
+          
+          {/* Color Picker */}
+          <div className="relative group/color">
+            <MenuButton 
+              onClick={() => {}} // Controlled by label click
+              isActive={editor.isActive('textStyle', { color: editor.getAttributes('textStyle').color })}
+              tooltip="Text Color"
+            >
+              <label className="cursor-pointer flex items-center justify-center w-full h-full">
+                <input 
+                  type="color" 
+                  className="sr-only"
+                  onInput={(e) => editor.chain().focus().setColor((e.target as HTMLInputElement).value).run()}
+                  value={editor.getAttributes('textStyle').color || '#ffffff'}
+                />
+                <Palette className="h-4 w-4" style={{ color: editor.getAttributes('textStyle').color || 'inherit' }} />
+              </label>
+            </MenuButton>
+          </div>
+
+          {/* Font Size Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 gap-1 text-muted-foreground hover:bg-muted-foreground/10 rounded-md"
+                title="Font Size"
+              >
+                <span className="text-xs font-medium">
+                  {editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}
+                </span>
+                <ChevronDown className="h-3 w-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-20 bg-muted/95 backdrop-blur-xl border-border/20 z-[100]">
+              {['12px', '14px', '16px', '18px', '20px', '24px', '30px', '36px'].map((size) => (
+                <DropdownMenuItem 
+                  key={size}
+                  onClick={() => (editor as any).commands.setFontSize(size)}
+                  className="text-xs focus:bg-primary/20 focus:text-primary cursor-pointer"
+                >
+                  {size.replace('px', '')}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem 
+                onClick={() => (editor as any).commands.unsetFontSize()}
+                className="text-xs focus:bg-destructive/20 focus:text-destructive cursor-pointer border-t border-border/10 mt-1"
+              >
+                Reset
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Lists & Link Group */}
