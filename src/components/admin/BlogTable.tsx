@@ -301,12 +301,12 @@ export function BlogTable() {
 
                                             {/* Actions */}
                                             <TableCell className="text-right py-2 pr-8">
-                                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-all translate-x-4 group-hover/row:translate-x-0">
+                                                <div className="flex items-center justify-end gap-2 opacity-40 group-hover/row:opacity-100 transition-opacity duration-300">
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
                                                         onClick={() => togglePublish(post)}
-                                                        className="w-10 h-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all"
+                                                        className="w-10 h-10 rounded-xl bg-primary/5 hover:bg-primary/10 text-primary/70 hover:text-primary border border-primary/5 hover:border-primary/20 transition-all shadow-sm"
                                                         title={post.isPublished ? 'Return to Draft' : 'Launch Live'}
                                                     >
                                                         {post.isPublished
@@ -321,7 +321,7 @@ export function BlogTable() {
                                                             setEditingPost(post);
                                                             setIsEditing(true);
                                                         }}
-                                                        className="w-10 h-10 rounded-xl hover:bg-blue-500/10 hover:text-blue-500 transition-all"
+                                                        className="w-10 h-10 rounded-xl bg-blue-500/5 hover:bg-blue-500/10 text-blue-500/70 hover:text-blue-500 border border-blue-500/5 hover:border-blue-500/20 transition-all shadow-sm"
                                                         title="Edit post"
                                                     >
                                                         <Edit2 className="h-4 w-4" />
@@ -330,7 +330,7 @@ export function BlogTable() {
                                                         variant="ghost"
                                                         size="icon"
                                                         onClick={() => handleDelete(post.id)}
-                                                        className="w-10 h-10 rounded-xl text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 transition-all"
+                                                        className="w-10 h-10 rounded-xl bg-destructive/5 hover:bg-destructive/10 text-destructive/70 hover:text-destructive border border-destructive/5 hover:border-destructive/20 transition-all shadow-sm"
                                                         title="Delete post"
                                                     >
                                                         <Trash2 className="h-4 w-4" />
