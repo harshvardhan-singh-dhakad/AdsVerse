@@ -105,16 +105,14 @@ export default async function LangLayout({
 
   return (
     <FirebaseClientProvider>
-      <Script
+      <script
         id="localized-organization-schema"
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <Script
+      <script
         id="localized-localbusiness-schema"
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <Header navLinks={navLinks} lang={params.lang} />

@@ -74,5 +74,5 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // Use a more inclusive matcher, logic inside middleware handles exclusions
-  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png).*)'],
 };
