@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
+import Script from "next/script";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import dynamic from 'next/dynamic';
@@ -133,7 +134,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "AdsVerse | Top Digital Marketing & Automation Agency in Indore",
-  "image": "https://adsverse.in/images/logo-white.png",
+  "image": "https://adsverse.in/images/logo-white.webp",
   "@id": "https://adsverse.in/#localbusiness",
   "url": "https://adsverse.in",
   "telephone": "+91-9685123339",
@@ -187,12 +188,16 @@ const faqJsonLd = {
 export default function HomePage() {
   return (
     <>
-      <script
+      <Script
+        id="home-localbusiness-schema"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
+      <Script
+        id="home-faq-schema"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <main>

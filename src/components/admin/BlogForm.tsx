@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Eye, Send, Link as LinkIcon, Type } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -359,15 +360,42 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
               <FormField control={form.control} name="content" render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
-                    Blog Body <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <RichTextEditor 
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
+                  <Tabs defaultValue="visual" className="w-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
+                        Blog Body <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <TabsList className="h-9 bg-muted/50 border border-border/10 p-1 rounded-xl">
+                        <TabsTrigger value="visual" className="text-[10px] uppercase font-bold tracking-wider px-4 rounded-lg data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                          <Type className="w-3 h-3 mr-1.5" /> Normal
+                        </TabsTrigger>
+                        <TabsTrigger value="html" className="text-[10px] uppercase font-bold tracking-wider px-4 rounded-lg data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                          <PenTool className="w-3 h-3 mr-1.5" /> HTML Code
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
+
+                    <TabsContent value="visual" className="mt-0 ring-0 focus-visible:ring-0 outline-none">
+                      <FormControl>
+                        <RichTextEditor 
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </TabsContent>
+                    
+                    <TabsContent value="html" className="mt-0 ring-0 focus-visible:ring-0 outline-none">
+                      <FormControl>
+                        <Textarea 
+                          value={field.value}
+                          onChange={field.onChange}
+                          className="min-h-[500px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
+                          placeholder="<h2 className='text-3xl font-bold'>Hello World</h2>"
+                        />
+                      </FormControl>
+                    </TabsContent>
+                  </Tabs>
+                  
                   <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
                     <PenTool className="w-3 h-3" />
                     <span>{seoStats.words} words</span>

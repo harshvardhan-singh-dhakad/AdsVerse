@@ -27,8 +27,8 @@ export function Footer() {
     setMounted(true);
   }, []);
 
-  const darkLogo = "/images/logo-white.png";
-  const lightLogo = "/images/logo-black.png";
+  const darkLogo = "/images/logo-white.webp";
+  const lightLogo = "/images/logo-black.webp";
   
   const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
 

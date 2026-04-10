@@ -8,5 +8,10 @@
     "blog": "Blog",
     "contact": "Contact",
     "tools": "Tools"
+  },
+  "not_found": {
+    "title": "404 - Page Not Found",
+    "description": "Oops! The cosmic path you're looking for doesn't exist. You might have taken a wrong turn in the galaxy.",
+    "back_home": "Back to Home"
   }
 }

@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
       "name": "AdsVerse",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://adsverse.in/images/logo-white.png"
+        "url": "https://adsverse.in/images/logo-white.webp"
       }
     },
     "datePublished": post.publishedDate,

@@ -207,9 +207,19 @@
 
   .stars-lg {
     animation-duration: 50s;
-    background-image: url('/images/stars.png');
-    background-size: 512px 512px;
-    opacity: 0.7;
+    background-image: 
+      radial-gradient(2px 2px at 50px 100px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 150px 300px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 250px 50px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 350px 400px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 450px 200px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(4px 4px at 100px 450px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 200px 150px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 300px 500px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 400px 350px, #ffffff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 500px 100px, #ffffff, rgba(0, 0, 0, 0));
+    background-size: 600px 600px;
+    opacity: 0.6;
   }
 
   @keyframes animate-stars {

@@ -10,17 +10,22 @@ import { getFirestore, collection, query, orderBy, getDocs, where } from "fireba
 
 import { db } from "@/lib/firebase-server";
 
-export const metadata: Metadata = {
-  title: "Insights & Digital Trends",
-  description: "Latest digital marketing trends and strategies from AdsVerse. Expert tips on SEO, Paid Ads, and AI Automation.",
-  alternates: {
-    canonical: '/blog',
-    languages: {
-      'en': '/en/blog',
-      'hi': '/hi/blog',
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const isHi = lang === 'hi';
+  return {
+    title: isHi ? "इनसाइट्स और डिजिटल ट्रेंड्स — AdsVerse ब्लॉग" : "Insights & Digital Trends — AdsVerse Blog",
+    description: isHi
+      ? "AdsVerse के नवीनतम डिजिटल मार्केटिंग ट्रेंड और रणनीतियाँ। SEO, सशुल्क विज्ञापन और AI ऑटोमेशन पर विशेषज्ञ सुझाव।"
+      : "Latest digital marketing trends and strategies from AdsVerse. Expert tips on SEO, Paid Ads, and AI Automation.",
+    alternates: {
+      canonical: `https://adsverse.in/${lang}/blog`,
+      languages: {
+        'en': 'https://adsverse.in/en/blog',
+        'hi': 'https://adsverse.in/hi/blog',
+      },
     },
-  },
-};
+  };
+}
 
 function formatPostDate(date: any) {
   if (!date) return "N/A";
@@ -78,7 +83,7 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
       "name": "AdsVerse",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://adsverse.in/images/logo-white.png"
+        "url": "https://adsverse.in/images/logo-white.webp"
       }
     },
     "blogPost": posts.map(post => ({

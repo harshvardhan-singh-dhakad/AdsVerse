@@ -41,7 +41,7 @@ const jsonLd = {
     "name": "AdsVerse",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://adsverse.in/images/logo-white.png"
+      "url": "https://adsverse.in/images/logo-white.webp"
     }
   },
   "datePublished": "2024-05-19",

@@ -8,15 +8,18 @@ import { FloatingActionButton } from "@/components/layout/floating-action-button
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
+import Script from "next/script";
 
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter",
+  display: 'swap',
 });
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair-display',
+  display: 'swap',
 });
 
 const siteUrl = "https://adsverse.in";
@@ -32,7 +35,7 @@ const organizationSchema = {
   "name": siteName,
   "alternateName": "AdsVerse Digital Marketing Agency",
   "url": siteUrl,
-  "logo": `${siteUrl}/images/logo-white.png`,
+  "logo": `${siteUrl}/images/logo-white.webp`,
   "sameAs": [
     "https://facebook.com/adsverse",
     "https://instagram.com/adsverse_in",
@@ -98,7 +101,7 @@ export const metadata: Metadata = {
     siteName: siteName,
     images: [
       {
-        url: `${siteUrl}/images/og-image.png`,
+        url: `${siteUrl}/images/og-image.webp`,
         width: 1200,
         height: 630,
         alt: "AdsVerse - Digital Marketing Agency",
@@ -116,15 +119,7 @@ export const metadata: Metadata = {
     },
     description: description,
     creator: twitterHandle,
-    images: [`${siteUrl}/images/og-image.png`],
-  },
-  alternates: {
-    canonical: siteUrl,
-    languages: {
-      'en-IN': siteUrl,
-      'hi-IN': `${siteUrl}/hi`,
-      'x-default': siteUrl,
-    },
+    images: [`${siteUrl}/images/og-image.webp`],
   },
   icons: {
     icon: [
@@ -135,6 +130,10 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: '/site.webmanifest',
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -147,19 +146,21 @@ export default function RootLayout({
   return (
     <html lang={params.lang ?? 'en'} suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="organization-schema"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <script
+        <Script
+          id="website-schema"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       </head>
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",

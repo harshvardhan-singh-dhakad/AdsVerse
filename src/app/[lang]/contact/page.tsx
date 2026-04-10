@@ -7,21 +7,26 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Contact AdsVerse — Free Audit & Consultation",
-  description: "Get a free SEO audit and consultation from AdsVerse, Indore's top AI marketing agency. Contact us at +91-9685123339.",
-  keywords: [
-    "contact digital marketing agency Indore", "AdsVerse contact", "digital marketing consultation India",
-    "free SEO audit India", "hire digital marketing agency Indore"
-  ],
-  alternates: {
-    canonical: 'https://adsverse.in/en/contact',
-    languages: {
-      'en': 'https://adsverse.in/en/contact',
-      'hi': 'https://adsverse.in/hi/contact',
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const isHi = lang === 'hi';
+  return {
+    title: isHi ? "AdsVerse से संपर्क करें — मुफ्त ऑडिट और परामर्श" : "Contact AdsVerse — Free Audit & Consultation",
+    description: isHi
+      ? "AdsVerse से मुफ्त SEO ऑडिट और परामर्श प्राप्त करें, जो इंदौर की शीर्ष AI मार्केटिंग एजेंसी है। हमसे +91-9685123339 पर संपर्क करें।"
+      : "Get a free SEO audit and consultation from AdsVerse, Indore's top AI marketing agency. Contact us at +91-9685123339.",
+    keywords: [
+      "contact digital marketing agency Indore", "AdsVerse contact", "digital marketing consultation India",
+      "free SEO audit India", "hire digital marketing agency Indore"
+    ],
+    alternates: {
+      canonical: `https://adsverse.in/${lang}/contact`,
+      languages: {
+        'en': 'https://adsverse.in/en/contact',
+        'hi': 'https://adsverse.in/hi/contact',
+      },
     },
-  },
-};
+  };
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -33,7 +38,7 @@ const jsonLd = {
     "@type": "Organization",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/images/logo-white.png",
+    "logo": "https://adsverse.in/images/logo-white.webp",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+91-9685123339",

@@ -5,6 +5,7 @@ import { FloatingActionButton } from "@/components/layout/floating-action-button
 import { getDictionary } from "@/lib/get-dictionary";
 import { FirebaseClientProvider } from "@/firebase";
 import { Metadata } from "next";
+import Script from "next/script";
 
 
 
@@ -13,7 +14,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   "name": "AdsVerse",
   "url": "https://adsverse.in",
-  "logo": "https://adsverse.in/images/logo-white.png",
+  "logo": "https://adsverse.in/images/logo-white.webp",
   "sameAs": [
     "https://facebook.com/adsverse",
     "https://instagram.com/adsverse",
@@ -41,7 +42,7 @@ const localBusinessJsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "AdsVerse",
-  "image": "https://adsverse.in/images/logo-white.png",
+  "image": "https://adsverse.in/images/logo-white.webp",
   "@id": "https://adsverse.in",
   "url": "https://adsverse.in",
   "telephone": "+91-9685123339",
@@ -104,12 +105,16 @@ export default async function LangLayout({
 
   return (
     <FirebaseClientProvider>
-      <script
+      <Script
+        id="localized-organization-schema"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <script
+      <Script
+        id="localized-localbusiness-schema"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <Header navLinks={navLinks} lang={params.lang} />

@@ -137,17 +137,22 @@ const automationPackages = [
     { title: "Enterprise Automation Suite", price: "₹79,999 – ₹1,49,999", features: ["Custom AI agent", "Voice bot", "Complex workflows", "Multi-channel automation", "End-to-end automation dashboard"], isPopular: false },
 ];
 
-export const metadata: Metadata = {
-    title: "Digital Marketing & Automation in Indore",
-    description: "Indore's best digital marketing and automation services. Grow your business with SEO, Meta Ads, AI chatbots, and CRM automation.",
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const isHi = lang === 'hi';
+  return {
+    title: isHi ? "इंदौर में डिजिटल मार्केटिंग और ऑटोमेशन सेवाएं" : "Digital Marketing & Automation in Indore",
+    description: isHi
+      ? "इंदौर की सर्वश्रेष्ठ डिजिटल मार्केटिंग और ऑटोमेशन सेवाएं। SEO, मेटा विज्ञापन, AI चैटबॉट्स और CRM ऑटोमेशन के साथ अपने व्यवसाय को बढ़ाएं।"
+      : "Indore's best digital marketing and automation services. Grow your business with SEO, Meta Ads, AI chatbots, and CRM automation.",
     alternates: {
-        canonical: '/en/our-services',
-        languages: {
-            'en': '/en/our-services',
-            'hi': '/hi/our-services',
-        },
-    }
-};
+      canonical: `https://adsverse.in/${lang}/our-services`,
+      languages: {
+        'en': 'https://adsverse.in/en/our-services',
+        'hi': 'https://adsverse.in/hi/our-services',
+      },
+    },
+  };
+}
 
 export default function OurServicesPage() {
     const jsonLd = {
@@ -157,7 +162,7 @@ export default function OurServicesPage() {
         "provider": {
             "@type": "LocalBusiness",
             "name": "AdsVerse",
-            "image": "https://adsverse.in/images/logo-white.png",
+            "image": "https://adsverse.in/images/logo-white.webp",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Vijay Nagar",

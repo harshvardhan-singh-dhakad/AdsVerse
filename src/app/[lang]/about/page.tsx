@@ -4,22 +4,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
 import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "About AdsVerse — Top Marketing Agency in Indore",
-  description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 47+ brands grow through SEO, Paid Ads, and Automation.",
-  keywords: [
-    "digital marketing agency Indore", "best marketing agency Indore",
-    "AdsVerse team", "Deepak Dhakad digital marketing",
-    "digital marketing expert Indore", "marketing agency founded 2018 India"
-  ],
-  alternates: {
-    canonical: 'https://adsverse.in/en/about',
-    languages: {
-      'en': 'https://adsverse.in/en/about',
-      'hi': 'https://adsverse.in/hi/about',
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const isHi = lang === 'hi';
+  return {
+    title: isHi ? "AdsVerse के बारे में — इंदौर की शीर्ष मार्केटिंग एजेंसी" : "About AdsVerse — Top Marketing Agency in Indore",
+    description: isHi
+      ? "AdsVerse के बारे में जानें, इंदौर की शीर्ष AI मार्केटिंग एजेंसी। 2018 से, हमने SEO और विज्ञापनों के माध्यम से 47+ ब्रांडों को बढ़ने में मदद की है।"
+      : "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 47+ brands grow through SEO, Paid Ads, and Automation.",
+    keywords: [
+      "digital marketing agency Indore", "best marketing agency Indore",
+      "AdsVerse team", "Deepak Dhakad digital marketing",
+      "digital marketing expert Indore", "marketing agency founded 2018 India"
+    ],
+    alternates: {
+      canonical: `https://adsverse.in/${lang}/about`,
+      languages: {
+        'en': 'https://adsverse.in/en/about',
+        'hi': 'https://adsverse.in/hi/about',
+      },
     },
-  },
-};
+  };
+}
 
 const teamMembers = [
   { name: "Deepak Dhakad", role: "Ads, AI Automation, GEO & SEO Specialist", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FHSD01.jpeg?alt=media", hint: "man portrait" },
@@ -45,7 +50,7 @@ const jsonLd = {
     "@type": "Organization",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/images/logo-white.png",
+    "logo": "https://adsverse.in/images/logo-white.webp",
     "member": teamMembers.map(member => ({
       "@type": "Person",
       "name": member.name,

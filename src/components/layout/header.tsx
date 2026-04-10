@@ -34,8 +34,8 @@ export function Header({ navLinks, lang }: HeaderProps) {
 
   const getLangPath = (href: string) => `/${lang}${href === '/' ? '' : href}`;
 
-  const darkLogo = "/images/logo-white.png";
-  const lightLogo = "/images/logo-black.png";
+  const darkLogo = "/images/logo-white.webp";
+  const lightLogo = "/images/logo-black.webp";
   
   const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
   const isAdminPath = pathname?.includes('/admin');
