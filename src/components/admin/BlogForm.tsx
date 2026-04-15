@@ -361,7 +361,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               if (!isFullHtmlMode) {
                 // Switching TO Full HTML Mode: Copy content from rich text to HTML editor
                 const currentContent = form.getValues('content');
-                if (currentContent) setFullHtml(currentContent);
+                setFullHtml(currentContent || '');
                 setIsFullHtmlMode(true);
               } else {
                 // Switching TO Normal Mode: Extract data from HTML to fill back normal fields
@@ -369,6 +369,10 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   const metadata = parseMetadataFromHtml(fullHtml);
                   const parser = new DOMParser();
                   const parsed = parser.parseFromString(fullHtml, 'text/html');
+                  
+                  // Extract content: if it's a full document, we might want to strip <html>, <body> if present
+                  // But usually it's just a fragment.
+                  
                   const extractedTitle = parsed.querySelector('h1')?.textContent?.trim() || metadata['title'];
                   const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim() || metadata['metadesc'];
                   
@@ -384,9 +388,11 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     form.setValue('tags', tagArray);
                   }
                   
+                  // Final content sync
                   form.setValue('content', fullHtml, { shouldValidate: true });
                 } catch (e) {
-                  console.error('Sync failed', e);
+                  console.error('Extraction failed, but syncing content anyway', e);
+                  form.setValue('content', fullHtml, { shouldValidate: true });
                 }
                 setIsFullHtmlMode(false);
               }
