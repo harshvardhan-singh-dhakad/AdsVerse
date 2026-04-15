@@ -177,27 +177,82 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     form.setValue('tags', newTags, { shouldValidate: true });
   };
 
-  const handleFullHtmlSubmit = (status: 'draft' | 'publish' | 'schedule') => {
+  const parseMetadataFromHtml = (html: string) => {
+    const metadata: Record<string, string> = {};
+    const commentRegex = /<!--([\s\S]*?)-->/g;
+    let match;
+
+    while ((match = commentRegex.exec(html)) !== null) {
+      const commentContent = match[1];
+      const lines = commentContent.split('\n');
+      lines.forEach(line => {
+        const [key, ...valueParts] = line.split(':');
+        if (key && valueParts.length > 0) {
+          const cleanKey = key.trim().toLowerCase().replace(/\s+/g, '');
+          const cleanValue = valueParts.join(':').trim();
+          metadata[cleanKey] = cleanValue;
+        }
+      });
+    }
+    return metadata;
+  };
+
+  const handleAction = (statusOverride?: 'draft' | 'publish' | 'schedule') => {
+    // Determine the status to use
+    const currentStatus = form.getValues('status');
+    const finalStatus = statusOverride || currentStatus;
+
     if (isFullHtmlMode) {
       if (!fullHtml || fullHtml.trim().length < 20) {
         toast({ title: 'Error', description: 'Please write some HTML content first!', variant: 'destructive' });
         return;
       }
+      
+      const metadata = parseMetadataFromHtml(fullHtml);
+      
       try {
         const parser = new DOMParser();
         const parsed = parser.parseFromString(fullHtml, 'text/html');
-        const extractedTitle = parsed.querySelector('h1')?.textContent?.trim();
-        const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim();
-        form.setValue('title', extractedTitle && extractedTitle.length >= 5 ? extractedTitle : (form.getValues('title') || 'HTML Blog Post'), { shouldValidate: true });
+        const extractedTitle = parsed.querySelector('h1')?.textContent?.trim() || metadata['title'];
+        const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim() || metadata['metadesc'];
+        
+        // Auto-fill form from metadata or HTML
+        if (extractedTitle) form.setValue('title', extractedTitle, { shouldValidate: true });
+        if (metadata['slug']) form.setValue('slug', metadata['slug'], { shouldValidate: true });
+        if (metadata['metatitle']) form.setValue('metaTitle', metadata['metatitle']);
+        if (metadata['metadesc']) form.setValue('metaDescription', metadata['metadesc'], { shouldValidate: true });
+        if (metadata['focuskeyword']) form.setValue('focusKeyword', metadata['focuskeyword']);
+        if (metadata['author']) form.setValue('author', metadata['author']);
+        
+        if (metadata['tags']) {
+          const tagArray = metadata['tags'].split(',').map(t => t.trim()).filter(t => t);
+          form.setValue('tags', tagArray);
+        }
+
         form.setValue('excerpt', extractedExcerpt && extractedExcerpt.length >= 10 ? extractedExcerpt.slice(0, 155) : (form.getValues('excerpt') || 'Read this blog post for more details.'), { shouldValidate: true });
         form.setValue('content', fullHtml, { shouldValidate: true });
       } catch (e) {
-        form.setValue('title', form.getValues('title') || 'HTML Blog Post');
-        form.setValue('excerpt', form.getValues('excerpt') || 'Read this blog post for more details.');
         form.setValue('content', fullHtml);
       }
     }
-    form.setValue('status', status);
+
+    if (status === 'schedule') {
+      const selectedDate = new Date(form.getValues('publishedDate'));
+      if (selectedDate <= new Date()) {
+        toast({ 
+          title: 'Check Date', 
+          description: 'Scheduled date must be in the future. Please update "Publish Date & Time".',
+          variant: 'destructive' 
+        });
+        return;
+      }
+    }
+
+    if (status === 'publish') {
+      form.setValue('publishedDate', new Date().toISOString());
+    }
+
+    form.setValue('status', finalStatus);
     form.handleSubmit(onSubmit)();
   };
 
@@ -209,7 +264,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     try {
       const isPublished = values.status === 'publish';
 
-      // Clean undefined values for Firestore
+      // Preserve status for internal tracking
       const postData = {
         ...values,
         isPublished,
@@ -217,8 +272,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         focusKeyword: values.focusKeyword || '',
         metaTitle: values.metaTitle || '',
         metaDescription: values.metaDescription || '',
+        updatedAt: serverTimestamp(),
       };
-      delete (postData as any).status;
 
       let docRef;
       if (initialData?.id) {
@@ -302,7 +357,40 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
             type="button"
             role="switch"
             aria-checked={isFullHtmlMode}
-            onClick={() => setIsFullHtmlMode(v => !v)}
+            onClick={() => {
+              if (!isFullHtmlMode) {
+                // Switching TO Full HTML Mode: Copy content from rich text to HTML editor
+                const currentContent = form.getValues('content');
+                if (currentContent) setFullHtml(currentContent);
+                setIsFullHtmlMode(true);
+              } else {
+                // Switching TO Normal Mode: Extract data from HTML to fill back normal fields
+                try {
+                  const metadata = parseMetadataFromHtml(fullHtml);
+                  const parser = new DOMParser();
+                  const parsed = parser.parseFromString(fullHtml, 'text/html');
+                  const extractedTitle = parsed.querySelector('h1')?.textContent?.trim() || metadata['title'];
+                  const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim() || metadata['metadesc'];
+                  
+                  if (extractedTitle) form.setValue('title', extractedTitle, { shouldValidate: true });
+                  if (metadata['slug']) form.setValue('slug', metadata['slug'], { shouldValidate: true });
+                  if (extractedExcerpt) form.setValue('excerpt', extractedExcerpt.slice(0, 155), { shouldValidate: true });
+                  if (metadata['author']) form.setValue('author', metadata['author']);
+                  if (metadata['metatitle']) form.setValue('metaTitle', metadata['metatitle']);
+                  if (metadata['metadesc']) form.setValue('metaDescription', metadata['metadesc']);
+                  if (metadata['focuskeyword']) form.setValue('focusKeyword', metadata['focuskeyword']);
+                  if (metadata['tags']) {
+                    const tagArray = metadata['tags'].split(',').map(t => t.trim()).filter(t => t);
+                    form.setValue('tags', tagArray);
+                  }
+                  
+                  form.setValue('content', fullHtml, { shouldValidate: true });
+                } catch (e) {
+                  console.error('Sync failed', e);
+                }
+                setIsFullHtmlMode(false);
+              }
+            }}
             className={cn(
               'relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
               isFullHtmlMode ? 'bg-primary' : 'bg-muted'
@@ -817,32 +905,6 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 <Input readOnly value={`~${seoStats.readTime} min read`} className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" />
               </div>
             </div>
-
-            <FormField control={form.control} name="status" render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1 mb-2">
-                  Status <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <div className="flex flex-wrap gap-3">
-                    {[
-                      { val: 'publish', label: 'Publish Now' },
-                      { val: 'draft', label: 'Save Draft' },
-                      { val: 'schedule', label: 'Schedule' }
-                    ].map(st => (
-                      <label key={st.val} className={cn(
-                        "flex items-center gap-2 px-4 py-2.5 rounded-xl border cursor-pointer transition-all",
-                        field.value === st.val ? "bg-primary/10 border-primary text-primary" : "border-border/30 text-muted-foreground hover:border-border/60"
-                      )}>
-                        <input type="radio" className="hidden" checked={field.value === st.val} onChange={() => field.onChange(st.val)} />
-                        <div className={cn("w-2.5 h-2.5 rounded-full border-2", field.value === st.val ? "bg-primary border-primary" : "border-muted-foreground/50")} />
-                        <span className="text-xs font-bold uppercase tracking-widest">{st.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FormControl>
-              </FormItem>
-            )} />
           </div>
 
           {/* Card 6: Advanced Settings */}
@@ -885,7 +947,11 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">Studio Status</span>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  <span className="text-xs font-bold text-primary uppercase">{initialData ? 'Editing Masterpiece' : 'Drafting Intelligence'}</span>
+                  <span className="text-xs font-bold text-primary uppercase">
+                    {initialData 
+                      ? `Editing ${watchAllDetails.status === 'publish' ? 'Live Post' : watchAllDetails.status === 'schedule' ? 'Scheduled Post' : 'Draft'}` 
+                      : 'Drafting Intelligence'}
+                  </span>
                 </div>
               </div>
 
@@ -893,28 +959,31 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 type="button"
                 variant="outline"
                 disabled={form.formState.isSubmitting}
-                className="h-12 px-6 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-xs font-bold uppercase tracking-widest"
-                onClick={() => handleFullHtmlSubmit('draft')}
+                className="h-12 px-5 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-[11px] font-bold uppercase tracking-widest shrink-0"
+                onClick={() => handleAction('draft')}
               >
-                {form.formState.isSubmitting ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Save className="w-4 h-4 mr-2" />
-                )}
-                Save Draft
+                {form.formState.isSubmitting ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-2" />}
+                Draft
               </Button>
+
               <Button
                 type="button"
                 disabled={form.formState.isSubmitting}
-                className="h-12 min-w-[200px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all text-sm font-black uppercase tracking-[0.15em] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-lg disabled:hover:translate-y-0"
-                onClick={() => handleFullHtmlSubmit(initialData?.isPublished ? 'publish' : 'publish')}
+                className="h-12 px-6 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-400 text-white shadow-lg shadow-purple-500/10 hover:shadow-purple-500/20 hover:-translate-y-0.5 transition-all text-xs font-black uppercase tracking-widest shrink-0"
+                onClick={() => handleAction('schedule')}
               >
-                {form.formState.isSubmitting ? (
-                  <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-                ) : (
-                  <Send className="w-4 h-4 ml-2" />
-                )}
-                {initialData ? 'Update Post' : 'Publish on AdsVerse'}
+                {form.formState.isSubmitting ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Settings className="w-3.5 h-3.5 mr-2" />}
+                {initialData ? 'Update Schedule' : 'Schedule'}
+              </Button>
+
+              <Button
+                type="button"
+                disabled={form.formState.isSubmitting}
+                className="h-12 flex-1 md:flex-none md:min-w-[200px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all text-xs font-black uppercase tracking-widest"
+                onClick={() => handleAction('publish')}
+              >
+                {form.formState.isSubmitting ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Send className="w-3.5 h-3.5 mr-2" />}
+                {initialData ? 'Update Live' : 'Publish Now'}
               </Button>
 
               {onCancel && (
