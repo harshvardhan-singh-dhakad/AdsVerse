@@ -15,9 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Eye, Send, Link as LinkIcon, Type } from 'lucide-react';
+import { Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Send, Link as LinkIcon, Code2 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
@@ -57,11 +57,13 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const db = useFirestore();
   const storage = useStorage();
   const { toast } = useToast();
-  
+
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
   const [tagInput, setTagInput] = useState('');
+  const [isFullHtmlMode, setIsFullHtmlMode] = useState(false);
+  const [fullHtml, setFullHtml] = useState(initialData?.content || '');
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
@@ -100,7 +102,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   });
 
   const watchAllDetails = form.watch();
-  
+
   // SEO Calculations
   const seoStats = useMemo(() => {
     const title = watchAllDetails.title || '';
@@ -175,14 +177,38 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     form.setValue('tags', newTags, { shouldValidate: true });
   };
 
+  const handleFullHtmlSubmit = (status: 'draft' | 'publish' | 'schedule') => {
+    if (isFullHtmlMode) {
+      if (!fullHtml || fullHtml.trim().length < 20) {
+        toast({ title: 'Error', description: 'Please write some HTML content first!', variant: 'destructive' });
+        return;
+      }
+      try {
+        const parser = new DOMParser();
+        const parsed = parser.parseFromString(fullHtml, 'text/html');
+        const extractedTitle = parsed.querySelector('h1')?.textContent?.trim();
+        const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim();
+        form.setValue('title', extractedTitle && extractedTitle.length >= 5 ? extractedTitle : (form.getValues('title') || 'HTML Blog Post'), { shouldValidate: true });
+        form.setValue('excerpt', extractedExcerpt && extractedExcerpt.length >= 10 ? extractedExcerpt.slice(0, 155) : (form.getValues('excerpt') || 'Read this blog post for more details.'), { shouldValidate: true });
+        form.setValue('content', fullHtml, { shouldValidate: true });
+      } catch (e) {
+        form.setValue('title', form.getValues('title') || 'HTML Blog Post');
+        form.setValue('excerpt', form.getValues('excerpt') || 'Read this blog post for more details.');
+        form.setValue('content', fullHtml);
+      }
+    }
+    form.setValue('status', status);
+    form.handleSubmit(onSubmit)();
+  };
+
   const onSubmit = async (values: BlogFormValues) => {
     if (values.status === 'publish' && !values.title) {
-        toast({ title: 'Error', description: 'Please add a post title first!', variant: 'destructive' });
-        return; 
+      toast({ title: 'Error', description: 'Please add a post title first!', variant: 'destructive' });
+      return;
     }
     try {
       const isPublished = values.status === 'publish';
-      
+
       // Clean undefined values for Firestore
       const postData = {
         ...values,
@@ -230,13 +256,13 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
   return (
     <div className="w-full max-w-7xl mx-auto pb-32 animate-in fade-in slide-in-from-bottom-8 duration-1000 relative">
-      
+
       {/* HEADER ACTIONS */}
       {onCancel && (
         <div className="flex justify-start mb-6">
-          <Button 
-            type="button" 
-            variant="ghost" 
+          <Button
+            type="button"
+            variant="ghost"
             onClick={onCancel}
             className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-all"
           >
@@ -245,7 +271,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
           </Button>
         </div>
       )}
-      
+
       {/* HEADER */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-4">
@@ -257,18 +283,52 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         <p className="text-muted-foreground font-medium">Automate. Elevate. Dominate — one blog post at a time.</p>
       </div>
 
+      {/* MODE TOGGLE */}
+      <div className="mb-6 bg-card/40 backdrop-blur-xl border border-border/10 rounded-2xl p-4 flex items-center gap-4 shadow-lg">
+        <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+          <Code2 className="w-4 h-4" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className="font-bold text-xs tracking-wide text-foreground">Editor Mode</h4>
+          <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">
+            {isFullHtmlMode
+              ? 'Full HTML Mode — Write entire blog (title, description, body) as one raw HTML block'
+              : 'Normal Mode — Use structured form fields for title, description & body'}
+          </p>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className={cn('text-[10px] font-bold uppercase tracking-widest transition-colors', !isFullHtmlMode ? 'text-primary' : 'text-muted-foreground/40')}>Normal</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isFullHtmlMode}
+            onClick={() => setIsFullHtmlMode(v => !v)}
+            className={cn(
+              'relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+              isFullHtmlMode ? 'bg-primary' : 'bg-muted'
+            )}
+          >
+            <span className={cn(
+              'absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-300',
+              isFullHtmlMode ? 'translate-x-6' : 'translate-x-0'
+            )} />
+          </button>
+          <span className={cn('text-[10px] font-bold uppercase tracking-widest transition-colors', isFullHtmlMode ? 'text-primary' : 'text-muted-foreground/40')}>Full HTML</span>
+        </div>
+      </div>
+
       {/* SEO LIVE METER */}
       <div className="bg-card/40 backdrop-blur-xl border border-border/10 rounded-2xl p-6 mb-8 flex items-center gap-6 shadow-2xl">
         <div className="relative w-[52px] h-[52px] shrink-0">
           <svg width="52" height="52" viewBox="0 0 52 52" className="-rotate-90">
-            <circle cx="26" cy="26" r="21" fill="none" stroke="currentColor" className="text-border/40" strokeWidth="5"/>
+            <circle cx="26" cy="26" r="21" fill="none" stroke="currentColor" className="text-border/40" strokeWidth="5" />
             <circle cx="26" cy="26" r="21" fill="none" stroke="url(#seoGrad)" strokeWidth="5"
-              strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" 
-              className="transition-all duration-500 ease-out"/>
+              strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round"
+              className="transition-all duration-500 ease-out" />
             <defs>
               <linearGradient id="seoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3b82f6"/>
-                <stop offset="100%" stopColor="#2dd4bf"/>
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#2dd4bf" />
               </linearGradient>
             </defs>
           </svg>
@@ -282,8 +342,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
             {Object.entries(seoStats.checks).map(([key, check]) => (
               <span key={key} className={cn(
                 "text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border transition-colors",
-                check.done 
-                  ? "bg-teal-500/10 text-teal-400 border-teal-500/20" 
+                check.done
+                  ? "bg-teal-500/10 text-teal-400 border-teal-500/20"
                   : "bg-red-500/10 text-red-500 border-red-500/20"
               )}>
                 {check.done ? '✓' : '✗'} {check.label}
@@ -295,8 +355,9 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          
-          {/* Card 1: Core Content */}
+
+          {/* Card 1: Core Content — Hidden in Full HTML Mode */}
+          {!isFullHtmlMode && (
           <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
             <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
@@ -313,8 +374,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     Post Title <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Write a headline that ranks & gets clicks..." 
+                    <Input
+                      placeholder="Write a headline that ranks & gets clicks..."
                       className="font-headline text-lg sm:text-xl font-bold h-14 bg-muted/30 border-border/20 rounded-xl"
                       {...field}
                       onChange={(e) => {
@@ -322,6 +383,11 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                         if (!isSlugManuallyEdited) {
                           const s = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
                           form.setValue('slug', s, { shouldValidate: true });
+                        }
+                        // Auto-fill Meta Title from Post Title (user can override)
+                        const currentMeta = form.getValues('metaTitle');
+                        if (!currentMeta || currentMeta === form.getValues('title')) {
+                          form.setValue('metaTitle', e.target.value, { shouldValidate: false });
                         }
                       }}
                     />
@@ -342,8 +408,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <Textarea 
-                        placeholder="2-3 lines that appear on blog listing page and Google snippets..." 
+                      <Textarea
+                        placeholder="2-3 lines that appear on blog listing page and Google snippets..."
                         className="bg-muted/30 border-border/20 rounded-xl min-h-[80px] resize-none pb-8"
                         {...field}
                       />
@@ -360,42 +426,15 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
               <FormField control={form.control} name="content" render={({ field }) => (
                 <FormItem>
-                  <Tabs defaultValue="visual" className="w-full">
-                    <div className="flex items-center justify-between mb-4">
-                      <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
-                        Blog Body <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <TabsList className="h-9 bg-muted/50 border border-border/10 p-1 rounded-xl">
-                        <TabsTrigger value="visual" className="text-[10px] uppercase font-bold tracking-wider px-4 rounded-lg data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                          <Type className="w-3 h-3 mr-1.5" /> Normal
-                        </TabsTrigger>
-                        <TabsTrigger value="html" className="text-[10px] uppercase font-bold tracking-wider px-4 rounded-lg data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-                          <PenTool className="w-3 h-3 mr-1.5" /> HTML Code
-                        </TabsTrigger>
-                      </TabsList>
-                    </div>
-
-                    <TabsContent value="visual" className="mt-0 ring-0 focus-visible:ring-0 outline-none">
-                      <FormControl>
-                        <RichTextEditor 
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                    </TabsContent>
-                    
-                    <TabsContent value="html" className="mt-0 ring-0 focus-visible:ring-0 outline-none">
-                      <FormControl>
-                        <Textarea 
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="min-h-[500px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
-                          placeholder="<h2 className='text-3xl font-bold'>Hello World</h2>"
-                        />
-                      </FormControl>
-                    </TabsContent>
-                  </Tabs>
-                  
+                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
+                    Blog Body <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
                   <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
                     <PenTool className="w-3 h-3" />
                     <span>{seoStats.words} words</span>
@@ -406,14 +445,20 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               )} />
             </div>
           </div>
+          )}
 
           {/* Card 2: Media */}
-          <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
+          <div className={cn("bg-card border rounded-2xl p-6 md:p-8 shadow-xl", isFullHtmlMode ? "border-blue-500/30 ring-1 ring-blue-500/10" : "border-border/10")}>
             <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <ImageIcon className="w-4 h-4" />
               </div>
               <h3 className="font-bold text-sm tracking-wide">Media</h3>
+              {isFullHtmlMode && (
+                <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">
+                  Step 1 · Upload Image
+                </span>
+              )}
               <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">02 / 06</span>
             </div>
 
@@ -425,7 +470,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </FormLabel>
                   <FormControl>
                     <div className="relative border-2 border-dashed border-border/40 hover:border-primary/50 bg-muted/20 rounded-xl p-8 text-center transition-all duration-300">
-                       <input
+                      <input
                         type="file"
                         accept="image/*"
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
@@ -433,14 +478,14 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                         disabled={uploading}
                       />
                       {uploading ? (
-                         <div className="flex flex-col items-center justify-center space-y-3">
-                           <Loader2 className="h-8 w-8 text-primary animate-spin" />
-                           <p className="text-xs font-bold text-primary">{Math.round(progress)}% Uploaded...</p>
-                         </div>
+                        <div className="flex flex-col items-center justify-center space-y-3">
+                          <Loader2 className="h-8 w-8 text-primary animate-spin" />
+                          <p className="text-xs font-bold text-primary">{Math.round(progress)}% Uploaded...</p>
+                        </div>
                       ) : field.value ? (
                         <div className="flex flex-col items-center gap-4 relative z-20 pointer-events-none">
-                           <img src={field.value} alt="Blog Post Image Preview" className="max-h-[200px] rounded-lg border border-border/20 shadow-lg" />
-                           <p className="text-xs font-bold text-primary">Click or drop to replace image</p>
+                          <img src={field.value} alt="Blog Post Image Preview" className="max-h-[200px] rounded-lg border border-border/20 shadow-lg" />
+                          <p className="text-xs font-bold text-primary">Click or drop to replace image</p>
                         </div>
                       ) : (
                         <div className="flex flex-col items-center space-y-2 pointer-events-none">
@@ -468,9 +513,48 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
             </div>
           </div>
 
+          {/* Full HTML Editor — shown only in Full HTML Mode */}
+          {isFullHtmlMode && (
+          <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <Code2 className="w-4 h-4" />
+              </div>
+              <h3 className="font-bold text-sm tracking-wide">Full HTML Editor</h3>
+              <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">Step 2 · Write HTML</span>
+              <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">02.5 / 06</span>
+            </div>
+
+            <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 mb-5">
+              <p className="text-[11px] text-blue-400 font-medium tracking-wide leading-relaxed">
+                💡 <strong>Tip:</strong> Use{' '}
+                <code className="bg-blue-500/10 px-1 rounded">&lt;h1&gt;</code> for your blog title,
+                first <code className="bg-blue-500/10 px-1 rounded">&lt;p&gt;</code> for excerpt —
+                these are <strong>auto-extracted on save</strong>. Rest of the HTML becomes your blog body.
+              </p>
+            </div>
+
+            <Textarea
+              value={fullHtml}
+              onChange={(e) => setFullHtml(e.target.value)}
+              className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
+              placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
+            />
+
+            <div className="flex items-center gap-3 mt-3">
+              <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full">
+                <Code2 className="w-3 h-3" />
+                <span>{fullHtml.trim() === '' ? 0 : fullHtml.trim().split(/\s+/).length} tokens</span>
+                <span className="opacity-50">·</span>
+                <span>{fullHtml.length} chars</span>
+              </div>
+            </div>
+          </div>
+          )}
+
           {/* Card 3: Categorization */}
           <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
-             <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
+            <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <Tags className="w-4 h-4" />
               </div>
@@ -500,27 +584,27 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                       <SelectGroup>
-                          <SelectLabel className="text-[10px] font-black tracking-widest uppercase text-primary">AdsVerse Services</SelectLabel>
-                          <SelectItem value="seo">SEO Optimization</SelectItem>
-                          <SelectItem value="paid-ads">Paid Ads (Google & Meta)</SelectItem>
-                          <SelectItem value="web-development">Web Development</SelectItem>
-                          <SelectItem value="automation-ai">Automation & AI</SelectItem>
-                          <SelectItem value="content-marketing">Content Marketing</SelectItem>
-                          <SelectItem value="social-media">Social Media</SelectItem>
-                       </SelectGroup>
-                       <SelectGroup>
-                          <SelectLabel className="text-[10px] font-black tracking-widest uppercase text-primary mt-2">Content Types</SelectLabel>
-                          <SelectItem value="case-studies">Case Studies</SelectItem>
-                          <SelectItem value="tutorials">Tutorials & How-To</SelectItem>
-                          <SelectItem value="industry-news">Industry News</SelectItem>
-                       </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel className="text-[10px] font-black tracking-widest uppercase text-primary">AdsVerse Services</SelectLabel>
+                        <SelectItem value="seo">SEO Optimization</SelectItem>
+                        <SelectItem value="paid-ads">Paid Ads (Google & Meta)</SelectItem>
+                        <SelectItem value="web-development">Web Development</SelectItem>
+                        <SelectItem value="automation-ai">Automation & AI</SelectItem>
+                        <SelectItem value="content-marketing">Content Marketing</SelectItem>
+                        <SelectItem value="social-media">Social Media</SelectItem>
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel className="text-[10px] font-black tracking-widest uppercase text-primary mt-2">Content Types</SelectLabel>
+                        <SelectItem value="case-studies">Case Studies</SelectItem>
+                        <SelectItem value="tutorials">Tutorials & How-To</SelectItem>
+                        <SelectItem value="industry-news">Industry News</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-[10px] text-red-500" />
                 </FormItem>
               )} />
-              
+
               <FormField control={form.control} name="language" render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -577,7 +661,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
           {/* Card 4: SEO Settings */}
           <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
-             <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
+            <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <Target className="w-4 h-4" />
               </div>
@@ -591,7 +675,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
                     Focus Keyword <span className="text-red-500">*</span>
                   </FormLabel>
-                   <FormControl>
+                  <FormControl>
                     <Input placeholder="e.g. AI automation agency Indore" className="bg-muted/30 border-border/20 rounded-xl h-12" {...field} />
                   </FormControl>
                   <FormDescription className="text-[10px] text-muted-foreground">
@@ -603,39 +687,52 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="metaTitle" render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                    <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                       Meta Title
+                      <span className="text-[9px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider normal-case">
+                        Auto from Post Title
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Input placeholder="Leave blank to use post title" className="bg-muted/30 border-border/20 rounded-xl h-12" {...field} />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground/50">
+                        <Input
+                          placeholder="(Same as Post Title)"
+                          className="bg-muted/30 border-border/20 rounded-xl h-12 pr-14"
+                          {...field}
+                        />
+                        <span className={cn(
+                          "absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold",
+                          (field.value || '').length > 60 ? 'text-red-500' : 'text-muted-foreground/50'
+                        )}>
                           {(field.value || '').length}/60
                         </span>
                       </div>
                     </FormControl>
+                    <FormDescription className="text-[10px] text-muted-foreground">
+                      Auto-filled from Post Title. Edit only if you want a different SEO title.
+                    </FormDescription>
                   </FormItem>
                 )} />
 
                 <div className="space-y-2">
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Canonical URL</FormLabel>
-                  <Input 
-                    readOnly 
+                  <Input
+                    readOnly
                     value={slug ? `https://adsverse.in/en/blog/${slug}` : ''}
-                    className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" 
+                    className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12"
                   />
                 </div>
               </div>
 
-               <FormField control={form.control} name="metaDescription" render={({ field }) => (
+              <FormField control={form.control} name="metaDescription" render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
                     Meta Description
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <Textarea 
-                        placeholder="Google search description (ideal 150-160 chars)..." 
+                      <Textarea
+                        placeholder="Google search description (ideal 150-160 chars)..."
                         className="bg-muted/30 border-border/20 rounded-xl min-h-[80px] resize-none pb-8"
                         {...field}
                       />
@@ -649,16 +746,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </FormControl>
                 </FormItem>
               )} />
-              
-               <div className="space-y-2">
-                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Open Graph Image URL</FormLabel>
-                  <Input 
-                    readOnly 
-                    value={slug ? `https://adsverse.in/images/blog/${slug}-og.jpg` : ''}
-                    className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12 text-xs" 
-                  />
-                  <p className="text-[10px] text-muted-foreground mt-1">Auto-set when featured image is uploaded · Used for social share previews</p>
-                </div>
+
+              <div className="space-y-2">
+                <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Open Graph Image URL</FormLabel>
+                <Input
+                  readOnly
+                  value={slug ? `https://adsverse.in/images/blog/${slug}-og.jpg` : ''}
+                  className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12 text-xs"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">Auto-set when featured image is uploaded · Used for social share previews</p>
+              </div>
             </div>
           </div>
 
@@ -681,7 +778,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
                     Author <span className="text-red-500">*</span>
                   </FormLabel>
-                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="bg-muted/30 border-border/20 rounded-xl h-12">
                         <SelectValue placeholder="Select author" />
@@ -696,11 +793,11 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   <FormDescription className="text-[10px] text-muted-foreground">Website owner set as default</FormDescription>
                 </FormItem>
               )} />
-              
-               <div className="space-y-2">
-                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Website</FormLabel>
-                   <Input readOnly value="https://adsverse.in" className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" />
-               </div>
+
+              <div className="space-y-2">
+                <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Website</FormLabel>
+                <Input readOnly value="https://adsverse.in" className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -714,11 +811,11 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </FormControl>
                 </FormItem>
               )} />
-              
-               <div className="space-y-2">
-                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Estimated Read Time</FormLabel>
-                   <Input readOnly value={`~${seoStats.readTime} min read`} className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" />
-               </div>
+
+              <div className="space-y-2">
+                <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Estimated Read Time</FormLabel>
+                <Input readOnly value={`~${seoStats.readTime} min read`} className="bg-teal-500/5 border-teal-500/20 text-teal-400 rounded-xl h-12" />
+              </div>
             </div>
 
             <FormField control={form.control} name="status" render={({ field }) => (
@@ -735,7 +832,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     ].map(st => (
                       <label key={st.val} className={cn(
                         "flex items-center gap-2 px-4 py-2.5 rounded-xl border cursor-pointer transition-all",
-                         field.value === st.val ? "bg-primary/10 border-primary text-primary" : "border-border/30 text-muted-foreground hover:border-border/60"
+                        field.value === st.val ? "bg-primary/10 border-primary text-primary" : "border-border/30 text-muted-foreground hover:border-border/60"
                       )}>
                         <input type="radio" className="hidden" checked={field.value === st.val} onChange={() => field.onChange(st.val)} />
                         <div className={cn("w-2.5 h-2.5 rounded-full border-2", field.value === st.val ? "bg-primary border-primary" : "border-muted-foreground/50")} />
@@ -751,7 +848,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
           {/* Card 6: Advanced Settings */}
           <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
             <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
-               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <Settings className="w-4 h-4" />
               </div>
               <h3 className="font-bold text-sm tracking-wide">Advanced Settings</h3>
@@ -792,19 +889,34 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 </div>
               </div>
 
-              <Button type="button" variant="outline" className="h-12 px-6 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-xs font-bold uppercase tracking-widest" onClick={() => {
-                form.setValue('status', 'draft');
-                form.handleSubmit(onSubmit)();
-              }}>
-                <Save className="w-4 h-4 mr-2" /> Save Draft
+              <Button
+                type="button"
+                variant="outline"
+                disabled={form.formState.isSubmitting}
+                className="h-12 px-6 rounded-xl border-border/40 hover:border-primary hover:text-primary transition-all text-xs font-bold uppercase tracking-widest"
+                onClick={() => handleFullHtmlSubmit('draft')}
+              >
+                {form.formState.isSubmitting ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4 mr-2" />
+                )}
+                Save Draft
               </Button>
-              <Button type="button" className="h-12 px-6 rounded-xl bg-teal-500/10 text-teal-400 hover:bg-teal-500/20 transition-all text-xs font-bold uppercase tracking-widest">
-                <Eye className="w-4 h-4 mr-2" /> Preview
+              <Button
+                type="button"
+                disabled={form.formState.isSubmitting}
+                className="h-12 min-w-[200px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all text-sm font-black uppercase tracking-[0.15em] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-lg disabled:hover:translate-y-0"
+                onClick={() => handleFullHtmlSubmit(initialData?.isPublished ? 'publish' : 'publish')}
+              >
+                {form.formState.isSubmitting ? (
+                  <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 ml-2" />
+                )}
+                {initialData ? 'Update Post' : 'Publish on AdsVerse'}
               </Button>
-              <Button type="submit" className="h-12 min-w-[200px] rounded-xl bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all text-sm font-black uppercase tracking-[0.15em]">
-                {initialData ? 'Update Document' : 'Publish on AdsVerse'} <Send className="w-4 h-4 ml-2" />
-              </Button>
-              
+
               {onCancel && (
                 <Button type="button" variant="ghost" className="h-12 w-12 rounded-xl border border-border/10 hover:bg-red-500/10 hover:text-red-500 transition-all lg:hidden" onClick={onCancel}>
                   <X className="w-5 h-5" />
