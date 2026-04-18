@@ -213,11 +213,22 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       try {
         const parser = new DOMParser();
         const parsed = parser.parseFromString(fullHtml, 'text/html');
-        const extractedTitle = parsed.querySelector('h1')?.textContent?.trim() || metadata['title'];
-        const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim() || metadata['metadesc'];
+        
+        // Better extraction: fallback to <title> or <meta name="description"> if h1 or p are missing
+        const extractedTitle = metadata['title'] || parsed.querySelector('h1')?.textContent?.trim() || parsed.querySelector('title')?.textContent?.trim() || 'Custom Blog Post';
+        const extractedExcerpt = metadata['metadesc'] || parsed.querySelector('p')?.textContent?.trim() || parsed.querySelector('meta[name="description"]')?.getAttribute('content')?.trim();
         
         // Auto-fill form from metadata or HTML
-        if (extractedTitle) form.setValue('title', extractedTitle, { shouldValidate: true });
+        if (extractedTitle) {
+          form.setValue('title', extractedTitle, { shouldValidate: true });
+          
+          // CRITICAL FIX: Ensure slug is populated if missing
+          if (!form.getValues('slug')) {
+             const autoSlug = extractedTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+             form.setValue('slug', autoSlug || 'custom-post', { shouldValidate: true });
+          }
+        }
+
         if (metadata['slug']) form.setValue('slug', metadata['slug'], { shouldValidate: true });
         if (metadata['metatitle']) form.setValue('metaTitle', metadata['metatitle']);
         if (metadata['metadesc']) form.setValue('metaDescription', metadata['metadesc'], { shouldValidate: true });
@@ -229,14 +240,14 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
           form.setValue('tags', tagArray);
         }
 
-        form.setValue('excerpt', extractedExcerpt && extractedExcerpt.length >= 10 ? extractedExcerpt.slice(0, 155) : (form.getValues('excerpt') || 'Read this blog post for more details.'), { shouldValidate: true });
+        form.setValue('excerpt', extractedExcerpt && extractedExcerpt.length >= 10 ? extractedExcerpt.slice(0, 155) : (form.getValues('excerpt') || 'Explore this custom blog post. Read on for more details.'), { shouldValidate: true });
         form.setValue('content', fullHtml, { shouldValidate: true });
       } catch (e) {
         form.setValue('content', fullHtml);
       }
     }
 
-    if (status === 'schedule') {
+    if (finalStatus === 'schedule') {
       const selectedDate = new Date(form.getValues('publishedDate'));
       if (selectedDate <= new Date()) {
         toast({ 
@@ -248,12 +259,28 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       }
     }
 
-    if (status === 'publish') {
+    if (finalStatus === 'publish') {
       form.setValue('publishedDate', new Date().toISOString());
     }
 
     form.setValue('status', finalStatus);
-    form.handleSubmit(onSubmit)();
+    
+    // CRITICAL FIX: Add onError handler to surface Zod validations to the user!
+    form.handleSubmit(onSubmit, (errors) => {
+      console.log('Form Validation Blocked Submission:', errors);
+      const firstErrorKey = Object.keys(errors)[0];
+      const firstError = errors[firstErrorKey as keyof typeof errors];
+      
+      if (firstError?.message) {
+        toast({ 
+          title: 'Cannot Publish: Missing Info', 
+          description: firstError.message as string, 
+          variant: 'destructive' 
+        });
+      } else {
+        toast({ title: 'Form Error', description: 'Please check your form for missing required fields.', variant: 'destructive' });
+      }
+    })();
   };
 
   const onSubmit = async (values: BlogFormValues) => {

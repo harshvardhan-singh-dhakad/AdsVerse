@@ -205,7 +205,9 @@ export default function HomePage() {
         <section className="py-24 sm:py-32">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter font-headline mb-6 text-balance">
-              Digital Marketing <span className="text-primary italic">Agency</span> in Indore
+              Digital Marketing{" "}
+              <span className="text-primary italic">Agency</span>
+              {" "}in Indore
             </h1>
             <p className="mt-4 text-2xl sm:text-3xl font-bold text-accent font-headline">
               Automate. Elevate. Dominate.
