@@ -208,25 +208,25 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         toast({ title: 'Error', description: 'Please write some HTML content first!', variant: 'destructive' });
         return;
       }
-
+      
       const metadata = parseMetadataFromHtml(fullHtml);
-
+      
       try {
         const parser = new DOMParser();
         const parsed = parser.parseFromString(fullHtml, 'text/html');
-
+        
         // Better extraction: fallback to <title> or <meta name="description"> if h1 or p are missing
         const extractedTitle = metadata['title'] || parsed.querySelector('h1')?.textContent?.trim() || parsed.querySelector('title')?.textContent?.trim() || 'Custom Blog Post';
         const extractedExcerpt = metadata['metadesc'] || parsed.querySelector('p')?.textContent?.trim() || parsed.querySelector('meta[name="description"]')?.getAttribute('content')?.trim();
-
+        
         // Auto-fill form from metadata or HTML
         if (extractedTitle) {
           form.setValue('title', extractedTitle, { shouldValidate: true });
-
+          
           // CRITICAL FIX: Ensure slug is populated if missing
           if (!form.getValues('slug')) {
-            const autoSlug = extractedTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-            form.setValue('slug', autoSlug || 'custom-post', { shouldValidate: true });
+             const autoSlug = extractedTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+             form.setValue('slug', autoSlug || 'custom-post', { shouldValidate: true });
           }
         }
 
@@ -235,7 +235,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         if (metadata['metadesc']) form.setValue('metaDescription', metadata['metadesc'], { shouldValidate: true });
         if (metadata['focuskeyword']) form.setValue('focusKeyword', metadata['focuskeyword']);
         if (metadata['author']) form.setValue('author', metadata['author']);
-
+        
         if (metadata['tags']) {
           const tagArray = metadata['tags'].split(',').map(t => t.trim()).filter(t => t);
           form.setValue('tags', tagArray);
@@ -251,10 +251,10 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     if (finalStatus === 'schedule') {
       const selectedDate = new Date(form.getValues('publishedDate'));
       if (selectedDate <= new Date()) {
-        toast({
-          title: 'Check Date',
+        toast({ 
+          title: 'Check Date', 
           description: 'Scheduled date must be in the future. Please update "Publish Date & Time".',
-          variant: 'destructive'
+          variant: 'destructive' 
         });
         return;
       }
@@ -265,18 +265,18 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     }
 
     form.setValue('status', finalStatus);
-
+    
     // CRITICAL FIX: Add onError handler to surface Zod validations to the user!
     form.handleSubmit(onSubmit, (errors) => {
       console.log('Form Validation Blocked Submission:', errors);
       const firstErrorKey = Object.keys(errors)[0];
       const firstError = errors[firstErrorKey as keyof typeof errors];
-
+      
       if (firstError?.message) {
-        toast({
-          title: 'Cannot Publish: Missing Info',
-          description: firstError.message as string,
-          variant: 'destructive'
+        toast({ 
+          title: 'Cannot Publish: Missing Info', 
+          description: firstError.message as string, 
+          variant: 'destructive' 
         });
       } else {
         toast({ title: 'Form Error', description: 'Please check your form for missing required fields.', variant: 'destructive' });
@@ -398,13 +398,13 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   const metadata = parseMetadataFromHtml(fullHtml);
                   const parser = new DOMParser();
                   const parsed = parser.parseFromString(fullHtml, 'text/html');
-
+                  
                   // Extract content: if it's a full document, we might want to strip <html>, <body> if present
                   // But usually it's just a fragment.
-
+                  
                   const extractedTitle = parsed.querySelector('h1')?.textContent?.trim() || metadata['title'];
                   const extractedExcerpt = parsed.querySelector('p')?.textContent?.trim() || metadata['metadesc'];
-
+                  
                   if (extractedTitle) form.setValue('title', extractedTitle, { shouldValidate: true });
                   if (metadata['slug']) form.setValue('slug', metadata['slug'], { shouldValidate: true });
                   if (extractedExcerpt) form.setValue('excerpt', extractedExcerpt.slice(0, 155), { shouldValidate: true });
@@ -416,7 +416,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     const tagArray = metadata['tags'].split(',').map(t => t.trim()).filter(t => t);
                     form.setValue('tags', tagArray);
                   }
-
+                  
                   // Final content sync
                   form.setValue('content', fullHtml, { shouldValidate: true });
                 } catch (e) {
@@ -481,93 +481,93 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
           {/* Card 1: Core Content — Hidden in Full HTML Mode */}
           {!isFullHtmlMode && (
-            <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
-              <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                  <PenTool className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-sm tracking-wide">Core Content</h3>
-                <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">01 / 06</span>
+          <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <PenTool className="w-4 h-4" />
               </div>
-
-              <div className="space-y-6">
-                <FormField control={form.control} name="title" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
-                      Post Title <span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Write a headline that ranks & gets clicks..."
-                        className="font-headline text-lg sm:text-xl font-bold h-14 bg-muted/30 border-border/20 rounded-xl"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          if (!isSlugManuallyEdited) {
-                            const s = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-                            form.setValue('slug', s, { shouldValidate: true });
-                          }
-                          // Auto-fill Meta Title from Post Title (user can override)
-                          const currentMeta = form.getValues('metaTitle');
-                          if (!currentMeta || currentMeta === form.getValues('title')) {
-                            form.setValue('metaTitle', e.target.value, { shouldValidate: false });
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                      <LinkIcon className="w-3 h-3" />
-                      <code className="bg-primary/10 text-primary px-2 py-0.5 rounded font-mono text-[10px]">
-                        adsverse.in/en/blog/{slug || 'your-post-slug'}
-                      </code>
-                    </div>
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="excerpt" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
-                      Excerpt / Short Description <span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Textarea
-                          placeholder="2-3 lines that appear on blog listing page and Google snippets..."
-                          className="bg-muted/30 border-border/20 rounded-xl min-h-[80px] resize-none pb-8"
-                          {...field}
-                        />
-                        <span className={cn(
-                          "absolute bottom-3 right-3 text-[10px] font-bold",
-                          field.value.length > 160 ? "text-red-500" : (field.value.length > 130 ? "text-amber-500" : "text-teal-500")
-                        )}>
-                          {field.value.length}/160
-                        </span>
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="content" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
-                      Blog Body <span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <RichTextEditor
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
-                      <PenTool className="w-3 h-3" />
-                      <span>{seoStats.words} words</span>
-                      <span className="opacity-50">·</span>
-                      <span>Target: 800–1500 words for SEO</span>
-                    </div>
-                  </FormItem>
-                )} />
-              </div>
+              <h3 className="font-bold text-sm tracking-wide">Core Content</h3>
+              <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">01 / 06</span>
             </div>
+
+            <div className="space-y-6">
+              <FormField control={form.control} name="title" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
+                    Post Title <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Write a headline that ranks & gets clicks..."
+                      className="font-headline text-lg sm:text-xl font-bold h-14 bg-muted/30 border-border/20 rounded-xl"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (!isSlugManuallyEdited) {
+                          const s = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                          form.setValue('slug', s, { shouldValidate: true });
+                        }
+                        // Auto-fill Meta Title from Post Title (user can override)
+                        const currentMeta = form.getValues('metaTitle');
+                        if (!currentMeta || currentMeta === form.getValues('title')) {
+                          form.setValue('metaTitle', e.target.value, { shouldValidate: false });
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                    <LinkIcon className="w-3 h-3" />
+                    <code className="bg-primary/10 text-primary px-2 py-0.5 rounded font-mono text-[10px]">
+                      adsverse.in/en/blog/{slug || 'your-post-slug'}
+                    </code>
+                  </div>
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="excerpt" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
+                    Excerpt / Short Description <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Textarea
+                        placeholder="2-3 lines that appear on blog listing page and Google snippets..."
+                        className="bg-muted/30 border-border/20 rounded-xl min-h-[80px] resize-none pb-8"
+                        {...field}
+                      />
+                      <span className={cn(
+                        "absolute bottom-3 right-3 text-[10px] font-bold",
+                        field.value.length > 160 ? "text-red-500" : (field.value.length > 130 ? "text-amber-500" : "text-teal-500")
+                      )}>
+                        {field.value.length}/160
+                      </span>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="content" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
+                    Blog Body <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
+                    <PenTool className="w-3 h-3" />
+                    <span>{seoStats.words} words</span>
+                    <span className="opacity-50">·</span>
+                    <span>Target: 800–1500 words for SEO</span>
+                  </div>
+                </FormItem>
+              )} />
+            </div>
+          </div>
           )}
 
           {/* Card 2: Media */}
@@ -638,41 +638,41 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
           {/* Full HTML Editor — shown only in Full HTML Mode */}
           {isFullHtmlMode && (
-            <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
-              <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                  <Code2 className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-sm tracking-wide">Full HTML Editor</h3>
-                <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">Step 2 · Write HTML</span>
-                <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">02.5 / 06</span>
+          <div className="bg-card border border-border/10 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div className="flex items-center gap-3 border-b border-border/10 pb-4 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <Code2 className="w-4 h-4" />
               </div>
+              <h3 className="font-bold text-sm tracking-wide">Full HTML Editor</h3>
+              <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">Step 2 · Write HTML</span>
+              <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">02.5 / 06</span>
+            </div>
 
-              <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 mb-5">
-                <p className="text-[11px] text-blue-400 font-medium tracking-wide leading-relaxed">
-                  💡 <strong>Tip:</strong> Use{' '}
-                  <code className="bg-blue-500/10 px-1 rounded">&lt;h1&gt;</code> for your blog title,
-                  first <code className="bg-blue-500/10 px-1 rounded">&lt;p&gt;</code> for excerpt —
-                  these are <strong>auto-extracted on save</strong>. Rest of the HTML becomes your blog body.
-                </p>
-              </div>
+            <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 mb-5">
+              <p className="text-[11px] text-blue-400 font-medium tracking-wide leading-relaxed">
+                💡 <strong>Tip:</strong> Use{' '}
+                <code className="bg-blue-500/10 px-1 rounded">&lt;h1&gt;</code> for your blog title,
+                first <code className="bg-blue-500/10 px-1 rounded">&lt;p&gt;</code> for excerpt —
+                these are <strong>auto-extracted on save</strong>. Rest of the HTML becomes your blog body.
+              </p>
+            </div>
 
-              <Textarea
-                value={fullHtml}
-                onChange={(e) => setFullHtml(e.target.value)}
-                className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
-                placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
-              />
+            <Textarea
+              value={fullHtml}
+              onChange={(e) => setFullHtml(e.target.value)}
+              className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
+              placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
+            />
 
-              <div className="flex items-center gap-3 mt-3">
-                <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full">
-                  <Code2 className="w-3 h-3" />
-                  <span>{fullHtml.trim() === '' ? 0 : fullHtml.trim().split(/\s+/).length} tokens</span>
-                  <span className="opacity-50">·</span>
-                  <span>{fullHtml.length} chars</span>
-                </div>
+            <div className="flex items-center gap-3 mt-3">
+              <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full">
+                <Code2 className="w-3 h-3" />
+                <span>{fullHtml.trim() === '' ? 0 : fullHtml.trim().split(/\s+/).length} tokens</span>
+                <span className="opacity-50">·</span>
+                <span>{fullHtml.length} chars</span>
               </div>
             </div>
+          </div>
           )}
 
           {/* Card 3: Categorization */}
@@ -970,8 +970,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   <span className="text-xs font-bold text-primary uppercase">
-                    {initialData
-                      ? `Editing ${watchAllDetails.status === 'publish' ? 'Live Post' : watchAllDetails.status === 'schedule' ? 'Scheduled Post' : 'Draft'}`
+                    {initialData 
+                      ? `Editing ${watchAllDetails.status === 'publish' ? 'Live Post' : watchAllDetails.status === 'schedule' ? 'Scheduled Post' : 'Draft'}` 
                       : 'Drafting Intelligence'}
                   </span>
                 </div>
@@ -1005,14 +1005,14 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                       <Clock className="w-4 h-4 text-purple-400" />
                       <h4 className="font-bold text-sm tracking-tight text-foreground">Set Schedule Date & Time</h4>
                     </div>
-
+                    
                     <FormField control={form.control} name="publishedDate" render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input
-                            type="datetime-local"
-                            className="bg-muted/50 border-border/20 rounded-xl h-12 text-sm focus-visible:ring-purple-500/30"
-                            {...field}
+                          <Input 
+                            type="datetime-local" 
+                            className="bg-muted/50 border-border/20 rounded-xl h-12 text-sm focus-visible:ring-purple-500/30" 
+                            {...field} 
                           />
                         </FormControl>
                         <FormDescription className="text-[10px] leading-relaxed">
@@ -1021,7 +1021,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                       </FormItem>
                     )} />
 
-                    <Button
+                    <Button 
                       type="button"
                       className="w-full h-12 rounded-xl bg-purple-500 hover:bg-purple-600 text-white font-bold text-xs uppercase tracking-widest transition-all"
                       onClick={() => handleAction('schedule')}

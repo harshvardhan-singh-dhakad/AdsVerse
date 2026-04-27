@@ -10,7 +10,7 @@ import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import Script from "next/script";
 
-const inter = Inter({
+const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter",
   display: 'swap',
@@ -26,7 +26,7 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const defaultImage = "https://adsverse.in/images/og-image.png";
+const defaultImage = "https://adsverse.in/images/og-adsverse-2026.webp";
 const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108"; // Using a placeholder that looks real or user's provided ID if available
 
 const organizationSchema = {
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     siteName: siteName,
     images: [
       {
-        url: `${siteUrl}/images/og-image.webp`,
+        url: `${siteUrl}/images/og-adsverse-2026.webp`,
         width: 1200,
         height: 630,
         alt: "AdsVerse - Digital Marketing Agency",
@@ -119,7 +119,7 @@ export const metadata: Metadata = {
     },
     description: description,
     creator: twitterHandle,
-    images: [`${siteUrl}/images/og-image.webp`],
+    images: [`${siteUrl}/images/og-adsverse-2026.webp`],
   },
   icons: {
     icon: [
@@ -164,31 +164,31 @@ export default function RootLayout({
       </head>
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",
-        inter.variable,
+        inter.variable, 
         playfairDisplay.variable
       )}>
         <noscript>
-          <iframe
+          <iframe 
             src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
-            height="0"
-            width="0"
+            height="0" 
+            width="0" 
             className="sr-only hidden"
           ></iframe>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`}
+          <img 
+            height="1" 
+            width="1" 
+            style={{ display: 'none' }} 
+            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`} 
             alt=""
           />
         </noscript>
         <ScriptOptimizer />
         <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
         >
           <div className="relative z-10">
             <BackgroundEffects />

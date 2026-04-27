@@ -38,12 +38,38 @@ export async function generateMetadata({ params }: { params: { slug: string, lan
   const post = await getBlogPost(params.slug);
   if (!post) return { title: "Post Not Found" };
 
+  const fullUrl = `https://adsverse.in/${params.lang}/blog/${post.slug}`;
+  const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-image.webp';
+
   return {
     title: `${post.title} | AdsVerse Blog`,
     description: post.excerpt,
     alternates: {
-      canonical: `https://adsverse.in/${params.lang}/blog/${post.slug}`,
-    }
+      canonical: fullUrl,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: fullUrl,
+      siteName: 'AdsVerse',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      type: 'article',
+      publishedTime: post.publishedDate,
+      authors: [post.author || 'Deepak Dhakad'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [imageUrl],
+    },
   };
 }
 
