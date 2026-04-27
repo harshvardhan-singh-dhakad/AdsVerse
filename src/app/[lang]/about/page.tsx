@@ -38,6 +38,7 @@ const timelineEvents = [
   { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-green-500" },
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-purple-500" },
   { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals.", color: "bg-orange-500" },
+  { year: "2026", title: "Innovation Leader", description: "Setting new standards in AI-driven marketing and automation, becoming the most trusted name in digital transformation.", color: "bg-cyan-500" },
 ];
 
 const jsonLd = {

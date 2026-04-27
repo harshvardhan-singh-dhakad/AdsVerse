@@ -10,7 +10,7 @@ import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import Script from "next/script";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: 'swap',
@@ -164,31 +164,31 @@ export default function RootLayout({
       </head>
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",
-        inter.variable, 
+        inter.variable,
         playfairDisplay.variable
       )}>
         <noscript>
-          <iframe 
+          <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
-            height="0" 
-            width="0" 
+            height="0"
+            width="0"
             className="sr-only hidden"
           ></iframe>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            height="1" 
-            width="1" 
-            style={{ display: 'none' }} 
-            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`} 
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
         <ScriptOptimizer />
         <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
         >
           <div className="relative z-10">
             <BackgroundEffects />
