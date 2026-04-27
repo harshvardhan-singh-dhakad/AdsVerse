@@ -15,17 +15,27 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const CATEGORIES = [
-  { id: "SEO", label: "SEO", icon: "🔍", color: "#22c55e" },
-  { id: "SMM", label: "SMM", icon: "📱", color: "#e91e8c" },
-  { id: "Ads & PPC", label: "Ads & PPC", icon: "🚀", color: "#f59e0b" },
-  { id: "Web Dev", label: "Web Dev", icon: "💻", color: "#3b82f6" },
-  { id: "Content", label: "Content", icon: "✍️", color: "#8b5cf6" },
-  { id: "Creative", label: "Creative", icon: "🎨", color: "#ec4899" },
-  { id: "Influencer", label: "Influencer", icon: "🌟", color: "#f97316" },
-  { id: "AI Logic", label: "AI Logic", icon: "🤖", color: "#06b6d4" },
-  { id: "Consulting", label: "Consulting", icon: "🎓", color: "#64748b" },
-  { id: "Automation Plans", label: "Automation Plans", icon: "🤖", color: "#0ea5e9" },
-  { id: "Video & Photo", label: "Video & Photo", icon: "📸", color: "#f43f5e" },
+  // Digital Marketing
+  { id: "smm", label: "Social Media", icon: "📱", color: "#e91e8c" },
+  { id: "seo", label: "Search Engine", icon: "🔍", color: "#22c55e" },
+  { id: "content", label: "Content Marketing", icon: "✍️", color: "#8b5cf6" },
+  { id: "ppc", label: "Paid Ads (PPC)", icon: "🚀", color: "#f59e0b" },
+  { id: "ecommerce", label: "E-Commerce", icon: "🛍️", color: "#10b981" },
+  { id: "email", label: "Email Marketing", icon: "📧", color: "#0ea5e9" },
+  { id: "design", label: "Creative Design", icon: "🎨", color: "#ec4899" },
+  { id: "web", label: "Web Development", icon: "💻", color: "#3b82f6" },
+  { id: "orm", label: "Reputation (ORM)", icon: "🛡️", color: "#6366f1" },
+  { id: "analytics", label: "Data Analytics", icon: "📊", color: "#f97316" },
+  { id: "video", label: "Video Production", icon: "🎬", color: "#f43f5e" },
+  { id: "branding", label: "Brand Strategy", icon: "✨", color: "#8b5cf6" },
+  // AI & Automation
+  { id: "whatsapp", label: "WhatsApp Automation", icon: "💬", color: "#25d366" },
+  { id: "n8n", label: "Workflow Logic (n8n)", icon: "⚙️", color: "#ff6d5a" },
+  { id: "aiagents", label: "AI Agents/Bots", icon: "🤖", color: "#06b6d4" },
+  { id: "crm", label: "CRM Automation", icon: "🗄️", color: "#3b82f6" },
+  { id: "chatautomation", label: "Chat Solutions", icon: "💬", color: "#8b5cf6" },
+  { id: "analytics-ai", label: "AI Analytics", icon: "📈", color: "#f59e0b" },
+  { id: "custom-dev", label: "Custom AI Dev", icon: "🛠️", color: "#6366f1" },
 ];
 
 const pricingPlanSchema = z.object({
@@ -66,7 +76,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       description: "",
       price: "",
       frequency: "/mo",
-      category: "SEO",
+      category: "seo",
       subCategory: "",
       features: [{ value: "" }],
       isPopular: false,

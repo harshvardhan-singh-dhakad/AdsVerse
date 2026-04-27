@@ -294,6 +294,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       // Preserve status for internal tracking
       const postData = {
         ...values,
+        publishedDate: new Date(values.publishedDate).toISOString(),
         isPublished: isSyncable,
         imageAlt: values.imageAlt || '',
         focusKeyword: values.focusKeyword || '',

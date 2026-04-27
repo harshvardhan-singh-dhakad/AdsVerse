@@ -1,13 +1,9 @@
+"use client";
 
-import { Check, ArrowRight, Zap, TrendingUp, Star, Users } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { ArrowRight, Zap, TrendingUp, Star, Users } from "lucide-react";
 import Link from "next/link";
-import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
-import { AISearchInsights } from "@/components/seo/AISearchInsights";
-
 
 /* ─────────────────────────────────────────────
    COMPLETE SERVICES DATA
@@ -311,250 +307,390 @@ function hexToRgba(hex: string, a: number) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
-  const isHi = lang === 'hi';
-  return {
-    title: isHi ? "इंदौर में डिजिटल मार्केटिंग और ऑटोमेशन सेवाएं" : "Digital Marketing & Automation in Indore",
-    description: isHi
-      ? "इंदौर की सर्वश्रेष्ठ डिजिटल मार्केटिंग और ऑटोमेशन सेवाएं। SEO, मेटा विज्ञापन, AI चैटबॉट्स और CRM ऑटोमेशन के साथ अपने व्यवसाय को बढ़ाएं।"
-      : "Indore's best digital marketing and automation services. Grow your business with SEO, Meta Ads, AI chatbots, and CRM automation.",
-    alternates: {
-      canonical: `https://adsverse.in/${lang}/our-services`,
-      languages: {
-        'en': 'https://adsverse.in/en/our-services',
-        'hi': 'https://adsverse.in/hi/our-services',
-      },
-    },
-  };
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
+  --tx1:#e6edf3;--tx2:#c9d1d9;--tx3:#8b949e;--tx4:#6e7681;
+  --bd:#30363d;--bd2:#21262d;
+  --or:#f97316;--or-dim:rgba(249,115,22,.1);--or-glow:rgba(249,115,22,.22);
+  --r:12px;--rsm:8px;--rxl:20px;
+  --sh:0 4px 24px rgba(0,0,0,.5);
+}
+.services-page{background:var(--bg);color:var(--tx1);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+.syne-font{font-family:'Syne',sans-serif}
+
+/* Layout */
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.section{padding:64px 0}
+
+/* ── HERO ── */
+.hero{
+  position:relative;overflow:hidden;
+  padding:80px 20px 64px;text-align:center;
+  background:radial-gradient(ellipse 90% 60% at 50% -10%,rgba(249,115,22,.13) 0%,transparent 65%);
+  border-bottom:1px solid var(--bd);
+}
+.hero-dots{
+  position:absolute;inset:0;opacity:.35;
+  background-image:radial-gradient(circle,#f97316 1px,transparent 1px);
+  background-size:36px 36px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 40%,transparent 80%);
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 16px;border-radius:var(--rxl);
+  background:var(--or-dim);border:1px solid rgba(249,115,22,.28);
+  font-size:12px;font-weight:600;color:var(--or);letter-spacing:.6px;
+  text-transform:uppercase;margin-bottom:22px;
+}
+.hero-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--or);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero h1{
+  font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:800;line-height:1.08;
+  margin-bottom:18px;letter-spacing:-.5px;font-family:'Syne',sans-serif;
+}
+.hero h1 em{color:var(--or);font-style:normal}
+.hero-sub{font-size:17px;color:var(--tx2);max-width:580px;margin:0 auto 36px;line-height:1.65}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--bd)}
+.stat{background:var(--bg);padding:22px 20px;text-align:center;border-right:1px solid var(--bd)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--or);line-height:1}
+.stat-l{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:500}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(3){border-top:1px solid var(--bd)}.stat:nth-child(4){border-top:1px solid var(--bd);border-right:none}}
+
+/* ── MAIN TABS (DM vs AI) ── */
+.main-tabs{
+  display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);
+  position:sticky;top:0;z-index:100;
+}
+.main-tab{
+  flex:1;padding:18px 24px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  border:none;background:transparent;color:var(--tx3);cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.main-tab:hover{color:var(--tx1)}
+.main-tab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(249,115,22,.04)}
+.tab-count{
+  background:var(--bg3);border:1px solid var(--bd);color:var(--tx4);
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
+}
+.main-tab.on .tab-count{background:var(--or-dim);border-color:rgba(249,115,22,.3);color:var(--or)}
+
+/* ── CAT FILTER STRIP ── */
+.cat-strip-wrap{
+  background:var(--bg2);border-bottom:1px solid var(--bd);
+  position:sticky;top:57px;z-index:99;
+}
+.cat-strip{
+  display:flex;gap:6px;padding:12px 20px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  max-width:1180px;margin:0 auto;
+}
+.cat-strip::-webkit-scrollbar{display:none}
+.cat-btn{
+  flex-shrink:0;padding:7px 16px;border-radius:var(--rsm);
+  border:1.5px solid var(--bd);background:transparent;
+  color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .18s;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.cat-btn:hover{border-color:var(--or);color:var(--or)}
+.cat-btn.on{background:var(--or);border-color:var(--or);color:#fff}
+.cat-icon{font-size:14px}
+
+/* ── CATEGORY SECTION ── */
+.cat-section{margin-bottom:56px}
+.cat-header{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 0 20px;margin-bottom:24px;
+  border-bottom:2px solid var(--bd);
+  position:relative;
+}
+.cat-header::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;
+  background:var(--cat-color, var(--or));
+}
+.cat-icon-big{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--cat-dim, var(--or-dim));
+  border:1.5px solid var(--cat-bd, rgba(249,115,22,.25));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.cat-info{flex:1}
+.cat-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx1);line-height:1}
+.cat-desc{font-size:13px;color:var(--tx3);margin-top:4px}
+.cat-service-count{
+  font-size:12px;font-weight:700;color:var(--cat-color,var(--or));
+  background:var(--cat-dim,var(--or-dim));
+  border:1px solid var(--cat-bd,rgba(249,115,22,.2));
+  padding:3px 12px;border-radius:20px;
+}
+
+/* ── SERVICE CARD ── */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
+.svc{
+  background:var(--bg2);border:1.5px solid var(--bd2);border-radius:var(--r);
+  padding:22px;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.svc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--cat-color,var(--or));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.svc:hover{
+  border-color:var(--cat-bd2,rgba(249,115,22,.35));
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.45);
+}
+.svc:hover::before{transform:scaleX(1)}
+.svc-name{
+  font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700;
+  color:var(--tx1);margin-bottom:8px;line-height:1.3;
+}
+.svc-desc{font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:14px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.svc-tag{
+  padding:2px 9px;background:var(--bg3);
+  border:1px solid var(--bd);border-radius:20px;
+  font-size:11px;color:var(--tx4);font-weight:500;
+}
+.svc-link{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;font-weight:700;color:var(--cat-color,var(--or));
+  transition:gap .15s;
+}
+.svc-link:hover{gap:9px}
+
+/* ── CTA BANNER ── */
+.cta{
+  border-radius:var(--r);
+  background:linear-gradient(135deg,rgba(249,115,22,.12) 0%,rgba(249,115,22,.04) 100%);
+  border:1.5px solid rgba(249,115,22,.22);
+  padding:52px 40px;text-align:center;margin:40px 0 64px;
+  position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:0;opacity:.03;
+  background:repeating-linear-gradient(45deg,#f97316 0,#f97316 1px,transparent 0,transparent 50%);
+  background-size:12px 12px;
+}
+.cta h2{font-size:1.7rem;font-weight:800;margin-bottom:10px;position:relative;z-index:1;font-family:'Syne',sans-serif}
+.cta p{color:var(--tx2);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+
+@media(max-width:768px){
+  .hero{padding:56px 16px 44px}
+  .main-tab span.label{display:none}
+  .section{padding:44px 0}
+  .cta{padding:36px 20px}
+  .svc-grid{grid-template-columns:1fr}
+}
+`;
+
+function CatSection({ cat }: { cat: typeof DM_CATEGORIES[0] }) {
+  const styleVars = {
+    "--cat-color": cat.color,
+    "--cat-dim": hexToRgba(cat.color, 0.1),
+    "--cat-bd": hexToRgba(cat.color, 0.25),
+    "--cat-bd2": hexToRgba(cat.color, 0.4),
+  } as React.CSSProperties;
+
+  return (
+    <div className="cat-section" style={styleVars}>
+      <div className="cat-header">
+        <div className="cat-icon-big">{cat.icon}</div>
+        <div className="cat-info">
+          <div className="cat-title">{cat.label}</div>
+          <div className="cat-desc">{cat.desc}</div>
+        </div>
+        <span className="cat-service-count">{cat.services.length} services</span>
+      </div>
+      <div className="svc-grid">
+        {cat.services.map((s) => (
+          <div className="svc" key={s.name}>
+            <div className="svc-name">{s.name}</div>
+            <p className="svc-desc">{s.desc}</p>
+            <div className="svc-tags">
+              {s.tags.map((t) => <span className="svc-tag" key={t}>{t}</span>)}
+            </div>
+            <Link href="/contact" className="svc-link">Get Free Quote →</Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 /* ─── Main Component ──────────────────────────────────────────────────── */
 export default function OurServicesPage({ params: { lang } }: { params: { lang: string } }) {
   const isHi = lang === 'hi';
-  
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": "Digital Marketing & Business Automation",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "AdsVerse",
-      "image": "https://adsverse.in/images/logo-white.webp",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Vijay Nagar",
-        "addressLocality": "Indore",
-        "addressRegion": "MP",
-        "postalCode": "452010",
-        "addressCountry": "IN"
-      }
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "Indore"
-    }
-  };
+  const [mainTab, setMainTab] = useState("dm");
+  const [dmCat, setDmCat] = useState("all");
+  const [aiCat, setAiCat] = useState("all");
+
+  const dmTotal = DM_CATEGORIES.reduce((s, c) => s + c.services.length, 0);
+  const aiTotal = AI_CATEGORIES.reduce((s, c) => s + c.services.length, 0);
+
+  const dmFiltered = dmCat === "all" ? DM_CATEGORIES : DM_CATEGORIES.filter((c) => c.id === dmCat);
+  const aiFiltered = aiCat === "all" ? AI_CATEGORIES : AI_CATEGORIES.filter((c) => c.id === aiCat);
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      
+    <div className="services-page">
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
       {/* ── HERO ── */}
-      <div className="relative overflow-hidden bg-background py-20 lg:py-32 border-b border-primary/10">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(circle, var(--primary) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <Badge variant="outline" className="mb-6 py-1 px-4 border-primary/20 text-primary font-bold tracking-wider uppercase bg-primary/5">
-            AI-First Agency · Vijay Nagar, Indore
-          </Badge>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight font-headline text-foreground mb-6 leading-tight">
-            One Agency.<br />
-            <span className="text-primary italic">Every Service</span> You Need.
-          </h1>
-          <p className="max-w-2xl mx-auto text-xl text-muted-foreground leading-relaxed mb-10">
+      <div className="hero">
+        <div className="hero-dots" />
+        <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
+          <div className="hero-pill">AI-First Agency · Vijay Nagar, Indore</div>
+          <h1>One Agency.<br /><em>Every Service</em> You Need.</h1>
+          <p className="hero-sub">
             {isHi 
               ? "डिजिटल मार्केटिंग से लेके व्हाट्सएप एआई बॉट्स तक — इंदौर के SMBs के लिए कंप्लीट डिजिटल इकोसिस्टम एक ही जगह।"
               : "From digital marketing to WhatsApp AI bots — a complete digital ecosystem for Indore's SMBs in one place."}
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="rounded-xl px-8 py-6 text-lg font-bold">
-              <Link href="/contact">Get Free Strategy Call <ArrowRight className="ml-2 h-5 w-5" /></Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-xl px-8 py-6 text-lg font-bold border-primary/20 hover:bg-primary/5">
-              <Link href="/pricing">View Pricing</Link>
-            </Button>
+          <div className="hero-btns">
+            <Link href="/contact" className="px-7 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
+              Get Free Strategy Call →
+            </Link>
+            <Link href="/pricing" className="px-7 py-3.5 border-2 border-slate-700 text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
+              View Pricing
+            </Link>
           </div>
         </div>
       </div>
 
       {/* ── STATS ── */}
-      <div className="border-b border-primary/10 bg-card/20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-primary/10">
-            {[
-              { value: "50+", label: "Clients Served", icon: <Users className="w-5 h-5 text-primary" /> },
-              { value: "70+", label: "Services Offered", icon: <Zap className="w-5 h-5 text-primary" /> },
-              { value: "3x", label: "Avg. ROAS Delivered", icon: <TrendingUp className="w-5 h-5 text-primary" /> },
-              { value: "4.9★", label: "Google Rating", icon: <Star className="w-5 h-5 text-primary" /> }
-            ].map((stat, i) => (
-              <div key={i} className="py-8 text-center flex flex-col items-center justify-center">
-                <div className="mb-2">{stat.icon}</div>
-                <div className="text-3xl font-black font-headline text-primary leading-none">{stat.value}</div>
-                <div className="text-sm text-muted-foreground mt-2 font-medium">{stat.label}</div>
-              </div>
+      <div className="stats">
+        {[
+          ["50+", isHi ? "क्लाइंट्स" : "Clients Served"], 
+          ["70+", isHi ? "सेवाएं" : "Services Offered"], 
+          ["3x", isHi ? "ROAS" : "Avg. ROAS Delivered"], 
+          ["4.9★", isHi ? "रेटिंग" : "Google Rating"]
+        ].map(([n, l]) => (
+          <div className="stat" key={l}>
+            <div className="stat-n">{n}</div>
+            <div className="stat-l">{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── MAIN TABS ── */}
+      <div className="main-tabs">
+        <button className={`main-tab ${mainTab === "dm" ? "on" : ""}`} onClick={() => setMainTab("dm")}>
+          <span>📈</span>
+          <span className="label">{isHi ? "डिजिटल मार्केटिंग" : "Digital Marketing"}</span>
+          <span className="tab-count">{dmTotal}</span>
+        </button>
+        <button className={`main-tab ${mainTab === "ai" ? "on" : ""}`} onClick={() => setMainTab("ai")}>
+          <span>🤖</span>
+          <span className="label">{isHi ? "AI और ऑटोमेशन" : "AI & Automation"}</span>
+          <span className="tab-count">{aiTotal}</span>
+        </button>
+      </div>
+
+      {/* ── CONTENT ── */}
+      {mainTab === "dm" && (
+        <>
+          <div className="cat-strip-wrap">
+            <div className="cat-strip">
+              <button className={`cat-btn ${dmCat === "all" ? "on" : ""}`} onClick={() => setDmCat("all")}>
+                🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
+              </button>
+              {DM_CATEGORIES.map((c) => (
+                <button
+                  key={c.id}
+                  className={`cat-btn ${dmCat === c.id ? "on" : ""}`}
+                  onClick={() => setDmCat(c.id)}
+                  style={dmCat === c.id ? { background: c.color, borderColor: c.color } : {}}
+                >
+                  <span className="cat-icon">{c.icon}</span> {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="wrap section">
+            <div className="mb-12">
+              <h2 className="text-3xl font-black syne-font mb-2">
+                {dmCat === "all" ? (isHi ? "डिजिटल मार्केटिंग सेवाएं" : "Complete Digital Marketing Services") : DM_CATEGORIES.find(c => c.id === dmCat)?.label}
+              </h2>
+              <p className="text-slate-400 max-w-2xl">
+                {dmCat === "all" 
+                  ? (isHi ? "सब कुछ इन-हाउस — कोई आउटसोर्सिंग नहीं। " : "Everything in-house — no outsourcing, no excuses. ") + dmTotal + " services."
+                  : DM_CATEGORIES.find(c => c.id === dmCat)?.desc}
+              </p>
+            </div>
+
+            {dmFiltered.map((cat) => (
+              <CatSection key={cat.id} cat={cat} />
             ))}
+          </div>
+        </>
+      )}
+
+      {mainTab === "ai" && (
+        <>
+          <div className="cat-strip-wrap">
+            <div className="cat-strip">
+              <button className={`cat-btn ${aiCat === "all" ? "on" : ""}`} onClick={() => setAiCat("all")}>
+                🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
+              </button>
+              {AI_CATEGORIES.map((c) => (
+                <button
+                  key={c.id}
+                  className={`cat-btn ${aiCat === c.id ? "on" : ""}`}
+                  onClick={() => setAiCat(c.id)}
+                  style={aiCat === c.id ? { background: c.color, borderColor: c.color } : {}}
+                >
+                  <span className="cat-icon">{c.icon}</span> {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="wrap section">
+            <div className="mb-12">
+              <h2 className="text-3xl font-black syne-font mb-2">
+                {aiCat === "all" ? (isHi ? "AI और ऑटोमेशन सेवाएं" : "AI & Automation Hub") : AI_CATEGORIES.find(c => c.id === aiCat)?.label}
+              </h2>
+              <p className="text-slate-400 max-w-2xl">
+                {aiCat === "all" 
+                  ? (isHi ? "भारतीय SMBs के लिए बनाया गया बिजनेस ऑटोमेशन। " : "Business automation built for Indian SMBs. ") + aiTotal + " services."
+                  : AI_CATEGORIES.find(c => c.id === aiCat)?.desc}
+              </p>
+            </div>
+
+            {aiFiltered.map((cat) => (
+              <CatSection key={cat.id} cat={cat} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── CTA ── */}
+      <div className="wrap">
+        <div className="cta">
+          <h2>Can't decide which service to start with?</h2>
+          <p>Free 30-min strategy call mein hum aapke business ko analyze karke exact roadmap banate hain — no sales pitch, just clarity.</p>
+          <div className="cta-btns">
+            <Link href="/contact" className="px-8 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all">
+              Book Free Consultation →
+            </Link>
+            <Link href="/pricing" className="px-8 py-3.5 border-2 border-slate-700 text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
+              See All Pricing
+            </Link>
           </div>
         </div>
       </div>
-
-      {/* ── CONTENT SECTION ── */}
-      <div className="container mx-auto py-16 px-4">
-        <Tabs defaultValue="dm" className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 mb-16 p-1 bg-muted/30 rounded-2xl border border-primary/5">
-            <TabsTrigger value="dm" className="text-lg py-4 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg transition-all font-headline">
-              <TrendingUp className="mr-2 h-5 w-5" /> Digital Marketing
-            </TabsTrigger>
-            <TabsTrigger value="ai" className="text-lg py-4 rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-lg transition-all font-headline">
-              <Zap className="mr-2 h-5 w-5" /> AI & Automation
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="dm" className="mt-0 animate-in fade-in duration-700">
-            <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold font-headline text-foreground mb-4">Complete Digital Marketing Services</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {isHi 
-                  ? "सब कुछ इन-हाउस — कोई आउटसोर्सिंग नहीं, कोई बहाना नहीं। 12 विशिष्ट श्रेणियों में 70+ सेवाएँ।"
-                  : "Everything in-house — no outsourcing, no excuses. 70+ services across 12 specializations."}
-              </p>
-            </div>
-
-            <ServicesGrid categories={DM_CATEGORIES} />
-          </TabsContent>
-
-          <TabsContent value="ai" className="mt-0 animate-in fade-in duration-700">
-            <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold font-headline text-foreground mb-4">AI & Automation Hub</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {isHi 
-                  ? "n8n, Gemini API, व्हाट्सएप बॉट्स, AI टेलीकॉलर्स — भारतीय SMBs के लिए बनाया गया बिजनेस ऑटोमेशन।"
-                  : "n8n, Gemini API, WhatsApp bots, AI Telecallers — business automation built for Indian SMBs."}
-              </p>
-            </div>
-
-            <ServicesGrid categories={AI_CATEGORIES} />
-          </TabsContent>
-        </Tabs>
-
-        {/* ── CTA BANNER ── */}
-        <section className="mt-32">
-          <div className="relative rounded-[2rem] overflow-hidden bg-primary p-12 lg:p-20 text-white text-center shadow-2xl shadow-primary/20">
-            <div className="absolute inset-0 opacity-10 pointer-events-none" 
-                 style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%)', backgroundSize: '20px 20px' }} />
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-extrabold font-headline mb-6">Can't decide which service to start with?</h2>
-              <p className="text-xl opacity-90 mb-10 leading-relaxed">
-                {isHi 
-                  ? "फ्री 30-मिनट की स्ट्रेटजी कॉल में हम आपके बिजनेस का विश्लेषण करके सटीक रोडमैप बनाते हैं — कोई सेल्स पिच नहीं, बस स्पष्टता।"
-                  : "In a free 30-min strategy call, we analyze your business and build an exact roadmap — no sales pitch, just clarity."}
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg" variant="secondary" className="rounded-xl px-10 py-7 text-lg font-bold text-primary">
-                  <Link href="/contact">Book Free Consultation <ArrowRight className="ml-2 h-5 w-5" /></Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="rounded-xl px-10 py-7 text-lg font-bold border-white/30 hover:bg-white/10">
-                  <Link href="/pricing">See All Pricing</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── AI INSIGHTS ── */}
-        <section className="mt-32 max-w-4xl mx-auto">
-          <AISearchInsights 
-            title="Digital Marketing & Automation ROI"
-            insights={[
-              { title: "Cost Efficiency", description: "AI-driven lead qualification reduces cost-per-lead by up to 40% in the current 2026 market landscape." },
-              { title: "Local Impact", description: "Hyper-local SEO in Indore is the primary driver for high-intent queries in real estate and specialized retail." },
-              { title: "Scalability", description: "Multi-channel automation (WhatsApp + Meta) ensures 24/7 engagement without scaling operational headcount." }
-            ]}
-            takeaways={[
-              "40% Lower CPL",
-              "Indore SEO Focus",
-              "24/7 AI Engagement"
-            ]}
-          />
-        </section>
-      </div>
-    </>
-  );
-}
-
-function ServicesGrid({ categories }: { categories: typeof DM_CATEGORIES }) {
-  return (
-    <div className="space-y-24">
-      {categories.map((cat) => (
-        <div key={cat.id} id={cat.id} className="scroll-mt-32">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-primary/10 pb-8">
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm border border-primary/5" 
-                     style={{ backgroundColor: hexToRgba(cat.color, 0.1), color: cat.color }}>
-                  {cat.icon}
-                </div>
-                <h3 className="text-3xl font-extrabold font-headline text-foreground">{cat.label}</h3>
-              </div>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                {cat.desc}
-              </p>
-            </div>
-            <Badge variant="secondary" className="h-fit py-1.5 px-4 rounded-full bg-primary/5 text-primary border-primary/10 font-bold">
-              {cat.services.length} Services
-            </Badge>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cat.services.map((service, idx) => (
-              <Card key={idx} className="group bg-card/40 backdrop-blur-sm border-primary/10 hover:border-primary/30 transition-all duration-300 rounded-2xl hover:shadow-xl hover:shadow-primary/5 flex flex-col relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 transition-transform duration-500 origin-left scale-x-0 group-hover:scale-x-100" 
-                     style={{ backgroundColor: cat.color }} />
-                
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl font-bold font-headline group-hover:text-primary transition-colors leading-tight">
-                    {service.name}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent className="flex-grow space-y-6 pb-6">
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.desc}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {service.tags.map((tag, i) => (
-                      <span key={i} className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-primary/5">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-                
-                <CardFooter className="pt-0 pb-6">
-                  <Button variant="link" className="p-0 h-auto font-bold text-primary hover:no-underline group-hover:translate-x-1 transition-transform" asChild>
-                    <Link href="/contact">
-                      Get Free Quote <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
-      ))}
     </div>
   );
 }
