@@ -26,7 +26,7 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const defaultImage = "https://adsverse.in/images/og-adsverse-2026.webp";
+const defaultImage = "https://adsverse.in/images/og-adsverse-2026.png";
 const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108"; // Using a placeholder that looks real or user's provided ID if available
 
 const organizationSchema = {
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     siteName: siteName,
     images: [
       {
-        url: `${siteUrl}/images/og-adsverse-2026.webp`,
+        url: `${siteUrl}/images/og-adsverse-2026.png`,
         width: 1200,
         height: 630,
         alt: "AdsVerse - Digital Marketing Agency",
@@ -119,7 +119,7 @@ export const metadata: Metadata = {
     },
     description: description,
     creator: twitterHandle,
-    images: [`${siteUrl}/images/og-adsverse-2026.webp`],
+    images: [`${siteUrl}/images/og-adsverse-2026.png`],
   },
   icons: {
     icon: [
