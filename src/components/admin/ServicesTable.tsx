@@ -86,6 +86,7 @@ export function ServicesTable() {
                             <TableRow className="hover:bg-transparent border-none">
                                 <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Sequence</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Service Identity</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Parent Domain</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Visual Semantic (Icon)</TableHead>
                                 <TableHead className="text-right py-6 pr-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Operations</TableHead>
                             </TableRow>
@@ -100,6 +101,11 @@ export function ServicesTable() {
                                     </TableCell>
                                     <TableCell className="text-center font-bold text-foreground/90 group-hover/row:text-primary transition-colors">
                                         {service.name}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        <span className="text-[10px] font-black text-primary/60 bg-primary/5 px-2 py-1 rounded-full border border-primary/10 uppercase tracking-widest">
+                                            {service.category || 'N/A'}
+                                        </span>
                                     </TableCell>
                                     <TableCell className="text-center">
                                         <code className="text-[10px] font-black text-muted-foreground/40 bg-muted/5 px-2 py-1 rounded border border-border/5 uppercase tracking-widest">

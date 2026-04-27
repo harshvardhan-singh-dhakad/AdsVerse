@@ -13,7 +13,16 @@ const db = getFirestore(app);
 async function getBlogSlugs() {
     try {
         const snap = await getDocs(collection(db, "blogPosts"));
-        return snap.docs.map(doc => doc.data().slug).filter(Boolean);
+        const now = new Date().toISOString();
+        return snap.docs
+            .map(doc => doc.data())
+            .filter(post => 
+                post.isPublished && 
+                post.includeInSitemap && 
+                post.slug && 
+                post.publishedDate <= now
+            )
+            .map(post => post.slug);
     } catch (e) {
         console.error("Sitemap: Error fetching blog slugs:", e);
         return [];

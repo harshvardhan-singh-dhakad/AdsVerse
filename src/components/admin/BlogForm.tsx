@@ -289,12 +289,12 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       return;
     }
     try {
-      const isPublished = values.status === 'publish';
+      const isSyncable = values.status === 'publish' || values.status === 'schedule';
 
       // Preserve status for internal tracking
       const postData = {
         ...values,
-        isPublished,
+        isPublished: isSyncable,
         imageAlt: values.imageAlt || '',
         focusKeyword: values.focusKeyword || '',
         metaTitle: values.metaTitle || '',
@@ -316,7 +316,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         toast({ title: 'Success', description: 'Blog post created successfully' });
       }
 
-      if (isPublished) {
+      if (isSyncable) {
         await setDoc(doc(db, 'public_blogPosts', initialData?.id || docRef.id), {
           ...postData,
           updatedAt: serverTimestamp(),

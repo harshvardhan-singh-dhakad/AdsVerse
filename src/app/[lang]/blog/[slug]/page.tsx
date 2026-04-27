@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, User, Share2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
@@ -11,16 +11,7 @@ import { getFirestore, collection, query, where, getDocs } from "firebase/firest
 
 import { db } from "@/lib/firebase-server";
 
-interface BlogPost {
-  title: string;
-  slug: string;
-  content: string;
-  category: string;
-  author: string;
-  imageUrl: string;
-  publishedDate: string;
-  excerpt: string;
-}
+import { BlogPost } from "@/lib/definitions";
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   // Use public_blogPosts — publicly readable, contains only published posts
@@ -30,7 +21,15 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
   );
   const snap = await getDocs(q);
   if (snap.empty) return null;
-  return snap.docs[0].data() as BlogPost;
+  const post = snap.docs[0].data() as BlogPost;
+  
+  // Security check: Don't show scheduled posts before their time
+  const now = new Date().toISOString();
+  if (post.publishedDate > now) {
+    return null;
+  }
+  
+  return post;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string, lang: string } }): Promise<Metadata> {
@@ -108,16 +107,20 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        id="blog-posting-jsonld"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        id="breadcrumb-jsonld"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      {post.schemaMarkup && (
+        <>
+          <script
+            type="application/ld+json"
+            id="blog-posting-jsonld"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            id="breadcrumb-jsonld"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+          />
+        </>
+      )}
       <div className="container mx-auto py-16 px-4 max-w-4xl">
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
           <Link href={`/${params.lang}/blog`}>
@@ -162,6 +165,22 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </CardContent>
           </Card>
+
+          {post.whatsappShare && (
+            <div className="flex justify-center pt-8 border-t border-primary/5">
+              <Button asChild className="bg-[#25D366] hover:bg-[#25D366]/90 text-white rounded-full px-8 py-6 h-auto shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 group">
+                <a 
+                  href={`https://wa.me/?text=${encodeURIComponent(`${post.title} — Read more at: https://adsverse.in/${params.lang}/blog/${post.slug}`)}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center gap-3 font-black uppercase tracking-widest text-xs"
+                >
+                  <Share2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  Share to WhatsApp
+                </a>
+              </Button>
+            </div>
+          )}
         </article>
       </div>
     </>

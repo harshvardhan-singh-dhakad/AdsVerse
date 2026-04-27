@@ -282,11 +282,18 @@ export function BlogTable() {
 
                                             {/* Publish Status */}
                                             <TableCell className="text-center">
-                                                {post.isPublished ? (
+                                                {post.status === 'publish' ? (
                                                     <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                                         <span className="text-emerald-500 font-black text-[9px] uppercase tracking-widest">
                                                             Broadcast Live
+                                                        </span>
+                                                    </div>
+                                                ) : post.status === 'schedule' ? (
+                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                                        <span className="text-blue-500 font-black text-[9px] uppercase tracking-widest">
+                                                            Scheduled
                                                         </span>
                                                     </div>
                                                 ) : (

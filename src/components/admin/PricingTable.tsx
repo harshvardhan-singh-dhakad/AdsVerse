@@ -79,6 +79,7 @@ export function PricingTable() {
                         <TableHeader className="bg-muted/2 border-b border-border/5">
                             <TableRow className="hover:bg-transparent border-none">
                                 <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">Sequence</TableHead>
+                                <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Type</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Vertical</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Plan Identity</TableHead>
                                 <TableHead className="font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40 text-center">Commercial Value</TableHead>
@@ -93,6 +94,11 @@ export function PricingTable() {
                                         <div className="w-8 h-8 rounded-lg bg-muted/5 flex items-center justify-center font-black text-xs text-primary">
                                             {plan.displayOrder}
                                         </div>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        <span className="text-[9px] font-black text-foreground/40 uppercase tracking-[0.15em] border border-border/5 px-2 py-0.5 rounded">
+                                            {plan.planType || 'service'}
+                                        </span>
                                     </TableCell>
                                     <TableCell className="text-center">
                                         <Badge variant="secondary" className="bg-muted/5 text-muted-foreground/80 border-border/10 font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-lg">

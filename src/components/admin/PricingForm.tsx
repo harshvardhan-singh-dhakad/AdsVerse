@@ -15,15 +15,17 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const CATEGORIES = [
-  "SEO",
-  "Paid Ads",
-  "Social Media",
-  "Content Marketing",
-  "Branding & Design",
-  "Web Development",
-  "Automation & AI",
-  "Analytics & Reputation",
-  "Election Special",
+  { id: "SEO", label: "SEO", icon: "🔍", color: "#22c55e" },
+  { id: "SMM", label: "SMM", icon: "📱", color: "#e91e8c" },
+  { id: "Ads & PPC", label: "Ads & PPC", icon: "🚀", color: "#f59e0b" },
+  { id: "Web Dev", label: "Web Dev", icon: "💻", color: "#3b82f6" },
+  { id: "Content", label: "Content", icon: "✍️", color: "#8b5cf6" },
+  { id: "Creative", label: "Creative", icon: "🎨", color: "#ec4899" },
+  { id: "Influencer", label: "Influencer", icon: "🌟", color: "#f97316" },
+  { id: "AI Logic", label: "AI Logic", icon: "🤖", color: "#06b6d4" },
+  { id: "Consulting", label: "Consulting", icon: "🎓", color: "#64748b" },
+  { id: "Automation Plans", label: "Automation Plans", icon: "🤖", color: "#0ea5e9" },
+  { id: "Video & Photo", label: "Video & Photo", icon: "📸", color: "#f43f5e" },
 ];
 
 const pricingPlanSchema = z.object({
@@ -37,6 +39,11 @@ const pricingPlanSchema = z.object({
   isPopular: z.boolean().default(false),
   callToAction: z.string().min(1, "CTA is required."),
   displayOrder: z.coerce.number().min(0, "Order must be a positive number."),
+  planType: z.enum(['service', 'automation', 'video']),
+  icon: z.string().optional(),
+  categoryIcon: z.string().optional(),
+  categoryColor: z.string().optional(),
+  categoryDesc: z.string().optional(),
 });
 
 type PricingFormData = z.infer<typeof pricingPlanSchema>;
@@ -65,6 +72,11 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       isPopular: false,
       callToAction: "Get Started",
       displayOrder: 0,
+      planType: 'service',
+      icon: "📍",
+      categoryIcon: "🔍",
+      categoryColor: "#22c55e",
+      categoryDesc: "",
     },
   });
 
@@ -98,20 +110,54 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
     }
   };
 
+  const handleCategoryChange = (val: string) => {
+    const cat = CATEGORIES.find(c => c.id === val);
+    if (cat) {
+      form.setValue("category", val);
+      form.setValue("categoryIcon", cat.icon);
+      form.setValue("categoryColor", cat.color);
+    }
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(processForm)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Plan Name</FormLabel>
-              <FormControl><Input placeholder="e.g., Business Pro" {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+            <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Plan Name</FormLabel>
+                <FormControl><Input placeholder="e.g., Local SEO" {...field} /></FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+                control={form.control}
+                name="planType"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Tab / Type</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value="service">Digital Service</SelectItem>
+                        <SelectItem value="automation">AI Automation</SelectItem>
+                        <SelectItem value="video">Video & Creative</SelectItem>
+                    </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -119,7 +165,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={handleCategoryChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
@@ -127,7 +173,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
                   </FormControl>
                   <SelectContent>
                     {CATEGORIES.map(cat => (
-                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                      <SelectItem key={cat.id} value={cat.id}>{cat.icon} {cat.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -137,11 +183,11 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
           />
           <FormField
             control={form.control}
-            name="subCategory"
+            name="icon"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sub-Category (Optional)</FormLabel>
-                <FormControl><Input placeholder="e.g., Local SEO" {...field} /></FormControl>
+                <FormLabel>Plan Icon (Emoji)</FormLabel>
+                <FormControl><Input placeholder="e.g., 📍" {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -150,10 +196,22 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
 
         <FormField
           control={form.control}
+          name="categoryDesc"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category Description (Optional)</FormLabel>
+              <FormControl><Input placeholder="General description for this group..." {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description (Optional)</FormLabel>
+              <FormLabel>Plan Description (Optional)</FormLabel>
               <FormControl><Input placeholder="Best for growing businesses" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
@@ -176,7 +234,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
             name="frequency"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Frequency (Optional)</FormLabel>
+                <FormLabel>Period (e.g., /mo or Once)</FormLabel>
                 <FormControl><Input placeholder="e.g., /mo" {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
@@ -185,7 +243,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
         </div>
 
         <div>
-            <FormLabel>Features</FormLabel>
+            <FormLabel>Features / Deliverables</FormLabel>
             <div className="space-y-2 mt-2">
             {fields.map((field, index) => (
                 <FormField
@@ -240,7 +298,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                 <div className="space-y-0.5">
-                    <FormLabel>Mark as Popular</FormLabel>
+                    <FormLabel>Mark as Popular / Featured</FormLabel>
                 </div>
                 <FormControl>
                     <Switch

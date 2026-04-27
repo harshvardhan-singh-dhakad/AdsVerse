@@ -54,8 +54,10 @@ function formatPostDate(date: any) {
 async function getBlogPosts() {
   try {
     // Use public_blogPosts — publicly readable, contains only published posts
+    const now = new Date().toISOString();
     const q = query(
       collection(db, "public_blogPosts"),
+      where("publishedDate", "<=", now),
       orderBy("publishedDate", "desc")
     );
     const snap = await getDocs(q);
@@ -130,10 +132,15 @@ export default async function BlogPage({ params: { lang } }: { params: { lang: s
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       priority={index < 3}
                     />
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 flex flex-col gap-2">
                       <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1">
                         {post.category}
                       </Badge>
+                      {post.isFeatured && (
+                        <Badge className="bg-primary/90 backdrop-blur-sm text-white border-none px-3 py-1 animate-pulse">
+                          Featured
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   <CardHeader className="space-y-4">

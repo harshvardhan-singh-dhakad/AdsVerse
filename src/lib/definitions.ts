@@ -11,6 +11,12 @@ export type Service = BaseDoc & {
     description: string;
     iconName: string;
     displayOrder: number;
+    // New fields for categorization and tagging
+    category?: string;
+    categoryIcon?: string;
+    categoryColor?: string;
+    categoryDesc?: string;
+    tags?: string[];
 }
 
 export type PortfolioItem = BaseDoc & {
@@ -32,6 +38,12 @@ export type PricingPlan = BaseDoc & {
     isPopular: boolean;
     callToAction: string;
     displayOrder: number;
+    // New fields
+    planType: 'service' | 'automation' | 'video';
+    icon?: string; // For emojis
+    categoryIcon?: string;
+    categoryColor?: string;
+    categoryDesc?: string;
 }
 
 export type Lead = BaseDoc & {
@@ -62,6 +74,7 @@ export type BlogPost = BaseDoc & {
     metaTitle?: string;
     metaDescription?: string;
     language: 'en' | 'hi' | 'hinglish';
+    status: 'publish' | 'draft' | 'schedule';
     allowComments: boolean;
     includeInSitemap: boolean;
     isFeatured: boolean;
