@@ -46,19 +46,41 @@ export function BlogTable() {
 
         const syncScheduledPosts = async () => {
             const now = new Date();
-            const overdue = posts.filter(post => 
-                post.status === 'schedule' && 
-                post.publishedDate && 
-                new Date(post.publishedDate) <= now
-            );
+            const overdue = posts.filter(post => {
+                if (post.status !== 'schedule' || !post.publishedDate) return false;
+                const pDate = getParsedDate(post.publishedDate);
+                return pDate && pDate <= now;
+            });
 
             if (overdue.length === 0) return;
 
             for (const post of overdue) {
                 try {
+                    // Update internal collection
                     await updateDoc(doc(db, 'blogPosts', post.id), {
                         status: 'publish',
+                        isPublished: true,
                         updatedAt: new Date()
+                    });
+
+                    // Sync to public collection
+                    const { id, ...rest } = post as any;
+                    const publicData = { 
+                        ...rest, 
+                        status: 'publish',
+                        isPublished: true, 
+                        updatedAt: new Date() 
+                    };
+                    
+                    try {
+                        await updateDoc(doc(db, 'public_blogPosts', post.id), publicData);
+                    } catch {
+                        await setDoc(doc(db, 'public_blogPosts', post.id), publicData);
+                    }
+
+                    toast({ 
+                        title: 'Auto-Sync', 
+                        description: `"${post.title}" is now live!`,
                     });
                 } catch (err) {
                     console.error(`Failed to sync scheduled post ${post.id}:`, err);
@@ -82,21 +104,25 @@ export function BlogTable() {
     }, [isEditing]);
 
     // Firestore Timestamp + string + number — sab handle karta hai
-    const formatDate = (publishedDate: any): string => {
+    const getParsedDate = (publishedDate: any): Date | null => {
         try {
-            if (!publishedDate) return "N/A";
-            let date: Date;
+            if (!publishedDate) return null;
             if (publishedDate instanceof Timestamp) {
-                date = publishedDate.toDate();
+                return publishedDate.toDate();
             } else if (typeof publishedDate?.toDate === 'function') {
-                date = publishedDate.toDate();
+                return publishedDate.toDate();
             } else {
-                date = new Date(publishedDate);
+                const date = new Date(publishedDate);
+                return isNaN(date.getTime()) ? null : date;
             }
-            return isNaN(date.getTime()) ? "N/A" : format(date, 'MMM d, yyyy');
         } catch {
-            return "N/A";
+            return null;
         }
+    };
+
+    const formatDate = (publishedDate: any): string => {
+        const date = getParsedDate(publishedDate);
+        return date ? format(date, 'MMM d, yyyy') : "N/A";
     };
 
     const handleDelete = async (id: string) => {
@@ -311,28 +337,39 @@ export function BlogTable() {
 
                                             {/* Publish Status */}
                                             <TableCell className="text-center">
-                                                {(post.status === 'publish' || (post.status === 'schedule' && post.publishedDate && new Date(post.publishedDate) <= new Date())) ? (
-                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                                        <span className="text-emerald-500 font-black text-[9px] uppercase tracking-widest">
-                                                            Broadcast Live
-                                                        </span>
-                                                    </div>
-                                                ) : post.status === 'schedule' ? (
-                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                                        <span className="text-blue-500 font-black text-[9px] uppercase tracking-widest">
-                                                            Scheduled
-                                                        </span>
-                                                    </div>
-                                                ) : (
-                                                    <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                                        <span className="text-amber-500 font-black text-[9px] uppercase tracking-widest">
-                                                            Strategic Draft
-                                                        </span>
-                                                    </div>
-                                                )}
+                                                {(() => {
+                                                    const pDate = getParsedDate(post.publishedDate);
+                                                    const isOverdue = pDate && pDate <= new Date();
+                                                    
+                                                    if (post.status === 'publish' || (post.status === 'schedule' && isOverdue)) {
+                                                        return (
+                                                            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                                <span className="text-emerald-500 font-black text-[9px] uppercase tracking-widest">
+                                                                    Broadcast Live
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    } else if (post.status === 'schedule') {
+                                                        return (
+                                                            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                                                <span className="text-blue-500 font-black text-[9px] uppercase tracking-widest">
+                                                                    Scheduled
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                                                                <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                                                <span className="text-amber-500 font-black text-[9px] uppercase tracking-widest">
+                                                                    Strategic Draft
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    }
+                                                })()}
                                             </TableCell>
 
                                             {/* Actions */}
