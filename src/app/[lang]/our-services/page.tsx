@@ -323,7 +323,7 @@ const CSS = `
   --or:#f97316;--or-dim:rgba(249,115,22,.1);--or-glow:rgba(249,115,22,.22);
   --sh:0 4px 24px rgba(0,0,0,.5);
 }
-.services-page{background:transparent;color:var(--tx1);font-family:var(--font-inter), sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+.services-page{background:transparent;color:var(--tx1);font-family:var(--font-inter), sans-serif;font-size:15px;line-height:1.7;min-height:100vh;width:100%;max-width:100vw;overflow-x:hidden;display:block}
 .syne-font{font-family:var(--font-playfair-display), serif}
 
 /* Layout */
@@ -366,12 +366,20 @@ const CSS = `
 .stat:last-child{border-right:none}
 .stat-n{font-family:var(--font-playfair-display), serif;font-size:26px;font-weight:800;color:var(--or);line-height:1}
 .stat-l{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:500}
-@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(3){border-top:1px solid var(--bd)}.stat:nth-child(4){border-top:1px solid var(--bd);border-right:none}}
+@media(max-width:560px){
+  .stats{grid-template-columns:repeat(2,1fr);width:100%}
+  .stat{padding:16px 10px;border-right:1px solid var(--bd)}
+  .stat:nth-child(2n){border-right:none}
+  .stat:nth-child(3), .stat:nth-child(4){border-top:1px solid var(--bd)}
+  .stat-n{font-size:20px}
+  .stat-l{font-size:10px;line-height:1.2}
+}
 
 /* ── MAIN TABS (DM vs AI) ── */
 .main-tabs{
   display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);
   position:sticky;top:0;z-index:100;
+  width:100%;max-width:100vw;
 }
 .main-tab{
   flex:1;padding:18px 24px;font-family:var(--font-playfair-display), serif;font-size:15px;font-weight:700;
@@ -390,8 +398,9 @@ const CSS = `
 /* ── CAT FILTER STRIP ── */
 .cat-strip-wrap{
   background:var(--bg2);border-bottom:1px solid var(--bd);
-  position:sticky;top:57px;z-index:99;
+  position:sticky;top:56px;z-index:99;
   overflow:hidden;
+  width:100%;max-width:100vw;
 }
 .cat-strip-wrap::after {
   content: '';
@@ -504,9 +513,12 @@ const CSS = `
 
 @media(max-width:768px){
   .hero{padding:56px 16px 44px}
+  .main-tabs{top:56px}
+  .cat-strip-wrap{top:110px}
+  .main-tab{padding:14px 10px;font-size:13px}
   .main-tab span.label{display:none}
   .section{padding:44px 0}
-  .cta{padding:36px 20px}
+  .cta{padding:32px 16px}
   .svc-grid{grid-template-columns:1fr}
 }
 `;
