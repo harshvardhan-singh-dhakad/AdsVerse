@@ -40,6 +40,35 @@ export function BlogTable() {
         return () => unsubscribe();
     }, []);
 
+    // Auto-sync scheduled posts that are past their publish date
+    useEffect(() => {
+        if (loading || posts.length === 0) return;
+
+        const syncScheduledPosts = async () => {
+            const now = new Date();
+            const overdue = posts.filter(post => 
+                post.status === 'schedule' && 
+                post.publishedDate && 
+                new Date(post.publishedDate) <= now
+            );
+
+            if (overdue.length === 0) return;
+
+            for (const post of overdue) {
+                try {
+                    await updateDoc(doc(db, 'blogPosts', post.id), {
+                        status: 'publish',
+                        updatedAt: new Date()
+                    });
+                } catch (err) {
+                    console.error(`Failed to sync scheduled post ${post.id}:`, err);
+                }
+            }
+        };
+
+        syncScheduledPosts();
+    }, [posts, loading, db]);
+
     // NEW: Lock body scroll when editor is open to prevent "double scrolling"
     useEffect(() => {
         if (isEditing) {
@@ -282,7 +311,7 @@ export function BlogTable() {
 
                                             {/* Publish Status */}
                                             <TableCell className="text-center">
-                                                {post.status === 'publish' ? (
+                                                {(post.status === 'publish' || (post.status === 'schedule' && post.publishedDate && new Date(post.publishedDate) <= new Date())) ? (
                                                     <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                                         <span className="text-emerald-500 font-black text-[9px] uppercase tracking-widest">
