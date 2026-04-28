@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: { slug: string, lan
   if (!post) return { title: "Post Not Found" };
 
   const fullUrl = `https://adsverse.in/${params.lang}/blog/${post.slug}`;
-  const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-image.webp';
+  const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-adsverse-2026.png';
 
   return {
     title: `${post.title} | AdsVerse Blog`,
