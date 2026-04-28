@@ -309,11 +309,18 @@ function hexToRgba(hex: string, a: number) {
 
 const CSS = `
 :root{
+  --bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--bg4:#e2e8f0;
+  --tx1:#0f172a;--tx2:#334155;--tx3:#64748b;--tx4:#94a3b8;
+  --bd:#e2e8f0;--bd2:#cbd5e1;
+  --or:#f97316;--or-dim:rgba(249,115,22,.08);--or-glow:rgba(249,115,22,.15);
+  --r:12px;--rsm:8px;--rxl:20px;
+  --sh:0 4px 12px rgba(0,0,0,.05);
+}
+.dark{
   --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
   --tx1:#e6edf3;--tx2:#c9d1d9;--tx3:#8b949e;--tx4:#6e7681;
   --bd:#30363d;--bd2:#21262d;
   --or:#f97316;--or-dim:rgba(249,115,22,.1);--or-glow:rgba(249,115,22,.22);
-  --r:12px;--rsm:8px;--rxl:20px;
   --sh:0 4px 24px rgba(0,0,0,.5);
 }
 .services-page{background:transparent;color:var(--tx1);font-family:var(--font-inter), sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
@@ -570,7 +577,7 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
             <Link href="/contact" className="px-7 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
               Get Free Strategy Call →
             </Link>
-            <Link href="/pricing" className="px-7 py-3.5 border-2 border-slate-700 text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
+            <Link href="/pricing" className="px-7 py-3.5 border-2 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
               View Pricing
             </Link>
           </div>
@@ -632,7 +639,7 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
               <h2 className="text-3xl font-black syne-font mb-2">
                 {dmCat === "all" ? (isHi ? "डिजिटल मार्केटिंग सेवाएं" : "Complete Digital Marketing Services") : DM_CATEGORIES.find(c => c.id === dmCat)?.label}
               </h2>
-              <p className="text-slate-400 max-w-2xl">
+              <p className="text-slate-600 dark:text-slate-400 max-w-2xl">
                 {dmCat === "all" 
                   ? (isHi ? "सब कुछ इन-हाउस — कोई आउटसोर्सिंग नहीं। " : "Everything in-house — no outsourcing, no excuses. ") + dmTotal + " services."
                   : DM_CATEGORIES.find(c => c.id === dmCat)?.desc}
@@ -671,7 +678,7 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
               <h2 className="text-3xl font-black syne-font mb-2">
                 {aiCat === "all" ? (isHi ? "AI और ऑटोमेशन सेवाएं" : "AI & Automation Hub") : AI_CATEGORIES.find(c => c.id === aiCat)?.label}
               </h2>
-              <p className="text-slate-400 max-w-2xl">
+              <p className="text-slate-600 dark:text-slate-400 max-w-2xl">
                 {aiCat === "all" 
                   ? (isHi ? "भारतीय SMBs के लिए बनाया गया बिजनेस ऑटोमेशन। " : "Business automation built for Indian SMBs. ") + aiTotal + " services."
                   : AI_CATEGORIES.find(c => c.id === aiCat)?.desc}
@@ -694,7 +701,7 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
             <Link href="/contact" className="px-8 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all">
               Book Free Consultation →
             </Link>
-            <Link href="/pricing" className="px-8 py-3.5 border-2 border-slate-700 text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
+            <Link href="/pricing" className="px-8 py-3.5 border-2 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
               See All Pricing
             </Link>
           </div>
