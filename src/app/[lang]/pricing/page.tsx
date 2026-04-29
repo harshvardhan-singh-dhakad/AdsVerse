@@ -312,10 +312,10 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
+    <div className="relative min-h-screen">
       {/* Background Glows */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-      <div className="glow-effect opacity-10 pointer-events-none" />
+      <div className="glow-effect opacity-20" />
 
       <div className="container mx-auto py-20 px-6 relative z-10">
         {/* Hero Section */}
@@ -396,8 +396,8 @@ export default function PricingPage() {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 ${activeCategory === cat.id
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105"
-                      : "hover:bg-card/60 text-muted-foreground"
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105"
+                    : "hover:bg-card/60 text-muted-foreground"
                     }`}
                 >
                   <span>{cat.icon}</span>
@@ -537,9 +537,9 @@ export default function PricingPage() {
         </Tabs>
 
         {/* FAQ/CTA Final Section */}
-        <section className="mt-32 relative overflow-hidden rounded-[3rem] bg-primary py-20 px-10 text-center text-primary-foreground mx-4 md:mx-0">
-          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-white/10 rounded-full blur-[80px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[80px] pointer-events-none" />
+        <section className="mt-32 relative overflow-hidden rounded-[3rem] bg-primary py-20 px-10 text-center text-primary-foreground">
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/10 rounded-full blur-[80px]" />
+          <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/3 w-96 h-96 bg-accent/20 rounded-full blur-[80px]" />
 
           <div className="relative z-10 space-y-8 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tight">Ready to Dominate Your Market?</h2>
