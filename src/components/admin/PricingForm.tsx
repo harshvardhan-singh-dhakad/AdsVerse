@@ -44,6 +44,7 @@ const pricingPlanSchema = z.object({
   price: z.string().min(1, "Price is required."),
   frequency: z.string().optional(),
   category: z.string().min(1, "Category is required."),
+  categoryLabel: z.string().min(1, "Category label is required."),
   subCategory: z.string().optional(),
   features: z.array(z.object({ value: z.string().min(1, "Feature cannot be empty.") })),
   isPopular: z.boolean().default(false),
@@ -77,6 +78,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       price: "",
       frequency: "/mo",
       category: "seo",
+      categoryLabel: "Search Engine",
       subCategory: "",
       features: [{ value: "" }],
       isPopular: false,
@@ -124,6 +126,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
     const cat = CATEGORIES.find(c => c.id === val);
     if (cat) {
       form.setValue("category", val);
+      form.setValue("categoryLabel", cat.label);
       form.setValue("categoryIcon", cat.icon);
       form.setValue("categoryColor", cat.color);
     }
@@ -204,17 +207,31 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
           />
         </div>
 
-        <FormField
-          control={form.control}
-          name="categoryDesc"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category Description (Optional)</FormLabel>
-              <FormControl><Input placeholder="General description for this group..." {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+            <FormField
+            control={form.control}
+            name="categoryLabel"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Display Category Label</FormLabel>
+                <FormControl><Input placeholder="e.g. Meta Ads, SEO, etc." {...field} /></FormControl>
+                <FormDescription className="text-[10px]">How this category name appears on the page.</FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="categoryDesc"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Category Description (Optional)</FormLabel>
+                <FormControl><Input placeholder="General description for this group..." {...field} /></FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+        </div>
 
         <FormField
           control={form.control}

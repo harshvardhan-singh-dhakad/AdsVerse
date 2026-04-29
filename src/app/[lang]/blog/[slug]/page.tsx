@@ -14,6 +14,8 @@ import { getFirestore, collection, query, where, getDocs } from "firebase/firest
 import { db } from "@/lib/firebase-server";
 
 import { BlogPost } from "@/lib/definitions";
+import { ShareButtons } from "@/components/layout/share-buttons";
+
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   // Use public_blogPosts — publicly readable, contains only published posts
@@ -195,20 +197,38 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
           </Card>
 
           {post.whatsappShare && (
-            <div className="flex justify-center pt-8 border-t border-primary/5">
-              <Button asChild className="bg-[#25D366] hover:bg-[#25D366]/90 text-white rounded-full px-8 py-6 h-auto shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 group">
-                <a 
-                  href={`https://wa.me/?text=${encodeURIComponent(`${post.title} — Read more at: https://adsverse.in/${params.lang}/blog/${post.slug}`)}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center gap-3 font-black uppercase tracking-widest text-xs"
-                >
-                  <Share2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  Share to WhatsApp
-                </a>
-              </Button>
-            </div>
+            <ShareButtons />
           )}
+
+          {post.allowComments && (
+            <section className="pt-12 border-t border-primary/10 mt-16 animate-in fade-in duration-1000">
+              <div className="bg-card/40 backdrop-blur-xl border border-primary/10 rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-5">
+                  <Share2 className="w-24 h-24 text-primary" />
+                </div>
+                
+                <h3 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h3>
+                <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+                  Have insights or questions about this post? We'd love to hear from you. 
+                  Connect with our team directly or share your thoughts via WhatsApp.
+                </p>
+                
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all">
+                    <Link href={`/${params.lang}/contact`}>Contact Our Experts</Link>
+                  </Button>
+                  <Button variant="outline" asChild className="rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs border-primary/20 hover:border-primary/40 transition-all">
+                    <a href="https://wa.me/919109090000" target="_blank" rel="noopener noreferrer">Message on WhatsApp</a>
+                  </Button>
+                </div>
+                
+                <p className="mt-8 text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black opacity-40">
+                  AdsVerse · Digital Excellence 2026
+                </p>
+              </div>
+            </section>
+          )}
+
         </article>
       </div>
     </>

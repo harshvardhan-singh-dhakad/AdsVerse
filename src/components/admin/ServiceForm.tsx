@@ -45,9 +45,11 @@ const serviceSchema = z.object({
   iconName: z.string().min(2, "Icon name is required."),
   displayOrder: z.coerce.number().min(0, "Display order must be a positive number."),
   category: z.string().min(1, "Category is required."),
+  categoryLabel: z.string().min(1, "Category label is required."),
   categoryIcon: z.string().optional(),
   categoryColor: z.string().optional(),
   categoryDesc: z.string().optional(),
+  planType: z.enum(["dm", "ai"]),
   tags: z.array(z.object({ value: z.string().min(1, "Tag cannot be empty.") })).default([]),
 });
 
@@ -65,13 +67,17 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
     resolver: zodResolver(serviceSchema),
     defaultValues: service ? {
       ...service,
+      planType: service.planType || (SERVICE_CATEGORIES.find(c => c.id === service.category)?.id ? (SERVICE_CATEGORIES.findIndex(c => c.id === service.category) < 12 ? 'dm' : 'ai') : 'dm'),
+      categoryLabel: service.categoryLabel || SERVICE_CATEGORIES.find(c => c.id === service.category)?.label || "",
       tags: service.tags?.map(t => ({ value: t })) || [],
     } : {
       name: "",
       description: "",
       iconName: "",
       displayOrder: 0,
+      planType: "dm",
       category: "smm",
+      categoryLabel: "Social Media",
       categoryIcon: "📱",
       categoryColor: "#e91e8c",
       categoryDesc: "",
@@ -110,8 +116,14 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
     const cat = SERVICE_CATEGORIES.find(c => c.id === val);
     if (cat) {
       form.setValue("category", val);
+      form.setValue("categoryLabel", cat.label);
       form.setValue("categoryIcon", cat.icon);
       form.setValue("categoryColor", cat.color);
+      // Auto set planType based on index in hardcoded list as a helper
+      const idx = SERVICE_CATEGORIES.findIndex(c => c.id === val);
+      if (idx !== -1) {
+        form.setValue("planType", idx < 12 ? "dm" : "ai");
+      }
     }
   };
 
@@ -132,10 +144,34 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
             />
             <FormField
                 control={form.control}
+                name="planType"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Main Section</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select section" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value="dm">Digital Marketing</SelectItem>
+                        <SelectItem value="ai">AI & Automation</SelectItem>
+                    </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
                 name="category"
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Parent Category</FormLabel>
+                    <div className="flex items-center justify-between">
+                        <FormLabel>Category ID</FormLabel>
+                        <span className="text-[10px] text-muted-foreground uppercase font-bold">Presets Available</span>
+                    </div>
                     <Select onValueChange={handleCategoryChange} defaultValue={field.value}>
                     <FormControl>
                         <SelectTrigger>
@@ -153,6 +189,33 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
                     <FormMessage />
                 </FormItem>
                 )}
+            />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+            control={form.control}
+            name="categoryLabel"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Display Category Name</FormLabel>
+                <FormControl><Input placeholder="e.g. Social Media" {...field} /></FormControl>
+                <FormDescription>How it appears to the public.</FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="displayOrder"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Display Sequence</FormLabel>
+                <FormControl><Input type="number" {...field} /></FormControl>
+                <FormDescription>Lower numbers appear first.</FormDescription>
+                <FormMessage />
+                </FormItem>
+            )}
             />
         </div>
 
@@ -181,30 +244,18 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
-            <FormField
-            control={form.control}
-            name="iconName"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Visual Symbol (Icon/Emoji)</FormLabel>
-                <FormControl><Input placeholder="e.g., 🔍 or TrendingUp" {...field} /></FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="displayOrder"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Display Sequence</FormLabel>
-                <FormControl><Input type="number" {...field} /></FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-        </div>
+        <FormField
+          control={form.control}
+          name="iconName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Visual Symbol (Icon/Emoji)</FormLabel>
+              <FormControl><Input placeholder="e.g., 🔍 or TrendingUp" {...field} /></FormControl>
+              <FormDescription>Appears next to the service name.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div>
             <FormLabel>Tags / Features</FormLabel>

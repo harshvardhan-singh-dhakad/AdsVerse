@@ -13,9 +13,11 @@ export type Service = BaseDoc & {
     displayOrder: number;
     // New fields for categorization and tagging
     category?: string;
+    categoryLabel?: string;
     categoryIcon?: string;
     categoryColor?: string;
     categoryDesc?: string;
+    planType?: 'dm' | 'ai';
     tags?: string[];
 }
 
@@ -42,6 +44,7 @@ export type PricingPlan = BaseDoc & {
     planType: 'service' | 'automation' | 'video';
     icon?: string; // For emojis
     categoryIcon?: string;
+    categoryLabel?: string;
     categoryColor?: string;
     categoryDesc?: string;
 }

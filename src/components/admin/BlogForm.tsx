@@ -21,7 +21,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { SelectGroup, SelectLabel } from '@/components/ui/select';
-import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, Settings, Save, Send, Link as LinkIcon, Code2 } from 'lucide-react';
+import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, UserPlus, Settings, Save, Send, Link as LinkIcon, Code2 } from 'lucide-react';
 
 const blogSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -901,7 +901,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex gap-1">
                     Author <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select 
+                    onValueChange={(val) => {
+                      field.onChange(val);
+                      // Clear custom author name if switching back to standard options
+                      if (val !== 'guest' && val !== 'custom') {
+                        // We'll use a local state or just check the value on submit
+                      }
+                    }} 
+                    defaultValue={['harshvardhan', 'team', 'guest'].includes(field.value) ? field.value : 'custom'}
+                  >
                     <FormControl>
                       <SelectTrigger className="bg-muted/30 border-border/20 rounded-xl h-12">
                         <SelectValue placeholder="Select author" />
@@ -911,11 +920,28 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                       <SelectItem value="harshvardhan">Harshvardhan — AdsVerse</SelectItem>
                       <SelectItem value="team">AdsVerse Team</SelectItem>
                       <SelectItem value="guest">Guest Author</SelectItem>
+                      <SelectItem value="custom">✍️ Custom Name / Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription className="text-[10px] text-muted-foreground">Website owner set as default</FormDescription>
                 </FormItem>
               )} />
+
+              {/* Conditional Custom Author Name Input */}
+              {(form.watch('author') === 'custom' || (!['harshvardhan', 'team', 'guest'].includes(form.watch('author')))) && (
+                <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    <UserPlus className="w-3 h-3" /> Custom Author Name / Company
+                  </FormLabel>
+                  <Input 
+                    placeholder="e.g. Rahul Sharma — Tech Specialist" 
+                    className="bg-primary/5 border-primary/20 rounded-xl h-12 focus-visible:ring-primary/30 font-bold"
+                    value={!['harshvardhan', 'team', 'guest', 'custom'].includes(form.watch('author')) ? form.watch('author') : ''}
+                    onChange={(e) => form.setValue('author', e.target.value)}
+                  />
+                  <p className="text-[10px] text-muted-foreground">Type the name as it should appear on the blog post.</p>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <FormLabel className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Website</FormLabel>

@@ -1,20 +1,18 @@
-"use client";
+﻿"use client";
 
-import { useState, useMemo, useRef } from "react";
-import { ArrowRight, Zap, TrendingUp, Star, Users, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Zap, TrendingUp, Star, Users } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection } from "firebase/firestore";
 
-/* ─────────────────────────────────────────────
+/* ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
    COMPLETE SERVICES DATA
-───────────────────────────────────────────── */
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 const DM_CATEGORIES = [
   {
     id: "smm",
     label: "Social Media",
-    icon: "📱",
+    icon: "≡ƒô▒",
     color: "#e91e8c",
     desc: "Build brand presence across every major social platform with data-backed strategies.",
     services: [
@@ -23,8 +21,8 @@ const DM_CATEGORIES = [
       { name: "LinkedIn Marketing", desc: "B2B brand building, thought leadership & professional outreach.", tags: ["B2B", "Lead Gen", "Branding"] },
       { name: "Twitter (X) Marketing", desc: "Real-time brand engagement, trending content & audience growth.", tags: ["Trending", "Engagement", "Ads"] },
       { name: "YouTube Marketing", desc: "Channel strategy, SEO & subscriber growth for YouTube.", tags: ["YouTube SEO", "Subscribers", "Strategy"] },
-      { name: "Social Media Account Management", desc: "Full-service management of all your social accounts — posting, replies & analytics.", tags: ["Management", "Scheduling", "Analytics"] },
-      { name: "Social Media Content Creation", desc: "Platform-specific content — captions, creatives, carousels & video scripts.", tags: ["Creatives", "Captions", "Carousels"] },
+      { name: "Social Media Account Management", desc: "Full-service management of all your social accounts ΓÇö posting, replies & analytics.", tags: ["Management", "Scheduling", "Analytics"] },
+      { name: "Social Media Content Creation", desc: "Platform-specific content ΓÇö captions, creatives, carousels & video scripts.", tags: ["Creatives", "Captions", "Carousels"] },
       { name: "Social Media Ads Campaigns", desc: "Paid campaigns across Facebook, Instagram, LinkedIn & Twitter.", tags: ["Paid Ads", "Targeting", "ROAS"] },
       { name: "Influencer Marketing", desc: "Connect with relevant influencers to amplify your brand reach.", tags: ["Influencer", "UGC", "Reach"] },
     ],
@@ -32,7 +30,7 @@ const DM_CATEGORIES = [
   {
     id: "seo",
     label: "SEO",
-    icon: "🔍",
+    icon: "≡ƒöì",
     color: "#22c55e",
     desc: "Rank higher on Google with white-hat SEO strategies built for Indian search behavior.",
     services: [
@@ -51,9 +49,9 @@ const DM_CATEGORIES = [
   {
     id: "content",
     label: "Content",
-    icon: "✍️",
+    icon: "Γ£ì∩╕Å",
     color: "#a78bfa",
-    desc: "Content that ranks, converts & tells your brand story — not just fills pages.",
+    desc: "Content that ranks, converts & tells your brand story ΓÇö not just fills pages.",
     services: [
       { name: "Blog Writing", desc: "SEO-optimized, research-backed blog posts that drive organic traffic.", tags: ["SEO Blogs", "Long-Form", "Authority"] },
       { name: "Website Content Writing", desc: "Homepage, about, service & landing page copy that converts.", tags: ["Web Copy", "CRO", "Conversion"] },
@@ -62,16 +60,16 @@ const DM_CATEGORIES = [
       { name: "SEO-Optimized Content", desc: "Content written around search intent with keyword integration.", tags: ["SEO Writing", "Intent", "Ranking"] },
       { name: "Video Content Creation", desc: "YouTube scripts, explainer videos & brand storytelling content.", tags: ["Scripts", "YouTube", "Explainer"] },
       { name: "Reels / Shorts Creation", desc: "Script, shoot coordination & editing for Instagram Reels & YouTube Shorts.", tags: ["Reels", "Shorts", "Viral"] },
-      { name: "Podcast Editing & Publishing", desc: "Full podcast post-production — editing, show notes & distribution.", tags: ["Editing", "Distribution", "Show Notes"] },
+      { name: "Podcast Editing & Publishing", desc: "Full podcast post-production ΓÇö editing, show notes & distribution.", tags: ["Editing", "Distribution", "Show Notes"] },
       { name: "Infographics Design", desc: "Data visualization & infographic design for social sharing & backlinks.", tags: ["Infographics", "Data Viz", "Backlinks"] },
     ],
   },
   {
     id: "ppc",
     label: "PPC & Paid Ads",
-    icon: "🎯",
+    icon: "≡ƒÄ»",
     color: "#f59e0b",
-    desc: "Every rupee spent, every click tracked — paid campaigns built for maximum ROAS.",
+    desc: "Every rupee spent, every click tracked ΓÇö paid campaigns built for maximum ROAS.",
     services: [
       { name: "Google Search Ads", desc: "Intent-based search campaigns targeting buyers ready to convert.", tags: ["Search", "Intent", "ROAS"] },
       { name: "Google Display Ads", desc: "Visual banner ads across Google's Display Network for brand awareness.", tags: ["Display", "Awareness", "Retargeting"] },
@@ -81,13 +79,13 @@ const DM_CATEGORIES = [
       { name: "LinkedIn Ads", desc: "Sponsored content, InMail & lead gen forms for B2B targeting.", tags: ["B2B", "InMail", "Lead Forms"] },
       { name: "Remarketing Campaigns", desc: "Re-engage past visitors with custom audiences across platforms.", tags: ["Remarketing", "Custom Audience", "ROAS"] },
       { name: "Conversion Ads", desc: "Bottom-of-funnel ad campaigns optimized for purchases & form fills.", tags: ["CRO", "Purchases", "ROAS"] },
-      { name: "Lead Generation Campaigns", desc: "Full-funnel lead gen — from ad to CRM entry — automated.", tags: ["Lead Gen", "Funnel", "CRM"] },
+      { name: "Lead Generation Campaigns", desc: "Full-funnel lead gen ΓÇö from ad to CRM entry ΓÇö automated.", tags: ["Lead Gen", "Funnel", "CRM"] },
     ],
   },
   {
     id: "ecommerce",
     label: "E-Commerce",
-    icon: "🛒",
+    icon: "≡ƒ¢Æ",
     color: "#06b6d4",
     desc: "Sell more on Amazon, Flipkart, Shopify & WooCommerce with our e-commerce expertise.",
     services: [
@@ -102,11 +100,11 @@ const DM_CATEGORIES = [
   {
     id: "email",
     label: "Email Marketing",
-    icon: "📩",
+    icon: "≡ƒô⌐",
     color: "#ec4899",
     desc: "Automated email sequences that nurture leads and retain customers on autopilot.",
     services: [
-      { name: "Email Automation", desc: "Trigger-based email sequences — welcome, nurture & re-engagement.", tags: ["Automation", "Triggers", "Sequences"] },
+      { name: "Email Automation", desc: "Trigger-based email sequences ΓÇö welcome, nurture & re-engagement.", tags: ["Automation", "Triggers", "Sequences"] },
       { name: "Newsletter Creation", desc: "Weekly/monthly branded newsletters with curated content & CTAs.", tags: ["Newsletter", "Branding", "CTAs"] },
       { name: "Drip Campaigns", desc: "Multi-step email drip campaigns mapped to your sales funnel.", tags: ["Drip", "Funnel", "Nurture"] },
       { name: "Email List Building", desc: "Lead magnets, opt-in forms & list segmentation strategies.", tags: ["List Growth", "Lead Magnet", "Segmentation"] },
@@ -116,12 +114,12 @@ const DM_CATEGORIES = [
   {
     id: "design",
     label: "Graphic Design",
-    icon: "🎨",
+    icon: "≡ƒÄ¿",
     color: "#f97316",
     desc: "Scroll-stopping visuals that communicate your brand before a single word is read.",
     services: [
       { name: "Logo Design", desc: "Unique, memorable logo with multiple format deliverables.", tags: ["Logo", "Brand Identity", "Vector"] },
-      { name: "Branding Kit", desc: "Complete brand kit — logo, colors, fonts, icons & usage guide.", tags: ["Brand Kit", "Style Guide", "Identity"] },
+      { name: "Branding Kit", desc: "Complete brand kit ΓÇö logo, colors, fonts, icons & usage guide.", tags: ["Brand Kit", "Style Guide", "Identity"] },
       { name: "Social Media Posters", desc: "Branded creatives for Instagram, Facebook & LinkedIn posts.", tags: ["Posters", "Creatives", "Social"] },
       { name: "Banner & Flyer Design", desc: "Print-ready and digital banners, flyers & hoarding designs.", tags: ["Banner", "Flyer", "Print"] },
       { name: "Thumbnail Design", desc: "High-CTR YouTube thumbnail designs to improve click-through rates.", tags: ["Thumbnails", "YouTube", "CTR"] },
@@ -130,11 +128,11 @@ const DM_CATEGORIES = [
   {
     id: "web",
     label: "Web Development",
-    icon: "🌐",
+    icon: "≡ƒîÉ",
     color: "#3b82f6",
-    desc: "Fast, SEO-ready websites that turn visitors into leads — not just digital brochures.",
+    desc: "Fast, SEO-ready websites that turn visitors into leads ΓÇö not just digital brochures.",
     services: [
-      { name: "Business Website", desc: "Professional 5–10 page website for your business with CMS.", tags: ["Business", "CMS", "Responsive"] },
+      { name: "Business Website", desc: "Professional 5ΓÇô10 page website for your business with CMS.", tags: ["Business", "CMS", "Responsive"] },
       { name: "Portfolio Website", desc: "Personal brand or agency portfolio with case studies & work samples.", tags: ["Portfolio", "Case Studies", "Personal Brand"] },
       { name: "E-Commerce Website", desc: "Full-stack e-commerce with product pages, cart & payment gateway.", tags: ["E-Commerce", "Payment", "Cart"] },
       { name: "Landing Pages", desc: "High-converting single-page funnels for ads & campaigns.", tags: ["Landing Page", "CRO", "Funnel"] },
@@ -146,21 +144,21 @@ const DM_CATEGORIES = [
   {
     id: "orm",
     label: "ORM",
-    icon: "🛡️",
+    icon: "≡ƒ¢í∩╕Å",
     color: "#10b981",
-    desc: "Protect and build your online reputation — because one bad review shouldn't define you.",
+    desc: "Protect and build your online reputation ΓÇö because one bad review shouldn't define you.",
     services: [
       { name: "Google Reviews Management", desc: "Strategy to get more 5-star reviews & suppress negative ones.", tags: ["Reviews", "5-Star", "Google"] },
       { name: "Negative Review Handling", desc: "Professionally respond to & resolve negative feedback online.", tags: ["Crisis", "Response", "Resolution"] },
-      { name: "Brand Reputation Building", desc: "Long-term reputation strategy — press, social proof & authority.", tags: ["Brand", "Authority", "Press"] },
+      { name: "Brand Reputation Building", desc: "Long-term reputation strategy ΓÇö press, social proof & authority.", tags: ["Brand", "Authority", "Press"] },
     ],
   },
   {
     id: "analytics",
     label: "Analytics",
-    icon: "📊",
+    icon: "≡ƒôè",
     color: "#8b5cf6",
-    desc: "Know exactly what's working — real-time data, clear reports, zero guesswork.",
+    desc: "Know exactly what's working ΓÇö real-time data, clear reports, zero guesswork.",
     services: [
       { name: "Google Analytics Setup", desc: "GA4 installation, goals, events & conversion tracking setup.", tags: ["GA4", "Goals", "Events"] },
       { name: "Facebook Pixel Setup", desc: "Meta Pixel installation, custom events & audience building.", tags: ["Meta Pixel", "Events", "Audiences"] },
@@ -171,24 +169,24 @@ const DM_CATEGORIES = [
   {
     id: "video",
     label: "Video Production",
-    icon: "🎬",
+    icon: "≡ƒÄ¼",
     color: "#ef4444",
-    desc: "Professional video content that builds trust — from brand films to social reels.",
+    desc: "Professional video content that builds trust ΓÇö from brand films to social reels.",
     services: [
       { name: "Corporate Videos", desc: "Brand story, about-us & team culture videos for your business.", tags: ["Corporate", "Brand Story", "Culture"] },
-      { name: "Product Promo Videos", desc: "Feature-highlight videos for products — for ads & website use.", tags: ["Product", "Promo", "Ads"] },
-      { name: "Reels & Shorts", desc: "15–60 second scroll-stopping short-form content for social media.", tags: ["Reels", "Shorts", "Social"] },
+      { name: "Product Promo Videos", desc: "Feature-highlight videos for products ΓÇö for ads & website use.", tags: ["Product", "Promo", "Ads"] },
+      { name: "Reels & Shorts", desc: "15ΓÇô60 second scroll-stopping short-form content for social media.", tags: ["Reels", "Shorts", "Social"] },
       { name: "Business Ad Films", desc: "Full production ad films for TV, YouTube & digital campaigns.", tags: ["Ad Film", "TV", "Production"] },
     ],
   },
   {
     id: "branding",
     label: "Branding & Strategy",
-    icon: "🧭",
+    icon: "≡ƒº¡",
     color: "#f97316",
-    desc: "Build a brand worth remembering — strategy, identity & market positioning.",
+    desc: "Build a brand worth remembering ΓÇö strategy, identity & market positioning.",
     services: [
-      { name: "Brand Identity Creation", desc: "Complete brand identity system — visual & verbal brand guidelines.", tags: ["Identity", "Guidelines", "Visual"] },
+      { name: "Brand Identity Creation", desc: "Complete brand identity system ΓÇö visual & verbal brand guidelines.", tags: ["Identity", "Guidelines", "Visual"] },
       { name: "Brand Strategy", desc: "Positioning, messaging, USP definition & competitive differentiation.", tags: ["Positioning", "USP", "Messaging"] },
       { name: "Market Research", desc: "Competitor analysis, audience research & market opportunity mapping.", tags: ["Research", "Competitors", "Audience"] },
       { name: "Marketing Strategy", desc: "Full-funnel digital marketing strategy tailored to your goals.", tags: ["Strategy", "Full-Funnel", "Goals"] },
@@ -200,38 +198,38 @@ const AI_CATEGORIES = [
   {
     id: "whatsapp",
     label: "WhatsApp AI",
-    icon: "💬",
+    icon: "≡ƒÆ¼",
     color: "#22c55e",
-    desc: "AI-powered WhatsApp automation that works 24/7 — reply, qualify & convert leads automatically.",
+    desc: "AI-powered WhatsApp automation that works 24/7 ΓÇö reply, qualify & convert leads automatically.",
     services: [
-      { name: "WhatsApp AI Bot (Persona-Based)", desc: "Custom AI persona on WhatsApp — Hinglish support, lead capture & memory.", tags: ["AI Bot", "Persona", "Hinglish"] },
+      { name: "WhatsApp AI Bot (Persona-Based)", desc: "Custom AI persona on WhatsApp ΓÇö Hinglish support, lead capture & memory.", tags: ["AI Bot", "Persona", "Hinglish"] },
       { name: "WhatsApp Marketing Campaigns", desc: "Bulk broadcast messages with personalization & opt-in compliance.", tags: ["Broadcast", "Marketing", "DPDP"] },
       { name: "WhatsApp Broadcast Setup", desc: "Setup and manage broadcast lists for promotions & announcements.", tags: ["Broadcast", "Lists", "Promotions"] },
-      { name: "AI Auto-Reply (Instagram/WhatsApp/Facebook)", desc: "Instant AI replies across all chat platforms — unified inbox automation.", tags: ["Auto-Reply", "Multi-Platform", "Inbox"] },
-      { name: "WhatsApp Lead Funnel", desc: "Full WhatsApp funnel — ad → DM → qualification → CRM entry.", tags: ["Funnel", "Lead Gen", "CRM"] },
+      { name: "AI Auto-Reply (Instagram/WhatsApp/Facebook)", desc: "Instant AI replies across all chat platforms ΓÇö unified inbox automation.", tags: ["Auto-Reply", "Multi-Platform", "Inbox"] },
+      { name: "WhatsApp Lead Funnel", desc: "Full WhatsApp funnel ΓÇö ad ΓåÆ DM ΓåÆ qualification ΓåÆ CRM entry.", tags: ["Funnel", "Lead Gen", "CRM"] },
     ],
   },
   {
     id: "n8n",
     label: "n8n & Workflows",
-    icon: "⚙️",
+    icon: "ΓÜÖ∩╕Å",
     color: "#f97316",
-    desc: "Visual no-code automation that connects your tools — CRM, email, sheets, WhatsApp & more.",
+    desc: "Visual no-code automation that connects your tools ΓÇö CRM, email, sheets, WhatsApp & more.",
     services: [
       { name: "n8n Workflow Setup", desc: "End-to-end n8n workflow design, deployment & cloud hosting.", tags: ["n8n", "Self-Hosted", "Cloud"] },
       { name: "Zapier Automation", desc: "Multi-step Zap creation connecting 5,000+ apps in your stack.", tags: ["Zapier", "Zaps", "Integration"] },
       { name: "Multi-Step Workflow Design", desc: "Complex branching workflows with conditions, loops & error handling.", tags: ["Branching", "Logic", "Error Handling"] },
       { name: "API Integration & Automation", desc: "Custom REST API connections to automate data between platforms.", tags: ["REST API", "Webhooks", "Integration"] },
-      { name: "Scheduled Data Automation", desc: "Cron-based automation — daily reports, data sync & batch jobs.", tags: ["Cron", "Scheduling", "Data Sync"] },
+      { name: "Scheduled Data Automation", desc: "Cron-based automation ΓÇö daily reports, data sync & batch jobs.", tags: ["Cron", "Scheduling", "Data Sync"] },
       { name: "Form to CRM Automation", desc: "Auto-capture form submissions into CRM with tagging & notifications.", tags: ["Form", "CRM", "Notifications"] },
     ],
   },
   {
     id: "aiagents",
     label: "AI Agents & Bots",
-    icon: "🤖",
+    icon: "≡ƒñû",
     color: "#a78bfa",
-    desc: "Custom AI agents powered by Gemini, GPT & Claude — built for real Indian business use cases.",
+    desc: "Custom AI agents powered by Gemini, GPT & Claude ΓÇö built for real Indian business use cases.",
     services: [
       { name: "AI Telecaller System", desc: "Automated voice AI that calls, qualifies & schedules follow-ups.", tags: ["Telecaller", "Voice AI", "Lead Qual"] },
       { name: "Lead Qualification Bot", desc: "Conversational AI that scores & qualifies leads before human handoff.", tags: ["Lead Scoring", "Qualification", "AI"] },
@@ -244,13 +242,13 @@ const AI_CATEGORIES = [
   {
     id: "crm",
     label: "CRM & Lead Automation",
-    icon: "🔗",
+    icon: "≡ƒöù",
     color: "#06b6d4",
-    desc: "Never lose a lead again — automate your entire sales pipeline from capture to close.",
+    desc: "Never lose a lead again ΓÇö automate your entire sales pipeline from capture to close.",
     services: [
       { name: "CRM Setup & Automation", desc: "Full CRM setup (HubSpot, Zoho, Salesforce) with pipeline configuration.", tags: ["HubSpot", "Zoho", "Pipeline"] },
-      { name: "Lead Capture Automation", desc: "Multi-source lead capture — web forms, ads, WhatsApp → CRM.", tags: ["Lead Capture", "Multi-Source", "CRM"] },
-      { name: "Sales Funnel Automation", desc: "Automated funnel stages — MQL to SQL to closed deal.", tags: ["Funnel", "MQL", "SQL"] },
+      { name: "Lead Capture Automation", desc: "Multi-source lead capture ΓÇö web forms, ads, WhatsApp ΓåÆ CRM.", tags: ["Lead Capture", "Multi-Source", "CRM"] },
+      { name: "Sales Funnel Automation", desc: "Automated funnel stages ΓÇö MQL to SQL to closed deal.", tags: ["Funnel", "MQL", "SQL"] },
       { name: "Auto Follow-up System", desc: "Timed email + WhatsApp + SMS follow-up sequences after lead capture.", tags: ["Follow-Up", "Sequences", "Multi-Channel"] },
       { name: "Pipeline Management", desc: "Deal tracking, stage automation & sales reporting dashboards.", tags: ["Pipeline", "Deals", "Dashboard"] },
       { name: "Lead Scoring System", desc: "Behavioral scoring model to prioritize high-intent leads for sales team.", tags: ["Scoring", "Intent", "Prioritization"] },
@@ -259,9 +257,9 @@ const AI_CATEGORIES = [
   {
     id: "chatautomation",
     label: "Chat Automation",
-    icon: "💡",
+    icon: "≡ƒÆí",
     color: "#ec4899",
-    desc: "One unified AI brain across Instagram, Facebook & WhatsApp — never miss a message.",
+    desc: "One unified AI brain across Instagram, Facebook & WhatsApp ΓÇö never miss a message.",
     services: [
       { name: "Instagram DM Automation", desc: "Auto-replies to story mentions, DMs & comment triggers on Instagram.", tags: ["Instagram", "DM", "Story Triggers"] },
       { name: "Facebook Messenger Bot", desc: "AI Messenger bot for page DMs, lead gen & customer support.", tags: ["Messenger", "Facebook", "Lead Gen"] },
@@ -273,7 +271,7 @@ const AI_CATEGORIES = [
   {
     id: "analytics-ai",
     label: "Analytics & Tracking",
-    icon: "📈",
+    icon: "≡ƒôê",
     color: "#8b5cf6",
     desc: "Accurate data infrastructure so every marketing decision is backed by real numbers.",
     services: [
@@ -281,13 +279,13 @@ const AI_CATEGORIES = [
       { name: "Facebook Pixel & CAPI Setup", desc: "Meta Pixel + Conversions API for server-side tracking accuracy.", tags: ["Pixel", "CAPI", "Server-Side"] },
       { name: "Conversion Tracking (Cross-Platform)", desc: "Unified conversion tracking across Google, Meta & organic channels.", tags: ["Attribution", "Cross-Platform", "Funnels"] },
       { name: "Custom Dashboard Setup", desc: "Looker Studio / Google Sheets dashboards with live data visualization.", tags: ["Looker Studio", "Dashboard", "Live Data"] },
-      { name: "Performance Reporting", desc: "Monthly automated reports — traffic, leads, ROAS & growth metrics.", tags: ["Reports", "ROAS", "Growth"] },
+      { name: "Performance Reporting", desc: "Monthly automated reports ΓÇö traffic, leads, ROAS & growth metrics.", tags: ["Reports", "ROAS", "Growth"] },
     ],
   },
   {
     id: "custom-dev",
     label: "Custom Dev & Tools",
-    icon: "🛠️",
+    icon: "≡ƒ¢á∩╕Å",
     color: "#f59e0b",
     desc: "Bespoke tools, bots & automation systems built exactly for your business processes.",
     services: [
@@ -301,7 +299,7 @@ const AI_CATEGORIES = [
   },
 ];
 
-/* ─── Helpers ─────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇΓöÇ Helpers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 function hexToRgba(hex: string, a: number) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -332,7 +330,7 @@ const CSS = `
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 .section{padding:64px 0}
 
-/* ── HERO ── */
+/* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
 .hero{
   position:relative;overflow:hidden;
   padding:80px 20px 64px;text-align:center;
@@ -377,7 +375,7 @@ const CSS = `
   .stat-l{font-size:10px;line-height:1.2}
 }
 
-/* ── MAIN TABS (DM vs AI) ── */
+/* ΓöÇΓöÇ MAIN TABS (DM vs AI) ΓöÇΓöÇ */
 .main-tabs{
   display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);
   position:sticky;top:0;z-index:100;
@@ -397,72 +395,29 @@ const CSS = `
 }
 .main-tab.on .tab-count{background:var(--or-dim);border-color:rgba(249,115,22,.3);color:var(--or)}
 
-/* ── CAT FILTER STRIP ── */
+/* ΓöÇΓöÇ CAT FILTER STRIP ΓöÇΓöÇ */
 .cat-strip-wrap{
   background:var(--bg2);border-bottom:1px solid var(--bd);
   position:sticky;top:56px;z-index:99;
+  overflow:hidden;
   width:100%;max-width:100vw;
 }
 .cat-strip-wrap::after {
   content: '';
   position: absolute;
   top: 0; right: 0; bottom: 0;
-  width: 60px;
+  width: 40px;
   background: linear-gradient(to left, var(--bg2), transparent);
   pointer-events: none;
   z-index: 2;
 }
-.cat-strip-wrap::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 40px;
-  background: linear-gradient(to right, var(--bg2), transparent);
-  pointer-events: none;
-  z-index: 2;
-}
 .cat-strip{
-  display:flex;gap:8px;padding:12px 40px 12px 40px;
+  display:flex;gap:8px;padding:12px 40px 12px 20px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   position:relative;
-  cursor: grab;
 }
-.cat-strip:active { cursor: grabbing; }
 .cat-strip::-webkit-scrollbar{display:none}
-
-.scroll-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--bg2);
-  border: 1px solid var(--bd);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--tx1);
-  cursor: pointer;
-  transition: all .2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.scroll-arrow:hover {
-  background: var(--or);
-  color: white;
-  border-color: var(--or);
-  transform: translateY(-50%) scale(1.1);
-}
-.scroll-arrow.left { left: 8px; }
-.scroll-arrow.right { right: 8px; }
-
-@media (max-width: 768px) {
-  .scroll-arrow { display: none; }
-  .cat-strip { padding: 12px 20px; }
-}
-
 .cat-btn{
   flex-shrink:0;padding:8px 16px;border-radius:var(--rsm);
   border:1.5px solid var(--bd);background:transparent;
@@ -474,7 +429,7 @@ const CSS = `
 .cat-btn.on{background:var(--or);border-color:var(--or);color:#fff}
 .cat-icon{font-size:14px}
 
-/* ── CATEGORY SECTION ── */
+/* ΓöÇΓöÇ CATEGORY SECTION ΓöÇΓöÇ */
 .cat-section{margin-bottom:56px}
 .cat-header{
   display:flex;align-items:center;gap:16px;
@@ -503,7 +458,7 @@ const CSS = `
   padding:3px 12px;border-radius:20px;
 }
 
-/* ── SERVICE CARD ── */
+/* ΓöÇΓöÇ SERVICE CARD ΓöÇΓöÇ */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
 .svc{
   background:var(--bg2);border:1.5px solid var(--bd2);border-radius:var(--r);
@@ -539,7 +494,7 @@ const CSS = `
 }
 .svc-link:hover{gap:9px}
 
-/* ── CTA BANNER ── */
+/* ΓöÇΓöÇ CTA BANNER ΓöÇΓöÇ */
 .cta{
   border-radius:var(--r);
   background:linear-gradient(135deg,rgba(249,115,22,.12) 0%,rgba(249,115,22,.04) 100%);
@@ -594,7 +549,7 @@ function CatSection({ cat }: { cat: typeof DM_CATEGORIES[0] }) {
             <div className="svc-tags">
               {s.tags.map((t) => <span className="svc-tag" key={t}>{t}</span>)}
             </div>
-            <Link href="/contact" className="svc-link">Get Free Quote →</Link>
+            <Link href="/contact" className="svc-link">Get Free Quote ΓåÆ</Link>
           </div>
         ))}
       </div>
@@ -602,108 +557,37 @@ function CatSection({ cat }: { cat: typeof DM_CATEGORIES[0] }) {
   );
 }
 
-/* ─── Main Component ──────────────────────────────────────────────────── */
+/* ΓöÇΓöÇΓöÇ Main Component ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 export default function OurServicesPage({ params: { lang } }: { params: { lang: string } }) {
   const isHi = lang === 'hi';
   const [mainTab, setMainTab] = useState("dm");
   const [dmCat, setDmCat] = useState("all");
   const [aiCat, setAiCat] = useState("all");
-  
-  const dmStripRef = useRef<HTMLDivElement>(null);
-  const aiStripRef = useRef<HTMLDivElement>(null);
 
-  const scrollStrip = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
-    if (ref.current) {
-      const scrollAmount = 400;
-      ref.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const dmTotal = DM_CATEGORIES.reduce((s, c) => s + c.services.length, 0);
+  const aiTotal = AI_CATEGORIES.reduce((s, c) => s + c.services.length, 0);
 
-  const db = useFirestore();
-  const servicesQuery = useMemoFirebase(() => collection(db, "services"), [db]);
-  const { data: services, isLoading } = useCollection(servicesQuery);
-
-  const dmCategories = useMemo(() => {
-    const groups = [...DM_CATEGORIES.map(c => ({ ...c, services: [...c.services] }))];
-    services?.forEach((s: any) => {
-      const isDM = s.planType === 'dm' || (!s.planType && ["smm", "seo", "content", "ppc", "ecommerce", "email", "design", "web", "orm", "analytics", "video", "branding"].includes(s.category || ''));
-      if (isDM && s.category) {
-        let group = groups.find(g => g.id === s.category);
-        if (!group) {
-          group = {
-            id: s.category,
-            label: s.categoryLabel || s.category.toUpperCase(),
-            icon: s.categoryIcon || "✨",
-            color: s.categoryColor || "#f97316",
-            desc: s.categoryDesc || "",
-            services: []
-          };
-          groups.push(group);
-        }
-        group.services.push({ name: s.name, desc: s.description || "", tags: s.features || [] });
-      }
-    });
-    return groups;
-  }, [services]);
-
-  const aiCategories = useMemo(() => {
-    const groups = [...AI_CATEGORIES.map(c => ({ ...c, services: [...c.services] }))];
-    services?.forEach((s: any) => {
-      const isAI = s.planType === 'ai' || (!s.planType && ["whatsapp", "n8n", "aiagents", "crm", "chatautomation", "analytics-ai", "custom-dev"].includes(s.category || ''));
-      if (isAI && s.category) {
-        let group = groups.find(g => g.id === s.category);
-        if (!group) {
-          group = {
-            id: s.category,
-            label: s.categoryLabel || s.category.toUpperCase(),
-            icon: s.categoryIcon || "🤖",
-            color: s.categoryColor || "#f97316",
-            desc: s.categoryDesc || "",
-            services: []
-          };
-          groups.push(group);
-        }
-        group.services.push({ name: s.name, desc: s.description || "", tags: s.features || [] });
-      }
-    });
-    return groups;
-  }, [services]);
-
-  const dmTotal = dmCategories.reduce((s, c) => s + c.services.length, 0);
-  const aiTotal = aiCategories.reduce((s, c) => s + c.services.length, 0);
-
-  const dmFiltered = dmCat === "all" ? dmCategories : dmCategories.filter((c) => c.id === dmCat);
-  const aiFiltered = aiCat === "all" ? aiCategories : aiCategories.filter((c) => c.id === aiCat);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-40">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
-      </div>
-    );
-  }
+  const dmFiltered = dmCat === "all" ? DM_CATEGORIES : DM_CATEGORIES.filter((c) => c.id === dmCat);
+  const aiFiltered = aiCat === "all" ? AI_CATEGORIES : AI_CATEGORIES.filter((c) => c.id === aiCat);
 
   return (
     <div className="services-page">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* ── HERO ── */}
+      {/* ΓöÇΓöÇ HERO ΓöÇΓöÇ */}
       <div className="hero">
         <div className="hero-dots" />
         <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
-          <div className="hero-pill">AI-First Agency · Vijay Nagar, Indore</div>
+          <div className="hero-pill">AI-First Agency ┬╖ Vijay Nagar, Indore</div>
           <h1>One Agency.<br /><em>Every Service</em> You Need.</h1>
           <p className="hero-sub">
             {isHi 
-              ? "डिजिटल मार्केटिंग से लेके व्हाट्सएप एआई बॉट्स तक — इंदौर के SMBs के लिए कंप्लीट डिजिटल इकोसिस्टम एक ही जगह।"
-              : "From digital marketing to WhatsApp AI bots — a complete digital ecosystem for Indore's SMBs in one place."}
+              ? "αñíαñ┐αñ£αñ┐αñƒαñ▓ αñ«αñ╛αñ░αÑìαñòαÑçαñƒαñ┐αñéαñù αñ╕αÑç αñ▓αÑçαñòαÑç αñ╡αÑìαñ╣αñ╛αñƒαÑìαñ╕αñÅαñ¬ αñÅαñåαñê αñ¼αÑëαñƒαÑìαñ╕ αññαñò ΓÇö αñçαñéαñªαÑîαñ░ αñòαÑç SMBs αñòαÑç αñ▓αñ┐αñÅ αñòαñéαñ¬αÑìαñ▓αÑÇαñƒ αñíαñ┐αñ£αñ┐αñƒαñ▓ αñçαñòαÑïαñ╕αñ┐αñ╕αÑìαñƒαñ« αñÅαñò αñ╣αÑÇ αñ£αñùαñ╣αÑñ"
+              : "From digital marketing to WhatsApp AI bots ΓÇö a complete digital ecosystem for Indore's SMBs in one place."}
           </p>
           <div className="hero-btns">
             <Link href="/contact" className="px-7 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
-              Get Free Strategy Call →
+              Get Free Strategy Call ΓåÆ
             </Link>
             <Link href="/pricing" className="px-7 py-3.5 border-2 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
               View Pricing
@@ -712,13 +596,13 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
         </div>
       </div>
 
-      {/* ── STATS ── */}
+      {/* ΓöÇΓöÇ STATS ΓöÇΓöÇ */}
       <div className="stats">
         {[
-          ["50+", isHi ? "क्लाइंट्स" : "Clients Served"], 
-          ["70+", isHi ? "सेवाएं" : "Services Offered"], 
+          ["50+", isHi ? "αñòαÑìαñ▓αñ╛αñçαñéαñƒαÑìαñ╕" : "Clients Served"], 
+          ["70+", isHi ? "αñ╕αÑçαñ╡αñ╛αñÅαñé" : "Services Offered"], 
           ["3x", isHi ? "ROAS" : "Avg. ROAS Delivered"], 
-          ["4.9★", isHi ? "रेटिंग" : "Google Rating"]
+          ["4.9Γÿà", isHi ? "αñ░αÑçαñƒαñ┐αñéαñù" : "Google Rating"]
         ].map(([n, l]) => (
           <div className="stat" key={l}>
             <div className="stat-n">{n}</div>
@@ -727,32 +611,29 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
         ))}
       </div>
 
-      {/* ── MAIN TABS ── */}
+      {/* ΓöÇΓöÇ MAIN TABS ΓöÇΓöÇ */}
       <div className="main-tabs">
         <button className={`main-tab ${mainTab === "dm" ? "on" : ""}`} onClick={() => setMainTab("dm")}>
-          <span>📈</span>
-          <span className="label">{isHi ? "डिजिटल मार्केटिंग" : "Digital Marketing"}</span>
+          <span>≡ƒôê</span>
+          <span className="label">{isHi ? "αñíαñ┐αñ£αñ┐αñƒαñ▓ αñ«αñ╛αñ░αÑìαñòαÑçαñƒαñ┐αñéαñù" : "Digital Marketing"}</span>
           <span className="tab-count">{dmTotal}</span>
         </button>
         <button className={`main-tab ${mainTab === "ai" ? "on" : ""}`} onClick={() => setMainTab("ai")}>
-          <span>🤖</span>
-          <span className="label">{isHi ? "AI और ऑटोमेशन" : "AI & Automation"}</span>
+          <span>≡ƒñû</span>
+          <span className="label">{isHi ? "AI αñöαñ░ αñæαñƒαÑïαñ«αÑçαñ╢αñ¿" : "AI & Automation"}</span>
           <span className="tab-count">{aiTotal}</span>
         </button>
       </div>
 
-      {/* ── CONTENT ── */}
+      {/* ΓöÇΓöÇ CONTENT ΓöÇΓöÇ */}
       {mainTab === "dm" && (
         <>
           <div className="cat-strip-wrap">
-            <button className="scroll-arrow left" onClick={() => scrollStrip(dmStripRef, 'left')}>
-              <ChevronLeft size={18} />
-            </button>
-            <div className="cat-strip" ref={dmStripRef}>
+            <div className="cat-strip">
               <button className={`cat-btn ${dmCat === "all" ? "on" : ""}`} onClick={() => setDmCat("all")}>
-                🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
+                ≡ƒùé∩╕Å {isHi ? "αñ╕αñ¡αÑÇ αñòαÑêαñƒαÑçαñùαñ░αÑÇαñ£" : "All Categories"}
               </button>
-              {dmCategories.map((c) => (
+              {DM_CATEGORIES.map((c) => (
                 <button
                   key={c.id}
                   className={`cat-btn ${dmCat === c.id ? "on" : ""}`}
@@ -763,20 +644,17 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
                 </button>
               ))}
             </div>
-            <button className="scroll-arrow right" onClick={() => scrollStrip(dmStripRef, 'right')}>
-              <ChevronRight size={18} />
-            </button>
           </div>
 
           <div className="wrap section">
             <div className="mb-12">
               <h2 className="text-3xl font-black syne-font mb-2">
-                {dmCat === "all" ? (isHi ? "डिजिटल मार्केटिंग सेवाएं" : "Complete Digital Marketing Services") : dmCategories.find(c => c.id === dmCat)?.label}
+                {dmCat === "all" ? (isHi ? "αñíαñ┐αñ£αñ┐αñƒαñ▓ αñ«αñ╛αñ░αÑìαñòαÑçαñƒαñ┐αñéαñù αñ╕αÑçαñ╡αñ╛αñÅαñé" : "Complete Digital Marketing Services") : DM_CATEGORIES.find(c => c.id === dmCat)?.label}
               </h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl">
                 {dmCat === "all" 
-                  ? (isHi ? "सब कुछ इन-हाउस — कोई आउटसोर्सिंग नहीं। " : "Everything in-house — no outsourcing, no excuses. ") + dmTotal + " services."
-                  : dmCategories.find(c => c.id === dmCat)?.desc}
+                  ? (isHi ? "αñ╕αñ¼ αñòαÑüαñ¢ αñçαñ¿-αñ╣αñ╛αñëαñ╕ ΓÇö αñòαÑïαñê αñåαñëαñƒαñ╕αÑïαñ░αÑìαñ╕αñ┐αñéαñù αñ¿αñ╣αÑÇαñéαÑñ " : "Everything in-house ΓÇö no outsourcing, no excuses. ") + dmTotal + " services."
+                  : DM_CATEGORIES.find(c => c.id === dmCat)?.desc}
               </p>
             </div>
 
@@ -790,14 +668,11 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
       {mainTab === "ai" && (
         <>
           <div className="cat-strip-wrap">
-            <button className="scroll-arrow left" onClick={() => scrollStrip(aiStripRef, 'left')}>
-              <ChevronLeft size={18} />
-            </button>
-            <div className="cat-strip" ref={aiStripRef}>
+            <div className="cat-strip">
               <button className={`cat-btn ${aiCat === "all" ? "on" : ""}`} onClick={() => setAiCat("all")}>
-                🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
+                ≡ƒùé∩╕Å {isHi ? "αñ╕αñ¡αÑÇ αñòαÑêαñƒαÑçαñùαñ░αÑÇαñ£" : "All Categories"}
               </button>
-              {aiCategories.map((c) => (
+              {AI_CATEGORIES.map((c) => (
                 <button
                   key={c.id}
                   className={`cat-btn ${aiCat === c.id ? "on" : ""}`}
@@ -808,20 +683,17 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
                 </button>
               ))}
             </div>
-            <button className="scroll-arrow right" onClick={() => scrollStrip(aiStripRef, 'right')}>
-              <ChevronRight size={18} />
-            </button>
           </div>
 
           <div className="wrap section">
             <div className="mb-12">
               <h2 className="text-3xl font-black syne-font mb-2">
-                {aiCat === "all" ? (isHi ? "AI और ऑटोमेशन सेवाएं" : "AI & Automation Hub") : aiCategories.find(c => c.id === aiCat)?.label}
+                {aiCat === "all" ? (isHi ? "AI αñöαñ░ αñæαñƒαÑïαñ«αÑçαñ╢αñ¿ αñ╕αÑçαñ╡αñ╛αñÅαñé" : "AI & Automation Hub") : AI_CATEGORIES.find(c => c.id === aiCat)?.label}
               </h2>
               <p className="text-slate-600 dark:text-slate-400 max-w-2xl">
                 {aiCat === "all" 
-                  ? (isHi ? "भारतीय SMBs के लिए बनाया गया बिजनेस ऑटोमेशन। " : "Business automation built for Indian SMBs. ") + aiTotal + " services."
-                  : aiCategories.find(c => c.id === aiCat)?.desc}
+                  ? (isHi ? "αñ¡αñ╛αñ░αññαÑÇαñ» SMBs αñòαÑç αñ▓αñ┐αñÅ αñ¼αñ¿αñ╛αñ»αñ╛ αñùαñ»αñ╛ αñ¼αñ┐αñ£αñ¿αÑçαñ╕ αñæαñƒαÑïαñ«αÑçαñ╢αñ¿αÑñ " : "Business automation built for Indian SMBs. ") + aiTotal + " services."
+                  : AI_CATEGORIES.find(c => c.id === aiCat)?.desc}
               </p>
             </div>
 
@@ -832,14 +704,14 @@ export default function OurServicesPage({ params: { lang } }: { params: { lang: 
         </>
       )}
 
-      {/* ── CTA ── */}
+      {/* ΓöÇΓöÇ CTA ΓöÇΓöÇ */}
       <div className="wrap">
         <div className="cta">
           <h2>Can't decide which service to start with?</h2>
-          <p>Free 30-min strategy call mein hum aapke business ko analyze karke exact roadmap banate hain — no sales pitch, just clarity.</p>
+          <p>Free 30-min strategy call mein hum aapke business ko analyze karke exact roadmap banate hain ΓÇö no sales pitch, just clarity.</p>
           <div className="cta-btns">
             <Link href="/contact" className="px-8 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all">
-              Book Free Consultation →
+              Book Free Consultation ΓåÆ
             </Link>
             <Link href="/pricing" className="px-8 py-3.5 border-2 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
               See All Pricing

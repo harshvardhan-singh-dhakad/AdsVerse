@@ -63,10 +63,17 @@ async function getBlogPosts() {
       orderBy("publishedDate", "desc")
     );
     const snap = await getDocs(q);
-    return snap.docs.map(doc => ({
+    const posts = snap.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     })) as any[];
+
+    // Sort in-memory: Featured posts first, then by publishedDate (already done by query)
+    return posts.sort((a, b) => {
+      if (a.isFeatured && !b.isFeatured) return -1;
+      if (!a.isFeatured && b.isFeatured) return 1;
+      return 0;
+    });
   } catch (error) {
     console.error("Error fetching blog posts:", error);
     return [];
