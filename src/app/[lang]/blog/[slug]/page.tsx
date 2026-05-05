@@ -137,20 +137,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
 
   return (
     <>
-      {post.schemaMarkup && (
-        <>
-          <script
-            type="application/ld+json"
-            id="blog-posting-jsonld"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-          <script
-            type="application/ld+json"
-            id="breadcrumb-jsonld"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-          />
-        </>
-      )}
+      <script
+        type="application/ld+json"
+        id="blog-posting-jsonld"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        id="breadcrumb-jsonld"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <div className="container mx-auto py-16 px-4 max-w-4xl">
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
           <Link href={`/${params.lang}/blog`}>

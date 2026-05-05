@@ -136,39 +136,39 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(processForm)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
         <div className="grid grid-cols-2 gap-4">
-            <FormField
+          <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Plan Name</FormLabel>
                 <FormControl><Input placeholder="e.g., Local SEO" {...field} /></FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
-                control={form.control}
-                name="planType"
-                render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Tab / Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                        <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                        <SelectItem value="service">Digital Service</SelectItem>
-                        <SelectItem value="automation">AI Automation</SelectItem>
-                        <SelectItem value="video">Video & Creative</SelectItem>
-                    </SelectContent>
-                    </Select>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
+          />
+          <FormField
+            control={form.control}
+            name="planType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tab / Type</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="service">Digital Service</SelectItem>
+                    <SelectItem value="automation">AI Automation</SelectItem>
+                    <SelectItem value="video">Video & Creative</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -208,29 +208,29 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-            <FormField
+          <FormField
             control={form.control}
             name="categoryLabel"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Display Category Label</FormLabel>
                 <FormControl><Input placeholder="e.g. Meta Ads, SEO, etc." {...field} /></FormControl>
                 <FormDescription className="text-[10px]">How this category name appears on the page.</FormDescription>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
+          />
+          <FormField
             control={form.control}
             name="categoryDesc"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Category Description (Optional)</FormLabel>
                 <FormControl><Input placeholder="General description for this group..." {...field} /></FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
+          />
         </div>
 
         <FormField
@@ -270,32 +270,32 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
         </div>
 
         <div>
-            <FormLabel>Features / Deliverables</FormLabel>
-            <div className="space-y-2 mt-2">
+          <FormLabel>Features / Deliverables</FormLabel>
+          <div className="space-y-2 mt-2">
             {fields.map((field, index) => (
-                <FormField
+              <FormField
                 key={field.id}
                 control={form.control}
                 name={`features.${index}.value`}
                 render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                        <FormControl><Input {...field} /></FormControl>
-                        <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
-                        <FormMessage />
-                    </FormItem>
+                  <FormItem className="flex items-center gap-2">
+                    <FormControl><Input {...field} /></FormControl>
+                    <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                />
+              />
             ))}
-            </div>
-            <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ value: "" })}>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Feature
-            </Button>
+          </div>
+          <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ value: "" })}>
+            <PlusCircle className="mr-2 h-4 w-4" /> Add Feature
+          </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-           <FormField
+          <FormField
             control={form.control}
             name="displayOrder"
             render={({ field }) => (
@@ -306,7 +306,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
               </FormItem>
             )}
           />
-           <FormField
+          <FormField
             control={form.control}
             name="callToAction"
             render={({ field }) => (
@@ -319,36 +319,36 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
           />
         </div>
 
-         <FormField
-            control={form.control}
-            name="isPopular"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                <div className="space-y-0.5">
-                    <FormLabel>Mark as Popular / Featured</FormLabel>
-                </div>
-                <FormControl>
-                    <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                    />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        
+        <FormField
+          control={form.control}
+          name="isPopular"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <div className="space-y-0.5">
+                <FormLabel>Mark as Popular / Featured</FormLabel>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
         <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border/5">
-          <Button 
-            type="button" 
-            variant="ghost" 
-            onClick={onFinished} 
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onFinished}
             className="flex-1 h-12 rounded-xl hover:bg-destructive/10 hover:text-destructive font-bold uppercase tracking-widest text-xs transition-all"
           >
             Discard Changes
           </Button>
-          <Button 
-            type="submit" 
-            disabled={isSubmitting} 
+          <Button
+            type="submit"
+            disabled={isSubmitting}
             className="flex-[2] h-12 bg-primary hover:bg-primary/80 text-foreground font-black uppercase tracking-widest rounded-xl shadow-[0_10px_30px_rgba(142,68,173,0.3)] transition-all active:scale-95"
           >
             {isSubmitting && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
