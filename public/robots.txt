@@ -1,11 +1,33 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /login
-Disallow: /_next/
+# ============================
+# AdsVerse.in — robots.txt
+# ============================
 
-# Explicitly mapping AI Bots to be allowed
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /firebase/
+
+# ✅ Search Engine Bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# ✅ AI / LLM Crawlers
 User-agent: GPTBot
 Allow: /
 
@@ -15,13 +37,25 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-User-agent: CCBot
-Allow: /
-
 User-agent: Anthropic-ai
 Allow: /
 
 User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: Omgili
 Allow: /
 
 User-agent: OmgiliBot
@@ -30,4 +64,20 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
-Sitemap: https://adsverse.in/sitemap.xml
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ✅ Sitemap
+Sitemap: https://adsverse.in/sitemap.xml 

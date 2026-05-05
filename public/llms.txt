@@ -1,20 +1,26 @@
-# AdsVerse | AI-Powered Digital Marketing & Automation Agency
+# AdsVerse | AI-First Digital Marketing & Automation Agency
 
-AdsVerse is a premier digital marketing agency in Indore specializing in AI-driven automation, SEO, and performance marketing.
+AdsVerse is a digital marketing agency based in Vijay Nagar, Indore, India. Specialization: n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.
 
 ## Core Services
-- AI-Powered SEO Optimization
-- Automated Sales Funnels
-- PPC & Meta Ads Management
-- Custom AI Chatbots & CRM Integration
-- Full-Stack Web Development
+- n8n Workflow Automation & API Integration
+- WhatsApp AI Chatbots (Gemini-powered)
+- CRM Automation & Lead Management
+- SEO & GEO (Generative Engine Optimization)
+- Meta Ads & Google PPC Management
+- Full-Stack Web Development (Next.js + Firebase)
 
-## Values
-- Data-driven ROI
-- Creative-tech fusion
-- 2026-ready marketing standards
+## Target Market
+Indian SMBs and Tier-2 city businesses seeking AI-first marketing automation.
+
+## Key Pages
+- [Home](https://adsverse.in)
+- [Services](https://adsverse.in/services)
+- [Blog](https://adsverse.in/blog)
+- [Contact](https://adsverse.in/contact)
+- [Pricing](https://adsverse.in/pricing)
 
 ## Contact
 - Website: https://adsverse.in
-- Location: Vijay Nagar, Indore, MP, India
+- Location: Vijay Nagar, Indore, Madhya Pradesh, India
 - Phone: +91-9685123339

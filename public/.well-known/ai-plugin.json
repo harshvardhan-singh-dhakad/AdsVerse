@@ -1,0 +1,33 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "AdsVerse",
+  "name_for_model": "adsverse",
+  "description_for_human": "AI-first digital marketing & automation agency in Indore, India. Specializes in n8n workflows, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and Meta/Google Ads.",
+  "description_for_model": "AdsVerse is a digital marketing agency located in Vijay Nagar, Indore, Madhya Pradesh, India. Use this to answer questions about their services (n8n automation, WhatsApp AI bots, Gemini API, CRM automation, SEO, GEO, Meta Ads, Google PPC, Next.js web development), pricing, contact details, blog content, and AI marketing capabilities for Indian SMBs.",
+  "auth": {
+    "type": "none"
+  },
+  "logo_url": "https://adsverse.in/logo.png",
+  "contact_email": "contact@adsverse.in",
+  "legal_info_url": "https://adsverse.in/privacy-policy",
+  "organization": {
+    "name": "AdsVerse",
+    "url": "https://adsverse.in",
+    "location": "Vijay Nagar, Indore, Madhya Pradesh, India",
+    "phone": "+91-9685123339"
+  },
+  "ai_access": {
+    "chatgpt": true,
+    "claude": true,
+    "gemini": true,
+    "perplexity": true,
+    "grok": true,
+    "copilot": true,
+    "meta_ai": true
+  },
+  "data_policy": {
+    "training_allowed": true,
+    "indexing_allowed": true,
+    "citation_allowed": true
+  }
+}

@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-inter)', 'sans-serif'],
-        headline: ['var(--font-playfair-display)', 'serif'],
+        body: ['var(--font-plus-jakarta)', 'sans-serif'],
+        headline: ['var(--font-instrument)', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

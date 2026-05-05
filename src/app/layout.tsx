@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
@@ -22,6 +22,18 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
 });
 
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+});
+
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  variable: '--font-instrument',
+  display: 'swap',
+});
+
 const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
@@ -29,38 +41,135 @@ const twitterHandle = "@Adsverse1";
 const defaultImage = "https://adsverse.in/images/og-adsverse-2026.png";
 const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108"; // Using a placeholder that looks real or user's provided ID if available
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": siteName,
-  "alternateName": "AdsVerse Digital Marketing Agency",
-  "url": siteUrl,
-  "logo": `${siteUrl}/images/logo-white.webp`,
-  "sameAs": [
-    "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse_in",
-    "https://twitter.com/Adsverse1"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
+const schemaArray = [
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://adsverse.in/#organization",
+    "name": "AdsVerse",
+    "alternateName": "AdsVerse Digital Marketing Agency",
+    "url": "https://adsverse.in",
+    "logo": "https://adsverse.in/logo.png",
+    "image": "https://adsverse.in/og-image.jpg",
+    "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
-    "contactType": "customer service",
-    "areaServed": "IN",
-    "availableLanguage": ["en", "hi"]
+    "email": "contact@adsverse.in",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Vijay Nagar",
+      "addressLocality": "Indore",
+      "addressRegion": "Madhya Pradesh",
+      "postalCode": "452010",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 22.7533,
+      "longitude": 75.8937
+    },
+    "areaServed": [
+      "Indore", "Madhya Pradesh", "India"
+    ],
+    "priceRange": "₹₹",
+    "openingHours": "Mo-Sa 10:00-19:00",
+    "sameAs": [
+      "https://www.instagram.com/adsverse.in",
+      "https://www.linkedin.com/company/adsverse"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Digital Marketing Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "n8n Workflow Automation",
+            "description": "Custom n8n automation workflows for lead management, CRM sync, and business process automation."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "WhatsApp AI Chatbot",
+            "description": "Gemini-powered WhatsApp bots for lead generation, customer support, and sales automation."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "SEO & GEO Optimization",
+            "description": "Search engine and generative engine optimization for Indian SMBs targeting Tier-2 cities."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Meta & Google Ads Management",
+            "description": "Performance advertising on Meta and Google for lead generation and brand awareness."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "CRM Automation & Integration",
+            "description": "End-to-end CRM setup, automation, and third-party API integrations."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What services does AdsVerse offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AdsVerse offers n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, GEO optimization, Meta Ads, Google PPC, and Next.js web development."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is AdsVerse located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AdsVerse is located in Vijay Nagar, Indore, Madhya Pradesh, India."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does AdsVerse work with small businesses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, AdsVerse specializes in AI-first marketing automation for Indian SMBs and Tier-2 city businesses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I contact AdsVerse?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can contact AdsVerse at +91-9685123339 or visit https://adsverse.in/contact."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes AdsVerse different from other digital marketing agencies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AdsVerse is AI-first — using n8n, Gemini API, and WhatsApp automation instead of manual processes. Most Indore agencies do not offer this level of AI integration."
+        }
+      }
+    ]
   }
-};
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": siteName,
-  "url": siteUrl,
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": `${siteUrl}/blog?q={search_term_string}`,
-    "query-input": "required name=search_term_string"
-  }
-};
+];
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -149,14 +258,9 @@ export default function RootLayout({
     <html lang={params.lang ?? 'en'} suppressHydrationWarning>
       <head>
         <script
-          id="organization-schema"
+          id="adsverse-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <script
-          id="website-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
         />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
@@ -165,7 +269,9 @@ export default function RootLayout({
       <body className={cn(
         "min-h-screen bg-background font-body antialiased",
         inter.variable, 
-        playfairDisplay.variable
+        playfairDisplay.variable,
+        plusJakartaSans.variable,
+        instrumentSans.variable
       )}>
         <noscript>
           <iframe 

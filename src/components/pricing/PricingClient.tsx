@@ -49,7 +49,7 @@ const CATEGORY_MAP: Record<string, { id: string, label: string, icon: string, co
 };
 
 const ServiceCard = ({ service, color }: { service: any, color: string }) => (
-  <Card className={`group relative overflow-hidden bg-card/40 backdrop-blur-xl border-border/40 hover:border-${color}/30 hover:shadow-2xl hover:shadow-${color}/10 transition-all duration-500`}>
+  <Card className={`group relative overflow-hidden bg-card/40 backdrop-blur-xl border-border/40 hover:border-${color}/30 transition-all duration-500`}>
     {service.isPopular && (
       <div className="absolute top-0 right-0 z-10">
         <div className="bg-primary text-primary-foreground text-[10px] uppercase font-bold tracking-widest py-1 px-4 transform rotate-45 translate-x-[25px] translate-y-[10px] shadow-sm">
@@ -188,7 +188,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
     <div className="relative min-h-screen">
       {/* Background Glows */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-      <div className="glow-effect opacity-20" />
+
 
       <div className="container mx-auto py-20 px-6 relative z-10">
         {/* Hero Section */}
