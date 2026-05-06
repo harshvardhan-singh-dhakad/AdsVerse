@@ -15,11 +15,10 @@ const organizationJsonLd = {
   "name": "AdsVerse",
   "url": "https://adsverse.in",
   "logo": "https://adsverse.in/images/logo-white.webp",
-  "sameAs": [
-    "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse",
-    "https://x.com/Adsverse1",
-    "https://www.linkedin.com/company/dmafia/"
+    "https://www.instagram.com/adsverse.ai",
+    "https://www.facebook.com/adsverse.in",
+    "https://x.com/Adsverse",
+    "https://www.linkedin.com/company/adsverse"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
@@ -78,8 +77,8 @@ const localBusinessJsonLd = {
   "sameAs": [
     "https://www.instagram.com/adsverse.ai",
     "https://www.facebook.com/adsverse.in",
-    "https://x.com/Adsverse1",
-    "https://www.linkedin.com/company/dmafia/"
+    "https://x.com/Adsverse",
+    "https://www.linkedin.com/company/adsverse"
   ]
 };
 

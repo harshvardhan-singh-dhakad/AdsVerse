@@ -163,8 +163,8 @@ const jsonLd = {
   "sameAs": [
     "https://www.instagram.com/adsverse.ai",
     "https://www.facebook.com/adsverse.in",
-    "https://x.com/Adsverse1",
-    "https://www.linkedin.com/company/dmafia/"
+    "https://x.com/Adsverse",
+    "https://www.linkedin.com/company/adsverse"
   ]
 };
 
