@@ -15,6 +15,7 @@ const organizationJsonLd = {
   "name": "AdsVerse",
   "url": "https://adsverse.in",
   "logo": "https://adsverse.in/images/logo-white.webp",
+  "sameAs": [
     "https://www.instagram.com/adsverse.ai",
     "https://www.facebook.com/adsverse.in",
     "https://x.com/Adsverse",
