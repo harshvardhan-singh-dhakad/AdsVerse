@@ -133,17 +133,20 @@ const faqs = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "AdsVerse | Top Digital Marketing & Automation Agency in Indore",
+  "name": "AdsVerse",
   "image": "https://adsverse.in/images/logo-white.webp",
   "@id": "https://adsverse.in/#localbusiness",
   "url": "https://adsverse.in",
   "telephone": "+91-9685123339",
-  "priceRange": "$$",
+  "email": "hello@adsverse.in",
+  "priceRange": "₹3000",
+  "description": "AI-first digital marketing and automation agency serving Indore SMBs with SEO, Google Ads, Meta Ads, and WhatsApp automation.",
+  "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Vijay Nagar",
     "addressLocality": "Indore",
-    "addressRegion": "MP",
+    "addressRegion": "Madhya Pradesh",
     "postalCode": "452010",
     "addressCountry": "IN"
   },
@@ -152,23 +155,16 @@ const jsonLd = {
     "latitude": 22.7533,
     "longitude": 75.8937
   },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ],
-    "opens": "10:00",
-    "closes": "20:00"
+  "areaServed": {
+    "@type": "City",
+    "name": "Indore"
   },
+  "openingHours": "Mo-Sa 9:00-19:30",
   "sameAs": [
-    "https://facebook.com/adsverse",
-    "https://instagram.com/adsverse_in",
-    "https://share.google/oD8AK0iJzCz64Nm7k"
+    "https://www.instagram.com/adsverse.ai",
+    "https://www.facebook.com/adsverse.in",
+    "https://x.com/Adsverse1",
+    "https://www.linkedin.com/company/dmafia/"
   ]
 };
 
