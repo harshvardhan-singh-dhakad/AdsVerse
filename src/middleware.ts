@@ -33,8 +33,11 @@ export function middleware(request: NextRequest) {
       '/robots.txt',
       '/sitemap.xml',
       '/site.webmanifest',
+      '/llms.txt',
     ].includes(pathname) ||
     pathname.includes('/images/') ||
+    pathname.startsWith('/.well-known/') ||
+    pathname.startsWith('/web-app-manifest') ||
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/');
 
@@ -74,5 +77,5 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // Use a more inclusive matcher, logic inside middleware handles exclusions
-  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico|favicon.svg|favicon-96x96.png|apple-touch-icon.png|llms.txt|.well-known|web-app-manifest).*)'],
 };

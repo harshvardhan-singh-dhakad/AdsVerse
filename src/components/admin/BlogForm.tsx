@@ -260,7 +260,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       }
     }
 
-    if (finalStatus === 'publish') {
+    if (finalStatus === 'publish' && (!initialData || !initialData.isPublished)) {
       form.setValue('publishedDate', new Date().toISOString());
     }
 

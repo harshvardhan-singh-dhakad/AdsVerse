@@ -104,6 +104,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
       }
     },
     "datePublished": post.publishedDate,
+    "dateModified": post.updatedAt?.toDate()?.toISOString() || post.publishedDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://adsverse.in/${params.lang}/blog/${post.slug}`
@@ -171,7 +172,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-accent" />
-                <span>{new Date(post.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                <span>
+                  {new Date(post.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  {post.updatedAt && post.updatedAt.toDate().getTime() - new Date(post.publishedDate).getTime() > 86400000 && (
+                    <span className="ml-2 text-xs opacity-70">
+                      (Updated: {post.updatedAt.toDate().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })})
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
           </header>
