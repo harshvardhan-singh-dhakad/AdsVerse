@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
         id="breadcrumb-jsonld"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="container mx-auto py-16 px-4 max-w-4xl">
+      <div className="container mx-auto py-16 px-4 sm:px-6 lg:px-10 max-w-4xl xl:max-w-5xl">
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
           <Link href={`/${params.lang}/blog`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -196,7 +196,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
 
           <Card className="border-none bg-card/40 backdrop-blur-md shadow-xl overflow-hidden">
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              <div
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
             </CardContent>
           </Card>
 
