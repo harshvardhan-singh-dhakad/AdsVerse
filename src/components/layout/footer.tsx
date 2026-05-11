@@ -100,8 +100,8 @@ export function Footer() {
             </form>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p className="text-xs text-muted-foreground opacity-70">
+        <div className="mt-8 pt-8 pb-28 md:pb-8 border-t border-border/40 text-center text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             &copy; {mounted ? currentYear : ''} AdsVerse. All rights reserved.
           </p>
         </div>
