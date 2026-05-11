@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -200,7 +201,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="py-24 sm:py-32">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter font-headline mb-6 text-balance">
+            <h1 id="hero-heading" className="text-6xl md:text-8xl font-extrabold tracking-tighter font-headline mb-6 text-balance">
               Digital Marketing <span className="text-primary italic">Agency</span> in Indore
             </h1>
             <p className="mt-4 text-2xl sm:text-3xl font-bold text-accent font-headline">
@@ -222,12 +223,12 @@ export default function HomePage() {
         </section>
 
         {/* AI Search Optimization Section (AEO/GEO) */}
-        <section className="py-12 bg-primary/5 border-y border-primary/10">
+        <section className="py-12 bg-primary/5 border-y border-primary/10" aria-labelledby="why-us-heading">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1">
                 <Badge variant="outline" className="mb-4 border-accent text-accent">AI & SEARCH INSIGHTS</Badge>
-                <h2 className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best Digital Marketing & AI Agency in Indore</h2>
+                <h2 id="why-us-heading" className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best Digital Marketing & AI Agency in Indore</h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
                     <strong>Contextual Performance:</strong> We don't just rank keywords; we optimize for intent. Our strategies ensure your business appears as a top answer in AI-driven search results (Answer Engine Optimization).
@@ -256,10 +257,10 @@ export default function HomePage() {
         </section>
 
         {/* SEO Audit Tool Section */}
-        <section className="py-24">
+        <section className="py-24" aria-labelledby="cta-heading">
           <div className="container mx-auto px-4">
             <Card className="bg-card/50 backdrop-blur-sm p-8 md:p-12 text-center">
-              <h2 className="text-4xl md:text-6xl font-bold font-headline mb-6">Ready to Scale with AdsVerse?</h2>
+              <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold font-headline mb-6">Ready to Scale with AdsVerse?</h2>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                 Uncover technical issues & on-page optimization opportunities. Enter your website URL to get an instant, comprehensive SEO analysis.
               </p>
@@ -271,8 +272,8 @@ export default function HomePage() {
                   className="flex-grow h-12 text-lg bg-input"
                   required
                 />
-                <Button type="submit" size="lg" className="h-12 bg-accent hover:bg-accent/90">
-                  <Search className="h-6 w-6" />
+                <Button type="submit" size="lg" className="h-12 bg-accent hover:bg-accent/90" aria-label="Analyze website SEO">
+                  <Search className="h-6 w-6" aria-hidden="true" />
                   <span className="ml-2 hidden md:inline">Analyze</span>
                 </Button>
               </form>
@@ -281,10 +282,10 @@ export default function HomePage() {
         </section>
 
         {/* Featured Services Section */}
-        <section className="py-24 bg-secondary/20">
+        <section className="py-24 bg-secondary/20" aria-labelledby="services-heading">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-headline text-primary">Our Core Services</h2>
+              <h2 id="services-heading" className="text-4xl font-bold font-headline text-primary">Our Core Services</h2>
               <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -293,7 +294,7 @@ export default function HomePage() {
                   <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden h-full">
                     <CardHeader>
                       <div className="flex items-center gap-4">
-                        {service.iconName && serviceIcons[service.iconName] ? serviceIcons[service.iconName] : <TrendingUp className="w-10 h-10 text-accent" />}
+                        {service.iconName && serviceIcons[service.iconName] ? React.cloneElement(serviceIcons[service.iconName] as React.ReactElement, { "aria-hidden": "true" }) : <TrendingUp className="w-10 h-10 text-accent" aria-hidden="true" />}
                         <CardTitle className="font-headline text-2xl">{service.name}</CardTitle>
                       </div>
                     </CardHeader>

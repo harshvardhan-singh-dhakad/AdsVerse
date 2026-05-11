@@ -267,7 +267,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
       </head>
       <body className={cn(
-        "min-h-screen bg-background font-body antialiased",
+        "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",
         inter.variable, 
         playfairDisplay.variable,
         plusJakartaSans.variable,
@@ -279,6 +279,7 @@ export default function RootLayout({
             height="0" 
             width="0" 
             className="sr-only hidden"
+            title="Google Tag Manager"
           ></iframe>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
@@ -296,9 +297,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-          <div className="relative z-10">
+          <div className="relative z-10 min-h-screen flex flex-col">
+            <a 
+              href="#main-content" 
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all"
+            >
+              Skip to main content
+            </a>
             <BackgroundEffects />
-            {children}
+            <div id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
+              {children}
+            </div>
             <Toaster />
           </div>
         </ThemeProvider>

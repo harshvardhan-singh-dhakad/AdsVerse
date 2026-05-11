@@ -256,8 +256,8 @@
 
   .text-studio-gradient {
     background: linear-gradient(135deg, #4f8dff 0%, #00e5c3 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 

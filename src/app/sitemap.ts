@@ -12,15 +12,15 @@ const db = getFirestore(app);
 
 async function getBlogSlugs() {
     try {
-        const snap = await getDocs(collection(db, "blogPosts"));
+        const snap = await getDocs(collection(db, "public_blogPosts"));
         const now = new Date().toISOString();
         return snap.docs
             .map(doc => doc.data())
             .filter(post => 
-                post.isPublished && 
-                post.includeInSitemap && 
+                post.isPublished !== false && // if it's in public_blogPosts, it's likely published, but just in case
+                post.includeInSitemap !== false && 
                 post.slug && 
-                post.publishedDate <= now
+                (post.publishedDate ? post.publishedDate <= now : true)
             )
             .map(post => post.slug);
     } catch (e) {

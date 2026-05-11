@@ -323,18 +323,21 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={cn("p-1.5 rounded-full hover:bg-muted transition-colors", editor.isActive('bold') && "text-primary bg-primary/10")}
+          aria-label="Bold"
         >
           <Bold className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={cn("p-1.5 rounded-full hover:bg-muted transition-colors", editor.isActive('italic') && "text-primary bg-primary/10")}
+          aria-label="Italic"
         >
           <Italic className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={setLink}
           className={cn("p-1.5 rounded-full hover:bg-muted transition-colors", editor.isActive('link') && "text-primary bg-primary/10")}
+          aria-label="Hyperlink"
         >
           <LinkIcon className="w-3.5 h-3.5" />
         </button>
@@ -344,26 +347,30 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
           className="flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-muted transition-colors text-left"
+          aria-label="Heading 1"
         >
-          <span className="w-4">H1</span> Heading 1
+          <span className="w-4" aria-hidden="true">H1</span> Heading 1
         </button>
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           className="flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-muted transition-colors text-left"
+          aria-label="Heading 2"
         >
-          <span className="w-4">H2</span> Heading 2
+          <span className="w-4" aria-hidden="true">H2</span> Heading 2
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className="flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-muted transition-colors text-left"
+          aria-label="Bullet List"
         >
-          <List className="w-4 h-4" /> Bullet List
+          <List className="w-4 h-4" aria-hidden="true" /> Bullet List
         </button>
         <button
           onClick={addImage}
           className="flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-muted transition-colors text-left"
+          aria-label="Insert Image"
         >
-          <ImageIcon className="w-4 h-4" /> Image
+          <ImageIcon className="w-4 h-4" aria-hidden="true" /> Image
         </button>
       </FloatingMenu>
 

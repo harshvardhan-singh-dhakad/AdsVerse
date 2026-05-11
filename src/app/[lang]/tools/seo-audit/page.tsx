@@ -136,14 +136,14 @@ const CheckItem = ({ check }: { check: RecommendationType }) => {
 };
 
 const ReportSection = ({ id, icon: Icon, title, data, children }: { id: string, icon: React.ElementType, title: string, data: { score: number, grade: string, recommendations: RecommendationType[] }, children?: React.ReactNode }) => (
-  <div id={id} className="bg-card rounded-lg shadow-sm border border-border mb-6 scroll-mt-24">
+  <section id={id} aria-labelledby={`${id}-title`} className="bg-card rounded-lg shadow-sm border border-border mb-6 scroll-mt-24">
     <CardHeader className="p-4 border-b border-border flex flex-row items-center justify-between bg-card-foreground/5 rounded-t-lg">
         <div className="flex items-center gap-3">
             <div className={`p-2 rounded-full ${data.score > 80 ? 'bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400' : data.score > 50 ? 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'}`}>
                 <Icon className="w-5 h-5" />
             </div>
             <div>
-                <CardTitle className="text-lg font-bold text-foreground">{title}</CardTitle>
+                <CardTitle id={`${id}-title`} className="text-lg font-bold text-foreground">{title}</CardTitle>
             </div>
         </div>
         <GradeCircle grade={data.grade} score={data.score} size="small" />
@@ -154,7 +154,7 @@ const ReportSection = ({ id, icon: Icon, title, data, children }: { id: string, 
         {data.recommendations.map((rec, idx) => <CheckItem key={idx} check={rec} />)}
       </div>
     </CardContent>
-  </div>
+  </section>
 );
 
 const SEOAuditPage = () => {
@@ -353,6 +353,7 @@ const SEOAuditPage = () => {
                type="url"
                className="flex-1 px-6 py-4 outline-none text-foreground bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-base"
                placeholder="Enter website URL (e.g. adsverse.in)"
+               aria-label="Website URL to audit"
                value={url}
                onChange={e => setUrl(e.target.value)}
                required
@@ -368,7 +369,14 @@ const SEOAuditPage = () => {
                 <span>Analyzing Website...</span>
                 <span>{progress}%</span>
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-2 bg-muted rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="SEO Audit analysis progress"
+              >
                 <div 
                   className="h-full bg-primary transition-all duration-100" 
                   style={{ width: `${progress}%` }}

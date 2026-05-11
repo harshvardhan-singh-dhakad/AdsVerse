@@ -48,7 +48,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
         <Link href={getLangPath('/')} className="mr-6 flex items-center space-x-2">
             <Image 
               src={currentLogo}
-              alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
+              alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
               width={120}
               height={30}
               className="h-8 w-auto"
@@ -78,7 +78,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-6 w-6" aria-hidden="true" />
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
               </SheetTrigger>
@@ -89,7 +89,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
                     <Link href={getLangPath('/')} className="flex items-center space-x-2">
                        <Image 
                           src={currentLogo}
-                          alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore Logo"
+                          alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
                           width={120}
                           height={30}
                           className="h-8 w-auto"

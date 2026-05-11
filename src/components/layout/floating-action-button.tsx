@@ -51,7 +51,21 @@ export function FloatingActionButton() {
   return (
     <>
       <div className="fixed bottom-6 right-5 z-50">
-        <div className="relative flex flex-col items-center gap-2">
+        <div className="relative flex flex-col-reverse items-center gap-2">
+          <Button
+            onClick={() => setIsOpen(!isOpen)}
+            size="icon"
+            className={cn(
+              "w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-transform duration-300",
+               isOpen && "rotate-90"
+            )}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "Close contact menu" : "Open contact menu"}
+          >
+            <X className={cn("h-8 w-8 absolute transition-opacity duration-300", !isOpen && "opacity-0")} aria-hidden="true" />
+            <MessageSquare className={cn("h-8 w-8 absolute transition-opacity duration-300", isOpen && "opacity-0")} aria-hidden="true" />
+          </Button>
+
           {isOpen && socialLinks.map((link, index) => (
             <div
               key={link.label}
@@ -72,24 +86,11 @@ export function FloatingActionButton() {
                 onClick={() => setIsOpen(false)}
               >
                 <Link href={link.href} target={link.href.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer nofollow">
-                  {link.icon}
+                  <span aria-hidden="true">{link.icon}</span>
                 </Link>
               </Button>
             </div>
           ))}
-
-          <Button
-            onClick={() => setIsOpen(!isOpen)}
-            size="icon"
-            className={cn(
-              "w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-transform duration-300",
-               isOpen && "rotate-90"
-            )}
-            aria-expanded={isOpen}
-          >
-            <X className={cn("h-8 w-8 absolute transition-opacity duration-300", !isOpen && "opacity-0")} />
-            <MessageSquare className={cn("h-8 w-8 absolute transition-opacity duration-300", isOpen && "opacity-0")} />
-          </Button>
         </div>
       </div>
     </>
