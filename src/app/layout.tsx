@@ -123,51 +123,6 @@ const schemaArray = [
       ]
     }
   },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What services does AdsVerse offer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AdsVerse offers n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, GEO optimization, Meta Ads, Google PPC, and Next.js web development."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Where is AdsVerse located?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AdsVerse is located in Vijay Nagar, Indore, Madhya Pradesh, India."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does AdsVerse work with small businesses?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, AdsVerse specializes in AI-first marketing automation for Indian SMBs and Tier-2 city businesses."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How can I contact AdsVerse?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You can contact AdsVerse at +91-9685123339 or visit https://adsverse.in/contact."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What makes AdsVerse different from other digital marketing agencies?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AdsVerse is AI-first — using n8n, Gemini API, and WhatsApp automation instead of manual processes. Most Indore agencies do not offer this level of AI integration."
-        }
-      }
-    ]
   }
 ];
 

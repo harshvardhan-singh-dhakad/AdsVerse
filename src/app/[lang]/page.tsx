@@ -172,14 +172,72 @@ const jsonLd = {
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": faqs.map(faq => ({
-    "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.answer
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What services does AdsVerse offer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AdsVerse offers n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, GEO optimization, Meta Ads, Google PPC, and Next.js web development."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is AdsVerse located?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AdsVerse is located in Vijay Nagar, Indore, Madhya Pradesh, India."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does AdsVerse work with small businesses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, AdsVerse specializes in AI-first marketing automation for Indian SMBs and Tier-2 city businesses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I contact AdsVerse?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can contact AdsVerse at +91-9685123339 or visit https://adsverse.in/contact."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes AdsVerse different from other digital marketing agencies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AdsVerse is AI-first — using n8n, Gemini API, and WhatsApp automation instead of manual processes. Most Indore agencies do not offer this level of AI integration."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to see results from SEO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SEO is a long-term strategy. While foundational improvements can be seen within weeks, it typically takes 4-6 months to see significant results in organic traffic and rankings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much should I spend on paid ads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your ad spend depends on your industry, goals, and competition. We recommend starting with a test budget, then scaling based on data-driven recommendations to maximize ROI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer custom service packages?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We create custom packages tailored to your specific needs and goals. Contact us for a free consultation to discuss a personalized plan."
+      }
     }
-  }))
+  ]
 };
 
 export default function HomePage() {
