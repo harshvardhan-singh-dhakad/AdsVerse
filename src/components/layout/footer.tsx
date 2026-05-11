@@ -8,16 +8,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
   const pathname = usePathname();
-  const params = useParams();
   
   const isAdminPath = pathname?.includes('/admin');
   if (isAdminPath) return null;
 
-  const lang = params?.lang || 'en';
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -37,7 +35,7 @@ export function Footer() {
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col gap-6">
-            <Link href={`/${lang}`} className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center gap-2 group">
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000" />
                 <h2 className="relative text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
@@ -76,19 +74,19 @@ export function Footer() {
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href={`/${lang}/about`} className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href={`/${lang}/our-services`} className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
-              <li><Link href={`/${lang}/portfolio`} className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
-              <li><Link href={`/${lang}/blog`} className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href={`/${lang}/pricing`} className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
-              <li><Link href={`/${lang}/contact`} className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href="/our-services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
+              <li><Link href="/portfolio" className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
+              <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
             <ul className="space-y-2">
-              <li><Link href={`/${lang}/privacy-policy`} className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-              <li><Link href={`/${lang}/terms-of-service`} className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
             </ul>
           </div>
           <div>

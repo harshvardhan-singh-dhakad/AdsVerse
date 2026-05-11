@@ -19,10 +19,9 @@ type NavLink = {
 
 type HeaderProps = {
   navLinks: NavLink[];
-  lang: string;
 };
 
-export function Header({ navLinks, lang }: HeaderProps) {
+export function Header({ navLinks }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, resolvedTheme } = useTheme();
@@ -31,8 +30,6 @@ export function Header({ navLinks, lang }: HeaderProps) {
   useEffect(() => setMounted(true), []);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
-
-  const getLangPath = (href: string) => `/${lang}${href === '/' ? '' : href}`;
 
   const darkLogo = "/images/logo-white.webp";
   const lightLogo = "/images/logo-black.webp";
@@ -45,7 +42,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <Link href={getLangPath('/')} className="mr-6 flex items-center space-x-2">
+        <Link href="/" className="mr-6 flex items-center space-x-2">
             <Image 
               src={currentLogo}
               alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
@@ -62,10 +59,10 @@ export function Header({ navLinks, lang }: HeaderProps) {
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
-                href={getLangPath(href)}
+                href={href}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-primary",
-                  pathname === getLangPath(href) ? "text-primary" : "text-muted-foreground"
+                  pathname === href ? "text-primary" : "text-muted-foreground"
                 )}
               >
                 {label}
@@ -86,7 +83,7 @@ export function Header({ navLinks, lang }: HeaderProps) {
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full">
                   <div className="border-b pb-4">
-                    <Link href={getLangPath('/')} className="flex items-center space-x-2">
+                    <Link href="/" className="flex items-center space-x-2">
                        <Image 
                           src={currentLogo}
                           alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
@@ -101,11 +98,11 @@ export function Header({ navLinks, lang }: HeaderProps) {
                     {navLinks.map(({ href, label }) => (
                       <Link
                         key={href}
-                        href={getLangPath(href)}
+                        href={href}
                         onClick={closeMobileMenu}
                         className={cn(
                           "text-lg font-medium transition-colors hover:text-primary",
-                          pathname === getLangPath(href) ? "text-primary" : "text-foreground"
+                          pathname === href ? "text-primary" : "text-foreground"
                         )}
                       >
                         {label}

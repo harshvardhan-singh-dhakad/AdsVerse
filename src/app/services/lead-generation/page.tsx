@@ -16,11 +16,7 @@ export const metadata: Metadata = {
     "lead generation for startups India", "inbound lead generation India"
   ],
   alternates: {
-    canonical: 'https://adsverse.in/en/services/lead-generation',
-    languages: {
-      'en': 'https://adsverse.in/en/services/lead-generation',
-      'hi': 'https://adsverse.in/hi/services/lead-generation',
-    },
+    canonical: 'https://adsverse.in/services/lead-generation',
   },
 };
 
@@ -117,9 +113,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
-        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
-        { "@type": "ListItem", "position": 3, "name": "Lead Generation", "item": "https://adsverse.in/en/services/lead-generation" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "Lead Generation", "item": "https://adsverse.in/services/lead-generation" }
       ]
     },
     service.faq

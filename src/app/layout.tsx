@@ -8,6 +8,8 @@ import { FloatingActionButton } from "@/components/layout/floating-action-button
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 import Script from "next/script";
 
 const inter = Inter({ 
@@ -38,8 +40,7 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const defaultImage = "https://adsverse.in/images/og-adsverse-2026.png";
-const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108"; // Using a placeholder that looks real or user's provided ID if available
+const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108";
 
 const schemaArray = [
   {
@@ -123,7 +124,6 @@ const schemaArray = [
       ]
     }
   },
-  }
 ];
 
 export const metadata: Metadata = {
@@ -172,7 +172,6 @@ export const metadata: Metadata = {
       },
     ],
     locale: 'en_IN',
-    alternateLocale: ['hi_IN'],
     type: 'website',
   },
   twitter: {
@@ -202,15 +201,24 @@ export const metadata: Metadata = {
   },
 };
 
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/our-services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/tools/seo-audit", label: "Tools" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
 export default function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: string };
 }>) {
   return (
-    <html lang={params.lang ?? 'en'} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           id="adsverse-schema"
@@ -259,9 +267,12 @@ export default function RootLayout({
               Skip to main content
             </a>
             <BackgroundEffects />
+            <Header navLinks={navLinks} />
             <div id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
             </div>
+            <Footer />
+            <FloatingActionButton />
             <Toaster />
           </div>
         </ThemeProvider>
@@ -269,3 +280,4 @@ export default function RootLayout({
     </html>
   );
 }
+

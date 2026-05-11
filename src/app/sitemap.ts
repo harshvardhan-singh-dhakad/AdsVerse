@@ -1,122 +1,34 @@
-import { MetadataRoute } from 'next'
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { firebaseConfig } from "@/firebase/config";
+import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://adsverse.in';
-const locales = ['en', 'hi'];
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://adsverse.in';
 
-// Initialize Firebase (Server Side)
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
+  const staticPages = [
+    { url: baseUrl, priority: 1.0, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/contact`, priority: 0.9, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/our-services`, priority: 0.9, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/pricing`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/portfolio`, priority: 0.7, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/blog`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/services/automation-tools`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/brand-strategy`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/content-marketing`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/lead-generation`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/paid-ads`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/seo-optimization`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/social-media-management`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/web-design-development`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/services/whatsapp-bot`, priority: 0.8, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/tools/seo-audit`, priority: 0.6, changeFrequency: 'monthly' },
+    { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: 'yearly' },
+    { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: 'yearly' },
+  ];
 
-async function getBlogSlugs() {
-    try {
-        const snap = await getDocs(collection(db, "public_blogPosts"));
-        const now = new Date().toISOString();
-        return snap.docs
-            .map(doc => doc.data())
-            .filter(post => 
-                post.isPublished !== false && // if it's in public_blogPosts, it's likely published, but just in case
-                post.includeInSitemap !== false && 
-                post.slug && 
-                (post.publishedDate ? post.publishedDate <= now : true)
-            )
-            .map(post => post.slug);
-    } catch (e) {
-        console.error("Sitemap: Error fetching blog slugs:", e);
-        return [];
-    }
+  return staticPages.map(page => ({
+    url: page.url,
+    lastModified: new Date(),
+    changeFrequency: page.changeFrequency as any,
+    priority: page.priority,
+  }));
 }
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const blogSlugs = await getBlogSlugs();
-
-    // Homepage
-    const homepageRoutes = [''];
-    // High-value service pages
-    const serviceBaseRoutes = [
-        '/services/automation-tools',
-        '/services/brand-strategy',
-        '/services/paid-ads',
-        '/services/seo-optimization',
-        '/services/content-marketing',
-        '/services/social-media-management',
-        '/services/web-design-development',
-        '/services/whatsapp-bot',
-        '/services/lead-generation',
-    ];
-    // Standard pages
-    const standardRoutes = [
-        '/about',
-        '/our-services',
-        '/portfolio',
-        '/pricing',
-        '/blog',
-        '/contact',
-        '/tools/seo-audit',
-    ];
-    // Legal pages (low priority)
-    const legalRoutes = [
-        '/privacy-policy',
-        '/terms-of-service',
-    ];
-
-    const sitemapEntries: MetadataRoute.Sitemap = [];
-
-    locales.forEach(lang => {
-        // Homepage — highest priority
-        homepageRoutes.forEach(route => {
-            sitemapEntries.push({
-                url: `${BASE_URL}/${lang}${route}`,
-                lastModified: new Date(),
-                changeFrequency: 'weekly' as const,
-                priority: 1.0,
-            });
-        });
-
-        // Service pages — very high priority
-        serviceBaseRoutes.forEach(route => {
-            sitemapEntries.push({
-                url: `${BASE_URL}/${lang}${route}`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const,
-                priority: 0.9,
-            });
-        });
-
-        // Standard pages
-        standardRoutes.forEach(route => {
-            sitemapEntries.push({
-                url: `${BASE_URL}/${lang}${route}`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const,
-                priority: 0.7,
-            });
-        });
-
-        // Legal pages — minimal crawl budget
-        legalRoutes.forEach(route => {
-            sitemapEntries.push({
-                url: `${BASE_URL}/${lang}${route}`,
-                lastModified: new Date(),
-                changeFrequency: 'yearly' as const,
-                priority: 0.3,
-            });
-        });
-
-        // Blog posts — high priority, crawled weekly for freshness
-        blogSlugs.forEach(slug => {
-            sitemapEntries.push({
-                url: `${BASE_URL}/${lang}/blog/${slug}`,
-                lastModified: new Date(),
-                changeFrequency: 'weekly' as const,
-                priority: 0.8,
-            });
-        });
-    });
-
-    return sitemapEntries;
-}
-
-

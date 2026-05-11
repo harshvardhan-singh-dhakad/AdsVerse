@@ -16,11 +16,7 @@ export const metadata: Metadata = {
     "WhatsApp bot for small business India", "WhatsApp lead generation Indore"
   ],
   alternates: {
-    canonical: 'https://adsverse.in/en/services/whatsapp-bot',
-    languages: {
-      'en': 'https://adsverse.in/en/services/whatsapp-bot',
-      'hi': 'https://adsverse.in/hi/services/whatsapp-bot',
-    },
+    canonical: 'https://adsverse.in/services/whatsapp-bot',
   },
 };
 
@@ -117,9 +113,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in/en" },
-        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/en/our-services" },
-        { "@type": "ListItem", "position": 3, "name": "WhatsApp Bot", "item": "https://adsverse.in/en/services/whatsapp-bot" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/our-services" },
+        { "@type": "ListItem", "position": 3, "name": "WhatsApp Bot", "item": "https://adsverse.in/services/whatsapp-bot" }
       ]
     },
     service.faq

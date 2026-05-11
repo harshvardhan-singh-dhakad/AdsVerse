@@ -36,11 +36,11 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
   return post;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string, lang: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getBlogPost(params.slug);
   if (!post) return { title: "Post Not Found" };
 
-  const fullUrl = `https://adsverse.in/${params.lang}/blog/${post.slug}`;
+  const fullUrl = `https://adsverse.in/blog/${post.slug}`;
   const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-adsverse-2026.png';
 
   return {
@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: { params: { slug: string, lan
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string, lang: string } }) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getBlogPost(params.slug);
 
   if (!post) {
@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     "dateModified": post.updatedAt?.toDate()?.toISOString() || post.publishedDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://adsverse.in/${params.lang}/blog/${post.slug}`
+      "@id": `https://adsverse.in/blog/${post.slug}`
     }
   };
 
@@ -119,19 +119,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": `https://adsverse.in/${params.lang}`
+        "item": `https://adsverse.in`
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": `https://adsverse.in/${params.lang}/blog`
+        "item": `https://adsverse.in/blog`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": post.title,
-        "item": `https://adsverse.in/${params.lang}/blog/${post.slug}`
+        "item": `https://adsverse.in/blog/${post.slug}`
       }
     ]
   };
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
       />
       <div className="container mx-auto py-16 px-4 sm:px-6 lg:px-10 max-w-4xl xl:max-w-5xl">
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
-          <Link href={`/${params.lang}/blog`}>
+          <Link href="/blog">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
           </Link>
@@ -222,7 +222,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
                 
                 <div className="flex flex-wrap items-center justify-center gap-4">
                   <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all">
-                    <Link href={`/${params.lang}/contact`}>Contact Our Experts</Link>
+                    <Link href="/contact">Contact Our Experts</Link>
                   </Button>
                   <Button variant="outline" asChild className="rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs border-primary/20 hover:border-primary/40 transition-all">
                     <a href="https://wa.me/919109090000" target="_blank" rel="noopener noreferrer">Message on WhatsApp</a>
@@ -241,3 +241,4 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     </>
   );
 }
+
