@@ -264,7 +264,6 @@ export default function RootLayout({
         />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
-        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
       </head>
       <body className={cn(
         "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",

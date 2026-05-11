@@ -3,7 +3,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import { getDictionary } from "@/lib/get-dictionary";
-import { FirebaseClientProvider } from "@/firebase";
 import { Metadata } from "next";
 import Script from "next/script";
 
@@ -104,7 +103,7 @@ export default async function LangLayout({
   ];
 
   return (
-    <FirebaseClientProvider>
+    <>
       <script
         id="localized-organization-schema"
         type="application/ld+json"
@@ -119,6 +118,6 @@ export default async function LangLayout({
       <main>{children}</main>
       <Footer />
       <FloatingActionButton />
-    </FirebaseClientProvider>
+    </>
   );
 }

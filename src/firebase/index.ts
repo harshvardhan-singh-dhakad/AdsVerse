@@ -2,38 +2,29 @@
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 // IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
   if (!getApps().length) {
-    // Important! initializeApp() is called without any arguments because Firebase App Hosting
-    // integrates with the initializeApp() function to provide the environment variables needed to
-    // populate the FirebaseOptions in production. It is critical that we attempt to call initializeApp()
-    // without arguments.
     let firebaseApp;
     try {
-      // Attempt to initialize via Firebase App Hosting environment variables
       firebaseApp = initializeApp();
     } catch (e) {
-      // Only warn in production because it's normal to use the firebaseConfig to initialize
-      // during development
       if (process.env.NODE_ENV === "production") {
         console.warn('Automatic initialization failed. Falling back to firebase config object.', e);
       }
       firebaseApp = initializeApp(firebaseConfig);
     }
-
     return getSdks(firebaseApp);
   }
-
   return getSdks(getApp());
 }
 
-// Lazy-load singleton instances using a Proxy
-let _sdks: ReturnType<typeof getSdks> | undefined;
+// Lazy-load singleton instances
+let _sdks: any | undefined;
+let _authInstance: any | undefined;
 
 function getLazySdks() {
   if (!_sdks) {
@@ -45,9 +36,20 @@ function getLazySdks() {
 // Proxy-based exports to initialize on first access
 export const auth = new Proxy({} as any, {
   get(_, prop) {
-    const instance = getLazySdks().auth;
-    const value = (instance as any)[prop];
-    return typeof value === 'function' ? value.bind(instance) : value;
+    // Firebase Auth is client-side only
+    if (typeof window === 'undefined') return undefined;
+    
+    if (!_authInstance) {
+      // Lazy initialize Firebase
+      getLazySdks();
+      
+      // Dynamic require to avoid top-level bundle weight
+      const { getAuth } = require('firebase/auth');
+      _authInstance = getAuth(getApp());
+    }
+    
+    const value = _authInstance[prop];
+    return typeof value === 'function' ? value.bind(_authInstance) : value;
   }
 });
 
@@ -70,7 +72,6 @@ export const storage = new Proxy({} as any, {
 export function getSdks(firebaseApp: FirebaseApp) {
   return {
     firebaseApp,
-    auth: getAuth(firebaseApp),
     firestore: getFirestore(firebaseApp),
     storage: getStorage(firebaseApp)
   };
