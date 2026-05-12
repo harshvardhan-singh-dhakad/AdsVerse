@@ -236,20 +236,11 @@ export default function RootLayout({
         instrumentSans.variable
       )}>
         <noscript>
-          <iframe 
+          <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
-            height="0" 
-            width="0" 
-            className="sr-only hidden"
-            title="Google Tag Manager"
-          ></iframe>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            height="1" 
-            width="1" 
-            style={{ display: 'none' }} 
-            src={`https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1`} 
-            alt=""
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
         <ScriptOptimizer />

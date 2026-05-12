@@ -7,25 +7,29 @@ export function ScriptOptimizer() {
 
   return (
     <>
-      {/* Facebook Pixel Base Script */}
-      <Script
-        src="https://connect.facebook.net/en_US/fbevents.js"
-        strategy="lazyOnload"
-      />
-      
       {/* Facebook Pixel Initialization */}
-      <Script id="fb-pixel" strategy="lazyOnload">
-        {`
-          window.fbq = window.fbq || function() {
-            (window.fbq.q = window.fbq.q || []).push(arguments);
-          };
-          fbq('init', '${fbPixelId}');
-          fbq('track', 'PageView');
-        `}
-      </Script>
+      <Script
+        id="fb-pixel"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${fbPixelId}');
+            fbq('track', 'PageView');
+          `
+        }}
+      />
 
       {/* Google Tag Manager */}
       <Script
+        id="gtm-script"
         src="https://www.googletagmanager.com/gtm.js?id=GTM-M6GV59XL"
         strategy="lazyOnload"
       />
