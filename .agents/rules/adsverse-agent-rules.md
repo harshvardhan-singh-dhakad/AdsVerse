@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: AdsVerse AI Agent Rules — adsverse.in > This file is the single source of truth for any AI agent working on this codebase. > Read this COMPLETELY before making any change. No exceptions.
+---
+
 # AdsVerse AI Agent Rules — adsverse.in
 > This file is the single source of truth for any AI agent working on this codebase.
 > Read this COMPLETELY before making any change. No exceptions.
@@ -76,7 +81,7 @@ If a task requires editing these files, only change what is explicitly specified
 ### Scripts & Tracking
 - GTM ID: `GTM-M6GV59XL` — do not change this
 - Facebook Pixel ID: keep existing ID — do not replace or remove
-- Firebase config — do not touch `src/firebase/config.ts`, `src/firebase/index.ts`, or any Firebase initialization
+- Firebase config — do not touch `src/lib/firebase.ts` or any Firebase initialization
 
 ### Images
 - Do NOT replace any image src without explicit instruction
@@ -125,9 +130,8 @@ adsverse.in (Next.js App Router + Firebase + Tailwind)
 │   │   │   ├── header.tsx      ← Navigation — PROTECTED
 │   │   │   └── footer.tsx      ← Footer — PROTECTED
 │   │   └── ui/                 ← UI components — do not restructure
-│   ├── firebase/             ← Firebase client config & hooks — DO NOT TOUCH
 │   ├── lib/
-│   │   └── firebase-server.ts  ← Firebase Admin/Server config
+│   │   └── firebase.ts         ← Firebase config — DO NOT TOUCH
 │   └── middleware.ts           ← Routing — touch only for redirects
 ├── public/
 │   ├── images/                 ← All site images — do not delete
