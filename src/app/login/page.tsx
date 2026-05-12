@@ -17,6 +17,7 @@ import {
 } from "firebase/auth";
 import { useAuth } from "@/firebase";
 import { Loader2 } from "lucide-react";
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -33,8 +34,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      Cookies.set('admin_token', 'authenticated', { expires: 1, secure: true, sameSite: 'strict' });
       toast({ title: "Login Successful" });
-      router.push("/admin");
+      window.location.href = '/admin';
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -61,8 +63,9 @@ export default function LoginPage() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      Cookies.set('admin_token', 'authenticated', { expires: 1, secure: true, sameSite: 'strict' });
       toast({ title: "Sign Up Successful", description: "You are now logged in." });
-      router.push("/admin");
+      window.location.href = '/admin';
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -80,8 +83,9 @@ export default function LoginPage() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      Cookies.set('admin_token', 'authenticated', { expires: 1, secure: true, sameSite: 'strict' });
       toast({ title: "Login Successful" });
-      router.push("/admin");
+      window.location.href = '/admin';
     } catch (error: any) {
       toast({
         variant: "destructive",

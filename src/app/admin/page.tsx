@@ -4,6 +4,7 @@ import { useUser, useAuth } from "@/firebase";
 import { signOut as firebaseSignOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -25,7 +26,8 @@ export default function AdminPage() {
 
   const handleSignOut = async () => {
     await firebaseSignOut(auth);
-    router.push('/login');
+    Cookies.remove('admin_token');
+    window.location.href = '/login';
   };
 
   if (loading || !user) {

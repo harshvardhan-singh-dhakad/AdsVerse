@@ -2,21 +2,42 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-
-  // Handle /en and /hi redirects
-  if (pathname === '/en' || pathname.startsWith('/en/')) {
-    const newPath = pathname === '/en' ? '/' : pathname.replace('/en/', '/');
-    return NextResponse.redirect(new URL(newPath, request.url), 301);
+  
+  // i18n redirects (existing)
+  if (pathname.startsWith('/en/') || pathname === '/en') {
+    const newPath = pathname.replace(/^\/en/, '') || '/';
+    return NextResponse.redirect(new URL(newPath, request.url), { status: 301 });
+  }
+  if (pathname.startsWith('/hi/') || pathname === '/hi') {
+    const newPath = pathname.replace(/^\/hi/, '') || '/';
+    return NextResponse.redirect(new URL(newPath, request.url), { status: 301 });
   }
 
-  if (pathname === '/hi' || pathname.startsWith('/hi/')) {
-    const newPath = pathname === '/hi' ? '/' : pathname.replace('/hi/', '/');
-    return NextResponse.redirect(new URL(newPath, request.url), 301);
+  // Admin protection
+  if (pathname.startsWith('/admin')) {
+    const token = request.cookies.get('admin_token')?.value;
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
-  return NextResponse.next();
+  // Prevent logged-in users from accessing /login again
+  if (pathname === '/login') {
+    const token = request.cookies.get('admin_token')?.value;
+    if (token) {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
+  }
+
+  // Block /get-id from public access
+  if (pathname === '/get-id') {
+    const token = request.cookies.get('admin_token')?.value;
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
 }
 
 export const config = {
-  matcher: ['/en/:path*', '/hi/:path*', '/en', '/hi'],
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon\\.ico|favicon\\.svg|favicon-96x96\\.png|apple-touch-icon\\.png|llms\\.txt|\\.well-known|web-app-manifest|robots\\.txt|sitemap\\.xml).*)'],
 };
