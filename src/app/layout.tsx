@@ -40,7 +40,6 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108";
 
 const schemaArray = [
   {
@@ -50,8 +49,8 @@ const schemaArray = [
     "name": "AdsVerse",
     "alternateName": "AdsVerse Digital Marketing Agency",
     "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/logo.png",
-    "image": "https://adsverse.in/og-image.jpg",
+    "logo": "https://adsverse.in/images/logo-white.webp",
+    "image": "https://adsverse.in/images/og-adsverse-2026.png",
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
     "email": "contact@adsverse.in",
@@ -226,7 +225,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
         />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body className={cn(
         "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",

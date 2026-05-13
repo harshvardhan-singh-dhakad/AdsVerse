@@ -1,5 +1,5 @@
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // revalidate at most every hour
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

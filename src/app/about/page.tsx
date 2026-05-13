@@ -111,6 +111,7 @@ export default function AboutPage() {
                 width={400}
                 height={600}
                 data-ai-hint="man professional"
+                priority={true}
                 className="w-full h-full object-cover object-top rounded-b-[5rem]"
                 sizes="(max-width: 768px) 100vw, 400px"
               />

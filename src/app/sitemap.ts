@@ -1,8 +1,21 @@
 import { MetadataRoute } from 'next';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase-server";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function getBlogSlugs(): Promise<string[]> {
+  try {
+    const snap = await getDocs(collection(db, "public_blogPosts"));
+    return snap.docs.map(doc => doc.data().slug).filter(Boolean);
+  } catch (error) {
+    console.error("Error fetching blog slugs for sitemap:", error);
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://adsverse.in';
-
+  
+  // Static pages (19 pages)
   const staticPages = [
     { url: baseUrl, priority: 1.0, changeFrequency: 'weekly' },
     { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: 'monthly' },
@@ -23,12 +36,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/tools/seo-audit`, priority: 0.6, changeFrequency: 'monthly' },
     { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: 'yearly' },
     { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: 'yearly' },
-  ];
-
-  return staticPages.map(page => ({
-    url: page.url,
+  ].map(page => ({
+    ...page,
     lastModified: new Date(),
     changeFrequency: page.changeFrequency as any,
-    priority: page.priority,
   }));
+
+  const blogSlugs = await getBlogSlugs();
+  const blogPages = blogSlugs.map(slug => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...blogPages];
 }
