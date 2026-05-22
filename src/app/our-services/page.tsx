@@ -1,4 +1,6 @@
 
+export const revalidate = 3600; // revalidate services hourly from Firestore
+
 import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
 import { type Service as ServiceDef } from "@/lib/definitions";

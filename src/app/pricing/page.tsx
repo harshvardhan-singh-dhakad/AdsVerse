@@ -1,5 +1,8 @@
 
-import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+export const dynamic = 'force-dynamic'; // always fetch live pricing from Firestore
+
+
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
 import { type PricingPlan } from "@/lib/definitions";
 import PricingClient from "@/components/pricing/PricingClient";

@@ -1,5 +1,5 @@
 
-export const revalidate = 3600; // revalidate at most every hour
+export const dynamic = 'force-dynamic'; // always fetch live data from Firestore
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

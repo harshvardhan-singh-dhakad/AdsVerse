@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   
-  // i18n redirects (existing)
+  // Legacy i18n redirects — i18n has been removed; keeping for backward compatibility
+  // (old Google-indexed /en/* and /hi/* URLs still get 301'd to clean URLs)
   if (pathname.startsWith('/en/') || pathname === '/en') {
     const newPath = pathname.replace(/^\/en/, '') || '/';
     return NextResponse.redirect(new URL(newPath, request.url), { status: 301 });

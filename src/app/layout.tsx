@@ -41,89 +41,30 @@ const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
 
-const schemaArray = [
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+// WebSite schema — global, fires on every page (no LocalBusiness duplication)
+// LocalBusiness schema lives only in page.tsx (homepage) and our-services/page.tsx
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://adsverse.in/#website",
+  "name": "AdsVerse",
+  "url": "https://adsverse.in",
+  "description": "AI-first digital marketing agency in Indore specializing in SEO, automation, and performance advertising.",
+  "publisher": {
+    "@type": "Organization",
     "@id": "https://adsverse.in/#organization",
     "name": "AdsVerse",
-    "alternateName": "AdsVerse Digital Marketing Agency",
-    "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/images/logo-white.webp",
-    "image": "https://adsverse.in/images/og-adsverse-2026.png",
-    "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
-    "telephone": "+91-9685123339",
-    "email": "contact@adsverse.in",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Vijay Nagar",
-      "addressLocality": "Indore",
-      "addressRegion": "Madhya Pradesh",
-      "postalCode": "452010",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 22.7533,
-      "longitude": 75.8937
-    },
-    "areaServed": [
-      "Indore", "Madhya Pradesh", "India"
-    ],
-    "priceRange": "₹₹",
-    "openingHours": "Mo-Sa 10:00-19:00",
-    "sameAs": [
-      "https://www.instagram.com/adsverse.in",
-      "https://www.linkedin.com/company/adsverse"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Digital Marketing Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "n8n Workflow Automation",
-            "description": "Custom n8n automation workflows for lead management, CRM sync, and business process automation."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "WhatsApp AI Chatbot",
-            "description": "Gemini-powered WhatsApp bots for lead generation, customer support, and sales automation."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "SEO & GEO Optimization",
-            "description": "Search engine and generative engine optimization for Indian SMBs targeting Tier-2 cities."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Meta & Google Ads Management",
-            "description": "Performance advertising on Meta and Google for lead generation and brand awareness."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "CRM Automation & Integration",
-            "description": "End-to-end CRM setup, automation, and third-party API integrations."
-          }
-        }
-      ]
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://adsverse.in/images/logo-white.webp"
     }
   },
-];
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://adsverse.in/blog?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -220,9 +161,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
-          id="adsverse-schema"
+          id="adsverse-website-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

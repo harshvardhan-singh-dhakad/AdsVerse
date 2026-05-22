@@ -12,10 +12,6 @@ import { usePathname } from "next/navigation";
 
 export function Footer() {
   const pathname = usePathname();
-  
-  const isAdminPath = pathname?.includes('/admin');
-  if (isAdminPath) return null;
-
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -24,6 +20,11 @@ export function Footer() {
     setCurrentYear(new Date().getFullYear());
     setMounted(true);
   }, []);
+
+  const isAdminPath = pathname?.includes('/admin');
+  if (isAdminPath) return null;
+
+
 
   const darkLogo = "/images/logo-white.webp";
   const lightLogo = "/images/logo-black.webp";
