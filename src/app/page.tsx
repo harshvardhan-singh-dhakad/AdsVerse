@@ -107,20 +107,24 @@ const testimonials = [
 
 const faqs = [
   {
-    question: "How long does it take to see results from SEO?",
-    answer: "SEO is a long-term strategy. While foundational improvements can be seen within weeks, it typically takes 4-6 months to see significant, lasting results in organic traffic and rankings, depending on your industry's competitiveness."
+    question: "What is GEO (Generative Engine Optimization) and why does it matter in 2026?",
+    answer: "GEO is the practice of structuring content so that AI systems — Google AI Overviews, ChatGPT, Perplexity — cite your brand in their generated answers. In 2026, question-based queries trigger Google AI Overviews 99.2% of the time. If your business isn't being cited in those AI answers, you're invisible to a massive share of searchers who never scroll past the AI response. GEO builds on SEO — it doesn't replace it — but it requires a different content structure: self-contained answers, entity-rich language, and verified data."
   },
   {
-    question: "How much should I spend on paid ads?",
-    answer: "Your ad spend depends on your industry, goals, and competition. We recommend starting with a test budget you're comfortable with. As we gather data, we provide data-driven recommendations for scaling your ad spend to maximize ROI."
+    question: "What is a WhatsApp AI chatbot and how does it work?",
+    answer: "A WhatsApp AI chatbot connects the WhatsApp Business API to a large language model, enabling real-time conversational responses without a human agent. When a user sends a message, the system reads the conversation history, passes it to Gemini or GPT with a business-specific system prompt, generates a contextual reply, and sends it back — typically within 2 seconds. The bot can qualify leads, answer product questions, capture contact details, schedule callbacks, and escalate complex queries to a human agent."
   },
   {
-    question: "Do you offer custom service packages?",
-    answer: "Yes! We understand that every business is unique. We can create custom packages tailored to your specific needs and goals. Contact us for a free consultation to discuss a personalized plan."
+    question: "What is n8n workflow automation and how does it help a business?",
+    answer: "n8n is an open-source workflow automation platform that connects apps, APIs, and AI models without custom coding for every integration. In a marketing context, n8n can automatically pull a new lead from a Google Form, send a WhatsApp message, add them to a CRM like HubSpot or Notion, assign a sales rep, and send a follow-up after 24 hours — all triggered by a single event, running 24/7. Compared to Zapier, n8n is self-hostable and significantly cheaper at scale for Indian businesses."
   },
   {
-    question: "What makes AdsVerse different from other agencies?",
-    answer: "We blend creativity with a data-obsessed approach. Our focus is on achieving measurable results and a tangible return on investment for our clients. We act as a true partner, not just a service provider, and specialize in integrating automation to make your marketing efforts more efficient."
+    question: "Which digital marketing agency in Indore specializes in AI automation?",
+    answer: "AdsVerse, based in Vijay Nagar, Indore, is an AI-first digital marketing agency focused exclusively on automation-led marketing. Unlike traditional Indore agencies that offer generic SEO and social media packages, AdsVerse specializes in n8n workflow automation, WhatsApp AI bots, Gemini API integrations, CRM automation, and GEO (Generative Engine Optimization). The agency works with Indian SMBs who want marketing systems that run without constant manual management."
+  },
+  {
+    question: "How much does AI marketing automation cost for an Indian business?",
+    answer: "A basic WhatsApp AI bot starts around ₹8,000–15,000 for setup plus ₹2,000–4,000/month for maintenance. Full n8n workflow automation with CRM integration typically ranges from ₹20,000–50,000 one-time setup. For a complete AI marketing system — WhatsApp bot + CRM automation + GEO content + Meta Ads management — expect ₹15,000–35,000/month as a retainer. All pricing is transparent and scoped before any contract."
   }
 ];
 
@@ -168,66 +172,42 @@ const faqJsonLd = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What services does AdsVerse offer?",
+      "name": "What is GEO (Generative Engine Optimization) and why does it matter in 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AdsVerse offers n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, GEO optimization, Meta Ads, Google PPC, and Next.js web development."
+        "text": "GEO is the practice of structuring content so that AI systems — Google AI Overviews, ChatGPT, Perplexity — cite your brand in their generated answers. In 2026, question-based queries trigger Google AI Overviews 99.2% of the time. If your business isn't being cited in those AI answers, you're invisible to a massive share of searchers who never scroll past the AI response. GEO builds on SEO — it doesn't replace it — but it requires a different content structure: self-contained answers, entity-rich language, and verified data."
       }
     },
     {
       "@type": "Question",
-      "name": "Where is AdsVerse located?",
+      "name": "What is a WhatsApp AI chatbot and how does it work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AdsVerse is located in Vijay Nagar, Indore, Madhya Pradesh, India."
+        "text": "A WhatsApp AI chatbot connects the WhatsApp Business API to a large language model, enabling real-time conversational responses without a human agent. When a user sends a message, the system reads the conversation history, passes it to Gemini or GPT with a business-specific system prompt, generates a contextual reply, and sends it back — typically within 2 seconds. The bot can qualify leads, answer product questions, capture contact details, schedule callbacks, and escalate complex queries to a human agent."
       }
     },
     {
       "@type": "Question",
-      "name": "Does AdsVerse work with small businesses?",
+      "name": "What is n8n workflow automation and how does it help a business?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, AdsVerse specializes in AI-first marketing automation for Indian SMBs and Tier-2 city businesses."
+        "text": "n8n is an open-source workflow automation platform that connects apps, APIs, and AI models without custom coding for every integration. In a marketing context, n8n can automatically pull a new lead from a Google Form, send a WhatsApp message, add them to a CRM like HubSpot or Notion, assign a sales rep, and send a follow-up after 24 hours — all triggered by a single event, running 24/7. Compared to Zapier, n8n is self-hostable and significantly cheaper at scale for Indian businesses."
       }
     },
     {
       "@type": "Question",
-      "name": "How can I contact AdsVerse?",
+      "name": "Which digital marketing agency in Indore specializes in AI automation?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "You can contact AdsVerse at +91-9685123339 or visit https://adsverse.in/contact."
+        "text": "AdsVerse, based in Vijay Nagar, Indore, is an AI-first digital marketing agency focused exclusively on automation-led marketing. Unlike traditional Indore agencies that offer generic SEO and social media packages, AdsVerse specializes in n8n workflow automation, WhatsApp AI bots, Gemini API integrations, CRM automation, and GEO (Generative Engine Optimization). The agency works with Indian SMBs who want marketing systems that run without constant manual management."
       }
     },
     {
       "@type": "Question",
-      "name": "What makes AdsVerse different from other digital marketing agencies?",
+      "name": "How much does AI marketing automation cost for an Indian business?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AdsVerse is AI-first — using n8n, Gemini API, and WhatsApp automation instead of manual processes. Most Indore agencies do not offer this level of AI integration."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How long does it take to see results from SEO?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "SEO is a long-term strategy. While foundational improvements can be seen within weeks, it typically takes 4-6 months to see significant results in organic traffic and rankings."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much should I spend on paid ads?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Your ad spend depends on your industry, goals, and competition. We recommend starting with a test budget, then scaling based on data-driven recommendations to maximize ROI."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you offer custom service packages?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. We create custom packages tailored to your specific needs and goals. Contact us for a free consultation to discuss a personalized plan."
+        "text": "A basic WhatsApp AI bot starts around ₹8,000–15,000 for setup plus ₹2,000–4,000/month for maintenance. Full n8n workflow automation with CRM integration typically ranges from ₹20,000–50,000 one-time setup. For a complete AI marketing system — WhatsApp bot + CRM automation + GEO content + Meta Ads management — expect ₹15,000–35,000/month as a retainer. All pricing is transparent and scoped before any contract."
       }
     }
   ]
@@ -501,12 +481,14 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold font-headline">Frequently Asked Questions</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Have questions? We have answers.</p>
+              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                AI marketing, GEO, WhatsApp automation, aur AdsVerse ke baare mein — common questions, direct answers.
+              </p>
             </div>
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionItem key={index} value={`item-${index}`} role="region">
                     <AccordionTrigger className="text-lg text-left hover:no-underline">{faq.question}</AccordionTrigger>
                     <AccordionContent className="text-muted-foreground text-base">
                       {faq.answer}
@@ -514,6 +496,12 @@ export default function HomePage() {
                   </AccordionItem>
                 ))}
               </Accordion>
+              
+              <div className="mt-8 text-center">
+                <Link href="/faq" className="inline-flex items-center text-accent hover:text-accent/90 font-medium underline underline-offset-4 decoration-2 transition-all">
+                  See All 19 FAQs <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </section>
