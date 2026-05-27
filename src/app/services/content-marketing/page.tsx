@@ -1,19 +1,14 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { FileText, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { AISearchInsights } from "@/components/seo/AISearchInsights";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "Content Marketing Agency India — Blog Writing & SEO Content | AdsVerse",
   description: "Grow your authority with AdsVerse's content marketing services. We create SEO-optimized blog posts, articles & content strategy for Indian businesses — driving organic traffic and brand trust.",
-  keywords: [
-    "content marketing agency India", "blog writing services India", "SEO content writing India",
-    "content strategy agency Indore", "article writing services India",
-    "digital content marketing India", "content creation agency Indore",
-    "copywriting services India", "content marketing for startups India", "blog management India"
-  ],
   alternates: {
     canonical: 'https://adsverse.in/services/content-marketing',
   },
@@ -47,37 +42,35 @@ const service = {
       "SEO Keyword Optimization",
       "Stock Imagery Included",
     ],
-  },
-  faq: {
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How does content marketing help my SEO?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Content marketing is crucial for SEO. High-quality content allows you to target specific keywords your audience is searching for. It also helps you earn backlinks from other websites, which is a major ranking factor for Google. Fresh, relevant content signals to search engines that your site is active and authoritative."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What kind of content will you create for my business?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The type of content depends on your business and audience. While our main package focuses on blog posts, we can also create ebooks, whitepapers, case studies, infographics, video scripts, and social media content. We'll recommend a content mix that best aligns with your marketing goals."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I review the content before it's published?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, absolutely. Our process is collaborative. We provide all content for your review and approval before it goes live. We welcome your feedback to ensure the content perfectly captures your brand's voice and message."
-        }
-      }
-    ]
   }
 };
+
+const expandedFaqs = [
+  {
+    question: "How does content marketing help my SEO?",
+    answer: "Content marketing is crucial for SEO. High-quality content allows you to target specific keywords your audience is searching for. It also helps you earn backlinks from other websites, which is a major ranking factor for Google. Fresh, relevant content signals to search engines that your site is active and authoritative."
+  },
+  {
+    question: "What kind of content will you create for my business?",
+    answer: "The type of content depends on your business and audience. While our main package focuses on blog posts, we can also create ebooks, whitepapers, case studies, infographics, video scripts, and social media content. We'll recommend a content mix that best aligns with your marketing goals."
+  },
+  {
+    question: "Can I review the content before it's published?",
+    answer: "Yes, absolutely. Our process is collaborative. We provide all content for your review and approval before it goes live. We welcome your feedback to ensure the content perfectly captures your brand's voice and message."
+  },
+  {
+    question: "What is the difference between writing for humans and writing for AI search (GEO)?",
+    answer: "Writing for humans requires emotional resonance, story-telling, clear formatting, and immediate value. Writing for AI search (GEO) requires clear schema markup, entity-based optimization, bulleted summary key points, objective factual answers to specific questions, and direct authoritative citations. We do both simultaneously."
+  },
+  {
+    question: "How do you ensure the content matches our brand's unique tone of voice?",
+    answer: "Before writing a single word, we conduct a brand voice audit. We create a customized brand style guide outlining vocabulary, prohibited words, preferred styles, and tone profiles (e.g., professional, friendly, authoritative). Every piece of content is double-checked against this guide."
+  },
+  {
+    question: "How do you measure the ROI of content marketing?",
+    answer: "We track organic session growth, average session duration, keyword rankings, social shares, email sign-ups, and direct conversions. By using tracking links (UTMs) and conversion goals in Google Analytics, we tie our writing directly to your leads and sales."
+  }
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -89,7 +82,12 @@ const jsonLd = {
       "description": "Engage your audience with valuable content marketing from AdsVerse. Our services include blog writing, content strategy, and SEO optimization to build authority.",
       "provider": {
         "@type": "Organization",
-        "name": "AdsVerse"
+        "name": "AdsVerse",
+        "url": "https://adsverse.in"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Indore"
       },
       "offers": {
         "@type": "Offer",
@@ -110,7 +108,17 @@ const jsonLd = {
         { "@type": "ListItem", "position": 3, "name": "Content Marketing", "item": "https://adsverse.in/services/content-marketing" }
       ]
     },
-    service.faq
+    {
+      "@type": "FAQPage",
+      "mainEntity": expandedFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
   ]
 };
 
@@ -121,7 +129,7 @@ export default function ContentMarketingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="container mx-auto py-16 px-4">
+    <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
           <Link href="/our-services">
@@ -178,6 +186,133 @@ export default function ContentMarketingPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* ── EXPANDED CONTENT AREA ── */}
+      <div className="mt-16 space-y-16">
+        
+        {/* Block 1: What is Content Marketing */}
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold text-primary font-headline">What is Content Marketing and Why It Matters in 2026?</h2>
+          <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4 max-w-none">
+            <p>
+              In 2026, content marketing has expanded beyond blogging. With the integration of AI tools and search assistants (like ChatGPT, Claude, and Gemini), users are asking conversational queries. If your website does not contain highly detailed, expert-written articles that comprehensively answer these questions, you simply won't exist in their results.
+            </p>
+            <p>
+              By producing regular, research-backed blogs, case studies, and ultimate guides, you establish topical authority. This signals to both Google and AI search engines that you are the primary expert in your niche. For Indore businesses, writing about regional challenges and success stories creates a powerful human-to-human connection that builds unmatched brand trust.
+            </p>
+          </div>
+        </section>
+
+        {/* Block 2: Why AdsVerse Content Marketing Is Different */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Why AdsVerse Content Marketing Is Different</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { title: "EEAT First Mentality", text: "We prioritize Experience, Expertise, Authoritativeness, and Trustworthiness. We draft articles that have actual quotes, primary research, and practical advice." },
+              { title: "AI Search Readiness", text: "We structure articles with clear markdown, entity-rich terms, summary bullet points, and schemas so AI crawlers cite your content as their primary source." },
+              { title: "In-Depth Topic Clusters", text: "We don't write disjointed blog posts. We map comprehensive semantic clusters to cover every angle of your core offerings completely." },
+              { title: "Hinglish and Dual Language", text: "We craft content in clear, conversational Indian English that speaks naturally to Hindi-speaking business audiences across Tier-2 cities." },
+              { title: "Stunning Stock & Custom Visuals", text: "Every article is accompanied by clear, descriptive headers, and high-quality optimized imagery that makes it incredibly readable and visually appealing." },
+              { title: "Conversion Focused CTAs", text: "We don't write just for views. We insert logical, low-friction inline lead magnets (e-books, templates, checklists) that turn readers into hot leads." }
+            ].map((item, i) => (
+              <Card key={i} className="bg-card/30 border border-border/40 p-6 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-accent shrink-0" />
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 3: Our Process */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Our Content Marketing Process</h2>
+          <div className="space-y-4">
+            {[
+              { step: "Step 1", title: "Audience Persona Research", desc: "We interview your sales team and active customers to define the exact pain points, questions, and search terms your target buyers use daily." },
+              { step: "Step 2", title: "Topic Cluster Strategy", desc: "We map out 3-month topical clusters. Rather than randomly picking keywords, we build structured content webs that prove complete authority in your space." },
+              { step: "Step 3", title: "Writing & Optimization", desc: "Our professional copywriters draft in-depth content that perfectly integrates target entities, semantic phrasing, and highly engaging hooks." },
+              { step: "Step 4", title: "Visual & Technical Polish", desc: "We format the draft with clear typography, tables, lists, descriptive image alt text, and relevant internal links for a premium reading experience." },
+              { step: "Step 5", title: "Distribution Promotion", desc: "We don't just hit publish. We help you repurpose the articles into short LinkedIn posts, email newsletters, and WhatsApp broadcasts." },
+              { step: "Step 6", title: "Analytics Optimization", desc: "Every month, we analyze which pages are drawing traffic, time-on-page metrics, and conversions, refining our strategy to focus on the highest-yielding topics." }
+            ].map((p, i) => (
+              <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
+                <div className="h-8 w-16 bg-accent/10 border border-accent/20 rounded flex items-center justify-center text-xs font-bold text-accent shrink-0">
+                  {p.step}
+                </div>
+                <div>
+                  <h4 className="font-bold text-foreground text-base mb-1">{p.title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 4: Who Is This For? */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Who Is This For?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { type: "B2B Professional Services", desc: "Firms looking to prove deep expertise (CAs, tech consultancies, medical professionals, educational institutions) and attract high-value clients." },
+              { type: "SaaS & Product Startups", desc: "Software companies wanting to rank for specific problem terms and educate their market on how their tools solve daily paint points." },
+              { type: "Established Local Businesses", desc: "Indore companies wanting to dominate local regional searches and build top-of-mind brand authority among local consumers." },
+              { type: "Direct-to-Consumer Brands", desc: "Brands shipping across India who want to rank organically for generic product solutions without purely relying on rising ad spends." }
+            ].map((w, i) => (
+              <div key={i} className="p-5 rounded-xl border border-border/30 bg-card/20">
+                <h4 className="font-bold text-accent mb-2">{w.type}</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 5: FAQ Accordion */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Frequently Asked Questions</h2>
+          <Accordion type="single" collapsible className="w-full space-y-2">
+            {expandedFaqs.map((faq, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-border/30 rounded-lg px-4 bg-card/20" role="region">
+                <AccordionTrigger className="text-base text-left hover:no-underline font-headline font-semibold text-foreground py-4">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
+      </div>
+
+      <AISearchInsights 
+        title="Predictive Content & AEO Strategy for 2026"
+        takeaways={[
+          "🔍 AI-Ready Semantic Clusters",
+          "📊 High-Intent Blog Packages",
+          "🛡️ Solid EEAT Authoritative Copy",
+          "📈 Full Performance Attribution"
+        ]}
+        insights={[
+          {
+            title: "Generative Citation Optimization",
+            description: "We write structured segments optimized to be pulled as sources by LLM-based search systems."
+          },
+          {
+            title: "Zero Waste Keywords",
+            description: "Every topic is thoroughly checked against commercial search intent. We don't write fluff."
+          },
+          {
+            title: "Local Topical Supremacy",
+            description: "Build deep local authority that makes your business the natural regional choice across Central India."
+          }
+        ]}
+      />
     </div>
     </>
   );

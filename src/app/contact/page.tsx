@@ -11,10 +11,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Contact AdsVerse — Free Audit & Consultation",
     description: "Get a free SEO audit and consultation from AdsVerse, Indore's top AI marketing agency. Contact us at +91-9685123339.",
-    keywords: [
-      "contact digital marketing agency Indore", "AdsVerse contact", "digital marketing consultation India",
-      "free SEO audit India", "hire digital marketing agency Indore"
-    ],
     alternates: {
       canonical: "https://adsverse.in/contact",
     },

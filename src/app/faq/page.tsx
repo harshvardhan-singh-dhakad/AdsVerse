@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const stats = [
-  { value: "19", label: "FAQs Answered" },
+  { value: "34", label: "FAQs Answered" },
   { value: "3", label: "Schema Types Active" },
   { value: "99.2%", label: "Question Queries → AI Overviews" },
   { value: "2026", label: "GML + I/O Updated" },
@@ -60,6 +60,31 @@ const sectionAFaqs = [
     id: "q7",
     question: "What did Google announce at GML 2026 that affects Indian digital marketing?",
     answer: "Google Marketing Live 2026 introduced four major shifts: Universal Commerce Protocol (UCP) allowing native checkout inside Google Search and Gemini, a Universal Cart across YouTube, Gmail and Search, Ads in AI Mode where Gemini dynamically rewrites ad copy to match user chat intent, and Ask Advisor connecting Google Ads, Analytics, and Merchant Center under one AI dashboard. For Indian businesses, UCP checkout is not yet live in India — but optimizing for AI Mode ads is actionable now."
+  },
+  {
+    id: "q_a1",
+    question: "Can AI marketing replace traditional branding?",
+    answer: "AI-first marketing accelerates distribution and scales conversational funnels, but authentic branding (logo style, core brand narrative, customer values) remains the essential human element that AI cannot replicate."
+  },
+  {
+    id: "q_a2",
+    question: "How does Google AI Overviews read my website data?",
+    answer: "Google AI Overviews uses deep learning LLMs that crawl websites looking for semantic data, clean structural markdown (like bullet lists and clear heading hierarchy), and JSON-LD schema graphs to answer questions directly."
+  },
+  {
+    id: "q_a3",
+    question: "What is an 'Entity' in modern SEO/GEO?",
+    answer: "An entity is a well-defined person, place, organization, or concept. Instead of simple strings (keywords), modern search crawlers look for \"things\" and their relationships. Defining clear entity schemas is crucial for AI visibility in 2026."
+  },
+  {
+    id: "q_a4",
+    question: "Is AI-generated content bad for SEO?",
+    answer: "Only if it is spammy or low-value. Google's core updates specifically target thin, unhelpful content regardless of how it was generated. High-quality, expert-reviewed AI content that answers queries comprehensively is highly valued."
+  },
+  {
+    id: "q_a5",
+    question: "How does Perplexity AI rank businesses?",
+    answer: "Perplexity AI utilizes web index indexes in real-time, fetching context from websites that offer the most objective, authoritative, and direct answer to user prompts. Technical structured data and direct citations are the key ranking elements."
   }
 ];
 
@@ -98,6 +123,31 @@ const sectionBFaqs = [
     id: "q14",
     question: "How long does it take AdsVerse to build and deploy a WhatsApp AI bot?",
     answer: "A standard WhatsApp AI bot from AdsVerse takes 7–14 days from briefing to live deployment. This includes Meta API setup and verification, AI persona and system prompt configuration, conversation flow design, CRM/n8n integration, testing across device types, and handoff logic setup. More complex bots with multi-language support (Hindi + English), multiple lead qualification branches, or third-party booking system integrations can take 3–4 weeks."
+  },
+  {
+    id: "q_b1",
+    question: "How does Make.com compare to n8n for automation?",
+    answer: "Make.com is an exceptional cloud-hosted automation builder, but n8n is highly preferred for enterprise-grade self-hosting and advanced JavaScript processing. We routinely build setups across both platforms depending on client API bounds."
+  },
+  {
+    id: "q_b2",
+    question: "Is it possible to automate invoice generation inside Vyapar or Tally?",
+    answer: "Yes, absolutely! We build secure workflows that read incoming deal closures from CRMs (like HubSpot or sheets) and automatically trigger invoice creations inside Tally ERP or Vyapar, syncing financial ledgers instantly."
+  },
+  {
+    id: "q_b3",
+    question: "What is the typical API cost for running a WhatsApp AI sales agent?",
+    answer: "Meta charges a small standard fee per 24-hour conversation window (rates vary between utility/marketing chats). Gemini Flash API costs are fractions of a rupee per prompt. The cumulative cost is extremely low compared to hiring manual 24/7 telecallers."
+  },
+  {
+    id: "q_b4",
+    question: "Can a WhatsApp bot manage actual appointment bookings?",
+    answer: "Yes! We connect Gemini-powered bots directly to Google Calendar, Calendly, or custom MySQL databases, enabling users to check available slots, select times, and secure bookings conversational-style inside WhatsApp."
+  },
+  {
+    id: "q_b5",
+    question: "How secure is n8n for handling customer databases?",
+    answer: "Extremely secure. When self-hosted on private virtual instances (like AWS or Google Cloud), your customer data never leaves your environment. We employ encrypted credential storage and clean security handshakes for all connected apps."
   }
 ];
 
@@ -126,6 +176,31 @@ const sectionCFaqs = [
     id: "q19",
     question: "What results can I realistically expect in the first 3 months?",
     answer: "In 90 days, most businesses see: zero-delay WhatsApp response (bot live from Day 14), 30–50% reduction in manual follow-up time, and measurable CRM data instead of scattered WhatsApp conversations. GEO and content results typically appear in 60–90 days as AI systems begin crawling and citing the structured content. Paid ad performance improvements show up in 30–45 days. AdsVerse shares realistic projections during the audit, not inflated promises."
+  },
+  {
+    id: "q_c1",
+    question: "Do you offer a free website audit for Indore businesses?",
+    answer: "Yes! We offer a completely free, 30-minute technical SEO and workflow audit call for growing businesses in Indore. No pushy sales pitch — you get an actionable list of layout and indexing improvements."
+  },
+  {
+    id: "q_c2",
+    question: "Why does AdsVerse emphasize 'Hinglish' communication?",
+    answer: "More than 80% of Tier-2 Indian business buyers search and communicate using a blend of Hindi and English (Hinglish). Writing natural scripts and chatbot prompts in conversational Hinglish leads to massive increases in engagement."
+  },
+  {
+    id: "q_c3",
+    question: "Is there a minimum contract lock-in for your retainer plans?",
+    answer: "No! We believe in earning your partnership month-over-month. We offer simple 30-day rolling agreements across our search and paid ad services, providing you with complete freedom and transparency."
+  },
+  {
+    id: "q_c4",
+    question: "How do you guarantee data privacy for local retail clients?",
+    answer: "We sign strict Non-Disclosure Agreements (NDAs) before auditing or connecting any live databases, ensuring your customer records, billing details, and marketing data remain 100% confidential."
+  },
+  {
+    id: "q_c5",
+    question: "Does AdsVerse help with local business profile (GMB) optimization?",
+    answer: "Yes! Local SEO starts with Google Map listings. We clean duplicate profiles, implement regular photo/review updates, and inject LocalBusiness schema properties onto your site to dominate local 'near me' map packs."
   }
 ];
 
@@ -137,7 +212,7 @@ const allFaqsSchema = {
       "name": "AI Marketing FAQ — AdsVerse Indore",
       "description": "Frequently asked questions on AI marketing, GEO, WhatsApp automation, n8n workflows, and digital marketing for Indian businesses.",
       "url": "https://adsverse.in/faq",
-      "dateModified": "2026-05-25",
+      "dateModified": "2026-05-27",
       "mainEntity": [
         ...sectionAFaqs.map(f => ({
           "@type": "Question",
@@ -210,8 +285,9 @@ export default function FAQPage() {
         id="faq-schema-ld"
         type="application/ld+json"
         strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(allFaqsSchema) }}
-      />
+      >
+        {JSON.stringify(allFaqsSchema)}
+      </Script>
       <div className="container mx-auto py-16 px-4 md:py-24 max-w-5xl">
         
         {/* Page Hero */}

@@ -133,28 +133,6 @@ export const metadata: Metadata = {
     template: "%s | AdsVerse",
   },
   description: "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Google & Meta Ads, and Automation to drive measurable growth for your business.",
-  keywords: [
-    "digital marketing agency in Indore",
-    "best digital marketing agency Indore",
-    "SEO services Indore",
-    "performance marketing agency India",
-    "Google Ads management India",
-    "Meta ads agency India",
-    "AI marketing automation India",
-    "WhatsApp bot for business India",
-    "marketing automation agency Indore",
-    "social media marketing Indore",
-    "web design company Indore",
-    "lead generation agency Indore",
-    "ROI focused digital marketing",
-    "AdsVerse Indore",
-    "digital marketing agency Madhya Pradesh",
-    "n8n automation agency India",
-    "paid ads agency Indore",
-    "content marketing agency India",
-    "local SEO services Indore",
-    "affordable digital marketing India"
-  ],
   openGraph: {
     title: {
       default: "AdsVerse | Digital Marketing That Drives Results",
@@ -220,6 +198,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <script
           id="adsverse-schema"
           type="application/ld+json"

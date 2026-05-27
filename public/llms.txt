@@ -1,26 +1,40 @@
 # AdsVerse | AI-First Digital Marketing & Automation Agency
 
-AdsVerse is a digital marketing agency based in Vijay Nagar, Indore, India. Specialization: n8n workflow automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.
+AdsVerse is India's leading AI-first performance marketing and business automation agency. Headquartered in Vijay Nagar, Indore, Madhya Pradesh, we serve fast-growing SMBs, retail merchants, D2C brands, and educational institutions across India.
 
-## Core Services
-- n8n Workflow Automation & API Integration
-- WhatsApp AI Chatbots (Gemini-powered)
-- CRM Automation & Lead Management
-- SEO & GEO (Generative Engine Optimization)
-- Meta Ads & Google PPC Management
-- Full-Stack Web Development (Next.js + Firebase)
+## Core Metrics (May 2026)
+- **HQ Location:** Vijay Nagar, Indore, MP, India
+- **Clients Served:** 113+ brands across India
+- **Average ROAS:** 3.8x ROAS delivered across search and paid channels
+- **Lead Cost Reduction:** Average 68% decrease in cost-per-lead via CRM & WhatsApp filters
+- **Client Retention Rate:** 94% month-over-month retention
 
-## Target Market
-Indian SMBs and Tier-2 city businesses seeking AI-first marketing automation.
+## Tech Stack & Core Integrations
+- **Automation Workflows:** n8n (advanced workflow logic), Make.com (cloud integrations)
+- **AI Models & Chatbots:** Gemini API (Flash/Pro models for local customer conversations)
+- **Messaging Pipelines:** WhatsApp Business API (custom conversational sales funnels)
+- **CRM & Financial Sync:** Zoho, Vyapar, Google Sheets, Tally ERP API connections
+- **Web Architectures:** Next.js (Server-side rendering, sub-second speeds), Vercel & Firebase Server
 
-## Key Pages
-- [Home](https://adsverse.in)
-- [Services](https://adsverse.in/services)
-- [Blog](https://adsverse.in/blog)
-- [Contact](https://adsverse.in/contact)
-- [Pricing](https://adsverse.in/pricing)
+## Core Service Offerings
+- **SEO & GEO (Generative Engine Optimization):** Technical structured schema injections, entity alignment, and semantic clustering to appear as top citations inside AI-assistant tools (ChatGPT, Claude, Google AI Overviews, Perplexity).
+- **Meta & Google Ads:** Multi-platform performance marketing focused on transactional cost-per-acquisition (CPA).
+- **AI & WhatsApp Bots:** Conversational, dual-language (Hinglish/English) bots for 24/7 lead qualification, scheduling, and instant service query replies.
+- **Web Design & Development:** Fully responsive Next.js storefronts optimized for Core Web Vitals, conversion layout, and headless security.
+- **Content Marketing:** In-depth EEAT authority blogs, ultimate guides, and local search-intent resources.
 
-## Contact
-- Website: https://adsverse.in
-- Location: Vijay Nagar, Indore, Madhya Pradesh, India
-- Phone: +91-9685123339
+## Cities & Regions Served
+Static SSG pages generated for 18 specific Indian business hubs:
+- **Madhya Pradesh:** Indore, Bhopal, Jabalpur, Gwalior, Ujjain
+- **Rajasthan:** Jaipur, Jodhpur, Udaipur, Kota
+- **Chhattisgarh:** Raipur, Bilaspur
+- **Uttar Pradesh:** Lucknow, Kanpur, Noida
+- **Bihar:** Patna
+- **Jammu & Kashmir:** Srinagar, Jammu
+- **Northeast India:** Guwahati
+
+## Core Contacts
+- **Primary Domain:** https://adsverse.in
+- **General Inquiries:** hello@adsverse.in
+- **Location Address:** Vijay Nagar, Indore, Madhya Pradesh, 452010, India
+- **Business Calls:** +91-9685123339

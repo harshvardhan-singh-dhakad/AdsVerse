@@ -80,6 +80,7 @@ export function Footer() {
               <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
               <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
               <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/locations" className="text-sm text-muted-foreground hover:text-primary">Locations</Link></li>
               <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>

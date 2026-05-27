@@ -8,12 +8,6 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Brand Strategy & Logo Design Agency India | AdsVerse",
   description: "Build a powerful brand identity for your business with AdsVerse. We offer brand strategy, logo design & brand guidelines — crafted for Indian startups and growing businesses in Indore.",
-  keywords: [
-    "brand strategy agency India", "logo design Indore", "brand identity design India",
-    "branding agency Indore", "startup branding India", "brand guidelines design",
-    "corporate identity design India", "visual identity agency Indore",
-    "brand consultant India", "professional logo design India"
-  ],
   alternates: {
     canonical: 'https://adsverse.in/services/brand-strategy',
   },

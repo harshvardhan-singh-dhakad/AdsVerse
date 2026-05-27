@@ -1,19 +1,14 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Share2, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { AISearchInsights } from "@/components/seo/AISearchInsights";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "Social Media Marketing Agency India — Instagram & Facebook | AdsVerse",
   description: "Grow your brand on Instagram, Facebook & LinkedIn with AdsVerse's expert social media management. We create content, manage communities & run ads for Indian businesses in Indore.",
-  keywords: [
-    "social media marketing Indore", "Instagram marketing agency India", "Facebook marketing India",
-    "social media management India", "SMM agency Indore", "social media content creation India",
-    "LinkedIn marketing agency India", "social media manager India",
-    "Instagram growth agency Indore", "social media strategy India"
-  ],
   alternates: {
     canonical: 'https://adsverse.in/services/social-media-management',
   },
@@ -47,37 +42,35 @@ const service = {
       "Daily Posting & Engagement",
       "Performance Reporting",
     ],
-  },
-  faq: {
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Which social media platforms do you manage?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We manage all major social media platforms, including Facebook, Instagram, LinkedIn, Twitter (X), Pinterest, and TikTok. Our standard package includes management for two platforms, but we can create a custom package to cover any platforms that are relevant to your business."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Will you create the content for my social media?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, our service is all-inclusive. We handle everything from strategy and content creation (graphics, videos, and copy) to scheduling, posting, and community management. We'll work with you to ensure all content aligns with your brand voice and goals."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do you measure the success of social media campaigns?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We track a variety of key performance indicators (KPIs) depending on your goals. These include engagement rate (likes, comments, shares), follower growth, reach and impressions, website clicks, and conversions. We provide a detailed report each month to show you the direct impact of our efforts."
-        }
-      }
-    ]
   }
 };
+
+const expandedFaqs = [
+  {
+    question: "Which social media platforms do you manage?",
+    answer: "We manage all major platforms including Instagram, Facebook, LinkedIn, YouTube (Shorts), Twitter (X), and Pinterest. Our standard packages focus on Instagram and Facebook, but we can customize to include B2B optimization on LinkedIn."
+  },
+  {
+    question: "Will you create the content (graphics and video Reels) for my social media?",
+    answer: "Yes, absolutely! Our service is 100% all-inclusive. Our creative design and copywriting team handles scriptwriting, video editing for Reels/Shorts, graphic posts, carousels, and stories tailored to each platform's guidelines."
+  },
+  {
+    question: "How do you measure the success of social media campaigns?",
+    answer: "We track standard engagement metrics (likes, shares, saves, comments), reach, impressions, follower growth, inbound direct messages (DMs), link clicks, and overall attributed lead generation, delivering a clean report monthly."
+  },
+  {
+    question: "Do we need to provide raw photos and video footage of our business?",
+    answer: "While we can use stock media and high-quality graphics, authentic photos and videos of your team, products, and office in Indore dramatically improve engagement. We help you storyboard simple videos your team can record with a phone."
+  },
+  {
+    question: "How often do you post on our accounts?",
+    answer: "For our standard package, we post 3-4 high-quality creatives per week on two platforms (totaling 15-18 posts/month), including a balanced mix of static graphics, interactive carousel guides, and trending short-form video Reels."
+  },
+  {
+    question: "Will your team respond to direct messages and comments?",
+    answer: "Yes. We actively monitor your comments and direct messages during business hours. We draft custom replies to basic FAQs and immediately forward qualified leads or urgent service queries directly to your sales team over WhatsApp."
+  }
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -89,7 +82,12 @@ const jsonLd = {
       "description": "Build and nurture your online community with our expert social media management services. We handle content creation, daily engagement, and performance reporting.",
       "provider": {
         "@type": "Organization",
-        "name": "AdsVerse"
+        "name": "AdsVerse",
+        "url": "https://adsverse.in"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Indore"
       },
       "offers": {
         "@type": "Offer",
@@ -110,10 +108,19 @@ const jsonLd = {
         { "@type": "ListItem", "position": 3, "name": "Social Media Management", "item": "https://adsverse.in/services/social-media-management" }
       ]
     },
-    service.faq
+    {
+      "@type": "FAQPage",
+      "mainEntity": expandedFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
   ]
 };
-
 
 export default function SocialMediaManagementPage() {
   return (
@@ -122,7 +129,7 @@ export default function SocialMediaManagementPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="container mx-auto py-16 px-4">
+    <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
           <Link href="/our-services">
@@ -179,6 +186,133 @@ export default function SocialMediaManagementPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* ── EXPANDED CONTENT AREA ── */}
+      <div className="mt-16 space-y-16">
+        
+        {/* Block 1: What is Social Media */}
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold text-primary font-headline">What is Organic Social Media Management, and Why It Matters in 2026?</h2>
+          <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4 max-w-none">
+            <p>
+              In 2026, social media profiles are as important as search engines. More than 60% of modern Indian consumers research businesses on Instagram or LinkedIn before buying. If your profiles look dead, outdated, or generic, you immediately lose prospective buyers to competitors.
+            </p>
+            <p>
+              An active, premium, and value-packed social media grid acts as social proof, validating your authority. By telling stories, sharing educational reels, and actively answering questions, you build a community of loyal brand fans.
+            </p>
+          </div>
+        </section>
+
+        {/* Block 2: Why AdsVerse Social Media Is Different */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Why AdsVerse Social Media Is Different</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { title: "Trending Short-Form Focus", text: "We understand that short video Reels and Shorts rule social feeds. We craft engaging scripts, storyboard formats, and edit videos for maximum viral potential." },
+              { title: "Bespoke Brand Styling", text: "No low-quality templates. We design custom carousels, layouts, and post graphics utilizing your exact brand colors, modern typography, and imagery." },
+              { title: "Double-Language Scripts", text: "We write highly engaging captions and video scripts in Hinglish and conversational Indian English that connect immediately with Tier-2 India consumers." },
+              { title: "Active Inbox Monitoring", text: "We don't just post. We respond to every comment and basic direct message query to convert casual interest into hot leads." },
+              { title: "Topical Authority Planning", text: "We plan content calendars mapped to holidays, local trends, and customer questions to show that your business is highly active." },
+              { title: "Attributed ROI Reports", text: "We track clear metrics: follower growth, engagement index, inbound direct message queries, and profile referral links." }
+            ].map((item, i) => (
+              <Card key={i} className="bg-card/30 border border-border/40 p-6 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-accent shrink-0" />
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 3: Our Process */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Our Social Media Process</h2>
+          <div className="space-y-4">
+            {[
+              { step: "Step 1", title: "Social Audit & Competitor Scan", desc: "We review your active channels, catalog existing engagement rates, identify quick wins, and scan competitors." },
+              { step: "Step 2", title: "Creative Concept & Grid Design", desc: "We define standard visual templates, typography matching, content pillars (e.g., educational, promotional, case studies)." },
+              { step: "Step 3", title: "Scripting & Storyboarding", desc: "Our copywriters write highly engaging caption copy, video script hooks, and outline visual instructions for Reels/Shorts." },
+              { step: "Step 4", title: "Graphic Post & Video Production", desc: "Our designers craft beautiful carousels and our video editors trim, color-grade, and caption reels to match viral formats." },
+              { step: "Step 5", title: "Proactive Engagement", desc: "We set up automated calendar scheduling, post during peak hours, and spend initial hours replying to comments." },
+              { step: "Step 6", title: "Monthly Insights & Adjustment", desc: "We review top-performing posts, compile overall growth reports, and refine visual layouts and hooks for the following month." }
+            ].map((p, i) => (
+              <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
+                <div className="h-8 w-16 bg-accent/10 border border-accent/20 rounded flex items-center justify-center text-xs font-bold text-accent shrink-0">
+                  {p.step}
+                </div>
+                <div>
+                  <h4 className="font-bold text-foreground text-base mb-1">{p.title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 4: Who Is This For? */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Who Is This For?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { type: "Lifestyle & Retail Brands", desc: "Salons, gyms, clothing brands, restaurants in Indore who rely heavily on visual proof and community engagement." },
+              { type: "B2B Founders & Consultants", desc: "Founders, CAs, and business consultants wanting to build high-authority personal profiles on LinkedIn and Instagram." },
+              { type: "Clinics & Professional Centers", desc: "Hospitals, clinics, and academic institutes wanting to post valuable guides and build patient/student confidence." },
+              { type: "E-Commerce Products", desc: "Direct-to-consumer businesses wanting to run organic visual campaigns, showcases, and customer video reviews." }
+            ].map((w, i) => (
+              <div key={i} className="p-5 rounded-xl border border-border/30 bg-card/20">
+                <h4 className="font-bold text-accent mb-2">{w.type}</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 5: FAQ Accordion */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Frequently Asked Questions</h2>
+          <Accordion type="single" collapsible className="w-full space-y-2">
+            {expandedFaqs.map((faq, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-border/30 rounded-lg px-4 bg-card/20" role="region">
+                <AccordionTrigger className="text-base text-left hover:no-underline font-headline font-semibold text-foreground py-4">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
+      </div>
+
+      <AISearchInsights 
+        title="Predictive Social Performance & AEO Strategy for 2026"
+        takeaways={[
+          "🚀 Video-First Engagement Focus",
+          "📱 Bespoke Brand Consistency",
+          "🛡️ Proactive Inbox Monitoring",
+          "📈 Lead Attributed Growth"
+        ]}
+        insights={[
+          {
+            title: "Viral Hook Optimization",
+            description: "We write and time our video script hooks (first 3s) using behavioral patterns for maximum user retention."
+          },
+          {
+            title: "Omnipresent Branding",
+            description: "Synchronize visual design guidelines across Instagram, Facebook, and LinkedIn for complete brand authority."
+          },
+          {
+            title: "Attributed Conversions",
+            description: "Direct tracking links and customized UTM tags to connect social views directly to business revenue metrics."
+          }
+        ]}
+      />
     </div>
     </>
   );

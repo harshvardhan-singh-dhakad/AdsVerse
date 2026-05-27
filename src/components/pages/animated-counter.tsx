@@ -57,7 +57,7 @@ export function AnimatedCounter({
 
   return (
     <span ref={ref}>
-      {prefix}{Math.floor(count)}{suffix}
+      {prefix}{target % 1 === 0 ? Math.floor(count) : count.toFixed(1)}{suffix}
     </span>
   );
 }

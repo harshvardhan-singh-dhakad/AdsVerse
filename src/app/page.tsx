@@ -83,25 +83,28 @@ const coreServices = [
 
 const testimonials = [
   {
-    name: "Aarav Patel",
-    role: "Founder, TechSolutions",
-    text: "AdsVerse transformed our online presence. Their SEO strategy doubled our organic traffic in just three months. Highly recommended!",
-    avatar: "https://picsum.photos/seed/1/100/100",
-    hint: "man portrait"
+    name: "Rajesh Agrawal",
+    role: "RK Traders, Indore",
+    text: "AdsVerse reduced our Google Ads cost by 40% and doubled our leads within three months. Deepak's approach is completely practical — focused on real outcomes, not theory.",
+    avatar: "https://picsum.photos/seed/ra/100/100",
+    hint: "RA",
+    initials: "RA"
   },
   {
-    name: "Priya Sharma",
-    role: "Marketing Head, FashionFiesta",
-    text: "The social media campaigns created by AdsVerse were phenomenal. Our engagement rates skyrocketed, and we saw a direct impact on sales.",
-    avatar: "https://picsum.photos/seed/2/100/100",
-    hint: "woman portrait"
+    name: "Prerna Joshi",
+    role: "Bloom Beauty Studio, Vijay Nagar",
+    text: "The WhatsApp bot now handles 70% of our booking queries automatically. Our staff saves hours every week and our customers get instant responses. Highly recommended for any service business.",
+    avatar: "https://picsum.photos/seed/pj/100/100",
+    hint: "PJ",
+    initials: "PJ"
   },
   {
-    name: "Rohan Gupta",
-    role: "CEO, Innovate Hub",
-    text: "Working with AdsVerse felt like having an in-house marketing team. Their dedication and data-driven approach are second to none.",
-    avatar: "https://picsum.photos/seed/3/100/100",
-    hint: "man smiling"
+    name: "Sandeep Malviya",
+    role: "TechBridge Solutions, Indore",
+    text: "After AdsVerse's SEO work, our 'CA firm Indore' keyword reached Page 1. Their content strategy is genuinely different — the AI-first approach actually delivers results.",
+    avatar: "https://picsum.photos/seed/sm/100/100",
+    hint: "SM",
+    initials: "SM"
   },
 ];
 
@@ -356,40 +359,33 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               <Card className="bg-primary/20 text-center p-6">
                 <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={400} suffix="%" />
+                  <AnimatedCounter target={113} suffix="+" />
                 </div>
-                <p className="text-muted-foreground mt-2">Increase in Organic Traffic</p>
+                <p className="text-muted-foreground mt-2">Clients Served Across India</p>
               </Card>
               <Card className="bg-primary/20 text-center p-6">
                 <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={3} suffix="x" />
+                  <AnimatedCounter target={3.8} suffix="x" />
                 </div>
-                <p className="text-muted-foreground mt-2">Higher Conversion Rates</p>
+                <p className="text-muted-foreground mt-2">Average ROAS Delivered</p>
               </Card>
               <Card className="bg-primary/20 text-center p-6">
                 <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={50} suffix="%" />
+                  <AnimatedCounter target={68} suffix="%" />
                 </div>
-                <p className="text-muted-foreground mt-2">Reduction in Ad Spend</p>
+                <p className="text-muted-foreground mt-2">Avg. Reduction in Lead Cost</p>
               </Card>
               <Card className="bg-primary/20 text-center p-6">
                 <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={10} suffix="x" />
+                  <AnimatedCounter target={94} suffix="%" />
                 </div>
-                <p className="text-muted-foreground mt-2">Return on Investment</p>
+                <p className="text-muted-foreground mt-2">Client Retention Rate</p>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* Share Section */}
-        <section className="py-24 bg-primary/5">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold font-headline text-primary mb-8">Spread the Word</h2>
-            <p className="text-muted-foreground mb-8 text-lg">Love what we're doing? Help other businesses discover the future of marketing automation.</p>
-            <ShareButtons />
-          </div>
-        </section>
+
 
         {/* Strategy Section (SEO Content Expansion) */}
         <section className="py-24 bg-primary/5">
@@ -456,8 +452,8 @@ export default function HomePage() {
                           <p className="text-lg md:text-xl text-primary-foreground/80 italic mb-6">"{t.text}"</p>
                           <div className="flex items-center justify-center gap-4">
                             <Avatar>
-                              <AvatarImage src={t.avatar} alt={t.name} data-ai-hint={t.hint} width={50} height={50} />
-                              <AvatarFallback>{t.name.charAt(0)}</AvatarFallback>
+                               <AvatarImage src={t.avatar} alt={t.name} data-ai-hint={t.hint} width={50} height={50} />
+                               <AvatarFallback>{t.initials || t.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div>
                               <p className="font-semibold text-primary-foreground">{t.name}</p>
