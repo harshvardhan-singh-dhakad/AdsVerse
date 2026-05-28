@@ -1,15 +1,39 @@
-
 import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
 import { type Service as ServiceDef } from "@/lib/definitions";
 import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
-/* ─────────────────────────────────────────────
-   STATIC SERVICES (Full Mirror from ServicesClient)
-   These are used for JSON-LD Schema to ensure 
-   100% SEO coverage even without Firestore data.
-───────────────────────────────────────────── */
+export const metadata: Metadata = {
+  title: "Digital Marketing & AI Automation Services | SEO, Ads, WhatsApp Bots | AdsVerse",
+  description: "AdsVerse offers 75+ digital marketing services in India — SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n workflows & web development. AI-first agency, Indore. Get free strategy call.",
+  alternates: {
+    canonical: "https://adsverse.in/our-services",
+  },
+  openGraph: {
+    title: "Digital Marketing & AI Automation Services | AdsVerse",
+    description: "75+ services: SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n automation & web development. AI-first digital marketing agency in Indore serving pan-India.",
+    url: "https://adsverse.in/our-services",
+    siteName: "AdsVerse",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "https://adsverse.in/images/og-adsverse-2026.png",
+        width: 1200,
+        height: 630,
+        alt: "AdsVerse Digital Marketing & AI Automation Services",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Digital Marketing & AI Automation Services | AdsVerse",
+    description: "75+ services: SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n automation. AI-first agency, Indore.",
+    creator: "@Adsverse1",
+  },
+};
+
 const STATIC_SERVICES = [
   // Social Media
   { name: "Facebook Marketing", description: "Targeted campaigns, page management & community building on Facebook." },
@@ -165,16 +189,6 @@ async function getServices(): Promise<ServiceDef[]> {
   }
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "AI-Powered Marketing & Automation Services | AdsVerse",
-    description: "Explore AdsVerse's full suite of AI-powered services: SEO, Google Ads, Meta Ads, WhatsApp AI Chatbots, and n8n Workflow Automation designed for 2026.",
-    alternates: {
-      canonical: "https://adsverse.in/our-services",
-    },
-  };
-}
-
 export default async function OurServicesPage() {
   const isHi = false;
   const dbServices = await getServices();
@@ -185,8 +199,93 @@ export default async function OurServicesPage() {
     ...dbServices.map(s => ({ name: s.name, description: s.description }))
   ];
 
-  // Generate Service Schema
-  const jsonLd = {
+  // Schema 1: WebPage
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Digital Marketing & AI Automation Services | AdsVerse",
+    "description": "75+ digital marketing and AI automation services — SEO, Google Ads, Meta Ads, WhatsApp bots, n8n workflows, web development. AI-first agency in Indore.",
+    "url": "https://adsverse.in/our-services",
+    "provider": {
+      "@type": "Organization",
+      "name": "AdsVerse",
+      "url": "https://adsverse.in"
+    }
+  };
+
+  // Schema 2: ItemList of Services
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "AdsVerse Digital Marketing Services",
+    "url": "https://adsverse.in/our-services",
+    "numberOfItems": 12,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Social Media Marketing", "url": "https://adsverse.in/our-services#social-media" },
+      { "@type": "ListItem", "position": 2, "name": "SEO Services", "url": "https://adsverse.in/our-services#seo" },
+      { "@type": "ListItem", "position": 3, "name": "Content Marketing", "url": "https://adsverse.in/our-services#content" },
+      { "@type": "ListItem", "position": 4, "name": "PPC & Paid Ads", "url": "https://adsverse.in/our-services#paid-ads" },
+      { "@type": "ListItem", "position": 5, "name": "E-Commerce Marketing", "url": "https://adsverse.in/our-services#ecommerce" },
+      { "@type": "ListItem", "position": 6, "name": "Email Marketing", "url": "https://adsverse.in/our-services#email" },
+      { "@type": "ListItem", "position": 7, "name": "Graphic Design", "url": "https://adsverse.in/our-services#design" },
+      { "@type": "ListItem", "position": 8, "name": "Web Development", "url": "https://adsverse.in/our-services#web-dev" },
+      { "@type": "ListItem", "position": 9, "name": "Online Reputation Management", "url": "https://adsverse.in/our-services#orm" },
+      { "@type": "ListItem", "position": 10, "name": "Analytics & Tracking", "url": "https://adsverse.in/our-services#analytics" },
+      { "@type": "ListItem", "position": 11, "name": "Video Production", "url": "https://adsverse.in/our-services#video" },
+      { "@type": "ListItem", "position": 12, "name": "Branding & Strategy", "url": "https://adsverse.in/our-services#branding" }
+    ]
+  };
+
+  // Schema 3: FAQPage
+  const faqPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is AdsVerse different from other digital marketing agencies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We are an AI-first agency — meaning AI automation is built into every service we offer, not offered as an add-on. We use n8n workflows, Gemini API integrations, and WhatsApp AI bots to automate lead handling, reporting, and client communication. Every service is delivered in-house — no outsourcing. We serve 113+ brands with full transparency, live dashboards, and performance guarantees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does digital marketing cost with AdsVerse?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our packages start from ₹8,000/month for local SEO and go up based on scope, channels, and ad spend. We offer transparent, tiered pricing with no hidden fees and no mandatory long-term contracts for most services."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to see results from SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Local SEO results are typically visible within 60-90 days. Competitive national keywords take 4-6 months. Paid ads can deliver leads within 48 hours of going live."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you work with businesses outside of Indore?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We serve clients across 18+ cities including Bhopal, Jaipur, Lucknow, Raipur, Noida, Patna, Guwahati, and more — all delivered remotely with weekly video calls and live dashboards."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can AdsVerse handle both digital marketing and automation together?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We connect your ad campaigns, website forms, WhatsApp, and CRM into a single automated pipeline. Leads from Meta Ads can trigger WhatsApp bot conversations, qualify automatically, and enter your CRM without any manual work."
+        }
+      }
+    ]
+  };
+
+  // Schema 4: Service Catalog (Original)
+  const serviceCatalogSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "AdsVerse Digital & AI Services",
@@ -223,7 +322,23 @@ export default async function OurServicesPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        id="webpage-schema"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        id="itemlist-schema"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        id="faqpage-schema"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        id="service-catalog-schema"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceCatalogSchema) }}
       />
       <ServicesClient isHi={isHi} initialServices={dbServices} />
     </>
