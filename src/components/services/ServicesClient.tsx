@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { ArrowRight, Zap, TrendingUp, Star, Users, Loader2, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import { ArrowRight, Zap, TrendingUp, Star, Users, Loader2, ChevronLeft, ChevronRight, CheckCircle, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 /* ─────────────────────────────────────────────
    COMPLETE SERVICES DATA (With 2-3 Sentence Paragraphs)
@@ -934,8 +935,11 @@ const CSS = `
 .svc-full-desc{font-size:13.5px;color:var(--tx2);line-height:1.65;margin-bottom:16px;border-top:1px dashed var(--bd);padding-top:12px}
 .svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;margin-top:auto}
 .svc-tag{padding:3px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:20px;font-size:11px;color:var(--tx3);font-weight:600;letter-spacing:0.2px}
-.svc-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--cat-color);transition:gap .15s;letter-spacing:0.4px;text-transform:uppercase}
-.svc-link:hover{gap:8px}
+.svc-actions{display:flex;gap:8px;width:100%;margin-top:16px}
+.svc-btn-quote{flex:1;text-align:center;padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:transparent;color:var(--tx2);transition:all .2s;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.svc-btn-quote:hover{background:var(--bg3);color:var(--tx1);border-color:var(--bd2)}
+.svc-btn-plan{flex:1;text-align:center;padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;border-radius:var(--rsm);border:none;background:var(--or);color:#ffffff;transition:all .2s;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(249,115,22,0.15);text-decoration:none}
+.svc-btn-plan:hover{background:#ea580c;transform:translateY(-1px);box-shadow:0 4px 12px rgba(249,115,22,0.3);color:#ffffff}
 
 .process-section{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:72px 0}
 .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px}
@@ -972,7 +976,32 @@ const CSS = `
 .hidden{display:none !important}
 `;
 
-function CatSection({ cat }: { cat: any }) {
+const getServicePrice = (name: string): number => {
+  const n = name.toLowerCase();
+  if (n.includes("local seo")) return 9600;
+  if (n.includes("e-commerce seo")) return 23000;
+  if (n.includes("on-page")) return 14400;
+  if (n.includes("technical seo")) return 12000;
+  if (n.includes("keyword")) return 6000;
+  if (n.includes("google ads")) return 12000;
+  if (n.includes("meta ads") || n.includes("facebook ads")) return 10800;
+  if (n.includes("linkedin ads")) return 14400;
+  if (n.includes("social media")) return 18000;
+  if (n.includes("instagram")) return 6000;
+  if (n.includes("influencer")) return 15000;
+  if (n.includes("blog")) return 12000;
+  if (n.includes("reel") || n.includes("video")) return 12000;
+  if (n.includes("brand") || n.includes("logo")) return 30000;
+  if (n.includes("graphics")) return 10800;
+  if (n.includes("website") || n.includes("web")) return 36000;
+  if (n.includes("e-commerce store")) return 96000;
+  if (n.includes("maintenance")) return 6000;
+  if (n.includes("chatbot") || n.includes("bot")) return 14400;
+  if (n.includes("crm")) return 24000;
+  return 12000; // default estimated price
+};
+
+function CatSection({ cat, selectedServices, onToggleService }: { cat: any, selectedServices: any[], onToggleService: (s: any) => void }) {
   const styleVars = {
     "--cat-color": cat.color,
     "--cat-dim": hexToRgba(cat.color, 0.1),
@@ -991,21 +1020,43 @@ function CatSection({ cat }: { cat: any }) {
         <span className="cat-service-count">{cat.services.length} services</span>
       </div>
       <div className="svc-grid">
-        {cat.services.map((s: any) => (
-          <div className="svc flex flex-col justify-between" key={s.name}>
-            <div>
-              <div className="svc-name">{s.name}</div>
-              <p className="svc-desc">{s.desc}</p>
-              <p className="svc-full-desc">{s.fullDesc || s.desc}</p>
-            </div>
-            <div className="mt-auto">
-              <div className="svc-tags">
-                {s.tags?.map((t: string) => <span className="svc-tag" key={t}>{t}</span>)}
+        {cat.services.map((s: any) => {
+          const isSelected = selectedServices.some(item => item.name === s.name);
+          const price = getServicePrice(s.name);
+          return (
+            <div className="svc flex flex-col justify-between" key={s.name}>
+              <div>
+                <div className="svc-name flex justify-between items-start gap-2">
+                  <span>{s.name}</span>
+                  <span className="text-xs font-bold text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-full shrink-0">
+                    ₹{price.toLocaleString('en-IN')}
+                  </span>
+                </div>
+                <p className="svc-desc">{s.desc}</p>
+                <p className="svc-full-desc">{s.fullDesc || s.desc}</p>
               </div>
-              <Link href="/contact" className="svc-link">Get Free Quote →</Link>
+              <div className="mt-auto">
+                <div className="svc-tags">
+                  {s.tags?.map((t: string) => <span className="svc-tag" key={t}>{t}</span>)}
+                </div>
+                <div className="svc-actions">
+                  <Link href="/contact" className="svc-btn-quote">
+                    Get Free Quote
+                  </Link>
+                  <button
+                    onClick={() => onToggleService({ name: s.name, desc: s.desc, price })}
+                    className={`svc-btn-plan border-none outline-none text-center justify-center items-center flex transition-all ${
+                      isSelected ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 border border-red-500/30" : ""
+                    }`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {isSelected ? "Remove Plan" : "Select Plan"}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -1015,6 +1066,43 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
   const [mainTab, setMainTab] = useState("dm");
   const [dmCat, setDmCat] = useState("all");
   const [aiCat, setAiCat] = useState("all");
+  
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadDate, setLeadDate] = useState("");
+  const [leadTime, setLeadTime] = useState("");
+  const [appointmentMode, setAppointmentMode] = useState<"online" | "office">("online");
+  const [homeAddress, setHomeAddress] = useState("");
+  const [specialNotes, setSpecialNotes] = useState("");
+  const [validationError, setValidationError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [compiledMessage, setCompiledMessage] = useState("");
+  const [copiedState, setCopiedState] = useState(false);
+
+  const selectService = (s: any) => {
+    setSelectedServices(prev => {
+      const exists = prev.find(item => item.name === s.name);
+      if (exists) return prev;
+      return [...prev, s];
+    });
+  };
+
+  const deselectService = (s: any) => {
+    setSelectedServices(prev => prev.filter(item => item.name !== s.name));
+  };
+
+  const toggleService = (s: any) => {
+    setSelectedServices(prev => {
+      const exists = prev.find(item => item.name === s.name);
+      if (exists) {
+        return prev.filter(item => item.name !== s.name);
+      } else {
+        return [...prev, s];
+      }
+    });
+  };
   
   const dmStripRef = useRef<HTMLDivElement>(null);
   const aiStripRef = useRef<HTMLDivElement>(null);
@@ -1191,7 +1279,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
           </div>
 
           {dmFiltered.map((cat) => (
-            <CatSection key={cat.id} cat={cat} />
+            <CatSection key={cat.id} cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
           ))}
         </div>
       </div>
@@ -1237,7 +1325,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
           </div>
 
           {aiFiltered.map((cat) => (
-            <CatSection key={cat.id} cat={cat} />
+            <CatSection key={cat.id} cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
           ))}
         </div>
       </div>
@@ -1353,30 +1441,417 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               }
             ].map((faq, index) => (
               <details className="faq-details" key={index}>
-                <summary className="faq-summary">
-                  <span>{faq.q}</span>
-                </summary>
-                <div className="faq-content">
-                  <p>{faq.a}</p>
-                </div>
+                <summary className="faq-summary">{faq.q}</summary>
+                <div className="faq-content">{faq.a}</div>
               </details>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── FOOTER CTA ── */}
-      <div className="wrap section text-center space-y-6">
-        <h2 className="text-3xl md:text-5xl font-black title-font">Ready to Automate & Scale?</h2>
-        <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
-          Partner with India's premium AI-first digital marketing agency. Book a free consultation and get your customized 90-day growth roadmap today.
-        </p>
-        <div className="pt-2">
-          <Link href="/contact" className="px-8 py-4 bg-orange-500 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-xl shadow-orange-500/20 hover:bg-orange-600 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all">
-            Get Free Consultation
-          </Link>
+      {/* ── FLOATING CART BAR ── */}
+      {selectedServices.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/90 backdrop-blur-2xl border border-orange-500/40 rounded-full py-4 px-8 flex items-center justify-between gap-8 shadow-2xl shadow-orange-500/20 animate-in slide-in-from-bottom-10 duration-300 max-w-lg w-[calc(100%-2rem)]">
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-4 w-4 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-orange-600"></span>
+            </div>
+            <div className="text-left">
+              <div className="text-sm font-bold text-white tracking-tight">
+                {selectedServices.length} {selectedServices.length === 1 ? "Service" : "Services"} Selected
+              </div>
+              <div className="text-xs text-orange-500 font-extrabold">
+                Total Estimated: ₹{selectedServices.reduce((sum, item) => sum + item.price, 0).toLocaleString('en-IN')}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setValidationError("");
+              setIsSuccess(false);
+              setIsBookingOpen(true);
+            }}
+            className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold text-xs uppercase tracking-widest transition-all shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+          >
+            {isHi ? "अभी बुक करें" : "Book Now"}
+          </button>
         </div>
-      </div>
+      )}
+
+      {/* ── INTERACTIVE BOOKING DIALOG ── */}
+      <Dialog open={isBookingOpen} onOpenChange={(open) => !open && setIsBookingOpen(false)}>
+        <DialogContent className="bg-background/95 backdrop-blur-3xl border border-neutral-800 shadow-2xl rounded-[2rem] p-0 overflow-hidden max-w-lg max-h-[90vh] flex flex-col">
+          <DialogHeader className="p-6 pb-4 border-b border-neutral-800 bg-neutral-900/50 shrink-0">
+            <DialogTitle className="text-2xl font-black font-headline tracking-tight text-white flex items-center gap-2">
+              <span>{isHi ? "व्हाट्सएप बुकिंग सिस्टम" : "WhatsApp Booking System"}</span>
+              <span className="text-xs bg-orange-500/20 text-orange-500 px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-widest shrink-0">
+                Cart Booking
+              </span>
+            </DialogTitle>
+            <DialogDescription className="text-xs text-neutral-400">
+              {isHi ? "नीचे अपनी अपॉइंटमेंट डिटेल्स भरें और डायरेक्ट व्हाट्सएप पर कन्फर्म करें।" : "Provide your appointment details below to directly initiate a chat booking on WhatsApp."}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {!isSuccess ? (
+              <>
+                {/* Cart Items Summary */}
+                <div className="space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    {isHi ? "चुनी गई सेवाएं" : "Selected Services"}
+                  </div>
+                  <div className="border border-neutral-800 bg-neutral-950/60 rounded-2xl p-4 space-y-3 divide-y divide-neutral-900 max-h-[180px] overflow-y-auto">
+                    {selectedServices.map((item, idx) => (
+                      <div key={item.name} className={`flex justify-between items-center gap-4 ${idx > 0 ? "pt-3" : ""}`}>
+                        <div className="text-left">
+                          <div className="text-sm font-bold text-white">{item.name}</div>
+                          <div className="text-[11px] text-neutral-500 line-clamp-1">{item.desc}</div>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-sm font-black text-orange-500">₹{item.price.toLocaleString('en-IN')}</span>
+                          <button
+                            onClick={() => toggleService(item)}
+                            className="text-xs text-neutral-555 hover:text-red-500 transition-colors p-1 cursor-pointer border-none bg-transparent"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center px-2">
+                    <span className="text-xs font-bold text-neutral-400">{isHi ? "कुल राशि (अनुमानित):" : "Total Amount:"}</span>
+                    <span className="text-lg font-black text-white">
+                      ₹{selectedServices.reduce((sum, item) => sum + item.price, 0).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Form Fields */}
+                <div className="space-y-4">
+                  {validationError && (
+                    <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-500 text-xs rounded-xl font-bold">
+                      ⚠️ {validationError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        {isHi ? "आपका पूरा नाम *" : "Your Full Name *"}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={isHi ? "उदा. राहुल शर्मा" : "e.g. Rahul Sharma"}
+                        value={leadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        {isHi ? "व्हाट्सएप नंबर *" : "WhatsApp Number *"}
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder={isHi ? "उदा. 9685123339" : "e.g. 9685123339"}
+                        value={leadPhone}
+                        onChange={(e) => setLeadPhone(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        {isHi ? "अपॉइंटमेंट तारीख" : "Appointment Date"}
+                      </label>
+                      <input
+                        type="date"
+                        value={leadDate}
+                        onChange={(e) => setLeadDate(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all [color-scheme:dark]"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        {isHi ? "टाइम स्लॉट" : "Time Slot"}
+                      </label>
+                      <select
+                        value={leadTime}
+                        onChange={(e) => setLeadTime(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      >
+                        <option value="">{isHi ? "-- स्लॉट चुनें --" : "-- Select Slot --"}</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 02:00 PM">12:00 PM - 02:00 PM</option>
+                        <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+                        <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
+                        <option value="06:00 PM - 08:00 PM">06:00 PM - 08:00 PM</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300 block">
+                      {isHi ? "कंसल्टेशन मोड" : "Consultation Mode"}
+                    </label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentMode("online")}
+                        className={`h-11 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all cursor-pointer ${
+                          appointmentMode === "online"
+                            ? "bg-orange-500/20 text-orange-500 border-orange-500/40"
+                            : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800"
+                        }`}
+                      >
+                        {isHi ? "💻 ऑनलाइन कॉल" : "💻 Online Call"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentMode("office")}
+                        className={`h-11 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all cursor-pointer ${
+                          appointmentMode === "office"
+                            ? "bg-orange-500/20 text-orange-500 border-orange-500/40"
+                            : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800"
+                        }`}
+                      >
+                        {isHi ? "🏢 ऑफिस विज़िट" : "🏢 Office Visit"}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Conditional: Online Call — ask preferred platform */}
+                  <div
+                    className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                      appointmentMode === "online" ? "max-h-[120px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    <div className="space-y-2 pt-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-orange-500">
+                        {isHi ? "💻 पसंदीदा प्लेटफ़ॉर्म" : "Preferred Platform"}
+                      </label>
+                      <select
+                        value={homeAddress}
+                        onChange={(e) => setHomeAddress(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      >
+                        <option value="">{isHi ? "-- प्लेटफ़ॉर्म चुनें --" : "-- Select Platform --"}</option>
+                        <option value="Google Meet">Google Meet</option>
+                        <option value="Zoom">Zoom</option>
+                        <option value="WhatsApp Video">WhatsApp Video</option>
+                        <option value="Microsoft Teams">Microsoft Teams</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Conditional: Office Visit — show address info */}
+                  <div
+                    className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                      appointmentMode === "office" ? "max-h-[160px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    <div className="space-y-2 pt-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-orange-500">
+                        {isHi ? "📍 हमारा ऑफिस: विजय नगर, इंदौर" : "📍 Our Office: Vijay Nagar, Indore"}
+                      </label>
+                      <div className="w-full p-3 rounded-xl bg-neutral-900 border border-orange-500/20 text-neutral-400 text-xs leading-relaxed">
+                        AdsVerse — Vijay Nagar, Indore, Madhya Pradesh 452010<br />
+                        <span className="text-orange-500 font-bold">Mon–Sat: 10 AM – 7 PM</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                      {isHi ? "विशेष नोट्स / निर्देश (वैकल्पिक)" : "Special Notes / Directions (Optional)"}
+                    </label>
+                    <textarea
+                      placeholder={isHi ? "कोई खास निर्देश..." : "Any special requirements..."}
+                      value={specialNotes}
+                      onChange={(e) => setSpecialNotes(e.target.value)}
+                      className="w-full h-16 p-3 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all resize-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    // Strict Validation
+                    if (selectedServices.length === 0) {
+                      setValidationError(isHi ? "बुकिंग के लिए कम से कम 1 सेवा चुनna अनिवार्य है।" : "Select at least 1 service to proceed with booking.");
+                      return;
+                    }
+                    if (!leadName.trim()) {
+                      setValidationError(isHi ? "कृपया अपना नाम भरें।" : "Please enter your name.");
+                      return;
+                    }
+                    if (leadPhone.trim().replace(/[^0-9]/g, '').length < 10) {
+                      setValidationError(isHi ? "कृपया कम से कम 10 अंकों का वैध फोन नंबर भरें।" : "Please enter a valid phone number of at least 10 digits.");
+                      return;
+                    }
+
+
+                    setValidationError("");
+
+                    // Calculate Total Amount
+                    const total = selectedServices.reduce((sum, item) => sum + item.price, 0);
+
+                    // WhatsApp Text Compilation
+                    let msg = `🌟 *NEW APPOINTMENT BOOKING* 🌟\n\n`;
+                    msg += `*Customer Name:* _${leadName.trim()}_\n`;
+                    msg += `*WhatsApp/Phone:* _${leadPhone.trim()}_\n`;
+                    msg += `*Consultation Mode:* _${appointmentMode === 'online' ? `💻 Online / Video Call${homeAddress ? ` (${homeAddress})` : ' (Google Meet / Zoom)'}` : '🏢 Office Visit — Vijay Nagar, Indore'}_\n`;
+                    if (leadDate) msg += `*Date:* _${leadDate}_\n`;
+                    if (leadTime) msg += `*Time Slot:* _${leadTime}_\n`;
+                    if (specialNotes.trim()) msg += `*Notes:* _${specialNotes.trim()}_\n`;
+                    msg += `\n*Selected Services:*`;
+                    
+                    selectedServices.forEach((item, index) => {
+                      msg += `\n${index + 1}. *${item.name}* (₹${item.price.toLocaleString('en-IN')})`;
+                    });
+                    
+                    msg += `\n\n*Total Estimated Amount:* *₹${total.toLocaleString('en-IN')}*\n`;
+                    msg += `\nThank you! Please confirm this slot.`;
+
+                    setCompiledMessage(msg);
+
+                    // PERSISTENT LOCAL STORAGE BOOKING
+                    const bookingId = 'BK-' + Date.now().toString().slice(-6);
+                    const bookingObj = {
+                      id: bookingId,
+                      name: leadName.trim(),
+                      phone: leadPhone.trim(),
+                      total: total,
+                      date: leadDate || new Date().toISOString().split('T')[0],
+                      timestamp: new Date().toISOString()
+                    };
+                    try {
+                      const allBookings = JSON.parse(localStorage.getItem('allBookings') || '[]');
+                      allBookings.push(bookingObj);
+                      localStorage.setItem('allBookings', JSON.stringify(allBookings));
+                    } catch (e) {
+                      console.error("Local storage error:", e);
+                    }
+
+                    // GOOGLE SHEETS WEBHOOK CALL (no-cors)
+                    try {
+                      fetch("https://script.google.com/macros/s/AKfycbz_placeholder/exec", {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(bookingObj)
+                      }).catch(e => console.log("Silent sheets POST ignored."));
+                    } catch(err) {}
+
+                    // Trigger Auto Click sandbox bypass
+                    const encodedMsg = encodeURIComponent(msg);
+                    const url = `https://wa.me/919685123339?text=${encodedMsg}`;
+                    
+                    try {
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    } catch (e) {
+                      console.error("Link redirect error:", e);
+                    }
+
+                    setIsSuccess(true);
+                  }}
+                  className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-xl shadow-orange-500/20 transition-all text-center flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                >
+                  <Zap size={14} className="fill-current text-white animate-pulse" />
+                  {isHi ? "बुकिंग कम्पाइल करें & व्हाट्सएप भेजें" : "Compile & Message on WhatsApp"}
+                </button>
+              </>
+            ) : (
+              /* Success / Compiled Fallback UI State */
+              <div className="text-center space-y-6 py-4 animate-in fade-in zoom-in-95 duration-400">
+                {/* SVG Checkmark Animation */}
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500">
+                    <svg className="w-8 h-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-black text-white">{isHi ? "बुकिंग कम्पाइल हो चुकी है! ✅" : "Booking Message Compiled! ✅"}</h3>
+                  <p className="text-xs text-neutral-400 leading-relaxed max-w-sm mx-auto">
+                    {isHi 
+                      ? "व्हाट्सएप चैट को नए टैब में खोलने की कोशिश की गई है। अगर ब्लॉक हुआ है, तो नीचे दिए गए बटन का उपयोग करें।" 
+                      : "We attempted to launch WhatsApp. If sandbox blocks it, please copy the compiled text or click the open button below."}
+                  </p>
+                </div>
+
+                {/* Read Only Preview Box */}
+                <div className="space-y-2">
+                  <div className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 text-left pl-2">
+                    {isHi ? "व्हाट्सएप संदेश पूर्वावलोकन" : "WhatsApp Message Preview"}
+                  </div>
+                  <pre className="w-full h-40 p-4 rounded-2xl bg-neutral-950 border border-neutral-900 text-left text-xs text-neutral-300 font-mono overflow-y-auto whitespace-pre-wrap select-all leading-relaxed">
+                    {compiledMessage}
+                  </pre>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => {
+                      try {
+                        if (navigator.clipboard) {
+                          navigator.clipboard.writeText(compiledMessage);
+                        } else {
+                          const textarea = document.createElement("textarea");
+                          textarea.value = compiledMessage;
+                          document.body.appendChild(textarea);
+                          textarea.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(textarea);
+                        }
+                        setCopiedState(true);
+                        setTimeout(() => setCopiedState(false), 3000);
+                      } catch (err) {}
+                    }}
+                    className={`py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all border cursor-pointer ${
+                      copiedState 
+                        ? "bg-green-500/20 text-green-500 border-green-500/30" 
+                        : "bg-neutral-900 border-neutral-850 hover:bg-neutral-800 text-white"
+                    }`}
+                  >
+                    {copiedState ? "Copied! ✅" : "Copy Message"}
+                  </button>
+                  <button
+                    onClick={() => setIsSuccess(false)}
+                    className="py-3 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all cursor-pointer"
+                  >
+                    {isHi ? "विवरण संपादित करें" : "Edit Details"}
+                  </button>
+                </div>
+
+                <a
+                  href={`https://wa.me/919685123339?text=${encodeURIComponent(compiledMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-xl shadow-green-600/20 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageSquare size={14} className="fill-current text-white" />
+                  {isHi ? "व्हाट्सएप चैट खोलें" : "Open WhatsApp Chat"}
+                </a>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
