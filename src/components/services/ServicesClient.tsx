@@ -496,7 +496,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
       {/* ── STATS ── */}
       <div className="stats">
         {[
-          ["50+", isHi ? "क्लाइंट्स" : "Clients Served"], 
+          ["113+", isHi ? "क्लाइंट्स" : "Clients Served"], 
           ["70+", isHi ? "सेवाएं" : "Services Offered"], 
           ["3x", isHi ? "ROAS" : "Avg. ROAS Delivered"], 
           ["4.9★", isHi ? "रेटिंग" : "Google Rating"]

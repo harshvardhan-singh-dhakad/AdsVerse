@@ -333,7 +333,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
         {/* Stats Section */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-24 border-y border-border/40 py-12">
           {[
-            { label: "Satisfied Clients", value: "250+", icon: "🤝" },
+            { label: "Satisfied Clients", value: "113+", icon: "🤝" },
             { label: "Campaigns Run", value: "1.2k+", icon: "📈" },
             { label: "Retention Rate", value: "94%", icon: "🔄" },
             { label: "Marketing ROI", value: "4.5x", icon: "💰" }
@@ -523,7 +523,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
           <div className="relative z-10 space-y-8 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tight">Ready to Dominate Your Market?</h2>
             <p className="text-xl text-primary-foreground/80">
-              Join 250+ brands that have accelerated their growth with AdsVerse.
+              Join 113+ brands that have accelerated their growth with AdsVerse.
               Let's build your custom growth engine today.
             </p>
             <div className="flex flex-wrap justify-center gap-6 pt-4">

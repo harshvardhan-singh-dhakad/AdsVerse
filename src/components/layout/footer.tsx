@@ -12,6 +12,10 @@ import { usePathname } from "next/navigation";
 
 export function Footer() {
   const pathname = usePathname();
+  
+  const isAdminPath = pathname?.includes('/admin');
+  if (isAdminPath) return null;
+
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -20,11 +24,6 @@ export function Footer() {
     setCurrentYear(new Date().getFullYear());
     setMounted(true);
   }, []);
-
-  const isAdminPath = pathname?.includes('/admin');
-  if (isAdminPath) return null;
-
-
 
   const darkLogo = "/images/logo-white.webp";
   const lightLogo = "/images/logo-black.webp";
@@ -79,7 +78,9 @@ export function Footer() {
               <li><Link href="/our-services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
               <li><Link href="/portfolio" className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
               <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
               <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/locations" className="text-sm text-muted-foreground hover:text-primary">Locations</Link></li>
               <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>

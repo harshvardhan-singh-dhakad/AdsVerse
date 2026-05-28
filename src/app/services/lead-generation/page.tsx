@@ -8,13 +8,6 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Lead Generation Agency in Indore India — Get More Qualified Leads | AdsVerse",
   description: "Stop chasing cold leads. AdsVerse generates high-quality, ready-to-buy leads for your business using Google Ads, Meta Ads, SEO & WhatsApp automation — proven ROI for Indian businesses.",
-  keywords: [
-    "lead generation agency Indore", "lead generation services India",
-    "B2B lead generation India", "real estate lead generation Indore",
-    "digital lead generation agency India", "performance lead generation India",
-    "qualified leads for business India", "online lead generation Indore",
-    "lead generation for startups India", "inbound lead generation India"
-  ],
   alternates: {
     canonical: 'https://adsverse.in/services/lead-generation',
   },

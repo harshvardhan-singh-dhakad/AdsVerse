@@ -1,19 +1,13 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Megaphone, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Meta & Google Ads Management Agency India | AdsVerse",
-  description: "Maximize ROI with expert Meta (Facebook/Instagram) & Google Ads management from AdsVerse. We run data-driven paid ad campaigns for Indian businesses — driving leads, sales & measurable results.",
-  keywords: [
-    "Google Ads management India", "Meta ads agency India", "Facebook ads agency Indore",
-    "paid advertising services India", "performance marketing agency Indore",
-    "Google Ads consultant India", "Instagram ads India", "PPC agency India",
-    "ROI focused ads India", "paid ads management Indore"
-  ],
+  title: "Google Ads & Meta Ads Agency in Indore | Performance Marketing | AdsVerse",
+  description: "AdsVerse manages high-ROI Google Ads and Meta Ads campaigns for Indore businesses. Transparent reporting, no minimum ad spend lock-in. Average 3.8x ROAS.",
   alternates: {
     canonical: 'https://adsverse.in/services/paid-ads',
   },
@@ -47,37 +41,35 @@ const service = {
       "Ongoing Optimization & A/B Testing",
       "Monthly Performance Reports",
     ],
-  },
-  faq: {
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How much should I spend on ads?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Your ad spend depends on your industry, goals, and the competitiveness of your target keywords or audience. We recommend starting with a budget you're comfortable with for testing. As we gather data and optimize campaigns, we can provide a data-driven recommendation for scaling your ad spend to maximize ROI."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How soon will I see results from paid ads?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You can start seeing traffic and impressions almost immediately after a campaign is launched. However, achieving optimal performance and a positive ROI typically takes 1-3 months. This initial period is crucial for data collection, A/B testing, and campaign refinement."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you manage ads on other platforms besides Google and Meta?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "While our primary expertise is with Google and Meta (Facebook/Instagram), we also have experience running campaigns on other platforms like LinkedIn, Twitter (X), and Pinterest. Please contact us to discuss your specific needs for other platforms."
-        }
-      }
-    ]
   }
 };
+
+const expandedFaqs = [
+  {
+    question: "What is the minimum ad budget required?",
+    answer: "For Google Search Ads, we recommend a minimum of ₹15,000/month ad spend for Indore-local targeting to get statistically meaningful data. For Meta Ads, ₹10,000/month is workable for local campaigns. AdsVerse's management fee is separate from ad spend."
+  },
+  {
+    question: "Do I pay Google/Meta directly or through AdsVerse?",
+    answer: "You always pay Google and Meta directly from your own ad account. AdsVerse never handles your ad spend money — we only charge a management fee for running and optimizing the campaigns."
+  },
+  {
+    question: "How long does it take to see results from paid ads?",
+    answer: "Google Search Ads can show lead results within the first week for high-intent keywords. Meta Ads typically take 2-4 weeks for the algorithm to optimize. We consider the first month a learning phase and do not judge campaign performance on week-one numbers alone."
+  },
+  {
+    question: "Can you run ads for a business with a small budget?",
+    answer: "Yes, but with realistic expectations. ₹8,000-10,000/month ad spend is workable for very localized or niche campaigns. We will tell you upfront if your budget is too small to compete in your specific market — we do not take budgets we cannot make profitable."
+  },
+  {
+    question: "Do you manage LinkedIn Ads too?",
+    answer: "Yes. LinkedIn Ads are part of our paid ads services, particularly for B2B businesses targeting professionals. LinkedIn CPC is higher than Google/Meta but the lead quality for B2B is significantly better. Ask about our LinkedIn Ads packages during your free consultation."
+  },
+  {
+    question: "What reporting do we get?",
+    answer: "Weekly automated performance reports showing impressions, clicks, CTR, CPC, conversions, cost-per-lead, and ROAS — delivered to email or WhatsApp. Monthly strategy review calls included."
+  }
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -85,11 +77,16 @@ const jsonLd = {
     {
       "@type": "Service",
       "serviceType": "Paid Advertising",
-      "name": "Meta & Google Ads Management Services | AdsVerse",
-      "description": "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google.",
+      "name": "Meta & Google Ads Management Services",
+      "description": "Drive targeted traffic and maximize ROI with strategic ad campaigns on Meta (Facebook & Instagram) and Google, managed by AdsVerse.",
       "provider": {
         "@type": "Organization",
-        "name": "AdsVerse"
+        "name": "AdsVerse",
+        "url": "https://adsverse.in"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Indore"
       },
       "offers": {
         "@type": "Offer",
@@ -110,10 +107,19 @@ const jsonLd = {
         { "@type": "ListItem", "position": 3, "name": "Meta & Google Ads", "item": "https://adsverse.in/services/paid-ads" }
       ]
     },
-    service.faq
+    {
+      "@type": "FAQPage",
+      "mainEntity": expandedFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
   ]
 };
-
 
 export default function PaidAdsPage() {
   return (
@@ -122,7 +128,7 @@ export default function PaidAdsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-    <div className="container mx-auto py-16 px-4">
+    <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
           <Link href="/our-services">
@@ -179,6 +185,108 @@ export default function PaidAdsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* ── EXPANDED CONTENT AREA ── */}
+      <div className="mt-16 space-y-16">
+        
+        {/* Block 1: What is Performance Marketing... */}
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold text-primary font-headline">What is Performance Marketing in 2026?</h2>
+          <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4 max-w-none">
+            <p>
+              Performance marketing is digital advertising where you pay only for measurable outcomes — clicks, leads, or conversions. In 2026, the Indian digital ad market has crossed ₹50,000 crore, and platforms like Google Ads and Meta Ads have become the primary customer acquisition channel for SMBs across Indore, Bhopal, and Tier-2 India.
+            </p>
+            <p>
+              The problem is not whether paid ads work — they do. The problem is most businesses are burning 30-60% of their ad budget on poorly structured campaigns: wrong bidding strategies, untested creatives, zero audience segmentation, and no attribution tracking. AdsVerse fixes all of this.
+            </p>
+          </div>
+        </section>
+
+        {/* Block 2: What AdsVerse Does Differently */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">What AdsVerse Does Differently</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { title: "Full-funnel campaign architecture", text: "Awareness → Consideration → Conversion campaigns running simultaneously, not just bottom-funnel lead gen ads." },
+              { title: "Creative testing at scale", text: "We A/B test headlines, hooks, visuals, and CTAs systematically — not randomly. Every rupee teaches us something." },
+              { title: "AI bidding strategies", text: "Smart Bidding, Target ROAS, Performance Max — we use Google's machine learning correctly, which most agencies misuse." },
+              { title: "WhatsApp lead integration", text: "Meta Ads connected directly to WhatsApp business flows via automation. Leads get an instant reply the moment they click — no 24-hour delay." },
+              { title: "Transparent spend reporting", text: "You see every rupee spent, every click, every lead source — weekly automated report via dashboard or WhatsApp." },
+              { title: "No long-term lock-in", text: "Month-to-month contracts. If results are not coming, you should have the freedom to leave — we earn your business every month." }
+            ].map((item, i) => (
+              <Card key={i} className="bg-card/30 border border-border/40 p-6 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-accent shrink-0" />
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 3: Our Paid Ads Process */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Our Paid Ads Process</h2>
+          <div className="space-y-4">
+            {[
+              { step: "Step 1", title: "Account Audit (Week 1)", desc: "If you have existing campaigns, we audit them for wasted spend, quality score issues, audience overlap, and conversion tracking gaps." },
+              { step: "Step 2", title: "Strategy & Structure (Week 1-2)", desc: "Campaign hierarchy design — Search, Display, Performance Max, Retargeting. Keyword negative lists, match type strategy, audience building." },
+              { step: "Step 3", title: "Creative Development (Week 2)", desc: "Ad copy, creative briefs for static/video ads, landing page recommendations, and WhatsApp integration setup." },
+              { step: "Step 4", title: "Launch & Optimization (Week 2-4)", desc: "Campaigns live. Daily monitoring for first 2 weeks. Bid adjustments, search term pruning, audience refinement." },
+              { step: "Step 5", title: "Scale (Month 2+)", desc: "Once ROAS is stable, we scale the winning campaigns. Introduce new ad formats, new audiences, seasonal pushes." }
+            ].map((p, i) => (
+              <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
+                <div className="h-8 w-16 bg-accent/10 border border-accent/20 rounded flex items-center justify-center text-xs font-bold text-accent shrink-0">
+                  {p.step}
+                </div>
+                <div>
+                  <h4 className="font-bold text-foreground text-base mb-1">{p.title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 4: Who Is This For? */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Who Is This For?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { type: "Local Retailers & Service Brands", desc: "Local Indore businesses wanting immediate foot traffic, walk-ins, or phone call leads from Google/Meta." },
+              { type: "E-Commerce Stores", desc: "E-commerce brands running Shopify or WooCommerce stores wanting purchase sales at profitable CPA." },
+              { type: "Coaches & Education Providers", desc: "Coaches, consultants, and education businesses wanting webinar registrations, class leads, or course sales." },
+              { type: "High-Value Services (Real Estate, Healthcare, Law)", desc: "Real estate developers, clinics, and legal firms wanting high-intent phone call leads and qualified forms." }
+            ].map((w, i) => (
+              <div key={i} className="p-5 rounded-xl border border-border/30 bg-card/20">
+                <h4 className="font-bold text-accent mb-2">{w.type}</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 5: FAQ Accordion */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Frequently Asked Questions</h2>
+          <Accordion type="single" collapsible className="w-full space-y-2">
+            {expandedFaqs.map((faq, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border border-border/30 rounded-lg px-4 bg-card/20" role="region">
+                <AccordionTrigger className="text-base text-left hover:no-underline font-headline font-semibold text-foreground py-4">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
+      </div>
     </div>
     </>
   );

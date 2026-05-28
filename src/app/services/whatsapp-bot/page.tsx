@@ -8,13 +8,6 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "WhatsApp Bot for Lead Generation India — 24/7 AI Sales Bot | AdsVerse",
   description: "Automate your WhatsApp with AdsVerse's AI-powered sales bot. Capture leads, qualify prospects & close deals 24/7 — the #1 WhatsApp automation solution for Indian businesses in Indore.",
-  keywords: [
-    "WhatsApp bot for lead generation India", "WhatsApp automation agency India",
-    "WhatsApp business bot Indore", "WhatsApp marketing bot India",
-    "AI WhatsApp chatbot for business", "WhatsApp sales bot India",
-    "automated WhatsApp replies India", "WhatsApp CRM integration India",
-    "WhatsApp bot for small business India", "WhatsApp lead generation Indore"
-  ],
   alternates: {
     canonical: 'https://adsverse.in/services/whatsapp-bot',
   },

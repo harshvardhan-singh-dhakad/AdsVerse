@@ -1,5 +1,5 @@
 
-export const dynamic = 'force-dynamic'; // always fetch live data from Firestore
+export const dynamic = 'force-dynamic';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

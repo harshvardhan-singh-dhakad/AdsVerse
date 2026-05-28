@@ -7,12 +7,7 @@ import Image from "next/image";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "About AdsVerse — Top Marketing Agency in Indore",
-    description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 47+ brands grow through SEO, Paid Ads, and Automation.",
-    keywords: [
-      "digital marketing agency Indore", "best marketing agency Indore",
-      "AdsVerse team", "Deepak Dhakad digital marketing",
-      "digital marketing expert Indore", "marketing agency founded 2018 India"
-    ],
+    description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 113+ clients grow through SEO, Paid Ads, and Automation.",
     alternates: {
       canonical: "https://adsverse.in/about",
     },
@@ -111,7 +106,6 @@ export default function AboutPage() {
                 width={400}
                 height={600}
                 data-ai-hint="man professional"
-                priority={true}
                 className="w-full h-full object-cover object-top rounded-b-[5rem]"
                 sizes="(max-width: 768px) 100vw, 400px"
               />
