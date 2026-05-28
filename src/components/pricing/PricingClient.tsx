@@ -21,6 +21,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { type PricingPlan } from "@/lib/definitions";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 /* ─────────────────────────────────────────────
    MAPPING UTILITIES
@@ -48,99 +49,170 @@ const CATEGORY_MAP: Record<string, { id: string, label: string, icon: string, co
   "Video Shoots": { id: "video", label: "Video", icon: "🎬", color: "#f43f5e" },
 };
 
-const ServiceCard = ({ service, color }: { service: any, color: string }) => (
-  <Card className={`group relative overflow-hidden bg-card/40 backdrop-blur-xl border-border/40 hover:border-${color}/30 transition-all duration-500`}>
-    {service.isPopular && (
-      <div className="absolute top-0 right-0 z-10">
-        <div className="bg-primary text-primary-foreground text-[10px] uppercase font-bold tracking-widest py-1 px-4 transform rotate-45 translate-x-[25px] translate-y-[10px] shadow-sm">
-          Popular
+const ServiceCard = ({ service, color, selectedServices, onSelectPlan }: { service: any, color: string, selectedServices: any[], onSelectPlan: (s: any) => void }) => {
+  const isSelected = selectedServices.some(item => item.name === service.name);
+  return (
+    <Card className={`group relative overflow-hidden bg-card/40 backdrop-blur-xl border-border/40 hover:border-${color}/30 transition-all duration-500`}>
+      {service.isPopular && (
+        <div className="absolute top-0 right-0 z-10">
+          <div className="bg-primary text-primary-foreground text-[10px] uppercase font-bold tracking-widest py-1 px-4 transform rotate-45 translate-x-[25px] translate-y-[10px] shadow-sm">
+            Popular
+          </div>
         </div>
-      </div>
-    )}
-    <CardHeader className="pb-4">
-      <div className="flex items-center gap-3 mb-2">
-        <span className="text-2xl">{service.icon || "📍"}</span>
-        <CardTitle className="text-lg font-headline font-bold text-foreground group-hover:text-primary transition-colors">{service.name}</CardTitle>
-      </div>
-      <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{service.description || service.desc}</p>
-    </CardHeader>
-    <CardContent className="space-y-4">
-      <div className="flex items-baseline gap-1">
-        <span className="text-3xl font-bold tracking-tight text-foreground">{service.price}</span>
-        {service.frequency && <span className="text-sm font-medium text-muted-foreground">{service.frequency}</span>}
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Button asChild variant="outline" className="w-full group/btn hover:bg-primary hover:text-primary-foreground border-primary/20">
-        <Link href="/contact" className="flex items-center justify-center gap-2">
-          {service.callToAction || "Select Plan"} <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-        </Link>
-      </Button>
-    </CardFooter>
-  </Card>
-);
-
-const AutomationCard = ({ plan }: { plan: any }) => (
-  <Card className={`relative flex flex-col bg-card/40 backdrop-blur-xl border-border/40 ${plan.isPopular ? 'border-primary/50 shadow-2xl shadow-primary/10' : ''} transition-all duration-500`}>
-    {plan.isPopular && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-        <Badge className="bg-primary text-primary-foreground px-4 py-1 uppercase tracking-widest text-[10px]">Best Value</Badge>
-      </div>
-    )}
-    <CardHeader className="text-center pb-8 pt-8">
-      <CardTitle className="text-2xl font-headline font-bold mb-2">{plan.name}</CardTitle>
-      <div className="text-4xl font-bold mb-4">{plan.price}</div>
-      <p className="text-muted-foreground text-sm">{plan.description || plan.desc}</p>
-    </CardHeader>
-    <CardContent className="flex-grow space-y-4">
-      {(plan.features || []).map((feature: string, i: number) => (
-        <div key={i} className="flex items-center gap-3">
-          <CheckCircle className="w-4 h-4 text-primary shrink-0" />
-          <span className="text-sm text-muted-foreground">{feature}</span>
+      )}
+      <CardHeader className="pb-4">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">{service.icon || "📍"}</span>
+          <CardTitle className="text-lg font-headline font-bold text-foreground group-hover:text-primary transition-colors">{service.name}</CardTitle>
         </div>
-      ))}
-    </CardContent>
-    <CardFooter className="pt-8">
-      <Button asChild className={`w-full py-6 font-bold ${plan.isPopular ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'variant-outline border-primary/20'}`}>
-        <Link href="/contact">{plan.callToAction || "Get Started Now"}</Link>
-      </Button>
-    </CardFooter>
-  </Card>
-);
+        <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{service.description || service.desc}</p>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-bold tracking-tight text-foreground">{service.price}</span>
+          {service.frequency && <span className="text-sm font-medium text-muted-foreground">{service.frequency}</span>}
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button 
+          onClick={() => onSelectPlan({ name: service.name, desc: service.description || service.desc, price: service.price, color })}
+          variant="outline" 
+          className={`w-full group/btn border-primary/20 cursor-pointer ${
+            isSelected ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 border border-red-500/30" : "hover:bg-primary hover:text-primary-foreground"
+          }`}
+        >
+          {isSelected ? "Remove Plan" : (service.callToAction || "Select Plan")} <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform ml-2" />
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
-const VideoCard = ({ plan }: { plan: any }) => (
-  <Card className="group bg-card/40 backdrop-blur-xl border-border/40 hover:border-accent/30 transition-all duration-500">
-    <CardHeader className="flex flex-row items-center justify-between pb-4">
-      <div className="text-3xl p-3 bg-accent/10 rounded-2xl">{plan.icon || "🎬"}</div>
-      <div className="text-right">
-        <div className="text-2xl font-bold">{plan.price}</div>
-        <div className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Package</div>
-      </div>
-    </CardHeader>
-    <CardContent className="space-y-6">
-      <div>
-        <h3 className="text-xl font-headline font-bold mb-2">{plan.name}</h3>
-        <p className="text-sm text-muted-foreground">{plan.description || plan.desc}</p>
-      </div>
-      <div className="space-y-3 pt-4 border-t border-border/40">
+const AutomationCard = ({ plan, selectedServices, onSelectPlan }: { plan: any, selectedServices: any[], onSelectPlan: (s: any) => void }) => {
+  const isSelected = selectedServices.some(item => item.name === plan.name);
+  return (
+    <Card className={`relative flex flex-col bg-card/40 backdrop-blur-xl border-border/40 ${plan.isPopular ? 'border-primary/50 shadow-2xl shadow-primary/10' : ''} transition-all duration-500`}>
+      {plan.isPopular && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <Badge className="bg-primary text-primary-foreground px-4 py-1 uppercase tracking-widest text-[10px]">Best Value</Badge>
+        </div>
+      )}
+      <CardHeader className="text-center pb-8 pt-8">
+        <CardTitle className="text-2xl font-headline font-bold mb-2">{plan.name}</CardTitle>
+        <div className="text-4xl font-bold mb-4">{plan.price}</div>
+        <p className="text-muted-foreground text-sm">{plan.description || plan.desc}</p>
+      </CardHeader>
+      <CardContent className="flex-grow space-y-4">
         {(plan.features || []).map((feature: string, i: number) => (
           <div key={i} className="flex items-center gap-3">
-            <Zap className="w-3 h-3 text-accent shrink-0" />
+            <CheckCircle className="w-4 h-4 text-primary shrink-0" />
             <span className="text-sm text-muted-foreground">{feature}</span>
           </div>
         ))}
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Button asChild className="w-full bg-accent/10 hover:bg-accent text-accent hover:text-accent-foreground border-none">
-        <Link href="/contact">{plan.callToAction || "Book Production"}</Link>
-      </Button>
-    </CardFooter>
-  </Card>
-);
+      </CardContent>
+      <CardFooter className="pt-8">
+        <Button 
+          onClick={() => onSelectPlan({ name: plan.name, desc: plan.description || plan.desc, price: plan.price, color: "#06b6d4" })}
+          className={`w-full py-6 font-bold cursor-pointer ${
+            isSelected 
+              ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 border border-red-500/30" 
+              : plan.isPopular ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'variant-outline border-primary/20'
+          }`}
+        >
+          {isSelected ? "Remove Plan" : (plan.callToAction || "Get Started Now")}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const VideoCard = ({ plan, selectedServices, onSelectPlan }: { plan: any, selectedServices: any[], onSelectPlan: (s: any) => void }) => {
+  const isSelected = selectedServices.some(item => item.name === plan.name);
+  return (
+    <Card className="group bg-card/40 backdrop-blur-xl border-border/40 hover:border-accent/30 transition-all duration-500">
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
+        <div className="text-3xl p-3 bg-accent/10 rounded-2xl">{plan.icon || "🎬"}</div>
+        <div className="text-right">
+          <div className="text-2xl font-bold">{plan.price}</div>
+          <div className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Package</div>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div>
+          <h3 className="text-xl font-headline font-bold mb-2">{plan.name}</h3>
+          <p className="text-sm text-muted-foreground">{plan.description || plan.desc}</p>
+        </div>
+        <div className="space-y-3 pt-4 border-t border-border/40">
+          {(plan.features || []).map((feature: string, i: number) => (
+            <div key={i} className="flex items-center gap-3">
+              <Zap className="w-3 h-3 text-accent shrink-0" />
+              <span className="text-sm text-muted-foreground">{feature}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button 
+          onClick={() => onSelectPlan({ name: plan.name, desc: plan.description || plan.desc, price: plan.price, color: "#f43f5e" })}
+          className={`w-full text-accent hover:text-accent-foreground border-none cursor-pointer ${
+            isSelected 
+              ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 border border-red-500/30" 
+              : "bg-accent/10 hover:bg-accent"
+          }`}
+        >
+          {isSelected ? "Remove Plan" : (plan.callToAction || "Book Production")}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 export default function PricingClient({ initialPlans }: { initialPlans: PricingPlan[] }) {
   const [activeCategory, setActiveCategory] = useState("seo");
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadDate, setLeadDate] = useState("");
+  const [leadTime, setLeadTime] = useState("");
+  const [appointmentMode, setAppointmentMode] = useState<"online" | "office">("online");
+  const [homeAddress, setHomeAddress] = useState("");
+  const [specialNotes, setSpecialNotes] = useState("");
+  const [validationError, setValidationError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [compiledMessage, setCompiledMessage] = useState("");
+  const [copiedState, setCopiedState] = useState(false);
+
+  const parsePrice = (priceStr: string): number => {
+    const cleaned = priceStr.replace(/[^0-9]/g, '');
+    const num = parseInt(cleaned, 10);
+    return isNaN(num) ? 12000 : num;
+  };
+
+  const selectService = (s: any) => {
+    const itemPrice = parsePrice(s.price);
+    setSelectedServices(prev => {
+      const exists = prev.find(item => item.name === s.name);
+      if (exists) return prev;
+      return [...prev, { ...s, price: itemPrice }];
+    });
+  };
+
+  const deselectService = (s: any) => {
+    setSelectedServices(prev => prev.filter(item => item.name !== s.name));
+  };
+
+  const toggleService = (s: any) => {
+    const itemPrice = parsePrice(s.price);
+    setSelectedServices(prev => {
+      const exists = prev.find(item => item.name === s.name);
+      if (exists) {
+        return prev.filter(item => item.name !== s.name);
+      } else {
+        return [...prev, { ...s, price: itemPrice }];
+      }
+    });
+  };
 
   const { serviceCats, automationPlans, videoPlans } = useMemo(() => {
     const categories: Record<string, any> = {};
@@ -399,7 +471,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
                 {/* Pricing Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {currentCategory.services.map((service: any, i: number) => (
-                    <ServiceCard key={i} service={service} color={currentCategory.id} />
+                    <ServiceCard key={i} service={service} color={currentCategory.id} selectedServices={selectedServices} onSelectPlan={toggleService} />
                   ))}
                 </div>
               </>
@@ -424,7 +496,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
           <TabsContent value="automation" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {automationPlans.map((plan, i) => (
-                <AutomationCard key={i} plan={plan} />
+                <AutomationCard key={i} plan={plan} selectedServices={selectedServices} onSelectPlan={toggleService} />
               ))}
             </div>
 
@@ -494,7 +566,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
               {videoPlans.map((plan, i) => (
-                <VideoCard key={i} plan={plan} />
+                <VideoCard key={i} plan={plan} selectedServices={selectedServices} onSelectPlan={toggleService} />
               ))}
             </div>
 
@@ -541,6 +613,407 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
           </div>
         </section>
       </div>
+
+      {/* ── FLOATING CART BAR ── */}
+      {selectedServices.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/90 backdrop-blur-2xl border border-orange-500/40 rounded-full py-4 px-8 flex items-center justify-between gap-8 shadow-2xl shadow-orange-500/20 animate-in slide-in-from-bottom-10 duration-300 max-w-lg w-[calc(100%-2rem)]">
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-4 w-4 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-orange-600"></span>
+            </div>
+            <div className="text-left">
+              <div className="text-sm font-bold text-white tracking-tight">
+                {selectedServices.length} {selectedServices.length === 1 ? "Plan" : "Plans"} Selected
+              </div>
+              <div className="text-xs text-orange-500 font-extrabold">
+                Total Amount: ₹{selectedServices.reduce((sum, item) => sum + item.price, 0).toLocaleString('en-IN')}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setValidationError("");
+              setIsSuccess(false);
+              setIsBookingOpen(true);
+            }}
+            className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold text-xs uppercase tracking-widest transition-all shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+          >
+            Book Now
+          </button>
+        </div>
+      )}
+
+      {/* ── INTERACTIVE BOOKING DIALOG ── */}
+      <Dialog open={isBookingOpen} onOpenChange={(open) => !open && setIsBookingOpen(false)}>
+        <DialogContent className="bg-background/95 backdrop-blur-3xl border border-neutral-800 shadow-2xl rounded-[2rem] p-0 overflow-hidden max-w-lg max-h-[90vh] flex flex-col">
+          <DialogHeader className="p-6 pb-4 border-b border-neutral-800 bg-neutral-900/50 shrink-0">
+            <DialogTitle className="text-2xl font-black font-headline tracking-tight text-white flex items-center gap-2">
+              <span>WhatsApp Booking System</span>
+              <span className="text-xs bg-orange-500/20 text-orange-500 px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-widest shrink-0">
+                Cart Booking
+              </span>
+            </DialogTitle>
+            <DialogDescription className="text-xs text-neutral-400">
+              Provide your details below to directly initiate a chat booking on WhatsApp.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {!isSuccess ? (
+              <>
+                {/* Cart Items Summary */}
+                <div className="space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    Selected Plans
+                  </div>
+                  <div className="border border-neutral-800 bg-neutral-950/60 rounded-2xl p-4 space-y-3 divide-y divide-neutral-900 max-h-[180px] overflow-y-auto">
+                    {selectedServices.map((item, idx) => (
+                      <div key={item.name} className={`flex justify-between items-center gap-4 ${idx > 0 ? "pt-3" : ""}`}>
+                        <div className="text-left">
+                          <div className="text-sm font-bold text-white">{item.name}</div>
+                          <div className="text-[11px] text-neutral-500 line-clamp-1">{item.desc}</div>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-sm font-black text-orange-500">₹{item.price.toLocaleString('en-IN')}</span>
+                          <button
+                            onClick={() => toggleService(item)}
+                            className="text-xs text-neutral-555 hover:text-red-500 transition-colors p-1 cursor-pointer border-none bg-transparent"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center px-2">
+                    <span className="text-xs font-bold text-neutral-400">Total Amount:</span>
+                    <span className="text-lg font-black text-white">
+                      ₹{selectedServices.reduce((sum, item) => sum + item.price, 0).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Form Fields */}
+                <div className="space-y-4">
+                  {validationError && (
+                    <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-500 text-xs rounded-xl font-bold">
+                      ⚠️ {validationError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        Your Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Rahul Sharma"
+                        value={leadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        WhatsApp Number *
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="e.g. 9685123339"
+                        value={leadPhone}
+                        onChange={(e) => setLeadPhone(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        Appointment Date
+                      </label>
+                      <input
+                        type="date"
+                        value={leadDate}
+                        onChange={(e) => setLeadDate(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all [color-scheme:dark]"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                        Time Slot
+                      </label>
+                      <select
+                        value={leadTime}
+                        onChange={(e) => setLeadTime(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      >
+                        <option value="">-- Select Slot --</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 02:00 PM">12:00 PM - 02:00 PM</option>
+                        <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+                        <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
+                        <option value="06:00 PM - 08:00 PM">06:00 PM - 08:00 PM</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300 block">
+                      Consultation Mode
+                    </label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentMode("online")}
+                        className={`h-11 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all cursor-pointer ${
+                          appointmentMode === "online"
+                            ? "bg-orange-500/20 text-orange-500 border-orange-500/40"
+                            : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800"
+                        }`}
+                      >
+                        💻 Online Call
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentMode("office")}
+                        className={`h-11 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all cursor-pointer ${
+                          appointmentMode === "office"
+                            ? "bg-orange-500/20 text-orange-500 border-orange-500/40"
+                            : "bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800"
+                        }`}
+                      >
+                        🏢 Office Visit
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Conditional: Online Call — preferred platform */}
+                  <div
+                    className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                      appointmentMode === "online" ? "max-h-[120px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    <div className="space-y-2 pt-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-orange-500">
+                        Preferred Platform
+                      </label>
+                      <select
+                        value={homeAddress}
+                        onChange={(e) => setHomeAddress(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all"
+                      >
+                        <option value="">-- Select Platform --</option>
+                        <option value="Google Meet">Google Meet</option>
+                        <option value="Zoom">Zoom</option>
+                        <option value="WhatsApp Video">WhatsApp Video</option>
+                        <option value="Microsoft Teams">Microsoft Teams</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Conditional: Office Visit — show office address */}
+                  <div
+                    className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                      appointmentMode === "office" ? "max-h-[160px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"
+                    }`}
+                  >
+                    <div className="space-y-2 pt-2">
+                      <label className="text-[10px] font-extrabold uppercase tracking-widest text-orange-500">
+                        📍 Our Office: Vijay Nagar, Indore
+                      </label>
+                      <div className="w-full p-3 rounded-xl bg-neutral-900 border border-orange-500/20 text-neutral-400 text-xs leading-relaxed">
+                        AdsVerse — Vijay Nagar, Indore, Madhya Pradesh 452010<br />
+                        <span className="text-orange-500 font-bold">Mon–Sat: 10 AM – 7 PM</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-300">
+                      Special Notes / Directions (Optional)
+                    </label>
+                    <textarea
+                      placeholder="Any special requirements..."
+                      value={specialNotes}
+                      onChange={(e) => setSpecialNotes(e.target.value)}
+                      className="w-full h-16 p-3 rounded-xl bg-neutral-900 border border-neutral-800 focus:border-orange-500 outline-none text-white text-sm transition-all resize-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    // Strict Validation
+                    if (selectedServices.length === 0) {
+                      setValidationError("Select at least 1 service to proceed with booking.");
+                      return;
+                    }
+                    if (!leadName.trim()) {
+                      setValidationError("Please enter your name.");
+                      return;
+                    }
+                    if (leadPhone.trim().replace(/[^0-9]/g, '').length < 10) {
+                      setValidationError("Please enter a valid phone number of at least 10 digits.");
+                      return;
+                    }
+
+                    setValidationError("");
+
+                    // Calculate Total Amount
+                    const total = selectedServices.reduce((sum, item) => sum + item.price, 0);
+
+                    // WhatsApp Text Compilation
+                    let msg = `🌟 *NEW APPOINTMENT BOOKING* 🌟\n\n`;
+                    msg += `*Customer Name:* _${leadName.trim()}_\n`;
+                    msg += `*WhatsApp/Phone:* _${leadPhone.trim()}_\n`;
+                    msg += `*Consultation Mode:* _${appointmentMode === 'online' ? `💻 Online / Video Call${homeAddress ? ` (${homeAddress})` : ' (Google Meet / Zoom)'}` : '🏢 Office Visit — Vijay Nagar, Indore'}_\n`;
+                    if (leadDate) msg += `*Date:* _${leadDate}_\n`;
+                    if (leadTime) msg += `*Time Slot:* _${leadTime}_\n`;
+                    if (specialNotes.trim()) msg += `*Notes:* _${specialNotes.trim()}_\n`;
+                    msg += `\n*Selected Service Plans:*`;
+                    
+                    selectedServices.forEach((item, index) => {
+                      msg += `\n${index + 1}. *${item.name}* (₹${item.price.toLocaleString('en-IN')})`;
+                    });
+                    
+                    msg += `\n\n*Total Estimated Amount:* *₹${total.toLocaleString('en-IN')}*\n`;
+                    msg += `\nThank you! Please confirm this slot.`;
+
+                    setCompiledMessage(msg);
+
+                    // PERSISTENT LOCAL STORAGE BOOKING
+                    const bookingId = 'BK-' + Date.now().toString().slice(-6);
+                    const bookingObj = {
+                      id: bookingId,
+                      name: leadName.trim(),
+                      phone: leadPhone.trim(),
+                      total: total,
+                      date: leadDate || new Date().toISOString().split('T')[0],
+                      timestamp: new Date().toISOString()
+                    };
+                    try {
+                      const allBookings = JSON.parse(localStorage.getItem('allBookings') || '[]');
+                      allBookings.push(bookingObj);
+                      localStorage.setItem('allBookings', JSON.stringify(allBookings));
+                    } catch (e) {
+                      console.error("Local storage error:", e);
+                    }
+
+                    // GOOGLE SHEETS WEBHOOK CALL (no-cors)
+                    try {
+                      fetch("https://script.google.com/macros/s/AKfycbz_placeholder/exec", {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(bookingObj)
+                      }).catch(e => console.log("Silent sheets POST ignored."));
+                    } catch(err) {}
+
+                    // Trigger Auto Click sandbox bypass
+                    const encodedMsg = encodeURIComponent(msg);
+                    const url = `https://wa.me/919685123339?text=${encodedMsg}`;
+                    
+                    try {
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    } catch (e) {
+                      console.error("Link redirect error:", e);
+                    }
+
+                    setIsSuccess(true);
+                  }}
+                  className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-xl shadow-orange-500/20 transition-all text-center flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                >
+                  <Zap size={14} className="fill-current text-white animate-pulse" />
+                  Compile & Message on WhatsApp
+                </button>
+              </>
+            ) : (
+              /* Success / Compiled Fallback UI State */
+              <div className="text-center space-y-6 py-4 animate-in fade-in zoom-in-95 duration-400">
+                {/* SVG Checkmark Animation */}
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500">
+                    <svg className="w-8 h-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-xl font-black text-white">Booking Message Compiled! ✅</h3>
+                  <p className="text-xs text-neutral-400 leading-relaxed max-w-sm mx-auto">
+                    We attempted to launch WhatsApp. If sandbox blocks it, please copy the compiled text or click the open button below.
+                  </p>
+                </div>
+
+                {/* Read Only Preview Box */}
+                <div className="space-y-2">
+                  <div className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 text-left pl-2">
+                    WhatsApp Message Preview
+                  </div>
+                  <pre className="w-full h-40 p-4 rounded-2xl bg-neutral-950 border border-neutral-900 text-left text-xs text-neutral-300 font-mono overflow-y-auto whitespace-pre-wrap select-all leading-relaxed">
+                    {compiledMessage}
+                  </pre>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => {
+                      try {
+                        if (navigator.clipboard) {
+                          navigator.clipboard.writeText(compiledMessage);
+                        } else {
+                          const textarea = document.createElement("textarea");
+                          textarea.value = compiledMessage;
+                          document.body.appendChild(textarea);
+                          textarea.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(textarea);
+                        }
+                        setCopiedState(true);
+                        setTimeout(() => setCopiedState(false), 3000);
+                      } catch (err) {}
+                    }}
+                    className={`py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all border cursor-pointer ${
+                      copiedState 
+                        ? "bg-green-500/20 text-green-500 border-green-500/30" 
+                        : "bg-neutral-900 border-neutral-850 hover:bg-neutral-800 text-white"
+                    }`}
+                  >
+                    {copiedState ? "Copied! ✅" : "Copy Message"}
+                  </button>
+                  <button
+                    onClick={() => setIsSuccess(false)}
+                    className="py-3 bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all cursor-pointer"
+                  >
+                    Edit Details
+                  </button>
+                </div>
+
+                <a
+                  href={`https://wa.me/919685123339?text=${encodeURIComponent(compiledMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-xl shadow-green-600/20 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageSquare size={14} className="fill-current text-white" />
+                  Open WhatsApp Chat
+                </a>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
