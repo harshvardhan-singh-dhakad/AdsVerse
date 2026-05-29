@@ -18,6 +18,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const AUDIT_CTA_TITLE = "Apna AI Marketing Audit Chahiye?";
+const AUDIT_CTA_SUBTITLE = "Free audit call — no pitch, no lock-in. Dekhte hain kahan se shuru karna sabse zyada ROI dega.";
+const WEBSITE_DOMAIN = "adsverse.in";
+
 const stats = [
   { value: "34", label: "FAQs Answered" },
   { value: "3", label: "Schema Types Active" },
@@ -403,9 +407,9 @@ export default function FAQPage() {
           <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-8 md:p-12 text-center text-primary-foreground relative overflow-hidden shadow-xl">
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="relative z-10 space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold font-headline">Apna AI Marketing Audit Chahiye?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-headline">{AUDIT_CTA_TITLE}</h2>
               <p className="max-w-2xl mx-auto text-base md:text-lg opacity-90 font-body">
-                Free audit call — no pitch, no lock-in. Dekhte hain kahan se shuru karna sabse zyada ROI dega.
+                {AUDIT_CTA_SUBTITLE}
               </p>
               <Button asChild size="lg" variant="secondary" className="text-lg py-6 px-8 shadow-lg transform hover:scale-105 transition-transform bg-background text-foreground hover:bg-background/90">
                 <Link href="/contact" className="flex items-center gap-2">
@@ -419,7 +423,7 @@ export default function FAQPage() {
         {/* Footer / Author Strip */}
         <footer className="mt-16 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground font-body">
           <p>
-            AdsVerse Team · Vijay Nagar, Indore · <Link href="/" className="hover:text-primary underline">adsverse.in</Link> · Updated May 2026
+            AdsVerse Team · Vijay Nagar, Indore · <Link href="/" className="hover:text-primary underline">{WEBSITE_DOMAIN}</Link> · Updated May 2026
           </p>
         </footer>
 

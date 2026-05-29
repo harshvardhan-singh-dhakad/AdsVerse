@@ -910,18 +910,18 @@ const CSS = `
 .stat-n{font-family:var(--font-instrument), sans-serif;font-size:28px;font-weight:800;color:var(--or);line-height:1}
 .stat-l{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:700}
 .stat-s{font-size:10px;color:var(--tx4);margin-top:2px;text-transform:uppercase;font-weight:500;letter-spacing:0.4px}
-.main-tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);position:sticky;top:0;z-index:100;width:100%;max-width:100vw}
+.main-tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);position:sticky;top:56px;z-index:40;width:100%;max-width:100vw}
 .main-tab{flex:1;padding:18px 24px;font-family:var(--font-instrument), sans-serif;font-size:15px;font-weight:700;border:none;background:transparent;color:var(--tx3);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
 .main-tab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(249,115,22,.04)}
 .tab-count{background:var(--bg3);border:1px solid var(--bd);color:var(--tx4);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
-.cat-strip-wrap{background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:56px;z-index:99;width:100%;max-width:100vw}
+.cat-strip-wrap{background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:112px;z-index:39;width:100%;max-width:100vw}
 .cat-strip{display:flex;gap:8px;padding:12px 40px;overflow-x:auto;scrollbar-width:none}
 .cat-strip::-webkit-scrollbar{display:none}
 .scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--tx1);cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 .scroll-arrow.left{left:8px}.scroll-arrow.right{right:8px}
 .cat-btn{flex-shrink:0;padding:8px 16px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:transparent;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .cat-btn.on{background:var(--or);border-color:var(--or);color:#fff}
-.cat-section{margin-bottom:56px;scroll-margin-top:120px}
+.cat-section{margin-bottom:56px;scroll-margin-top:170px}
 .cat-header{display:flex;align-items:center;gap:16px;padding:20px 0;margin-bottom:24px;border-bottom:2px solid var(--bd);position:relative}
 .cat-icon-big{width:44px;height:44px;border-radius:10px;background:var(--cat-dim);border:1.5px solid var(--cat-bd);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .cat-title{font-family:var(--font-instrument), sans-serif;font-size:22px;font-weight:800;color:var(--tx1);line-height:1.2}
@@ -973,7 +973,6 @@ const CSS = `
   .stat:nth-child(2n){border-right:none}
   .process-grid{grid-template-columns:1fr}
 }
-.hidden{display:none !important}
 `;
 
 const getServicePrice = (name: string): number => {
@@ -1176,7 +1175,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
 
   return (
     <div className="services-page">
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <style>{CSS}</style>
 
       {/* ── HERO ── */}
       <div className="hero">

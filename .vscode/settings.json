@@ -1,5 +1,27 @@
 {
   "workbench.startupEditor": "readme",
   "css.lint.unknownAtRules": "ignore",
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/.agents": true,
+    "**/.claude": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/.git": true,
+    "**/.agents": true,
+    "**/.claude": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.git/**": true,
+    "**/.agents/**": true,
+    "**/.claude/**": true
+  }
 }
