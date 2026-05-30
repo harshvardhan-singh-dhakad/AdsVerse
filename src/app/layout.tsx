@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans } from "next/font/google";
+import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
@@ -33,6 +33,13 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-instrument',
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  weight: ['900'],
   display: 'swap',
 });
 
@@ -196,7 +203,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <script
@@ -212,7 +219,8 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable,
         plusJakartaSans.variable,
-        instrumentSans.variable
+        instrumentSans.variable,
+        outfit.variable
       )}>
         <noscript>
           <iframe
@@ -238,9 +246,9 @@ export default function RootLayout({
             </a>
             <BackgroundEffects />
             <Header navLinks={navLinks} />
-            <div id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
+            <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
-            </div>
+            </main>
             <Footer />
             <FloatingActionButton />
             <Toaster />

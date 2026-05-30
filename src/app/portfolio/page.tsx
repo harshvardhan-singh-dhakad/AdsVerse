@@ -8,6 +8,28 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://adsverse.in/portfolio',
   },
+  openGraph: {
+    title: "Portfolio & Success Stories | AdsVerse",
+    description: "Explore the successful digital marketing projects and case studies delivered by AdsVerse for brands across India.",
+    url: "https://adsverse.in/portfolio",
+    siteName: "AdsVerse",
+    images: [
+      {
+        url: "https://adsverse.in/images/og-adsverse-2026.png",
+        width: 1200,
+        height: 630,
+        alt: "AdsVerse Portfolio",
+      },
+    ],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Portfolio & Success Stories | AdsVerse",
+    description: "Explore the successful digital marketing projects and case studies delivered by AdsVerse for brands across India.",
+    images: ["https://adsverse.in/images/og-adsverse-2026.png"],
+  },
 };
 
 const jsonLd = {

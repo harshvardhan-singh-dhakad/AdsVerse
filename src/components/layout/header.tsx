@@ -7,10 +7,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import Image from "next/image";
+import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
-import { useTheme } from "next-themes";
 
 type NavLink = {
   href: string;
@@ -24,17 +23,9 @@ type HeaderProps = {
 export function Header({ navLinks }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const darkLogo = "/images/logo-white.webp";
-  const lightLogo = "/images/logo-black.webp";
-  
-  const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
   const isAdminPath = pathname?.includes('/admin');
 
   if (isAdminPath) return null;
@@ -42,17 +33,8 @@ export function Header({ navLinks }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image 
-              src={currentLogo}
-              alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
-              width={120}
-              height={30}
-              className="h-8 w-auto"
-              key={currentLogo}
-              priority
-              loading="eager"
-            />
+        <Link href="/" className="mr-6 ml-2 md:ml-0 flex items-center space-x-2">
+          <AdsVerseLogo size="text-2xl" />
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="hidden md:flex gap-6 items-center">
@@ -84,14 +66,7 @@ export function Header({ navLinks }: HeaderProps) {
                 <div className="flex flex-col h-full">
                   <div className="border-b pb-4">
                     <Link href="/" className="flex items-center space-x-2">
-                       <Image 
-                          src={currentLogo}
-                          alt="AdsVerse - Best AI-Powered Digital Marketing Agency in Indore"
-                          width={120}
-                          height={30}
-                          className="h-8 w-auto"
-                          key={currentLogo + 'mobile'}
-                        />
+                      <AdsVerseLogo size="text-2xl" />
                     </Link>
                   </div>
                   <nav className="flex flex-col gap-4 mt-6">

@@ -139,7 +139,7 @@ const jsonLd = {
   "@id": "https://adsverse.in/#localbusiness",
   "url": "https://adsverse.in",
   "telephone": "+91-9685123339",
-  "email": "hello@adsverse.in",
+  "email": "contact@adsverse.in",
   "priceRange": "₹3000",
   "description": "AI-first digital marketing and automation agency serving Indore SMBs with SEO, Google Ads, Meta Ads, and WhatsApp automation.",
   "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",

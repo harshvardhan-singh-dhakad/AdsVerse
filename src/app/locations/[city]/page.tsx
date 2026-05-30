@@ -308,7 +308,7 @@ export default function CityPage({ params }: PageProps) {
       "logo": "https://adsverse.in/images/logo-white.webp",
       "image": "https://adsverse.in/images/og-adsverse-2026.png",
       "telephone": "+91-9685123339",
-      "email": "hello@adsverse.in",
+      "email": "contact@adsverse.in",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Vijay Nagar",
