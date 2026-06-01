@@ -79,6 +79,50 @@ const locationsGrouped = [
     state: "Northeast India",
     cities: [
       { slug: "guwahati", name: "Guwahati", desc: "Performance marketing, WhatsApp automation & SEO for Guwahati and Northeast India brands." },
+      { slug: "shillong", name: "Shillong", desc: "Accelerate Shillong's hospitality, eco-tourism resorts, and schools with targeted SEO and Meta Ads." },
+      { slug: "gangtok", name: "Gangtok", desc: "Position Sikkim's premium organic brands and heritage hotels in front of high-value seekers nationwide." },
+      { slug: "agartala", name: "Agartala", desc: "Empower Tripura's growing retail SMBs and healthcare diagnostic networks with optimized local SEO." },
+      { slug: "aizawl", name: "Aizawl", desc: "Help Mizoram's stylish local handlooms and boutique D2C brands scale nationwide with Next.js e-commerce." },
+      { slug: "dimapur", name: "Dimapur", desc: "Automate Nagaland's commercial wholesale orders via custom WhatsApp AI bots and n8n CRM sync." },
+      { slug: "kohima", name: "Kohima", desc: "Drive tourist bookings, local arts outreach, and organic product sales for Kohima heritage stays." },
+      { slug: "imphal", name: "Imphal", desc: "Construct highly authoritative local search profiles, responsive web designs, and ad setups in Manipur." },
+    ],
+  },
+  {
+    state: "Tamil Nadu",
+    cities: [
+      { slug: "coimbatore", name: "Coimbatore", desc: "Optimize industrial machinery, B2B manufacturing, and textile pump set leads with n8n and CRM flows." },
+      { slug: "madurai", name: "Madurai", desc: "Launch high-converting Meta Ads and localized Google Search campaigns for Madurai retail bazaar chains." },
+      { slug: "trichy", name: "Trichy", desc: "Deploy AI-backed enrollment funnels, WhatsApp booking bots, and professional sites for schools & clinics." },
+    ],
+  },
+  {
+    state: "Kerala",
+    cities: [
+      { slug: "kochi", name: "Kochi", desc: "Scale Kochi's high-ROI tourism portals, luxury real estate developers, and international spice exporters." },
+      { slug: "trivandrum", name: "Trivandrum", desc: "Position Trivandrum's technology firms, private clinics, and local services on Page 1 of Google Search." },
+      { slug: "kozhikode", name: "Kozhikode", desc: "Build sub-second speed Next.js websites and automated WhatsApp enquiry workflows for Kozhikode brands." },
+    ],
+  },
+  {
+    state: "Karnataka",
+    cities: [
+      { slug: "mysore", name: "Mysore", desc: "Attract global wellness seekers, yoga retreats, and heritage tour enquiries for Mysore operators." },
+      { slug: "mangalore", name: "Mangalore", desc: "Streamline port shipping and export pipelines with robust n8n synchronization to Vyapar and sheets." },
+    ],
+  },
+  {
+    state: "Andhra Pradesh",
+    cities: [
+      { slug: "visakhapatnam", name: "Visakhapatnam", desc: "Dominate Vizag's premium real estate builders, technology startups, and logistics companies with paid ads." },
+      { slug: "vijayawada", name: "Vijayawada", desc: "Capture high-intent transactional local buyers and wholesale leads for Vijayawada retail networks." },
+      { slug: "guntur", name: "Guntur", desc: "Automate regional agricultural trading pipelines, cotton supply chains, and local hospital lead collections." },
+    ],
+  },
+  {
+    state: "Telangana",
+    cities: [
+      { slug: "warangal", name: "Warangal", desc: "Connect Warangal's retail showrooms, local academies, and professional services with high-ROI local SEO." },
     ],
   },
 ];
@@ -91,6 +135,11 @@ const stateHeaderMap: Record<string, string> = {
   "Bihar": "Performance Marketing Agency in Bihar",
   "Jammu & Kashmir": "Digital Marketing Agency in Jammu & Kashmir",
   "Northeast India": "Digital Marketing & WhatsApp Automation — Northeast India",
+  "Tamil Nadu": "Performance Marketing & AI Agency in Tamil Nadu",
+  "Kerala": "Digital Marketing & Custom Web Agency in Kerala",
+  "Karnataka": "SEO & E-commerce Marketing Agency in Karnataka",
+  "Andhra Pradesh": "B2B Lead Generation & Local SEO in Andhra Pradesh",
+  "Telangana": "Digital Marketing & WhatsApp Automation in Telangana",
 };
 
 const allCitiesList = locationsGrouped.flatMap(group => group.cities);
