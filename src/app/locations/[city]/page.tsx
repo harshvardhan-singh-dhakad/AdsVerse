@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
 
 const cityImages: Record<string, string> = {
-  indore: "/images/locations/indore.png",
+  indore: "/images/locations/indore.webp",
 };
 
 const citiesDb: Record<string, { name: string, state: string, desc: string }> = {
