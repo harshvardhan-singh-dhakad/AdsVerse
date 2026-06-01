@@ -59,6 +59,7 @@ const schemaArray = [
     "url": "https://adsverse.in",
     "logo": "https://adsverse.in/logo.png",
     "image": "https://adsverse.in/og-image.jpg",
+    "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
     "email": "contact@adsverse.in",
@@ -78,10 +79,12 @@ const schemaArray = [
     "areaServed": [
       "Indore", "Madhya Pradesh", "India"
     ],
-    "priceRange": "₹₹",
+    "priceRange": "₹3000",
     "openingHours": "Mo-Sa 10:00-19:00",
     "sameAs": [
-      "https://www.instagram.com/adsverse.in",
+      "https://www.instagram.com/adsverse.ai",
+      "https://www.facebook.com/adsverse.in",
+      "https://x.com/Adsverse",
       "https://www.linkedin.com/company/adsverse"
     ],
     "hasOfferCatalog": {
