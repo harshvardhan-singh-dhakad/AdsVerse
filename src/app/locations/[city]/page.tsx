@@ -46,6 +46,25 @@ const citiesDb: Record<string, { name: string, state: string, desc: string }> = 
   srinagar: { name: "Srinagar", state: "Jammu & Kashmir", desc: "Showcase Srinagar's exquisite hospitality, local arts, and retail globally with premium advertising." },
   jammu: { name: "Jammu", state: "Jammu & Kashmir", desc: "Attract local buyers and build modern, mobile-friendly landing pages for Jammu service brands." },
   guwahati: { name: "Guwahati", state: "Northeast India", desc: "Connect Northeast's premium tea brands, travel agencies, and service firms with nationwide buyers." },
+  shillong: { name: "Shillong", state: "Meghalaya", desc: "Accelerate Shillong's hospitality, eco-tourism resorts, organic cafes, and educational institutions with targeted SEO and n8n automations." },
+  gangtok: { name: "Gangtok", state: "Sikkim", desc: "Position Gangtok's premium organic brands, travel agencies, and heritage hotels in front of high-value seekers nationwide." },
+  agartala: { name: "Agartala", state: "Tripura", desc: "Empower Tripura's growing retail SMBs, wholesale markets, and healthcare diagnostics with optimized local SEO and Google Search setups." },
+  aizawl: { name: "Aizawl", state: "Mizoram", desc: "Help Aizawl's stylish local handlooms, boutique cafes, and lifestyle D2C brands scale nationwide with premium Next.js e-commerce sites." },
+  dimapur: { name: "Dimapur", state: "Nagaland", desc: "Automate Nagaland's commercial trading hub wholesale orders and logistics inquiries via custom WhatsApp AI bots and n8n sync." },
+  kohima: { name: "Kohima", state: "Nagaland", desc: "Drive tourist bookings, local arts outreach, and organic product sales for Kohima heritage resorts and culture hubs." },
+  imphal: { name: "Imphal", state: "Manipur", desc: "Construct highly authoritative local search profiles, responsive web designs, and ad setups for Imphal commercial setups." },
+  coimbatore: { name: "Coimbatore", state: "Tamil Nadu", desc: "Optimize industrial machinery, B2B manufacturing, and textile pump set leads with custom n8n workflows and CRM automation." },
+  madurai: { name: "Madurai", state: "Tamil Nadu", desc: "Launch high-converting Meta Ads and localized Google Search campaigns for Madurai's extensive retail and textile bazaar chains." },
+  trichy: { name: "Trichy", state: "Tamil Nadu", desc: "Deploy AI-backed enrollment funnels, WhatsApp booking bots, and professional web designs for Trichy's premium schools and hospitals." },
+  kochi: { name: "Kochi", state: "Kerala", desc: "Scale Kochi's high-ROI tourism portals, luxury real estate developers, and international spice exporters with Meta Ads." },
+  trivandrum: { name: "Trivandrum", state: "Kerala", desc: "Position Trivandrum's technology firms, private clinics, and local consumer services on Page 1 of Google Search." },
+  kozhikode: { name: "Kozhikode", state: "Kerala", desc: "Build sub-second speed Next.js websites and automated WhatsApp enquiry workflows for Kozhikode retail and food brands." },
+  mysore: { name: "Mysore", state: "Karnataka", desc: "Attract global organic wellness seekers, yoga retreats, and heritage tour enquiries for Mysore premium operators." },
+  mangalore: { name: "Mangalore", state: "Karnataka", desc: "Streamline port shipping and export pipelines with robust n8n synchronization to spreadsheets and Vyapar accounting." },
+  visakhapatnam: { name: "Visakhapatnam", state: "Andhra Pradesh", desc: "Dominate Vizag's premium real estate builders, technology startups, and logistics companies with paid ads." },
+  vijayawada: { name: "Vijayawada", state: "Andhra Pradesh", desc: "Capture high-intent transactional local buyers and wholesale leads for Vijayawada gold and cloth retail networks." },
+  guntur: { name: "Guntur", state: "Andhra Pradesh", desc: "Automate regional agricultural trading pipelines, cotton supply chains, and local hospital lead collections." },
+  warangal: { name: "Warangal", state: "Telangana", desc: "Connect Warangal's retail showrooms, local academies, and professional services with high-ROI local SEO search rankings." },
 };
 
 const cityMeta: Record<string, { title: string; description: string; canonical: string }> = {
@@ -139,6 +158,101 @@ const cityMeta: Record<string, { title: string; description: string; canonical: 
     description: "Performance marketing, WhatsApp automation & SEO for Guwahati and Northeast India brands. AdsVerse — AI-first agency for Assam businesses.",
     canonical: "https://adsverse.in/locations/guwahati",
   },
+  shillong: {
+    title: "Digital Marketing Agency in Shillong | SEO & Tourism Ads | AdsVerse",
+    description: "AdsVerse helps Shillong hospitality, eco-tourism resorts, and schools scale nationwide. Local SEO, Meta Ads & WhatsApp automation in Meghalaya.",
+    canonical: "https://adsverse.in/locations/shillong",
+  },
+  gangtok: {
+    title: "Digital Marketing Agency in Gangtok Sikkim | Ads & Local SEO | AdsVerse",
+    description: "Top digital marketing agency in Gangtok. SEO, Meta Ads, WhatsApp AI booking bots & custom web development for Sikkim organic & travel brands.",
+    canonical: "https://adsverse.in/locations/gangtok",
+  },
+  agartala: {
+    title: "Digital Marketing Agency in Agartala | Local SEO & Paid Ads | AdsVerse",
+    description: "Scale your Agartala retail, B2B, or healthcare brand. AdsVerse provides local Google My Business SEO, Meta/Google Ads, and WhatsApp automation in Tripura.",
+    canonical: "https://adsverse.in/locations/agartala",
+  },
+  aizawl: {
+    title: "Digital Marketing Agency in Aizawl Mizoram | Web Design & SEO | AdsVerse",
+    description: "Get custom Next.js e-commerce sites and local search dominance for Aizawl boutique shops and handloom brands. AdsVerse — automation-first agency.",
+    canonical: "https://adsverse.in/locations/aizawl",
+  },
+  dimapur: {
+    title: "Digital Marketing Agency in Dimapur Nagaland | WhatsApp AI Bots | AdsVerse",
+    description: "WhatsApp AI order bots, n8n CRM integrations, and performance ads for Dimapur wholesale merchants and logistics firms. Optimize B2B sales pipelines.",
+    canonical: "https://adsverse.in/locations/dimapur",
+  },
+  kohima: {
+    title: "Digital Marketing Agency in Kohima | Travel & Organic Branding | AdsVerse",
+    description: "Drive bookings for Kohima resorts, local artisans, and organic brands. Local SEO, Google Ads, and review management tailored for Nagaland tourism.",
+    canonical: "https://adsverse.in/locations/kohima",
+  },
+  imphal: {
+    title: "Digital Marketing Agency in Imphal Manipur | Web Dev & Lead Gen | AdsVerse",
+    description: "AdsVerse provides professional web development, local search rankings, and lead gen campaigns in Imphal. Book a free digital consultation.",
+    canonical: "https://adsverse.in/locations/imphal",
+  },
+  coimbatore: {
+    title: "Digital Marketing Agency in Coimbatore | n8n & CRM Automation | AdsVerse",
+    description: "Coimbatore's premier automation-first agency. n8n workflows, WhatsApp bots, and industrial B2B lead generation for manufacturing firms in TN.",
+    canonical: "https://adsverse.in/locations/coimbatore",
+  },
+  madurai: {
+    title: "Digital Marketing Agency in Madurai | Meta Ads & Retail SEO | AdsVerse",
+    description: "Drive footfall and online orders for Madurai retail chains, textile bazaars, and jewelry brands. High-ROI Meta/Instagram ads and local search SEO.",
+    canonical: "https://adsverse.in/locations/madurai",
+  },
+  trichy: {
+    title: "Digital Marketing in Trichy | WhatsApp Booking Bots & Web Dev | AdsVerse",
+    description: "WhatsApp booking systems, Next.js web designs, and lead gen for Trichy schools, clinics, and service brands. Partner with AdsVerse.",
+    canonical: "https://adsverse.in/locations/trichy",
+  },
+  kochi: {
+    title: "Digital Marketing Agency in Kochi Kerala | Meta Ads & Tourism SEO | AdsVerse",
+    description: "Scale your Kochi real estate, resort booking, or export brand. AdsVerse delivers high-ROAS paid ads, travel SEO, and WhatsApp booking funnels.",
+    canonical: "https://adsverse.in/locations/kochi",
+  },
+  trivandrum: {
+    title: "Digital Marketing Agency in Trivandrum | Local SEO & Google Ads | AdsVerse",
+    description: "Rank #1 on Google in Trivandrum. AdsVerse provides local search optimizations, paid search PPC ads, and CRM setups for Kerala service brands.",
+    canonical: "https://adsverse.in/locations/trivandrum",
+  },
+  kozhikode: {
+    title: "Digital Marketing Agency in Kozhikode | Web Design & Automation | AdsVerse",
+    description: "Custom Next.js sites and WhatsApp enquiry automation for Kozhikode retail and food brands. Build brand authority in Calicut with AdsVerse.",
+    canonical: "https://adsverse.in/locations/kozhikode",
+  },
+  mysore: {
+    title: "Digital Marketing Agency in Mysore | Tourism & Wellness Branding | AdsVerse",
+    description: "Drive bookings for Mysore yoga retreats, heritage tours, and cafes. Organic content strategies, local SEO, and Google search ads by AdsVerse.",
+    canonical: "https://adsverse.in/locations/mysore",
+  },
+  mangalore: {
+    title: "Digital Marketing in Mangalore | Export B2B Funnels & n8n Sync | AdsVerse",
+    description: "Automate export pipelines and shipping CRM sync with n8n and Vyapar. Mangalore's automation-first digital marketing and web agency.",
+    canonical: "https://adsverse.in/locations/mangalore",
+  },
+  visakhapatnam: {
+    title: "Digital Marketing Agency in Vizag Visakhapatnam | Paid Ads & SEO | AdsVerse",
+    description: "Top-tier Next.js web design, Google Search SEO, and lead generation for Vizag real estate builders, startups, and port logistics brands.",
+    canonical: "https://adsverse.in/locations/visakhapatnam",
+  },
+  vijayawada: {
+    title: "Digital Marketing Agency in Vijayawada | Retail SEO & Meta Ads | AdsVerse",
+    description: "Attract local gold, cloth, and consumer goods buyers in Vijayawada. Local search optimizations and heavy Facebook/Instagram ads by AdsVerse.",
+    canonical: "https://adsverse.in/locations/vijayawada",
+  },
+  guntur: {
+    title: "Digital Marketing Agency in Guntur | Agri-B2B Funnels & SEO | AdsVerse",
+    description: "B2B lead generation, agriculture supply chain CRM automation, and local hospital lead setups in Guntur. Partner with automation-first AdsVerse.",
+    canonical: "https://adsverse.in/locations/guntur",
+  },
+  warangal: {
+    title: "Digital Marketing Agency in Warangal Telangana | Local Search SEO | AdsVerse",
+    description: "Rank on local Google Search in Warangal. AdsVerse delivers organic traffic, WhatsApp AI leads, and responsive web designs for local service brands.",
+    canonical: "https://adsverse.in/locations/warangal",
+  },
 };
 
 const cityIntro: Record<string, { headline: string; body: string }> = {
@@ -213,6 +327,82 @@ const cityIntro: Record<string, { headline: string; body: string }> = {
   guwahati: {
     headline: "Guwahati — Northeast India's Digital Marketing Hub",
     body: "Guwahati is Northeast India's largest commercial center, serving as the gateway to eight states. Businesses here — from retail chains to logistics companies to healthcare brands — need performance marketing that understands the Northeast market. AdsVerse delivers WhatsApp automation, local SEO, and high-ROAS ad campaigns tailored for Guwahati.",
+  },
+  shillong: {
+    headline: "Shillong — Scotland of the East, Driving Premium Tourism & Hospitality",
+    body: "Shillong is Northeast India's tourism and educational capital. Eco-resorts, organic cafes, and local handloom brands here are scaling beyond regional boundaries. AdsVerse helps Shillong hospitality and retail brands secure a dominant online presence — with local SEO that ranks for tourism-intent keywords, custom Next.js websites built for beautiful speeds, and WhatsApp booking automation."
+  },
+  gangtok: {
+    headline: "Gangtok — Gateway to Sikkim, Scaling Organic Commerce & Heritage Travel",
+    body: "Gangtok is India's organic agriculture and pristine mountain tourism capital. From organic tea and local ginger brands to boutique resorts, Gangtok's businesses compete in a premium national market. AdsVerse builds authoritative digital setups — high-converting Meta Ads, organic content strategies, and WhatsApp AI bots that respond to bookings immediately."
+  },
+  agartala: {
+    headline: "Agartala — Tripura's Commercial Hub, Ready for Digital Leap",
+    body: "Agartala is one of Northeast India's fastest-growing cities. Local retail merchants, diagnostic labs, and B2B traders here are shifting from traditional offline listings to active digital channels. AdsVerse delivers conversion-oriented local search optimizations, n8n CRM structures, and Google search PPC ads to drive local customer acquisition."
+  },
+  aizawl: {
+    headline: "Aizawl — Capital of Mizoram, Fostering Creative Digital Brands",
+    body: "Aizawl is known for high literacy, aesthetic lifestyle, and a thriving creative class. Boutique cafes, local handlooms, and lifestyle apparel startups need high-speed, stunning e-commerce landing pages that load in milliseconds. AdsVerse builds custom serverless Next.js stores and organic social media ad funnels."
+  },
+  dimapur: {
+    headline: "Dimapur — Nagaland's Commercial Gateway & B2B Trading Hub",
+    body: "Dimapur handles major distribution, logistics, and wholesale trade for Nagaland. Wholesale merchants here need automated order management and payment tracking without manual entry. AdsVerse deploys custom WhatsApp AI order bots and n8n workflows that connect active Google Sheets, payment portals, and CRM systems seamlessly."
+  },
+  kohima: {
+    headline: "Kohima — Nagaland's Scenic Capital of Culture & Heritage Stays",
+    body: "Kohima attracts global and domestic travelers seeking rich tribal heritage and natural beauty, especially around the Hornbill Festival. Most tourist planning starts online. AdsVerse builds heritage homestays, tour packages, and travel brands a dominant digital setup — review management, local search maps, and Google search ads."
+  },
+  imphal: {
+    headline: "Imphal — Manipur's Rising Capital, Connecting Local to National",
+    body: "Imphal's educational institutes, healthcare sectors, and retail commerce are expanding rapidly. Having a fast, secure, and modern digital profile is key to building local brand trust. AdsVerse delivers responsive, elegant web designs, local SEO for targeted Manipur queries, and performance ads that get results."
+  },
+  coimbatore: {
+    headline: "Coimbatore — South India's Industrial and Engineering Powerhouse",
+    body: "Coimbatore is India's leading industrial cluster for pump manufacturing, wet grinders, and textile machinery. B2B firms here need structured lead capturing, automated follow-ups, and spreadsheet synchronization to eliminate manual clerical work. AdsVerse delivers n8n pipeline setups, CRM integrations, and targeted global B2B outreach."
+  },
+  madurai: {
+    headline: "Madurai — Heritage City, Booming Modern Retail Commerce",
+    body: "Madurai is the cultural heart of Tamil Nadu with massive retail jewelry, textile showrooms, and jasmine exports. Offline footfall is huge, but digital dominance is the next frontier. AdsVerse builds robust Google My Business setups, local citation SEO, and high-frequency Meta (Facebook & Instagram) ads that capture nearby buyers."
+  },
+  trichy: {
+    headline: "Trichy — Tamil Nadu's Premier Educational and Healthcare Gateway",
+    body: "Trichy is home to elite schools, large hospital chains, and BHEL ancillaries. Inquiries must be handled instantly, especially for admissions or appointments. AdsVerse builds custom WhatsApp booking assistants, Next.js web applications, and local search SEO that positions your brand as the top authority."
+  },
+  kochi: {
+    headline: "Kochi — Kerala's High-Growth Tech, Tourism, and Export Port",
+    body: "Kochi is Kerala's commercial nerve center — home to IT startups, seaport logistics, real estate giants, and organic spice exporters. AdsVerse delivers premium digital engineering: custom Next.js websites for sub-second load speeds, high-attribution Google PPC search ads, and WhatsApp booking automation for luxury homestays."
+  },
+  trivandrum: {
+    headline: "Trivandrum — Kerala's Administrative Capital and Tech corridor",
+    body: "Trivandrum has a massive professional base centered around Technopark and leading healthcare networks. Businesses need premium digital presence to capture high-intent buyers. AdsVerse provides clean SEO strategies, professional web platforms, and Google Search campaigns that yield measurable returns."
+  },
+  kozhikode: {
+    headline: "Kozhikode — Calicut's Dynamic Culinary and Retail Commerce",
+    body: "Kozhikode is famous for retail showrooms, legendary food brands, and active export trade. To stand out, brands need extremely fast, modern e-commerce landing pages and instant customer communication. AdsVerse develops n8n automated order status sheets and WhatsApp AI bots that answer customer queries 24/7."
+  },
+  mysore: {
+    headline: "Mysore — Heritage Capital and Global Wellness Tourism Hub",
+    body: "Mysore attracts thousands of global travelers, yoga practitioners, and heritage seekers year-round. Bookings and retreat signups happen on search engines. AdsVerse builds premium wellness brands, Ashtanga yoga shalas, and heritage resorts a dominant online footprint — organic content SEO, reviews, and search marketing."
+  },
+  mangalore: {
+    headline: "Mangalore — Port City & B2B Cashew-Tile Export Capital",
+    body: "Mangalore is Karnataka's leading port city and a global exporter of cashews, tiles, and coffee. Exporters here need direct wholesale pipelines, automated leads sheet sync, and international ads. AdsVerse builds n8n automation sheets, export B2B funnels, and optimized international Google ads."
+  },
+  visakhapatnam: {
+    headline: "Visakhapatnam — Vizag's Seaport Commerce and Real Estate Boom",
+    body: "Visakhapatnam steel plants, port commerce, IT startups, and premium seaside real estate builders. Real estate builders need high-frequency lead generation and custom landing pages. AdsVerse builds premium Next.js platforms and high-converting Meta lead ads."
+  },
+  vijayawada: {
+    headline: "Vijayawada — Andhra's High-Value Gold & Textile Retail Bazaar",
+    body: "Vijayawada is the trading capital of Andhra Pradesh, housing massive gold showrooms, wholesale cloth networks, and agricultural grids. High-intent local buyers search for gold rates and boutique stores daily. AdsVerse delivers dominant local search authority and targeted performance ads on Meta."
+  },
+  guntur: {
+    headline: "Guntur — Agriculture Supply Chain and B2B Spice Trade Hub",
+    body: "Guntur houses Asia's largest chili market and extensive cotton clusters. B2B agri-exporters and local corporate hospitals need robust lead capturing pipelines and WhatsApp patient alerts. AdsVerse implements custom n8n lead sync, WhatsApp alerts, and B2B performance marketing."
+  },
+  warangal: {
+    headline: "Warangal — Telangana's Rising Education & Retail Hub",
+    body: "Warangal is the second-largest city in Telangana, undergoing rapid modernization in education, retail showrooms, and professional services. AdsVerse helps Warangal brands rank #1 locally on Google Search, automate inquiries via WhatsApp bots, and run low-cost Google Search campaigns."
   },
 };
 
