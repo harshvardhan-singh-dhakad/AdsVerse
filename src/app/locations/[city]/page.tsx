@@ -10,6 +10,21 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 
 const cityImages: Record<string, string> = {
   indore: "/images/locations/indore.webp",
+  bhopal: "/images/locations/bhopal.webp",
+  jaipur: "/images/locations/jaipur.webp",
+  lucknow: "/images/locations/lucknow.webp",
+  jabalpur: "/images/locations/jabalpur.webp",
+  gwalior: "/images/locations/gwalior.webp",
+  ujjain: "/images/locations/ujjain.webp",
+  udaipur: "/images/locations/udaipur.webp",
+  jodhpur: "/images/locations/jodhpur.webp",
+  kota: "/images/locations/kota.webp",
+  raipur: "/images/locations/raipur.webp",
+  bilaspur: "/images/locations/bilaspur.webp",
+  kanpur: "/images/locations/kanpur.webp",
+  noida: "/images/locations/noida.webp",
+  patna: "/images/locations/patna.webp",
+  srinagar: "/images/locations/srinagar.webp",
 };
 
 const citiesDb: Record<string, { name: string, state: string, desc: string }> = {
@@ -287,7 +302,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default function CityPage({ params }: PageProps) {
-  const cityInfo = citiesDb[params.city];
+  const cityKey = typeof params.city === "string" ? params.city.toLowerCase() : "";
+  const cityInfo = Object.prototype.hasOwnProperty.call(citiesDb, cityKey) ? citiesDb[cityKey] : undefined;
   
   if (!cityInfo) {
     return (
@@ -302,7 +318,9 @@ export default function CityPage({ params }: PageProps) {
 
   const { name, state, desc } = cityInfo;
   const localFaqs = getCityFAQs(name, state);
-  const cityImgSrc = cityImages[params.city.toLowerCase()] || "/images/og-adsverse-2026.png";
+  const cityImgSrc = Object.prototype.hasOwnProperty.call(cityImages, cityKey) ? cityImages[cityKey] : "/images/og-adsverse-2026.png";
+  const introHeadline = Object.prototype.hasOwnProperty.call(cityIntro, cityKey) ? cityIntro[cityKey]?.headline : undefined;
+  const introBody = Object.prototype.hasOwnProperty.call(cityIntro, cityKey) ? cityIntro[cityKey]?.body : undefined;
 
   const jsonLd = [
     {
@@ -414,11 +432,11 @@ export default function CityPage({ params }: PageProps) {
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight font-headline text-foreground leading-tight">
-              {cityIntro[params.city]?.headline || `Digital Marketing & AI Agency in ${name}`}
+              {introHeadline || `Digital Marketing & AI Agency in ${name}`}
             </h1>
 
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              {cityIntro[params.city]?.body || desc}
+              {introBody || desc}
             </p>
             
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
@@ -429,7 +447,7 @@ export default function CityPage({ params }: PageProps) {
               <Button asChild size="lg" className="bg-gradient-to-r from-orange-600 to-amber-500 text-white hover:from-orange-500 hover:to-amber-400 font-bold tracking-wide shadow-xl shadow-orange-600/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all duration-300 transform rounded-xl px-8 h-12 border-none">
                 <Link href="/contact">Schedule Free Consultation</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:bg-orange-500/5 font-semibold rounded-xl px-6 h-12">
+              <Button asChild size="lg" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:text-orange-500 hover:bg-orange-500/5 font-semibold rounded-xl px-6 h-12">
                 <Link href="/locations" className="flex items-center gap-1.5">
                   View All Locations <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -450,8 +468,19 @@ export default function CityPage({ params }: PageProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                <div className="bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 text-white text-xs font-bold tracking-wide shadow-lg">
-                  AdsVerse @ {name}
+                <div className="flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 text-white shadow-lg">
+                  <div className="relative w-5 h-5 overflow-hidden rounded-sm">
+                    <Image
+                      src="/images/adsverse-logo.png"
+                      alt="AdsVerse Logo"
+                      fill
+                      sizes="20px"
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-xs font-bold tracking-wide">
+                    AdsVerse @ {name}
+                  </span>
                 </div>
               </div>
             </div>
