@@ -2,10 +2,15 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, TrendingUp, Megaphone, Code, Bot, FileText, Users, CheckCircle, ArrowLeft, ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
+
+const cityImages: Record<string, string> = {
+  indore: "/images/locations/indore.png",
+};
 
 const citiesDb: Record<string, { name: string, state: string, desc: string }> = {
   indore: { name: "Indore", state: "Madhya Pradesh", desc: "Our main headquarters in Vijay Nagar. Dominate central India's fastest-growing tech and startup corridor." },
@@ -297,6 +302,7 @@ export default function CityPage({ params }: PageProps) {
 
   const { name, state, desc } = cityInfo;
   const localFaqs = getCityFAQs(name, state);
+  const cityImgSrc = cityImages[params.city.toLowerCase()] || "/images/og-adsverse-2026.png";
 
   const jsonLd = [
     {
@@ -395,34 +401,62 @@ export default function CityPage({ params }: PageProps) {
       </div>
 
       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 mb-16 border-border/30 hover:border-orange-500/20">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-orange-500/10 border border-orange-500/25 shadow-lg shadow-orange-500/5">
-              <MapPin className="w-12 h-12 text-orange-500" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 md:p-10">
+          {/* Left Column - Content */}
+          <div className="lg:col-span-7 text-left space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-orange-500/10 border border-orange-500/25 shadow-md shadow-orange-500/5">
+                <MapPin className="w-5 h-5 text-orange-500" />
+              </div>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/10 text-orange-500 border border-orange-500/20 shadow-sm shadow-orange-500/5">
+                {state}, India
+              </span>
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight font-headline text-foreground leading-tight">
+              {cityIntro[params.city]?.headline || `Digital Marketing & AI Agency in ${name}`}
+            </h1>
+
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              {cityIntro[params.city]?.body || desc}
+            </p>
+            
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              AdsVerse brings localized digital growth and custom business automation tools to Tier-2 hubs in {state}. From boosting local search visibility with premium SEO to building automated sales pipelines using <Link href="/services/whatsapp-bot" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">WhatsApp AI bots</Link> and <Link href="/services/automation-tools" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">n8n CRM automation</Link>, we serve local brands with premium modern engineering. We run high-converting <Link href="/services/paid-ads" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">Google & Meta Ads</Link> campaigns that speak the language of local buyers.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <Button asChild size="lg" className="bg-gradient-to-r from-orange-600 to-amber-500 text-white hover:from-orange-500 hover:to-amber-400 font-bold tracking-wide shadow-xl shadow-orange-600/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all duration-300 transform rounded-xl px-8 h-12 border-none">
+                <Link href="/contact">Schedule Free Consultation</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:bg-orange-500/5 font-semibold rounded-xl px-6 h-12">
+                <Link href="/locations" className="flex items-center gap-1.5">
+                  View All Locations <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">
-            {cityIntro[params.city]?.headline || `Digital Marketing & AI Agency in ${name}`}
-          </h1>
-          <div className="flex justify-center">
-            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/10 text-orange-500 border border-orange-500/20 mt-4 shadow-sm shadow-orange-500/5">
-              {state}, India
-            </span>
+
+          {/* Right Column - Branded Local Asset Showcase */}
+          <div className="lg:col-span-5 flex justify-center w-full">
+            <div className="relative group w-full aspect-[4/3] max-w-md rounded-2xl overflow-hidden border border-border/40 shadow-2xl hover:border-orange-500/30 transition-all duration-500">
+              <Image
+                src={cityImgSrc}
+                alt={`AdsVerse Digital Marketing in ${name}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent pointer-events-none" />
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                <div className="bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 text-white text-xs font-bold tracking-wide shadow-lg">
+                  AdsVerse @ {name}
+                </div>
+              </div>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent className="px-6 md:px-12 py-8 text-center space-y-6">
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            {cityIntro[params.city]?.body || desc}
-          </p>
-          <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            AdsVerse brings localized digital growth and custom business automation tools to Tier-2 hubs in {state}. From boosting local search visibility with premium SEO to building automated sales pipelines using <Link href="/services/whatsapp-bot" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">WhatsApp AI bots</Link> and <Link href="/services/automation-tools" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">n8n CRM automation</Link>, we serve local brands with premium modern engineering. We run high-converting <Link href="/services/paid-ads" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">Google & Meta Ads</Link> campaigns that speak the language of local buyers. <Link href="/locations" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold inline-flex items-center gap-1 ml-1">View all locations <ArrowRight className="w-3 h-3" /></Link>
-          </p>
-          <div className="pt-4">
-            <Button asChild size="lg" className="bg-gradient-to-r from-orange-600 to-amber-500 text-white hover:from-orange-500 hover:to-amber-400 font-bold tracking-wide shadow-xl shadow-orange-600/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all duration-300 transform rounded-xl px-8 h-12 border-none">
-              <Link href="/contact">Schedule Free Consultation</Link>
-            </Button>
-          </div>
-        </CardContent>
+        </div>
       </Card>
 
       {/* Services Grid Section */}
