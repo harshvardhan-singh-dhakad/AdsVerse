@@ -36,7 +36,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "lucknow", "kanpur", "noida",
     "patna",
     "srinagar", "jammu",
-    "guwahati"
+    "guwahati", "shillong", "gangtok", "agartala", "aizawl", "dimapur", "kohima", "imphal",
+    "coimbatore", "madurai", "trichy", "kochi", "trivandrum", "kozhikode", "mysore", "mangalore",
+    "visakhapatnam", "vijayawada", "guntur", "warangal"
   ];
 
   const cityPages = cities.map(city => ({

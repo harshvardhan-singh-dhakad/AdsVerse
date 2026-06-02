@@ -325,20 +325,6 @@ const SEOAuditPage = () => {
   return (
     <div className="min-h-screen font-sans text-foreground">
       
-      <nav className="bg-card border-b border-border sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/tools/seo-audit" className="flex items-center gap-2 text-primary">
-            <Zap className="w-7 h-7" />
-            <span className="text-xl font-extrabold tracking-tight">SEO Audit Tool</span>
-          </Link>
-          <div className="flex gap-4">
-             {report && (
-               <Button onClick={() => { setReport(null); setUrl(''); }} variant="ghost" className="text-sm font-medium text-muted-foreground hover:text-primary">New Audit</Button>
-             )}
-          </div>
-        </div>
-      </nav>
-
       {!report && (
         <div className="pt-20 pb-32 text-center px-4">
           <h1 className="text-3xl md:text-5xl font-extrabold text-foreground mb-4">
@@ -398,7 +384,10 @@ const SEOAuditPage = () => {
         <div className="max-w-6xl mx-auto px-4 py-8">
           
           <div className="bg-card rounded-xl shadow-sm border border-border p-6 md:p-8 mb-8">
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
+            <div className="flex flex-col lg:flex-row gap-8 items-center relative">
+              <div className="absolute top-0 right-0 mt-2 mr-2">
+                 <Button onClick={() => { setReport(null); setUrl(''); }} variant="outline" size="sm">New Audit</Button>
+              </div>
               <div className="flex flex-col items-center text-center lg:w-1/3">
                  <h2 className="text-xl font-bold text-foreground mb-2 break-all">Report for: {report.finalUrl}</h2>
                  {report.redirected && <Badge variant="secondary" className='mb-4'>Redirected from {report.url}</Badge>}

@@ -32,7 +32,7 @@ const jsonLd = {
       "@type": "ContactPoint",
       "telephone": "+91-9685123339",
       "contactType": "Customer Service",
-      "email": "hello@adsverse.in",
+      "email": "contact@adsverse.in",
       "areaServed": "IN",
       "availableLanguage": "en"
     },
@@ -94,7 +94,7 @@ export default function ContactPage() {
             <div className="space-y-4 text-muted-foreground">
               <div className="flex items-center gap-4">
                 <Mail className="w-6 h-6 text-primary" />
-                <span>hello@adsverse.in</span>
+                <span>contact@adsverse.in</span>
               </div>
               <div className="flex items-center gap-4">
                 <Phone className="w-6 h-6 text-primary" />

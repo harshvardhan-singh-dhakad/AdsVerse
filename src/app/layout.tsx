@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans } from "next/font/google";
+import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
@@ -36,6 +36,13 @@ const instrumentSans = Instrument_Sans({
   display: 'swap',
 });
 
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  weight: ['900'],
+  display: 'swap',
+});
+
 const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
@@ -52,6 +59,7 @@ const schemaArray = [
     "url": "https://adsverse.in",
     "logo": "https://adsverse.in/logo.png",
     "image": "https://adsverse.in/og-image.jpg",
+    "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
     "email": "contact@adsverse.in",
@@ -71,10 +79,12 @@ const schemaArray = [
     "areaServed": [
       "Indore", "Madhya Pradesh", "India"
     ],
-    "priceRange": "₹₹",
+    "priceRange": "₹3000",
     "openingHours": "Mo-Sa 10:00-19:00",
     "sameAs": [
-      "https://www.instagram.com/adsverse.in",
+      "https://www.instagram.com/adsverse.ai",
+      "https://www.facebook.com/adsverse.in",
+      "https://x.com/Adsverse",
       "https://www.linkedin.com/company/adsverse"
     ],
     "hasOfferCatalog": {
@@ -196,7 +206,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <script
@@ -212,7 +222,8 @@ export default function RootLayout({
         inter.variable, 
         playfairDisplay.variable,
         plusJakartaSans.variable,
-        instrumentSans.variable
+        instrumentSans.variable,
+        outfit.variable
       )}>
         <noscript>
           <iframe
@@ -238,9 +249,9 @@ export default function RootLayout({
             </a>
             <BackgroundEffects />
             <Header navLinks={navLinks} />
-            <div id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
+            <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
-            </div>
+            </main>
             <Footer />
             <FloatingActionButton />
             <Toaster />

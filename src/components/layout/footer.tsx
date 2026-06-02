@@ -2,22 +2,16 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { Github, Linkedin, Send } from "lucide-react";
+import AdsVerseLogo from "@/components/AdsVerseLogo";
+import { Github, Linkedin, Send, MapPin, Phone, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 
 export function Footer() {
   const pathname = usePathname();
-  
-  const isAdminPath = pathname?.includes('/admin');
-  if (isAdminPath) return null;
-
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,10 +19,8 @@ export function Footer() {
     setMounted(true);
   }, []);
 
-  const darkLogo = "/images/logo-white.webp";
-  const lightLogo = "/images/logo-black.webp";
-  
-  const currentLogo = mounted && (theme === 'light' || resolvedTheme === 'light') ? lightLogo : darkLogo;
+  const isAdminPath = pathname?.includes('/admin');
+  if (isAdminPath) return null;
 
   return (
     <footer className="bg-card/50 border-t border-border/40">
@@ -36,18 +28,27 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000" />
-                <h2 className="relative text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                  AdsVerse
-                </h2>
-              </div>
+              <AdsVerseLogo size="text-2xl" />
             </Link>
-            <p className="max-w-xs text-sm text-muted-foreground leading-relaxed">
-              We are a forward-thinking digital marketing agency specializing in AI-powered growth strategies.
-              <br />
-              <span className="text-primary font-semibold">hello@adsverse.in</span>
-            </p>
+            <div className="max-w-xs text-sm text-muted-foreground space-y-3">
+              <p className="leading-relaxed">
+                We are a forward-thinking digital marketing agency specializing in AI-powered growth strategies.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-border/20">
+                <p className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span>Vijay Nagar, Indore, Madhya Pradesh - 452010</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-primary shrink-0" />
+                  <a href="tel:+919685123339" className="hover:text-primary transition-colors">+91 96851 23339</a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-primary shrink-0" />
+                  <a href="mailto:contact@adsverse.in" className="hover:text-primary transition-colors font-semibold">contact@adsverse.in</a>
+                </p>
+              </div>
+            </div>
             <div className="flex space-x-4">
               <Link href="https://www.instagram.com/adsverse.ai" aria-label="Instagram" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">

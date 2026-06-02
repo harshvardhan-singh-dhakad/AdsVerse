@@ -131,43 +131,6 @@ const faqs = [
   }
 ];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "AdsVerse",
-  "image": "https://adsverse.in/images/logo-white.webp",
-  "@id": "https://adsverse.in/#localbusiness",
-  "url": "https://adsverse.in",
-  "telephone": "+91-9685123339",
-  "email": "hello@adsverse.in",
-  "priceRange": "₹3000",
-  "description": "AI-first digital marketing and automation agency serving Indore SMBs with SEO, Google Ads, Meta Ads, and WhatsApp automation.",
-  "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Vijay Nagar",
-    "addressLocality": "Indore",
-    "addressRegion": "Madhya Pradesh",
-    "postalCode": "452010",
-    "addressCountry": "IN"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 22.7533,
-    "longitude": 75.8937
-  },
-  "areaServed": {
-    "@type": "City",
-    "name": "Indore"
-  },
-  "openingHours": "Mo-Sa 9:00-19:30",
-  "sameAs": [
-    "https://www.instagram.com/adsverse.ai",
-    "https://www.facebook.com/adsverse.in",
-    "https://x.com/Adsverse",
-    "https://www.linkedin.com/company/adsverse"
-  ]
-};
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -220,18 +183,12 @@ export default function HomePage() {
   return (
     <>
       <Script
-        id="home-localbusiness-schema"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Script
         id="home-faq-schema"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <main>
+      <div className="w-full">
         {/* Hero Section */}
         <section className="py-24 sm:py-32">
           <div className="container mx-auto px-4 text-center">
@@ -520,7 +477,7 @@ export default function HomePage() {
           </div>
         </section>
 
-      </main>
+      </div>
     </>
   );
 }
