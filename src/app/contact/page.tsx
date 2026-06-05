@@ -72,8 +72,8 @@ export default function ContactPage() {
     />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">Get in Touch</h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-white">Get in <span className="text-brand-orange">Touch</span></h1>
+        <p className="mt-4 max-w-3xl mx-auto text-lg text-slate-300">
           Have a project in mind or just want to say hello? We'd love to hear from you.
         </p>
       </section>
@@ -91,7 +91,7 @@ export default function ContactPage() {
         <div className="space-y-8">
           <div>
             <h3 className="text-2xl font-bold mb-4 font-headline">Contact Information</h3>
-            <div className="space-y-4 text-muted-foreground">
+            <div className="space-y-4 text-slate-300">
               <div className="flex items-center gap-4">
                 <Mail className="w-6 h-6 text-primary" />
                 <span>contact@adsverse.in</span>
@@ -108,7 +108,7 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold mb-4 font-headline">Follow Us</h3>
+            <h3 className="text-2xl font-bold mb-4 font-headline text-violet-400">Follow Us</h3>
               <Button asChild variant="outline" size="icon">
                 <Link href="https://www.instagram.com/adsverse.ai" aria-label="Instagram" target="_blank" rel="noopener noreferrer nofollow">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-muted-foreground hover:text-primary">
@@ -140,7 +140,7 @@ export default function ContactPage() {
           </div>
           
           <div>
-            <h3 className="text-2xl font-bold mb-4 font-headline">Our Location</h3>
+            <h3 className="text-2xl font-bold mb-4 font-headline text-brand-orange">Our Location</h3>
             <div className="aspect-video rounded-lg overflow-hidden border border-border">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!m12!m3!1d3679.982601291194!2d75.8919195154341!3d22.7289196328963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd40c2656961%3A0x82f2c1c999d36513!2sVijay%20Nagar%2C%20Indore%2C%20Madhya%20Pradesh%20452010%2C%20India!5e0!3m2!1sen!2sus!4v1683838383838!5m2!1sen!2sus"

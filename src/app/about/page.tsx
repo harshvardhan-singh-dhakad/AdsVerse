@@ -21,12 +21,12 @@ const teamMembers = [
 ];
 
 const timelineEvents = [
-  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-yellow-400 text-black" },
-  { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings.", color: "bg-blue-500" },
-  { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-green-500" },
-  { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-purple-500" },
-  { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals.", color: "bg-orange-500" },
-  { year: "2026", title: "Innovation Leader", description: "Setting new standards in AI-driven marketing and automation, becoming the most trusted name in digital transformation.", color: "bg-cyan-500" },
+  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-brand-orange text-black" },
+  { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings.", color: "bg-violet-600 text-white" },
+  { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-brand-orange text-black" },
+  { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-violet-600 text-white" },
+  { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals.", color: "bg-brand-orange text-black" },
+  { year: "2026", title: "Innovation Leader", description: "Setting new standards in AI-driven marketing and automation, becoming the most trusted name in digital transformation.", color: "bg-violet-600 text-white" },
 ];
 
 const jsonLd = {
@@ -75,22 +75,22 @@ export default function AboutPage() {
     />
     <div className="container mx-auto py-16 px-4">
       <section className="text-center mb-24">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-primary">About AdsVerse</h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-headline text-white">About <span className="text-brand-orange">AdsVerse</span></h1>
+        <p className="mt-4 max-w-3xl mx-auto text-lg text-slate-300">
           We are a team of passionate marketers, strategists, and creators dedicated to helping your brand thrive in the digital world.
         </p>
       </section>
 
       <section className="grid md:grid-cols-2 gap-16 items-center mb-24">
         <div>
-          <h2 className="text-3xl font-bold mb-4 text-primary font-headline">Our Mission</h2>
-          <p className="text-muted-foreground text-lg">
+          <h2 className="text-3xl font-bold mb-4 text-brand-orange font-headline">Our Mission</h2>
+          <p className="text-slate-300 text-lg">
             To empower businesses with data-driven, creative digital marketing strategies that foster growth, build lasting connections with audiences, and deliver exceptional return on investment.
           </p>
         </div>
         <div className="md:text-right">
-          <h2 className="text-3xl font-bold mb-4 text-accent font-headline">Our Vision</h2>
-          <p className="text-muted-foreground text-lg">
+          <h2 className="text-3xl font-bold mb-4 text-violet-400 font-headline">Our Vision</h2>
+          <p className="text-slate-300 text-lg">
             To be the leading digital marketing agency known for innovation, transparency, and a relentless commitment to our clients' success in an ever-evolving digital landscape.
           </p>
         </div>
@@ -111,9 +111,9 @@ export default function AboutPage() {
               />
             </div>
             <div className="md:col-span-2 p-8 md:p-12">
-              <h2 className="text-3xl font-bold font-headline text-primary mb-2">About Me</h2>
-              <p className="text-xl font-semibold text-accent mb-4">I'm Deepak Dhakad – a Digital Marketing Expert who turns ideas into impactful online experiences.</p>
-              <div className="space-y-4 text-muted-foreground">
+              <h2 className="text-3xl font-bold font-headline text-brand-orange mb-2">About Me</h2>
+              <p className="text-xl font-semibold text-violet-400 mb-4">I'm Deepak Dhakad – a Digital Marketing Expert who turns ideas into impactful online experiences.</p>
+              <div className="space-y-4 text-slate-300">
                 <p>I specialize in helping businesses grow through strategic digital marketing solutions. From SEO and Social Media Marketing to Paid Advertising, Website & App Development, and cutting-edge AI-powered solutions – I bring a complete package of skills to elevate your brand in the digital world.</p>
                 <p>With deep expertise across every aspect of digital marketing, I don't just create campaigns; I build strategies that drive real results. Whether you're looking to increase your online visibility, engage your audience, or boost conversions, I craft customized solutions tailored to your unique business goals.</p>
                 <p>My approach is simple: understand your vision, leverage the right technologies, and deliver measurable growth. I stay ahead of industry trends, embrace innovation, and focus on what matters most – your success</p>
@@ -142,7 +142,7 @@ export default function AboutPage() {
       </section> */}
 
       <section>
-        <h2 className="text-4xl font-bold text-center mb-16 font-headline text-primary">Our Journey</h2>
+        <h2 className="text-4xl font-bold text-center mb-16 font-headline text-white">Our <span className="text-brand-orange">Journey</span></h2>
         <div className="relative">
           <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2" aria-hidden="true"></div>
           <div className="space-y-16">

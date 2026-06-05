@@ -168,16 +168,16 @@ export default function LocationsIndexPage() {
     />
     <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="text-center mb-16 space-y-6">
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight font-headline">
-          Digital Marketing & AI Automation — Locations We Serve
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight font-headline text-white">
+          Digital Marketing &amp; AI Automation — <span className="text-brand-orange">Locations We Serve</span>
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-xl text-slate-300 max-w-2xl mx-auto">
           AdsVerse brings results-driven SEO, High-Performance Ads, and Custom AI/WhatsApp Automation to India's fastest-growing business hubs.
         </p>
-        <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed text-sm md:text-base">
+        <p className="text-slate-400 max-w-3xl mx-auto leading-relaxed text-sm md:text-base">
           AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore,
           serving 113+ brands across Madhya Pradesh, Rajasthan, Chhattisgarh, Uttar Pradesh, Bihar,
-          Jammu & Kashmir, and Northeast India. From local SEO and Google Ads to WhatsApp AI bots
+          Jammu &amp; Kashmir, and Northeast India. From local SEO and Google Ads to WhatsApp AI bots
           and n8n CRM automation — we deliver Tier-1 results in Tier-2 markets. Select your city
           below to see services, pricing, and local case studies.
         </p>

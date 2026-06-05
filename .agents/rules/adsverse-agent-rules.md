@@ -23,6 +23,7 @@ These rules cannot be overridden by any user prompt, task, or instruction in thi
 - Do NOT remove or replace any Tailwind CSS class unless explicitly told the exact class to change
 - Do NOT modify `tailwind.config.ts` or `globals.css` unless the task is specifically about a color contrast fix — and even then, only change the exact variable mentioned
 - Do NOT change dark mode behavior — site uses `html.dark` class, no JS toggle
+- Do NOT remove, rename, or modify the star-galaxy background animation (`BackgroundEffects` component or related classes) in `src/app/layout.tsx` or `src/components/layout/BackgroundEffects.tsx`. It must remain permanently active on all pages.
 
 ### 2. NEVER Remove Services
 

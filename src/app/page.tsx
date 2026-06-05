@@ -1,20 +1,13 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, TrendingUp, Megaphone, Users, FileText, Code, Bot, Search } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Metadata } from "next";
 import Script from "next/script";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import dynamic from 'next/dynamic';
 
 const AnimatedCounter = dynamic(() => import('@/components/pages/animated-counter').then(mod => mod.AnimatedCounter), { ssr: false });
-const ShareButtons = dynamic(() => import('@/components/layout/share-buttons').then(mod => mod.ShareButtons), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,84 +19,23 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const serviceIcons: { [key: string]: React.ReactNode } = {
-  TrendingUp: <TrendingUp className="w-10 h-10 text-accent" />,
-  Megaphone: <Megaphone className="w-10 h-10 text-accent" />,
-  Users: <Users className="w-10 h-10 text-accent" />,
-  FileText: <FileText className="w-10 h-10 text-accent" />,
-  Code: <Code className="w-10 h-10 text-accent" />,
-  Bot: <Bot className="w-10 h-10 text-accent" />,
-  Search: <Search className="w-10 h-10 text-accent" />,
-};
-
-const coreServices = [
-  {
-    id: 'seo',
-    name: 'SEO Optimization',
-    description: 'Rank higher on search engines and attract organic traffic with our proven SEO strategies.',
-    iconName: 'TrendingUp',
-    href: '/services/seo-optimization'
-  },
-  {
-    id: 'paid-ads',
-    name: 'Paid Ads',
-    description: 'Maximize your ROI with targeted ad campaigns on Google and Meta platforms.',
-    iconName: 'Megaphone',
-    href: '/services/paid-ads'
-  },
-  {
-    id: 'web-dev',
-    name: 'Web Development',
-    description: 'Get a beautiful, high-performing website that converts visitors into customers.',
-    iconName: 'Code',
-    href: '/services/web-design-development'
-  },
-  {
-    id: 'automation',
-    name: 'Automation & AI',
-    description: 'Streamline your business processes with custom bots and AI-powered solutions.',
-    iconName: 'Bot',
-    href: '/services/automation-tools'
-  },
-  {
-    id: 'content',
-    name: 'Content Marketing',
-    description: 'Engage your audience and build authority with valuable, SEO-optimized content.',
-    iconName: 'FileText',
-    href: '/services/content-marketing'
-  },
-  {
-    id: 'smm',
-    name: 'Social Media',
-    description: 'Build and nurture your online community through strategic social media management.',
-    iconName: 'Users',
-    href: '/services/social-media-management'
-  }
-];
-
 const testimonials = [
   {
     name: "Rajesh Agrawal",
     role: "RK Traders, Indore",
     text: "AdsVerse reduced our Google Ads cost by 40% and doubled our leads within three months. Deepak's approach is completely practical — focused on real outcomes, not theory.",
-    avatar: "https://picsum.photos/seed/ra/100/100",
-    hint: "RA",
     initials: "RA"
   },
   {
     name: "Prerna Joshi",
     role: "Bloom Beauty Studio, Vijay Nagar",
     text: "The WhatsApp bot now handles 70% of our booking queries automatically. Our staff saves hours every week and our customers get instant responses. Highly recommended for any service business.",
-    avatar: "https://picsum.photos/seed/pj/100/100",
-    hint: "PJ",
     initials: "PJ"
   },
   {
     name: "Sandeep Malviya",
     role: "TechBridge Solutions, Indore",
     text: "After AdsVerse's SEO work, our 'CA firm Indore' keyword reached Page 1. Their content strategy is genuinely different — the AI-first approach actually delivers results.",
-    avatar: "https://picsum.photos/seed/sm/100/100",
-    hint: "SM",
     initials: "SM"
   },
 ];
@@ -131,53 +63,363 @@ const faqs = [
   }
 ];
 
+const coreServices = [
+  {
+    title: "Google & Meta Ads",
+    description: "Maximize your ROI with targeted ad campaigns. Our PPC and Meta Ads strategies are built on data, not guesswork.",
+    color: "brand-orange",
+    icon: "ads_click",
+    bullets: ["Search & Display", "Retargeting Funnels"],
+    href: "/services/paid-ads"
+  },
+  {
+    title: "WhatsApp Automation",
+    description: "Streamline your business processes with custom bots and AI-powered solutions that handle customer queries 24/7.",
+    color: "primary",
+    icon: "forum",
+    bullets: ["AI Chatbots", "Broadcast Engine"],
+    href: "/services/whatsapp-bot"
+  },
+  {
+    title: "Custom AI Agents",
+    description: "Streamline your business processes with custom bots and fine-tuned Gemini and GPT models built for your specific data.",
+    color: "brand-orange",
+    icon: "memory",
+    bullets: ["Knowledge Base", "LLM Workflows"],
+    href: "/services/automation-tools"
+  },
+  {
+    title: "Sales Funnels",
+    description: "High-converting landing pages and automated sales funnels integrated with your CRM to reduce Cost Per Acquisition.",
+    color: "primary",
+    icon: "conversion_path",
+    bullets: ["CRO Focused", "CRM Integration"],
+    href: "/services/lead-generation"
+  },
+  {
+    title: "SEO Optimization",
+    description: "Rank higher on search engines and attract organic traffic. We focus on Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO).",
+    color: "brand-orange",
+    icon: "search_insights",
+    bullets: ["AEO Strategy", "GEO Ranking"],
+    href: "/services/seo-optimization"
+  },
+  {
+    title: "Web Development",
+    description: "Get a beautiful, high-performing website that converts visitors into customers. Built with modern stacks for maximum speed and SEO.",
+    color: "primary",
+    icon: "code",
+    bullets: ["Modern Stacks", "Speed Optimized"],
+    href: "/services/web-design-development"
+  },
+  {
+    title: "Content Marketing",
+    description: "Engage your audience and build authority with valuable, SEO-optimized content that drives organic growth.",
+    color: "brand-orange",
+    icon: "edit_note",
+    bullets: ["Authority Building", "Audience Engagement"],
+    href: "/services/content-marketing"
+  },
+  {
+    title: "Social Media Management",
+    description: "Build and nurture your online community through strategic social media management and data-backed engagement.",
+    color: "primary",
+    icon: "share_reviews",
+    bullets: ["Community Growth", "Data-Backed Strategy"],
+    href: "/services/social-media-management"
+  }
+];
 
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is GEO (Generative Engine Optimization) and why does it matter in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "GEO is the practice of structuring content so that AI systems — Google AI Overviews, ChatGPT, Perplexity — cite your brand in their generated answers. In 2026, question-based queries trigger Google AI Overviews 99.2% of the time. If your business isn't being cited in those AI answers, you're invisible to a massive share of searchers who never scroll past the AI response. GEO builds on SEO — it doesn't replace it — but it requires a different content structure: self-contained answers, entity-rich language, and verified data."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is a WhatsApp AI chatbot and how does it work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A WhatsApp AI chatbot connects the WhatsApp Business API to a large language model, enabling real-time conversational responses without a human agent. When a user sends a message, the system reads the conversation history, passes it to Gemini or GPT with a business-specific system prompt, generates a contextual reply, and sends it back — typically within 2 seconds. The bot can qualify leads, answer product questions, capture contact details, schedule callbacks, and escalate complex queries to a human agent."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is n8n workflow automation and how does it help a business?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "n8n is an open-source workflow automation platform that connects apps, APIs, and AI models without custom coding for every integration. In a marketing context, n8n can automatically pull a new lead from a Google Form, send a WhatsApp message, add them to a CRM like HubSpot or Notion, assign a sales rep, and send a follow-up after 24 hours — all triggered by a single event, running 24/7. Compared to Zapier, n8n is self-hostable and significantly cheaper at scale for Indian businesses."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which digital marketing agency in Indore specializes in AI automation?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AdsVerse, based in Vijay Nagar, Indore, is an AI-first digital marketing agency focused exclusively on automation-led marketing. Unlike traditional Indore agencies that offer generic SEO and social media packages, AdsVerse specializes in n8n workflow automation, WhatsApp AI bots, Gemini API integrations, CRM automation, and GEO (Generative Engine Optimization). The agency works with Indian SMBs who want marketing systems that run without constant manual management."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does AI marketing automation cost for an Indian business?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A basic WhatsApp AI bot starts around ₹8,000–15,000 for setup plus ₹2,000–4,000/month for maintenance. Full n8n workflow automation with CRM integration typically ranges from ₹20,000–50,000 one-time setup. For a complete AI marketing system — WhatsApp bot + CRM automation + GEO content + Meta Ads management — expect ₹15,000–35,000/month as a retainer. All pricing is transparent and scoped before any contract."
-      }
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
     }
-  ]
+  }))
 };
+
+const orbitStyles = `
+  .hero-vibrant-bg {
+      position: absolute;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 160%;
+      background: 
+          radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.25) 0%, transparent 40%),
+          radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 50%);
+      z-index: -1;
+      filter: blur(100px);
+      pointer-events: none;
+  }
+
+  .orbital-container {
+      perspective: 1200px;
+  }
+
+  .orbit-outer {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      border: 1px dashed rgba(168, 85, 247, 0.2);
+      border-radius: 50%;
+      animation: rotate-cw 120s linear infinite;
+  }
+
+  .orbit-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 380px;
+      height: 380px;
+      border: 1px dashed rgba(139, 92, 246, 0.3);
+      border-radius: 50%;
+      animation: rotate-ccw 90s linear infinite;
+  }
+
+  .node {
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      background: rgba(12, 15, 24, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 15px rgba(168, 85, 247, 0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+  }
+
+  .node:hover {
+      border-color: rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.3);
+      transform: scale(1.15);
+      z-index: 20;
+  }
+
+  .node svg, .node img, .orbit-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+  }
+
+  .node-outer {
+      animation: counter-rotate-cw 120s linear infinite;
+  }
+
+  .node-inner {
+      animation: counter-rotate-ccw 90s linear infinite;
+  }
+
+  @keyframes rotate-cw {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+  }
+
+  @keyframes counter-rotate-cw {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+  }
+
+  @keyframes rotate-ccw {
+      from { transform: translate(-50%, -50%) rotate(360deg); }
+      to { transform: translate(-50%, -50%) rotate(0deg); }
+  }
+
+  @keyframes counter-rotate-ccw {
+      from { transform: rotate(-360deg); }
+      to { transform: rotate(0deg); }
+  }
+
+  .glass-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      transition: all 0.4s ease;
+  }
+
+  .glass-card:hover {
+      border-color: rgba(168, 85, 247, 0.4);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+      transform: translateY(-4px);
+  }
+
+  .purple-glow {
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
+  }
+
+  .orange-glow {
+      filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.7));
+  }
+
+  .bg-nebula {
+      background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+  }
+
+  .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  
+  .gradient-text {
+      background: linear-gradient(to right, #a855f7, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+
+  /* Color Overrides for purple (#8b5cf6) and orange (#f97316) */
+  .text-primary {
+      color: #8b5cf6 !important;
+  }
+  .bg-primary {
+      background-color: #8b5cf6 !important;
+  }
+  .bg-primary\/10 {
+      background-color: rgba(139, 92, 246, 0.1) !important;
+  }
+  .bg-primary\/20 {
+      background-color: rgba(139, 92, 246, 0.2) !important;
+  }
+  .border-primary {
+      border-color: #8b5cf6 !important;
+  }
+  .border-t-primary {
+      border-top-color: #8b5cf6 !important;
+  }
+  .hover\:bg-primary-fixed-dim:hover {
+      background-color: #a855f7 !important;
+  }
+  .shadow-\[0_0_20px_rgba\(139\,92\,246\,0\.3\)\] {
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3) !important;
+  }
+  .hover\:shadow-\[0_0_30px_rgba\(168\,85\,247\,0\.5\)\]:hover {
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5) !important;
+  }
+  .shadow-\[0_0_25px_rgba\(139\,92\,246\,0\.4\)\] {
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4) !important;
+  }
+  .hover\:shadow-\[0_0_35px_rgba\(168\,85\,247\,0\.6\)\]:hover {
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.6) !important;
+  }
+
+  .text-brand-orange {
+      color: #f97316 !important;
+  }
+  .bg-brand-orange {
+      background-color: #f97316 !important;
+  }
+  .bg-brand-orange\/10 {
+      background-color: rgba(249, 115, 22, 0.1) !important;
+  }
+  .bg-brand-orange\/20 {
+      background-color: rgba(249, 115, 22, 0.2) !important;
+  }
+  .border-brand-orange {
+      border-color: #f97316 !important;
+  }
+  .border-t-brand-orange {
+      border-top-color: #f97316 !important;
+  }
+  .hover\:bg-orange-600:hover {
+      background-color: #ea580c !important;
+  }
+  .shadow-\[0_0_30px_rgba\(249\,115\,22\,0\.4\)\] {
+      box-shadow: 0 0 30px rgba(249, 115, 22, 0.4) !important;
+  }
+  .hover\:shadow-\[0_0_40px_rgba\(249\,115\,22\,0\.6\)\]:hover {
+      box-shadow: 0 0 40px rgba(249, 115, 22, 0.6) !important;
+  }
+  .hover\:text-brand-orange:hover {
+      color: #f97316 !important;
+  }
+
+  /* Responsive Mobile Guidelines */
+  @media (max-width: 1024px) {
+      .orbit-outer {
+          width: 450px;
+          height: 450px;
+      }
+      .orbit-inner {
+          width: 280px;
+          height: 280px;
+      }
+      .orbital-container {
+          height: 500px !important;
+      }
+      .orbital-container .glass-card.absolute {
+          width: 180px !important;
+          height: 180px !important;
+      }
+  }
+
+  @media (max-width: 768px) {
+      .orbit-outer {
+          width: 310px;
+          height: 310px;
+      }
+      .orbit-inner {
+          display: none !important;
+      }
+      .node {
+          width: 48px;
+          height: 48px;
+      }
+      .node svg, .node img, .orbit-icon {
+          width: 24px !important;
+          height: 24px !important;
+      }
+      .node span {
+          font-size: 11px !important;
+      }
+      .orbital-container {
+          height: 380px !important;
+      }
+      .orbital-container .glass-card.absolute {
+          width: 130px !important;
+          height: 130px !important;
+          padding-left: 0.5rem !important;
+          padding-right: 0.5rem !important;
+      }
+      .orbital-container .glass-card.absolute span {
+          font-size: 14px !important;
+      }
+      .orbital-container .glass-card.absolute div {
+          margin-top: 4px !important;
+      }
+  }
+
+  @media (max-width: 400px) {
+      .orbit-outer {
+          width: 260px;
+          height: 260px;
+      }
+      .node {
+          width: 38px;
+          height: 38px;
+      }
+      .node svg, .node img, .orbit-icon {
+          width: 18px !important;
+          height: 18px !important;
+      }
+      .node span {
+          font-size: 9px !important;
+      }
+      .orbital-container {
+          height: 320px !important;
+      }
+  }
+`;
 
 export default function HomePage() {
   return (
@@ -188,296 +430,350 @@ export default function HomePage() {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="w-full">
+      <style dangerouslySetInnerHTML={{ __html: orbitStyles }} />
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+      <main className="pt-16 md:pt-24 relative overflow-hidden">
+        {/* Hero Background Effect */}
+        <div className="hero-vibrant-bg"></div>
+
         {/* Hero Section */}
-        <section className="py-24 sm:py-32">
-          <div className="container mx-auto px-4 text-center">
-            <h1 id="hero-heading" className="text-6xl md:text-8xl font-extrabold tracking-tighter font-headline mb-6 text-balance">
-              Digital Marketing <span className="text-primary italic">Agency</span> in Indore
-            </h1>
-            <p className="mt-4 text-2xl sm:text-3xl font-bold text-accent font-headline">
-              Automate. Elevate. Dominate.
-            </p>
-            <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground whitespace-pre-line">
-              AdsVerse: The Future of AI-Powered Digital Marketing & Automation in Indore is here.
-              From automated lead generation to predictive SEO, we drive 10x ROI for your business.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-              <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform">
-                <Link href="/contact">Get Your Free Proposal</Link>
-              </Button>
-              <Button asChild size="lg" variant="link" className="text-accent">
-                <Link href="/our-services">Explore Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* AI Search Optimization Section (AEO/GEO) */}
-        <section className="py-12 bg-primary/5 border-y border-primary/10" aria-labelledby="why-us-heading">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1">
-                <Badge variant="outline" className="mb-4 border-accent text-accent">AI & SEARCH INSIGHTS</Badge>
-                <h2 id="why-us-heading" className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">Why AdsVerse is the Best Digital Marketing & AI Agency in Indore</h2>
-                <div className="space-y-4 text-muted-foreground">
-                  <p>
-                    <strong>Contextual Performance:</strong> We don't just rank keywords; we optimize for intent. Our strategies ensure your business appears as a top answer in AI-driven search results (Answer Engine Optimization).
-                  </p>
-                  <p>
-                    <strong>Hyper-Local SEO Growth:</strong> Headquartered in Vijay Nagar, Indore, we leverage precise geo-signals to dominate "near me" and regional business queries across Central India, outranking standard SEO providers.
-                  </p>
-                  <p>
-                    <strong>Automated ROI:</strong> We don't just 'do marketing'. By integrating AI powered sales automation into every funnel, we provide measurable, 2026-ready results for Indore startups and established brands alike.
-                  </p>
-                </div>
+        <section className="relative max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px] pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16">
+            <div className="w-full md:w-1/2 space-y-6 md:space-y-10 relative z-10 text-left">
+              <div className="flex items-center gap-3">
+                <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
+                  AI-First Digital Marketing • Indore
+                </span>
               </div>
-              <div className="flex-shrink-0 w-full md:w-64">
-                <Card className="bg-card/50 backdrop-blur-sm p-6 border-accent/20 text-center">
-                  <h3 className="font-bold text-accent mb-2">Key Takeaways</h3>
-                  <ul className="text-sm space-y-2 list-none p-0 opacity-80">
-                    <li>🚀 AI-Powered SEO</li>
-                    <li>🤖 Sales Automation</li>
-                    <li>📈 ROI-Focused PPC</li>
-                    <li>📍 Local Indore Pro</li>
-                  </ul>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SEO Audit Tool Section */}
-        <section className="py-24" aria-labelledby="cta-heading">
-          <div className="container mx-auto px-4">
-            <Card className="bg-card/50 backdrop-blur-sm p-8 md:p-12 text-center">
-              <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold font-headline mb-6">Ready to Scale with AdsVerse?</h2>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Uncover technical issues & on-page optimization opportunities. Enter your website URL to get an instant, comprehensive SEO analysis.
+              <h1 className="font-sans text-[30px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] leading-[1.1] md:leading-none text-slate-900 dark:text-white">
+                Grow Your Business <br /> Faster with <br />
+                <span className="gradient-text">AI-Powered</span> <span className="text-brand-orange">Marketing</span>
+              </h1>
+              <p className="font-sans text-base sm:text-lg md:text-xl font-medium text-slate-800 dark:text-slate-100 max-w-lg leading-relaxed">
+                n8n automation, WhatsApp bots, Google &amp; Meta campaigns, and Gemini AI workflows — built for <span className="text-brand-orange font-bold">Indore SMBs</span>.
               </p>
-              <form action="/tools/seo-audit" method="GET" className="flex gap-2 max-w-xl mx-auto">
-                <Input
-                  type="url"
-                  name="url"
-                  placeholder="https://yourwebsite.com"
-                  className="flex-grow h-12 text-lg bg-input"
-                  required
-                />
-                <Button type="submit" size="lg" className="h-12 bg-accent hover:bg-accent/90" aria-label="Analyze website SEO">
-                  <Search className="h-6 w-6" aria-hidden="true" />
-                  <span className="ml-2 hidden md:inline">Analyze</span>
+              <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
+                  <Link href="/contact">
+                    Get Free Audit <span className="material-symbols-outlined select-none text-base md:text-lg">arrow_forward</span>
+                  </Link>
                 </Button>
-              </form>
-            </Card>
-          </div>
-        </section>
-
-        {/* Featured Services Section */}
-        <section className="py-24 bg-secondary/20" aria-labelledby="services-heading">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="services-heading" className="text-4xl font-bold font-headline text-primary">Our Core Services</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We provide a complete suite of digital marketing services to fuel your growth at every stage.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {coreServices.map(service => (
-                <Link key={service.id} href={service.href} className="block group">
-                  <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 flex flex-col overflow-hidden h-full">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        {service.iconName && serviceIcons[service.iconName] ? React.cloneElement(serviceIcons[service.iconName] as React.ReactElement, { "aria-hidden": "true" }) : <TrendingUp className="w-10 h-10 text-accent" aria-hidden="true" />}
-                        <CardTitle className="font-headline text-2xl">{service.name}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p className="text-foreground/90">{service.description}</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-            <div className="text-center mt-16">
-              <Button asChild size="lg" variant="outline">
-                <Link href="/our-services">
-                  View All Services <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Results Section */}
-        <section className="py-24">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-headline text-primary">We Deliver Real Results</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Our strategies are designed for one thing: measurable growth.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <Card className="bg-primary/20 text-center p-6">
-                <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={113} suffix="+" />
+                <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-white/5 transition-all text-base md:text-lg border border-border-glass">
+                  <Link href="/blog">Our Insights</Link>
+                </Button>
+              </div>
+              
+              {/* Preserved Stats */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 pt-8 md:pt-10 border-t border-border-glass mt-8 md:mt-10">
+                <div>
+                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-brand-orange mb-1">
+                    <AnimatedCounter target={113} suffix="+" />
+                  </div>
+                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Clients Served</div>
                 </div>
-                <p className="text-muted-foreground mt-2">Clients Served Across India</p>
-              </Card>
-              <Card className="bg-primary/20 text-center p-6">
-                <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={3.8} suffix="x" />
+                <div className="border-l border-border-glass pl-2 sm:pl-6 md:pl-8">
+                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-primary mb-1">
+                    <AnimatedCounter target={4.8} suffix="x" />
+                  </div>
+                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Avg. ROAS</div>
                 </div>
-                <p className="text-muted-foreground mt-2">Average ROAS Delivered</p>
-              </Card>
-              <Card className="bg-primary/20 text-center p-6">
-                <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={68} suffix="%" />
+                <div className="border-l border-border-glass pl-2 sm:pl-6 md:pl-8">
+                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-brand-orange mb-1">
+                    <AnimatedCounter target={3} suffix=" yrs" />
+                  </div>
+                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Building in AI</div>
                 </div>
-                <p className="text-muted-foreground mt-2">Avg. Reduction in Lead Cost</p>
-              </Card>
-              <Card className="bg-primary/20 text-center p-6">
-                <div className="text-5xl font-extrabold text-primary">
-                  <AnimatedCounter target={94} suffix="%" />
-                </div>
-                <p className="text-muted-foreground mt-2">Client Retention Rate</p>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-
-
-        {/* Strategy Section (SEO Content Expansion) */}
-        <section className="py-24 bg-primary/5">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-bold font-headline text-primary mb-8 text-center">Our 2026 Growth Strategy for Digital Marketing in Indore</h2>
-              <div className="prose prose-invert prose-lg max-w-none text-muted-foreground space-y-6">
-                <p>
-                  As the <strong>best digital marketing agency in Indore</strong>, AdsVerse stays ahead of the curve by integrating
-                  <strong>AI-driven automation</strong> with traditional performance marketing. Our process is designed to ensure
-                  sustained growth for businesses across <strong>Vijay Nagar, Bhawarkua, and the wider Indore region</strong>.
-                </p>
-
-                <h3 className="text-2xl font-bold text-foreground">1. Predictive SEO Optimization</h3>
-                <p>
-                  In 2026, standard SEO is no longer enough. We focus on <strong>Answer Engine Optimization (AEO)</strong> and
-                  <strong>Generative Engine Optimization (GEO)</strong>. This means your brand doesn't just rank on page 1—it becomes the
-                  definitive answer in AI-driven search results from Google Gemini, Perplexity, and OpenAI Search.
-                </p>
-
-                <h3 className="text-2xl font-bold text-foreground">2. High-Conversion Paid Ads</h3>
-                <p>
-                  Our <strong>PPC and Meta Ads strategies</strong> are built on data, not guesswork. We utilize advanced audience
-                  modeling and automated sales funnels to reduce your Cost Per Acquisition (CPA) while maximizing high-ticket lead generation.
-                </p>
-
-                <h3 className="text-2xl font-bold text-foreground">3. Full-Stack Business Automation</h3>
-                <p>
-                  We believe marketing is most effective when it is automated. From custom CRM integrations to AI chatbots that
-                  handle your 24/7 customer queries, AdsVerse provides the technical infrastructure to let your business scale
-                  without increasing manual workload.
-                </p>
-
-                <p className="text-lg font-medium border-l-4 border-accent pl-4">
-                  Whether you're looking for <strong>SEO services in Indore</strong>, high-performing
-                  <strong>Google Ads management</strong>, or cutting-edge <strong>web development</strong>, our team
-                  combines local market insights with global technical standards to deliver 10x ROI.
-                </p>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Testimonials Section */}
-        <section className="py-24 bg-secondary/20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-headline text-primary">What Our Clients Say</h2>
-              <p className="text-muted-foreground mt-2">We're proud to have earned the trust of amazing clients.</p>
+            {/* Orbital graphic */}
+            <div className="w-full md:w-1/2 flex justify-center items-center orbital-container relative h-[450px] md:h-[700px]">
+              <div className="absolute inset-0 bg-nebula pointer-events-none"></div>
+              {/* Outer Orbit (8 nodes) */}
+              <div className="orbit-outer">
+                {/* 1: Google Ads SVG */}
+                <div className="node node-outer" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
+                  <svg viewBox="0 0 24 24" className="orbit-icon" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.68 1.54 14.98 0 12 0 7.35 0 3.37 2.67 1.48 6.56l3.86 3C6.26 6.94 8.91 5.04 12 5.04z"/>
+                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.43c-.28 1.44-1.09 2.66-2.32 3.49l3.6 2.79c2.1-1.94 3.3-4.79 3.3-8.15z"/>
+                    <path fill="#FBBC05" d="M5.34 14.29c-.25-.74-.39-1.53-.39-2.35s.14-1.61.39-2.35L1.48 6.56C.54 8.2.04 10.05.04 12c0 1.95.5 3.8 1.44 5.44l3.86-3.15z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.79c-1.01.68-2.3 1.09-3.79 1.09-3.09 0-5.74-1.9-6.66-4.52l-3.86 3.15C3.37 21.33 7.35 24 12 24z"/>
+                  </svg>
+                </div>
+                {/* 2: Meta SVG */}
+                <div className="node node-outer" style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}>
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </div>
+                {/* 3: WhatsApp SVG */}
+                <div className="node node-outer" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#25D366" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </div>
+                {/* 4: HubSpot SVG */}
+                <div className="node node-outer" style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}>
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#FF7A59" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.37 11.13h-4.82a4.41 4.41 0 00-3.13-2.92V6.15A2.73 2.73 0 0015 3.5a2.75 2.75 0 00-5.5 0 2.73 2.73 0 001.58 2.65v2.06A4.41 4.41 0 008 11.13H3.13a1.5 1.5 0 00-1.5 1.5 1.5 1.5 0 001.5 1.5H8a4.41 4.41 0 003.08 2.92v2.06a2.73 2.73 0 00-1.58 2.65 2.75 2.75 0 005.5 0 2.73 2.73 0 00-1.58-2.65v-2.06a4.41 4.41 0 003.13-2.92h4.82a1.5 1.5 0 001.5-1.5 1.5 1.5 0 00-1.5-1.5z"/>
+                  </svg>
+                </div>
+                {/* 5: Gemini */}
+                <div className="node node-outer" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
+                  <span className="material-symbols-outlined text-primary select-none text-2xl md:text-3xl animate-pulse">auto_awesome</span>
+                </div>
+                {/* 6: n8n */}
+                <div className="node node-outer" style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}>
+                  <span className="text-white font-bold text-base md:text-xl select-none">n8n</span>
+                </div>
+                {/* 7: Insights */}
+                <div className="node node-outer" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
+                  <span className="material-symbols-outlined text-brand-orange select-none">insights</span>
+                </div>
+                {/* 8: Robot */}
+                <div className="node node-outer" style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}>
+                  <span className="material-symbols-outlined text-primary select-none">robot_2</span>
+                </div>
+              </div>
+
+              {/* Inner Orbit (4 nodes) */}
+              <div className="orbit-inner">
+                <div className="node node-inner" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
+                  <span className="material-symbols-outlined text-white select-none">hub</span>
+                </div>
+                <div className="node node-inner" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
+                  <span className="material-symbols-outlined text-brand-orange select-none">query_stats</span>
+                </div>
+                <div className="node node-inner" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
+                  <span className="material-symbols-outlined text-primary select-none">forum</span>
+                </div>
+                <div className="node node-inner" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
+                  <span className="material-symbols-outlined text-white select-none">mail</span>
+                </div>
+              </div>
+
+              {/* Center Core */}
+              <Link href="/our-services" className="absolute w-28 h-28 sm:w-36 sm:h-36 md:w-56 md:h-56 rounded-full glass-card flex flex-col items-center justify-center border-primary/50 z-10 text-center px-3 sm:px-4 md:px-6 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-[#0c0f18]/90 backdrop-blur-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer">
+                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2.5 md:h-2.5 bg-brand-orange rounded-full mb-1 sm:mb-2 md:mb-4 shadow-[0_0_15px_#f97316]"></div>
+                <span className="font-sans text-[10px] sm:text-sm md:text-2xl leading-tight text-white mb-1 md:mb-2 font-extrabold">Multiverse of Marketing</span>
+                <div className="w-6 sm:w-8 md:w-12 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent mt-1 md:mt-3"></div>
+              </Link>
             </div>
-            <Carousel
-              opts={{
-                loop: true,
-              }}
-              className="w-full max-w-4xl mx-auto"
-            >
-              <CarouselContent>
-                {testimonials.map((t, index) => (
-                  <CarouselItem key={index}>
-                    <div className="p-1">
-                      <Card className="bg-gradient-to-r from-primary to-accent/80 text-center p-8 relative overflow-hidden rounded-lg">
-                        <div className="absolute inset-0 bg-black/20"></div>
-                        <CardContent className="p-0 relative z-10">
-                          <p className="text-lg md:text-xl text-primary-foreground/80 italic mb-6">"{t.text}"</p>
-                          <div className="flex items-center justify-center gap-4">
-                            <Avatar>
-                               <AvatarImage src={t.avatar} alt={t.name} data-ai-hint={t.hint} width={50} height={50} />
-                               <AvatarFallback>{t.initials || t.name.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-semibold text-primary-foreground">{t.name}</p>
-                              <p className="text-sm text-primary-foreground/70">{t.role}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-24">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-headline">Frequently Asked Questions</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-                AI marketing, GEO, WhatsApp automation, aur AdsVerse ke baare mein — common questions, direct answers.
+        {/* Trusted By */}
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+          <div className="border-y border-border-glass py-8 md:py-12 flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-12 opacity-70 hover:opacity-100 transition-opacity duration-500">
+            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-slate-700 dark:text-slate-300">TRUSTED BY</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SimplyHerbal</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">AssistHour</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Gold Pure Enterprises</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SMB Infratech</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Soulvedic</span>
+          </div>
+        </section>
+
+        {/* Why AdsVerse - Bento Grid */}
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+          <div className="text-center mb-10">
+            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">THE DIFFERENCE</span>
+            <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">Why Businesses Choose <span className="text-brand-orange">AdsVerse</span></h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
+              <div className="relative z-10">
+                <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none">smart_toy</span>
+                <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">AI-Native <span className="text-brand-orange">Strategy</span></h3>
+                <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 max-w-lg leading-relaxed">
+                  We don't just "use" AI; we build custom GPT agents and Gemini workflows that automate your entire sales funnel, from lead capture to conversion.
+                </p>
+              </div>
+              <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orange/15 rounded-full blur-[80px] group-hover:bg-brand-orange/25 transition-all duration-700"></div>
+            </div>
+            <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
+              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none">data_thresholding</span>
+              <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Real-Time Data</h3>
+              <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
+                Proprietary dashboards that sync with your CRM to give you a 360-degree view of your ROAS in real-time.
               </p>
             </div>
-            <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`} role="region">
-                    <AccordionTrigger className="text-lg text-left hover:no-underline">{faq.question}</AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-base">
+            <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
+              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none">location_on</span>
+              <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Indore Market Focus</h3>
+              <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
+                We understand local consumer behavior and optimize campaigns specifically for regional resonance.
+              </p>
+            </div>
+            <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
+              <div className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 items-center">
+                <div className="flex-1">
+                  <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none">bolt</span>
+                  <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">Zero Friction <span className="text-brand-orange">Automation</span></h3>
+                  <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
+                    Integrating n8n and Zapier to ensure your sales team never misses a lead again, with instant WhatsApp follow-ups.
+                  </p>
+                </div>
+                <Image 
+                  alt="Automation Dashboard" 
+                  className="w-full md:w-5/12 rounded-2xl border border-border-glass shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:border-primary/50 transition-colors" 
+                  src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FOur%20Work%2Fautomation-dashboard.webp?alt=media"
+                  width={500}
+                  height={350}
+                  loading="lazy"
+                />
+              </div>
+              <div className="absolute -left-20 -top-20 w-80 h-80 bg-primary/15 rounded-full blur-[80px] group-hover:bg-primary/25 transition-all duration-700"></div>
+            </div>
+          </div>
+        </section>
+
+        {/* Core Services */}
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
+            <div>
+              <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
+                OUR SERVICES
+              </span>
+              <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">
+                Our Core <span className="text-brand-orange">Services</span>
+              </h2>
+            </div>
+            <p className="font-sans text-base sm:text-lg md:text-xl font-normal text-slate-800 dark:text-slate-200 max-w-md">
+              From performance marketing to deep-tech automation, we provide the full stack.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {coreServices.map((service, index) => {
+              const borderClass = service.color === "brand-orange" ? "border-t-brand-orange" : "border-t-primary";
+              const bgClass = service.color === "brand-orange" ? "bg-brand-orange/10 group-hover:bg-brand-orange/20" : "bg-primary/10 group-hover:bg-primary/20";
+              const textClass = service.color === "brand-orange" ? "text-brand-orange" : "text-primary";
+              return (
+                <Link key={index} href={service.href} className="block group">
+                  <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
+                    <div>
+                      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
+                        <span className={`material-symbols-outlined ${textClass} text-2xl md:text-3xl select-none`}>{service.icon}</span>
+                      </div>
+                      <h4 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h4>
+                      <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
+                    </div>
+                    <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
+                      {service.bullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-center gap-3 text-sm md:text-base">
+                          <span className={`material-symbols-outlined ${textClass} text-lg md:text-xl select-none`}>check_circle</span>
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+          {/* More Services CTA */}
+          <div className="flex justify-center mt-12 md:mt-16">
+            <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
+              <Link href="/our-services">
+                More Services
+                <span className="material-symbols-outlined select-none text-base md:text-lg ml-2 group-hover:translate-x-1 transition-transform inline-block">arrow_forward</span>
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* What Our Clients Say */}
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+          <div className="text-center mb-10">
+            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">TESTIMONIALS</span>
+            <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">What Our <span className="text-brand-orange">Clients Say</span></h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((t, index) => {
+              const textIconColor = index % 2 === 0 ? "text-brand-orange" : "text-primary";
+              return (
+                <div key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
+                  <div>
+                    <span className={`material-symbols-outlined ${textIconColor} text-3xl md:text-4xl mb-4 md:mb-6 opacity-50 select-none`}>format_quote</span>
+                    <p className="font-sans text-sm md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 mb-6 md:mb-8 italic">"{t.text}"</p>
+                  </div>
+                  <div className="flex items-center gap-4 border-t border-border-glass pt-5 md:pt-6">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-900 dark:text-white text-lg md:text-xl select-none">
+                      {t.initials}
+                    </div>
+                    <div>
+                      <div className="font-sans text-base md:text-lg font-bold text-slate-900 dark:text-white">{t.name}</div>
+                      <div className="font-sans text-xs md:text-[15px] font-medium text-slate-700 dark:text-slate-300">{t.role}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Frequently Asked Questions */}
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]" id="faq">
+          <div className="text-center mb-10">
+            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">FAQ</span>
+            <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">Frequently Asked <span className="text-brand-orange">Questions</span></h2>
+            <p className="font-sans text-base sm:text-lg md:text-xl font-medium text-slate-800 dark:text-slate-200 mt-4">
+              AI marketing, GEO, WhatsApp automation, aur AdsVerse ke baare mein — common questions, direct answers.
+            </p>
+          </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            <Accordion type="single" collapsible className="w-full space-y-4">
+              {faqs.map((faq, index) => {
+                return (
+                  <AccordionItem 
+                    key={index} 
+                    value={`item-${index}`} 
+                    className="glass-card px-5 md:px-6 py-3 md:py-4 rounded-2xl border border-border-glass hover:border-primary/50 transition-colors"
+                  >
+                    <AccordionTrigger className="flex justify-between items-center text-slate-900 dark:text-white font-sans text-base md:text-lg hover:no-underline py-2">
+                      <span className="text-left font-bold">{faq.question}</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-slate-800 dark:text-slate-200 text-sm md:text-base mt-4 leading-relaxed whitespace-pre-line border-t border-border-glass pt-4">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
-                ))}
-              </Accordion>
-              
-              <div className="mt-8 text-center">
-                <Link href="/faq" className="inline-flex items-center text-accent hover:text-accent/90 font-medium underline underline-offset-4 decoration-2 transition-all">
-                  See All 19 FAQs <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            </div>
+                );
+              })}
+            </Accordion>
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/faq" className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2">
+              See All 19 FAQs <span className="material-symbols-outlined select-none text-base">arrow_forward</span>
+            </Link>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-24">
-          <div className="container mx-auto px-4">
-            <div className="bg-gradient-to-r from-primary to-accent/80 rounded-lg p-12 text-center text-primary-foreground relative overflow-hidden">
-              <div className="absolute inset-0 bg-black/20"></div>
-              <div className="relative z-10">
-                <h2 className="text-4xl font-bold font-headline">Ready to Grow Your Business?</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg opacity-90">
-                  Let's have a conversation about your goals. We'll provide a free, no-obligation consultation and a detailed proposal on how we can help you succeed.
-                </p>
-                <Button asChild size="lg" variant="secondary" className="mt-8 text-lg py-6 px-8 shadow-lg transform hover:scale-105 transition-transform">
-                  <Link href="/contact">Schedule Your Free Consultation</Link>
+        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+          <div className="glass-card rounded-[32px] md:rounded-[48px] p-6 sm:p-10 md:p-28 text-center relative overflow-hidden border-primary/30 shadow-[0_0_80px_rgba(139,92,246,0.15)] bg-gradient-to-br from-white/[0.02] to-transparent">
+            <div className="absolute inset-0 bg-nebula opacity-50 pointer-events-none"></div>
+            <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-orange/20 rounded-full blur-[100px]"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"></div>
+            <div className="relative z-10 max-w-3xl mx-auto space-y-6 md:space-y-10">
+              <h2 className="font-sans text-[28px] sm:text-4xl md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">Ready to Scale Your Business to the <span className="text-brand-orange">Next Level?</span></h2>
+              <p className="font-sans text-base md:text-xl font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+                Get a free digital audit worth ₹15,000. Our experts will analyze your current funnel and provide a custom AI growth roadmap.
+              </p>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
+                <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-white px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
+                  <Link href="/contact">Claim Free Audit Now</Link>
+                </Button>
+                <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
+                  <Link href="/contact">
+                    Contact our team <span className="material-symbols-outlined select-none">chat_bubble</span>
+                  </Link>
                 </Button>
               </div>
             </div>
           </div>
         </section>
-
-      </div>
+      </main>
     </>
   );
 }
