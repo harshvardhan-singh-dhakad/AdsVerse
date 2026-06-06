@@ -7,8 +7,8 @@ import dynamic from 'next/dynamic';
 import { cn } from "@/lib/utils";
 
 import { AnimatedCounter } from "@/components/pages/animated-counter";
-const FAQAccordion = dynamic(() => import('@/components/pages/faq-accordion').then(mod => mod.FAQAccordion), { ssr: false });
-const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic').then(mod => mod.OrbitalGraphic), { ssr: false });
+const FAQAccordion = dynamic(() => import('@/components/pages/faq-accordion').then(mod => mod.FAQAccordion));
+const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic').then(mod => mod.OrbitalGraphic));
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -276,6 +276,7 @@ export default function HomePage() {
                   width={500}
                   height={350}
                   loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
               <div className="absolute -left-20 -top-20 w-80 h-80 bg-primary/15 rounded-full blur-[80px] group-hover:bg-primary/25 transition-all duration-700"></div>
