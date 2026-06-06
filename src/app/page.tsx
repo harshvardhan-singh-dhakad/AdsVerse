@@ -5,6 +5,23 @@ import Link from "next/link";
 import { Metadata } from "next";
 import dynamic from 'next/dynamic';
 import { cn } from "@/lib/utils";
+import { 
+  ArrowRight, 
+  Bot, 
+  LineChart, 
+  MapPin, 
+  Zap, 
+  CheckCircle2, 
+  Quote, 
+  MessageSquare,
+  MousePointerClick, 
+  Cpu, 
+  Route, 
+  TrendingUp, 
+  Code2, 
+  FileText, 
+  Share2
+} from "lucide-react";
 
 import { AnimatedCounter } from "@/components/pages/animated-counter";
 const FAQAccordion = dynamic(() => import('@/components/pages/faq-accordion').then(mod => mod.FAQAccordion));
@@ -131,6 +148,17 @@ const coreServices = [
   }
 ];
 
+const iconMap: { [key: string]: React.ComponentType<any> } = {
+  ads_click: MousePointerClick,
+  forum: MessageSquare,
+  memory: Cpu,
+  conversion_path: Route,
+  search_insights: TrendingUp,
+  code: Code2,
+  edit_note: FileText,
+  share_reviews: Share2,
+};
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -180,8 +208,8 @@ export default function HomePage() {
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
                 <Button asChild size="lg" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
-                  <Link href="/contact" prefetch={false}>
-                    Get Free Audit <span className="material-symbols-outlined select-none text-base md:text-lg">arrow_forward</span>
+                  <Link href="/contact" prefetch={false} className="flex items-center gap-2">
+                    Get Free Audit <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-white/5 transition-all text-base md:text-lg border border-border-glass">
@@ -238,7 +266,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
               <div className="relative z-10">
-                <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none" aria-hidden="true">smart_toy</span>
+                <Bot className="text-brand-orange h-10 w-10 md:h-12 md:w-12 mb-4 md:mb-6 orange-glow" aria-hidden="true" />
                 <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">AI-Native <span className="text-brand-orange">Strategy</span></h3>
                 <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 max-w-lg leading-relaxed">
                   We don't just "use" AI; we build custom GPT agents and Gemini workflows that automate your entire sales funnel, from lead capture to conversion.
@@ -247,14 +275,14 @@ export default function HomePage() {
               <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orange/15 rounded-full blur-[80px] group-hover:bg-brand-orange/25 transition-all duration-700"></div>
             </div>
             <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
-              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none" aria-hidden="true">data_thresholding</span>
+              <LineChart className="text-primary h-10 w-10 md:h-12 md:w-12 mb-4 md:mb-6 purple-glow" aria-hidden="true" />
               <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Real-Time Data</h3>
               <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                 Proprietary dashboards that sync with your CRM to give you a 360-degree view of your ROAS in real-time.
               </p>
             </div>
             <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
-              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none" aria-hidden="true">location_on</span>
+              <MapPin className="text-primary h-10 w-10 md:h-12 md:w-12 mb-4 md:mb-6 purple-glow" aria-hidden="true" />
               <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Indore Market Focus</h3>
               <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                 We understand local consumer behavior and optimize campaigns specifically for regional resonance.
@@ -263,7 +291,7 @@ export default function HomePage() {
             <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
               <div className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 items-center">
                 <div className="flex-1">
-                  <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none" aria-hidden="true">bolt</span>
+                  <Zap className="text-brand-orange h-10 w-10 md:h-12 md:w-12 mb-4 md:mb-6 orange-glow" aria-hidden="true" />
                   <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">Zero Friction <span className="text-brand-orange">Automation</span></h3>
                   <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                     Integrating n8n and Zapier to ensure your sales team never misses a lead again, with instant WhatsApp follow-ups.
@@ -309,7 +337,10 @@ export default function HomePage() {
                   <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
                     <div>
                       <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
-                      <span className={`material-symbols-outlined ${textClass} text-2xl md:text-3xl select-none`} aria-hidden="true">{service.icon}</span>
+                        {(() => {
+                          const IconComponent = iconMap[service.icon] || Code2;
+                          return <IconComponent className={cn(textClass, "h-7 w-7 md:h-8 md:w-8")} aria-hidden="true" />;
+                        })()}
                       </div>
                       <h3 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h3>
                       <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
@@ -317,7 +348,7 @@ export default function HomePage() {
                     <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
                       {service.bullets.map((bullet, idx) => (
                         <li key={idx} className="flex items-center gap-3 text-sm md:text-base">
-                          <span className={`material-symbols-outlined ${textClass} text-lg md:text-xl select-none`} aria-hidden="true">check_circle</span>
+                          <CheckCircle2 className={cn(textClass, "h-4 w-4 md:h-5 md:w-5 shrink-0")} aria-hidden="true" />
                           {bullet}
                         </li>
                       ))}
@@ -330,9 +361,9 @@ export default function HomePage() {
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
-              <Link href="/our-services" prefetch={false} aria-label="View all our digital marketing services">
+              <Link href="/our-services" prefetch={false} aria-label="View all our digital marketing services" className="flex items-center gap-2">
                 More Services
-                <span className="material-symbols-outlined select-none text-base md:text-lg ml-2 group-hover:translate-x-1 transition-transform inline-block" aria-hidden="true">arrow_forward</span>
+                <ArrowRight className="h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
             </Button>
           </div>
@@ -350,7 +381,7 @@ export default function HomePage() {
               return (
                 <div key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
                   <div>
-                    <span className={`material-symbols-outlined ${textIconColor} text-3xl md:text-4xl mb-4 md:mb-6 opacity-50 select-none`} aria-hidden="true">format_quote</span>
+                    <Quote className={cn(textIconColor, "h-8 w-8 md:h-10 md:w-10 mb-4 md:mb-6 opacity-50")} aria-hidden="true" />
                     <p className="font-sans text-sm md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 mb-6 md:mb-8 italic">"{t.text}"</p>
                   </div>
                   <div className="flex items-center gap-4 border-t border-border-glass pt-5 md:pt-6">
@@ -382,11 +413,11 @@ export default function HomePage() {
           </div>
           <div className="text-center mt-8">
             <Link href="/faq" prefetch={false} className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See all 19 frequently asked questions">
-              See All 19 FAQs <span className="material-symbols-outlined select-none text-base" aria-hidden="true">arrow_forward</span>
+              See All 19 FAQs <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
       </section>
-
+ 
       {/* CTA Section */}
       <section aria-label="Call to Action: Get a Free Digital Audit" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
         <div className="glass-card rounded-[32px] md:rounded-[48px] p-6 sm:p-10 md:p-28 text-center relative overflow-hidden border-primary/30 shadow-[0_0_80px_rgba(139,92,246,0.15)] bg-gradient-to-br from-white/[0.02] to-transparent">
@@ -403,8 +434,8 @@ export default function HomePage() {
                 <Link href="/contact" prefetch={false}>Claim Free Audit Now</Link>
               </Button>
               <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
-                <Link href="/contact" prefetch={false}>
-                  Contact our team <span className="material-symbols-outlined select-none" aria-hidden="true">chat_bubble</span>
+                <Link href="/contact" prefetch={false} className="flex items-center gap-2">
+                  Contact our team <MessageSquare className="h-5 w-5" aria-hidden="true" />
                 </Link>
               </Button>
             </div>

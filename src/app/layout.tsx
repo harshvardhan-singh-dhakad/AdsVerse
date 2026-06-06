@@ -215,16 +215,7 @@ export default function RootLayout({
         {/* DNS prefetch for third-party image CDNs */}
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Material Symbols */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-          as="style"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        />
+        {/* Material Symbols has been removed to resolve render-blocking FCP/LCP speed issues */}
         {/* Organization & LocalBusiness Schema */}
         <script
           id="adsverse-schema"
