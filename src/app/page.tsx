@@ -379,7 +379,7 @@ export default function HomePage() {
                       <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
                       <span className={`material-symbols-outlined ${textClass} text-2xl md:text-3xl select-none`} aria-hidden="true">{service.icon}</span>
                       </div>
-                      <h4 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h4>
+                      <h3 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h3>
                       <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
                     </div>
                     <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
