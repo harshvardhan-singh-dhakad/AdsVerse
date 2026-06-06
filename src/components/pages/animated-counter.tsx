@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState, useRef } from 'react';
@@ -18,9 +17,16 @@ export function AnimatedCounter({
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(target);
   const [hasStarted, setHasStarted] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasStarted) {
@@ -53,11 +59,11 @@ export function AnimatedCounter({
     return () => {
       observer.disconnect();
     };
-  }, [target, duration]);
+  }, [mounted, target, duration, hasStarted]);
 
   return (
     <span ref={ref}>
-      {prefix}{target % 1 === 0 ? Math.floor(count) : count.toFixed(1)}{suffix}
+      {prefix}{mounted ? (target % 1 === 0 ? Math.floor(count) : count.toFixed(1)) : target}{suffix}
     </span>
   );
 }

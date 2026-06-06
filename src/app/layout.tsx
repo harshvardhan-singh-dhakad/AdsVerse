@@ -215,20 +215,11 @@ export default function RootLayout({
         {/* DNS prefetch for third-party image CDNs */}
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Material Symbols — non-blocking load (print media trick) */}
+        {/* Material Symbols */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-          media="print"
-          // @ts-expect-error onLoad type mismatch for HTML attribute
-          onLoad="this.media='all'"
         />
-        <noscript>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-          />
-        </noscript>
         {/* Organization & LocalBusiness Schema */}
         <script
           id="adsverse-schema"

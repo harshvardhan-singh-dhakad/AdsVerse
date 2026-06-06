@@ -2,11 +2,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Metadata } from "next";
 import dynamic from 'next/dynamic';
+import { cn } from "@/lib/utils";
 
-const AnimatedCounter = dynamic(() => import('@/components/pages/animated-counter').then(mod => mod.AnimatedCounter), { ssr: false });
+import { AnimatedCounter } from "@/components/pages/animated-counter";
+const FAQAccordion = dynamic(() => import('@/components/pages/faq-accordion').then(mod => mod.FAQAccordion), { ssr: false });
+const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic').then(mod => mod.OrbitalGraphic), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -145,6 +147,7 @@ const faqJsonLd = {
 // Orbit styles have been moved to globals.css for browser caching
 
 export default function HomePage() {
+
   return (
     <>
       {/* FAQ Schema — plain script for immediate crawler access */}
@@ -177,12 +180,12 @@ export default function HomePage() {
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
                 <Button asChild size="lg" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
-                  <Link href="/contact">
+                  <Link href="/contact" prefetch={false}>
                     Get Free Audit <span className="material-symbols-outlined select-none text-base md:text-lg">arrow_forward</span>
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-white/5 transition-all text-base md:text-lg border border-border-glass">
-                  <Link href="/blog">Our Insights</Link>
+                  <Link href="/blog" prefetch={false}>Our Insights</Link>
                 </Button>
               </div>
               
@@ -210,79 +213,7 @@ export default function HomePage() {
             </div>
 
             {/* Orbital graphic — decorative animation */}
-            <div
-              className="w-full md:w-1/2 flex justify-center items-center orbital-container relative h-[450px] md:h-[700px]"
-            >
-              <div className="absolute inset-0 bg-nebula pointer-events-none" aria-hidden="true"></div>
-              {/* Outer Orbit (8 nodes) */}
-              <div className="orbit-outer" aria-hidden="true">
-                {/* 1: Google Ads */}
-                <div className="node node-outer" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.68 1.54 14.98 0 12 0 7.35 0 3.37 2.67 1.48 6.56l3.86 3C6.26 6.94 8.91 5.04 12 5.04z"/>
-                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.43c-.28 1.44-1.09 2.66-2.32 3.49l3.6 2.79c2.1-1.94 3.3-4.79 3.3-8.15z"/>
-                    <path fill="#FBBC05" d="M5.34 14.29c-.25-.74-.39-1.53-.39-2.35s.14-1.61.39-2.35L1.48 6.56C.54 8.2.04 10.05.04 12c0 1.95.5 3.8 1.44 5.44l3.86-3.15z"/>
-                    <path fill="#34A853" d="M12 24c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.79c-1.01.68-2.3 1.09-3.79 1.09-3.09 0-5.74-1.9-6.66-4.52l-3.86 3.15C3.37 21.33 7.35 24 12 24z"/>
-                  </svg>
-                </div>
-                {/* 2: Meta */}
-                <div className="node node-outer" style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#1877F2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </div>
-                {/* 3: WhatsApp */}
-                <div className="node node-outer" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#25D366" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                </div>
-                {/* 4: HubSpot */}
-                <div className="node node-outer" style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#FF7A59" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path d="M21.37 11.13h-4.82a4.41 4.41 0 00-3.13-2.92V6.15A2.73 2.73 0 0015 3.5a2.75 2.75 0 00-5.5 0 2.73 2.73 0 001.58 2.65v2.06A4.41 4.41 0 008 11.13H3.13a1.5 1.5 0 00-1.5 1.5 1.5 1.5 0 001.5 1.5H8a4.41 4.41 0 003.08 2.92v2.06a2.73 2.73 0 00-1.58 2.65 2.75 2.75 0 005.5 0 2.73 2.73 0 00-1.58-2.65v-2.06a4.41 4.41 0 003.13-2.92h4.82a1.5 1.5 0 001.5-1.5 1.5 1.5 0 00-1.5-1.5z"/>
-                  </svg>
-                </div>
-                {/* 5: Gemini */}
-                <div className="node node-outer" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none text-2xl md:text-3xl animate-pulse" aria-hidden="true">auto_awesome</span>
-                </div>
-                {/* 6: n8n */}
-                <div className="node node-outer" style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="text-white font-bold text-base md:text-xl select-none" aria-hidden="true">n8n</span>
-                </div>
-                {/* 7: Insights */}
-                <div className="node node-outer" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-brand-orange select-none" aria-hidden="true">insights</span>
-                </div>
-                {/* 8: Robot */}
-                <div className="node node-outer" style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none" aria-hidden="true">robot_2</span>
-                </div>
-              </div>
-
-              {/* Inner Orbit (4 nodes) */}
-              <div className="orbit-inner" aria-hidden="true">
-                <div className="node node-inner" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-white select-none" aria-hidden="true">hub</span>
-                </div>
-                <div className="node node-inner" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-brand-orange select-none" aria-hidden="true">query_stats</span>
-                </div>
-                <div className="node node-inner" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none" aria-hidden="true">forum</span>
-                </div>
-                <div className="node node-inner" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-white select-none" aria-hidden="true">mail</span>
-                </div>
-              </div>
-
-              {/* Center Core */}
-              <Link href="/our-services" aria-label="Multiverse of Marketing: View our services" className="absolute w-28 h-28 sm:w-36 sm:h-36 md:w-56 md:h-56 rounded-full glass-card flex flex-col items-center justify-center border-primary/50 z-10 text-center px-3 sm:px-4 md:px-6 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-[#0c0f18]/90 backdrop-blur-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer">
-                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2.5 md:h-2.5 bg-brand-orange rounded-full mb-1 sm:mb-2 md:mb-4 shadow-[0_0_15px_#f97316]"></div>
-                <span className="font-sans text-[10px] sm:text-sm md:text-2xl leading-tight text-white mb-1 md:mb-2 font-extrabold">Multiverse of Marketing</span>
-                <div className="w-6 sm:w-8 md:w-12 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent mt-1 md:mt-3"></div>
-              </Link>
-            </div>
+            <OrbitalGraphic />
           </div>
       </section>
 
@@ -373,7 +304,7 @@ export default function HomePage() {
               const bgClass = service.color === "brand-orange" ? "bg-brand-orange/10 group-hover:bg-brand-orange/20" : "bg-primary/10 group-hover:bg-primary/20";
               const textClass = service.color === "brand-orange" ? "text-brand-orange" : "text-primary";
               return (
-                <Link key={index} href={service.href} className="block group">
+                <Link key={index} href={service.href} prefetch={false} className="block group">
                   <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
                     <div>
                       <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
@@ -398,7 +329,7 @@ export default function HomePage() {
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
-              <Link href="/our-services" aria-label="View all our digital marketing services">
+              <Link href="/our-services" prefetch={false} aria-label="View all our digital marketing services">
                 More Services
                 <span className="material-symbols-outlined select-none text-base md:text-lg ml-2 group-hover:translate-x-1 transition-transform inline-block" aria-hidden="true">arrow_forward</span>
               </Link>
@@ -446,27 +377,10 @@ export default function HomePage() {
             </p>
           </div>
           <div className="max-w-3xl mx-auto space-y-4">
-            <Accordion type="single" collapsible className="w-full space-y-4">
-              {faqs.map((faq, index) => {
-                return (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`} 
-                    className="glass-card px-5 md:px-6 py-3 md:py-4 rounded-2xl border border-border-glass hover:border-primary/50 transition-colors"
-                  >
-                    <AccordionTrigger className="flex justify-between items-center text-slate-900 dark:text-white font-sans text-base md:text-lg hover:no-underline py-2">
-                      <span className="text-left font-bold">{faq.question}</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="text-slate-800 dark:text-slate-200 text-sm md:text-base mt-4 leading-relaxed whitespace-pre-line border-t border-border-glass pt-4">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
+            <FAQAccordion faqs={faqs} />
           </div>
           <div className="text-center mt-8">
-            <Link href="/faq" className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See all 19 frequently asked questions">
+            <Link href="/faq" prefetch={false} className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See all 19 frequently asked questions">
               See All 19 FAQs <span className="material-symbols-outlined select-none text-base" aria-hidden="true">arrow_forward</span>
             </Link>
           </div>
@@ -485,10 +399,10 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
               <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-black px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
-                <Link href="/contact">Claim Free Audit Now</Link>
+                <Link href="/contact" prefetch={false}>Claim Free Audit Now</Link>
               </Button>
               <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
-                <Link href="/contact">
+                <Link href="/contact" prefetch={false}>
                   Contact our team <span className="material-symbols-outlined select-none" aria-hidden="true">chat_bubble</span>
                 </Link>
               </Button>

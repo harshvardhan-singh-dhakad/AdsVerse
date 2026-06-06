@@ -103,9 +103,12 @@
       radial-gradient(circle at 20% 80%, hsl(var(--accent) / 0.1), transparent 50%),
       radial-gradient(circle at 80% 30%, hsl(var(--secondary) / 0.15), transparent 50%);
     transform-origin: center center;
-    animation: glow-move 30s ease-in-out infinite;
     will-change: transform;
     transform: translate(-50%, -50%);
+  }
+
+  .ready-to-animate .glow-effect {
+    animation: glow-move 30s ease-in-out infinite;
   }
 
   @keyframes glow-move {
@@ -154,8 +157,11 @@
     background: transparent;
     z-index: -1;
     background-repeat: repeat;
-    animation: animate-stars 50s linear infinite;
     will-change: transform;
+  }
+
+  .ready-to-animate .stars {
+    animation: animate-stars 50s linear infinite;
   }
 
   .stars-sm {
@@ -348,6 +354,7 @@
     z-index: -1;
     filter: blur(100px);
     pointer-events: none;
+    contain: layout paint;
   }
 
   .orbital-container {
@@ -360,6 +367,9 @@
     height: 600px;
     border: 1px dashed rgba(168, 85, 247, 0.2);
     border-radius: 50%;
+  }
+
+  .ready-to-animate .orbit-outer {
     animation: rotate-cw 120s linear infinite;
   }
 
@@ -372,6 +382,9 @@
     height: 380px;
     border: 1px dashed rgba(139, 92, 246, 0.3);
     border-radius: 50%;
+  }
+
+  .ready-to-animate .orbit-inner {
     animation: rotate-ccw 90s linear infinite;
   }
 
@@ -404,11 +417,11 @@
     object-fit: contain;
   }
 
-  .node-outer {
+  .ready-to-animate .node-outer {
     animation: counter-rotate-cw 120s linear infinite;
   }
 
-  .node-inner {
+  .ready-to-animate .node-inner {
     animation: counter-rotate-ccw 90s linear infinite;
   }
 

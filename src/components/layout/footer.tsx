@@ -75,21 +75,21 @@ export function Footer() {
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href="/our-services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
-              <li><Link href="/portfolio" className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
-              <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
-              <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
-              <li><Link href="/locations" className="text-sm text-muted-foreground hover:text-primary">Locations</Link></li>
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href="/about" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href="/our-services" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
+              <li><Link href="/portfolio" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
+              <li><Link href="/blog" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="/faq" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
+              <li><Link href="/pricing" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/locations" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Locations</Link></li>
+              <li><Link href="/contact" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
             <ul className="space-y-2">
-              <li><Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href="/privacy-policy" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
             </ul>
           </div>
           <div>

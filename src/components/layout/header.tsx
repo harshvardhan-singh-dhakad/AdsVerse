@@ -48,6 +48,7 @@ export function Header({ navLinks }: HeaderProps) {
             <Link
               key={href}
               href={href}
+              prefetch={false}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary relative py-1 text-slate-700 dark:text-slate-300",
                 pathname === href 
@@ -64,8 +65,8 @@ export function Header({ navLinks }: HeaderProps) {
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Button asChild size="sm" className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all flex items-center gap-1.5 border-none">
-              <Link href="/tools/seo-audit">
+            <Button asChild size="sm" className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all flex items-center gap-1.5 border-none">
+              <Link href="/tools/seo-audit" prefetch={false}>
                 Free Audit <span className="text-sm font-semibold">&rarr;</span>
               </Link>
             </Button>
@@ -95,6 +96,7 @@ export function Header({ navLinks }: HeaderProps) {
                         <Link
                           key={href}
                           href={href}
+                          prefetch={false}
                           onClick={closeMobileMenu}
                           className={cn(
                             "text-lg font-semibold transition-colors hover:text-primary",
@@ -107,8 +109,8 @@ export function Header({ navLinks }: HeaderProps) {
                     </nav>
                   </div>
                   <div className="mt-auto border-t border-border/40 pt-6">
-                    <Button asChild className="w-full bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-bold rounded-xl py-3 shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all justify-center border-none">
-                      <Link href="/tools/seo-audit" onClick={closeMobileMenu}>
+                    <Button asChild className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl py-3 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all justify-center border-none">
+                      <Link href="/tools/seo-audit" prefetch={false} onClick={closeMobileMenu}>
                         Free Audit &rarr;
                       </Link>
                     </Button>
