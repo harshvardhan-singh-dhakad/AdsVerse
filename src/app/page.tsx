@@ -484,7 +484,7 @@ export default function HomePage() {
               Get a free digital audit worth ₹15,000. Our experts will analyze your current funnel and provide a custom AI growth roadmap.
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
-              <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-white px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
+              <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-black px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
                 <Link href="/contact">Claim Free Audit Now</Link>
               </Button>
               <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">

@@ -471,7 +471,7 @@
 
   /* Color Overrides for purple (#8b5cf6) and orange (#f97316) */
   .text-primary { color: #8b5cf6 !important; }
-  .bg-primary { background-color: #8b5cf6 !important; }
+  .bg-primary { background-color: #7c3aed !important; }
   .bg-primary\/10 { background-color: rgba(139, 92, 246, 0.1) !important; }
   .bg-primary\/20 { background-color: rgba(139, 92, 246, 0.2) !important; }
   .border-primary { border-color: #8b5cf6 !important; }
