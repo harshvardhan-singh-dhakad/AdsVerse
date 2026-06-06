@@ -11,7 +11,11 @@ export function BackgroundEffects() {
   if (isAdminRoute) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden pointer-events-none hidden dark:block">
+    <div
+      className="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden pointer-events-none hidden dark:block"
+      aria-hidden="true"
+      role="presentation"
+    >
       <div className="glow-effect"></div>
       <div className="stars stars-sm"></div>
       <div className="stars stars-md"></div>

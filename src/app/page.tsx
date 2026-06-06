@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Metadata } from "next";
-import Script from "next/script";
 import dynamic from 'next/dynamic';
 
 const AnimatedCounter = dynamic(() => import('@/components/pages/animated-counter').then(mod => mod.AnimatedCounter), { ssr: false });
@@ -143,303 +142,25 @@ const faqJsonLd = {
   }))
 };
 
-const orbitStyles = `
-  .hero-vibrant-bg {
-      position: absolute;
-      top: -30%;
-      left: -20%;
-      width: 140%;
-      height: 160%;
-      background: 
-          radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.25) 0%, transparent 40%),
-          radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
-          radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 50%);
-      z-index: -1;
-      filter: blur(100px);
-      pointer-events: none;
-  }
-
-  .orbital-container {
-      perspective: 1200px;
-  }
-
-  .orbit-outer {
-      position: relative;
-      width: 600px;
-      height: 600px;
-      border: 1px dashed rgba(168, 85, 247, 0.2);
-      border-radius: 50%;
-      animation: rotate-cw 120s linear infinite;
-  }
-
-  .orbit-inner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 380px;
-      height: 380px;
-      border: 1px dashed rgba(139, 92, 246, 0.3);
-      border-radius: 50%;
-      animation: rotate-ccw 90s linear infinite;
-  }
-
-  .node {
-      position: absolute;
-      width: 64px;
-      height: 64px;
-      background: rgba(12, 15, 24, 0.85);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 15px rgba(168, 85, 247, 0.2);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      overflow: hidden;
-  }
-
-  .node:hover {
-      border-color: rgba(168, 85, 247, 0.8);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.3);
-      transform: scale(1.15);
-      z-index: 20;
-  }
-
-  .node svg, .node img, .orbit-icon {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-  }
-
-  .node-outer {
-      animation: counter-rotate-cw 120s linear infinite;
-  }
-
-  .node-inner {
-      animation: counter-rotate-ccw 90s linear infinite;
-  }
-
-  @keyframes rotate-cw {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-  }
-
-  @keyframes counter-rotate-cw {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(-360deg); }
-  }
-
-  @keyframes rotate-ccw {
-      from { transform: translate(-50%, -50%) rotate(360deg); }
-      to { transform: translate(-50%, -50%) rotate(0deg); }
-  }
-
-  @keyframes counter-rotate-ccw {
-      from { transform: rotate(-360deg); }
-      to { transform: rotate(0deg); }
-  }
-
-  .glass-card {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(168, 85, 247, 0.15);
-      transition: all 0.4s ease;
-  }
-
-  .glass-card:hover {
-      border-color: rgba(168, 85, 247, 0.4);
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
-      transform: translateY(-4px);
-  }
-
-  .purple-glow {
-      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
-  }
-
-  .orange-glow {
-      filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.7));
-  }
-
-  .bg-nebula {
-      background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-  }
-
-  .material-symbols-outlined {
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-  
-  .gradient-text {
-      background: linear-gradient(to right, #a855f7, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-  }
-
-  /* Color Overrides for purple (#8b5cf6) and orange (#f97316) */
-  .text-primary {
-      color: #8b5cf6 !important;
-  }
-  .bg-primary {
-      background-color: #8b5cf6 !important;
-  }
-  .bg-primary\/10 {
-      background-color: rgba(139, 92, 246, 0.1) !important;
-  }
-  .bg-primary\/20 {
-      background-color: rgba(139, 92, 246, 0.2) !important;
-  }
-  .border-primary {
-      border-color: #8b5cf6 !important;
-  }
-  .border-t-primary {
-      border-top-color: #8b5cf6 !important;
-  }
-  .hover\:bg-primary-fixed-dim:hover {
-      background-color: #a855f7 !important;
-  }
-  .shadow-\[0_0_20px_rgba\(139\,92\,246\,0\.3\)\] {
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3) !important;
-  }
-  .hover\:shadow-\[0_0_30px_rgba\(168\,85\,247\,0\.5\)\]:hover {
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.5) !important;
-  }
-  .shadow-\[0_0_25px_rgba\(139\,92\,246\,0\.4\)\] {
-      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4) !important;
-  }
-  .hover\:shadow-\[0_0_35px_rgba\(168\,85\,247\,0\.6\)\]:hover {
-      box-shadow: 0 0 35px rgba(168, 85, 247, 0.6) !important;
-  }
-
-  .text-brand-orange {
-      color: #f97316 !important;
-  }
-  .bg-brand-orange {
-      background-color: #f97316 !important;
-  }
-  .bg-brand-orange\/10 {
-      background-color: rgba(249, 115, 22, 0.1) !important;
-  }
-  .bg-brand-orange\/20 {
-      background-color: rgba(249, 115, 22, 0.2) !important;
-  }
-  .border-brand-orange {
-      border-color: #f97316 !important;
-  }
-  .border-t-brand-orange {
-      border-top-color: #f97316 !important;
-  }
-  .hover\:bg-orange-600:hover {
-      background-color: #ea580c !important;
-  }
-  .shadow-\[0_0_30px_rgba\(249\,115\,22\,0\.4\)\] {
-      box-shadow: 0 0 30px rgba(249, 115, 22, 0.4) !important;
-  }
-  .hover\:shadow-\[0_0_40px_rgba\(249\,115\,22\,0\.6\)\]:hover {
-      box-shadow: 0 0 40px rgba(249, 115, 22, 0.6) !important;
-  }
-  .hover\:text-brand-orange:hover {
-      color: #f97316 !important;
-  }
-
-  /* Responsive Mobile Guidelines */
-  @media (max-width: 1024px) {
-      .orbit-outer {
-          width: 450px;
-          height: 450px;
-      }
-      .orbit-inner {
-          width: 280px;
-          height: 280px;
-      }
-      .orbital-container {
-          height: 500px !important;
-      }
-      .orbital-container .glass-card.absolute {
-          width: 180px !important;
-          height: 180px !important;
-      }
-  }
-
-  @media (max-width: 768px) {
-      .orbit-outer {
-          width: 310px;
-          height: 310px;
-      }
-      .orbit-inner {
-          display: none !important;
-      }
-      .node {
-          width: 48px;
-          height: 48px;
-      }
-      .node svg, .node img, .orbit-icon {
-          width: 24px !important;
-          height: 24px !important;
-      }
-      .node span {
-          font-size: 11px !important;
-      }
-      .orbital-container {
-          height: 380px !important;
-      }
-      .orbital-container .glass-card.absolute {
-          width: 130px !important;
-          height: 130px !important;
-          padding-left: 0.5rem !important;
-          padding-right: 0.5rem !important;
-      }
-      .orbital-container .glass-card.absolute span {
-          font-size: 14px !important;
-      }
-      .orbital-container .glass-card.absolute div {
-          margin-top: 4px !important;
-      }
-  }
-
-  @media (max-width: 400px) {
-      .orbit-outer {
-          width: 260px;
-          height: 260px;
-      }
-      .node {
-          width: 38px;
-          height: 38px;
-      }
-      .node svg, .node img, .orbit-icon {
-          width: 18px !important;
-          height: 18px !important;
-      }
-      .node span {
-          font-size: 9px !important;
-      }
-      .orbital-container {
-          height: 320px !important;
-      }
-  }
-`;
+// Orbit styles have been moved to globals.css for browser caching
 
 export default function HomePage() {
   return (
     <>
-      <Script
+      {/* FAQ Schema — plain script for immediate crawler access */}
+      <script
         id="home-faq-schema"
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <style dangerouslySetInnerHTML={{ __html: orbitStyles }} />
-      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+      {/* Orbit styles moved to globals.css — no inline style injection */}
 
-      <main className="pt-16 md:pt-24 relative overflow-hidden">
-        {/* Hero Background Effect */}
-        <div className="hero-vibrant-bg"></div>
+      <div className="pt-16 md:pt-24 relative overflow-hidden">
+      {/* Hero Background Effect — decorative */}
+      <div className="hero-vibrant-bg" aria-hidden="true"></div>
 
-        {/* Hero Section */}
-        <section className="relative max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px] pt-8">
+      {/* Hero Section */}
+      <section aria-label="Hero: AI-Powered Digital Marketing Agency in Indore" className="relative max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px] pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16">
             <div className="w-full md:w-1/2 space-y-6 md:space-y-10 relative z-10 text-left">
               <div className="flex items-center gap-3">
@@ -488,68 +209,72 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Orbital graphic */}
-            <div className="w-full md:w-1/2 flex justify-center items-center orbital-container relative h-[450px] md:h-[700px]">
+            {/* Orbital graphic — decorative animation */}
+            <div
+              className="w-full md:w-1/2 flex justify-center items-center orbital-container relative h-[450px] md:h-[700px]"
+              aria-hidden="true"
+              role="presentation"
+            >
               <div className="absolute inset-0 bg-nebula pointer-events-none"></div>
               {/* Outer Orbit (8 nodes) */}
               <div className="orbit-outer">
-                {/* 1: Google Ads SVG */}
+                {/* 1: Google Ads */}
                 <div className="node node-outer" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 24 24" className="orbit-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.68 1.54 14.98 0 12 0 7.35 0 3.37 2.67 1.48 6.56l3.86 3C6.26 6.94 8.91 5.04 12 5.04z"/>
                     <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.43c-.28 1.44-1.09 2.66-2.32 3.49l3.6 2.79c2.1-1.94 3.3-4.79 3.3-8.15z"/>
                     <path fill="#FBBC05" d="M5.34 14.29c-.25-.74-.39-1.53-.39-2.35s.14-1.61.39-2.35L1.48 6.56C.54 8.2.04 10.05.04 12c0 1.95.5 3.8 1.44 5.44l3.86-3.15z"/>
                     <path fill="#34A853" d="M12 24c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.79c-1.01.68-2.3 1.09-3.79 1.09-3.09 0-5.74-1.9-6.66-4.52l-3.86 3.15C3.37 21.33 7.35 24 12 24z"/>
                   </svg>
                 </div>
-                {/* 2: Meta SVG */}
+                {/* 2: Meta */}
                 <div className="node node-outer" style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#1877F2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </div>
-                {/* 3: WhatsApp SVG */}
+                {/* 3: WhatsApp */}
                 <div className="node node-outer" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#25D366" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#25D366" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 </div>
-                {/* 4: HubSpot SVG */}
+                {/* 4: HubSpot */}
                 <div className="node node-outer" style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}>
-                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#FF7A59" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 24 24" className="orbit-icon" fill="#FF7A59" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                     <path d="M21.37 11.13h-4.82a4.41 4.41 0 00-3.13-2.92V6.15A2.73 2.73 0 0015 3.5a2.75 2.75 0 00-5.5 0 2.73 2.73 0 001.58 2.65v2.06A4.41 4.41 0 008 11.13H3.13a1.5 1.5 0 00-1.5 1.5 1.5 1.5 0 001.5 1.5H8a4.41 4.41 0 003.08 2.92v2.06a2.73 2.73 0 00-1.58 2.65 2.75 2.75 0 005.5 0 2.73 2.73 0 00-1.58-2.65v-2.06a4.41 4.41 0 003.13-2.92h4.82a1.5 1.5 0 001.5-1.5 1.5 1.5 0 00-1.5-1.5z"/>
                   </svg>
                 </div>
                 {/* 5: Gemini */}
                 <div className="node node-outer" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none text-2xl md:text-3xl animate-pulse">auto_awesome</span>
+                  <span className="material-symbols-outlined text-primary select-none text-2xl md:text-3xl animate-pulse" aria-hidden="true">auto_awesome</span>
                 </div>
                 {/* 6: n8n */}
                 <div className="node node-outer" style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="text-white font-bold text-base md:text-xl select-none">n8n</span>
+                  <span className="text-white font-bold text-base md:text-xl select-none" aria-hidden="true">n8n</span>
                 </div>
                 {/* 7: Insights */}
                 <div className="node node-outer" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-brand-orange select-none">insights</span>
+                  <span className="material-symbols-outlined text-brand-orange select-none" aria-hidden="true">insights</span>
                 </div>
                 {/* 8: Robot */}
                 <div className="node node-outer" style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none">robot_2</span>
+                  <span className="material-symbols-outlined text-primary select-none" aria-hidden="true">robot_2</span>
                 </div>
               </div>
 
               {/* Inner Orbit (4 nodes) */}
               <div className="orbit-inner">
                 <div className="node node-inner" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-white select-none">hub</span>
+                  <span className="material-symbols-outlined text-white select-none" aria-hidden="true">hub</span>
                 </div>
                 <div className="node node-inner" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-brand-orange select-none">query_stats</span>
+                  <span className="material-symbols-outlined text-brand-orange select-none" aria-hidden="true">query_stats</span>
                 </div>
                 <div className="node node-inner" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
-                  <span className="material-symbols-outlined text-primary select-none">forum</span>
+                  <span className="material-symbols-outlined text-primary select-none" aria-hidden="true">forum</span>
                 </div>
                 <div className="node node-inner" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
-                  <span className="material-symbols-outlined text-white select-none">mail</span>
+                  <span className="material-symbols-outlined text-white select-none" aria-hidden="true">mail</span>
                 </div>
               </div>
 
@@ -561,10 +286,10 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-        </section>
+      </section>
 
-        {/* Trusted By */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      {/* Trusted By */}
+      <section aria-label="Trusted By: Our Clients" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
           <div className="border-y border-border-glass py-8 md:py-12 flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-12 opacity-70 hover:opacity-100 transition-opacity duration-500">
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-slate-700 dark:text-slate-300">TRUSTED BY</span>
             <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SimplyHerbal</span>
@@ -573,18 +298,18 @@ export default function HomePage() {
             <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SMB Infratech</span>
             <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Soulvedic</span>
           </div>
-        </section>
+      </section>
 
-        {/* Why AdsVerse - Bento Grid */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
-          <div className="text-center mb-10">
+      {/* Why AdsVerse - Bento Grid */}
+      <section aria-label="Why Choose AdsVerse" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+        <div className="text-center mb-10">
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">THE DIFFERENCE</span>
             <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">Why Businesses Choose <span className="text-brand-orange">AdsVerse</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
               <div className="relative z-10">
-                <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none">smart_toy</span>
+                <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none" aria-hidden="true">smart_toy</span>
                 <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">AI-Native <span className="text-brand-orange">Strategy</span></h3>
                 <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 max-w-lg leading-relaxed">
                   We don't just "use" AI; we build custom GPT agents and Gemini workflows that automate your entire sales funnel, from lead capture to conversion.
@@ -593,14 +318,14 @@ export default function HomePage() {
               <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-orange/15 rounded-full blur-[80px] group-hover:bg-brand-orange/25 transition-all duration-700"></div>
             </div>
             <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
-              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none">data_thresholding</span>
+              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none" aria-hidden="true">data_thresholding</span>
               <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Real-Time Data</h3>
               <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                 Proprietary dashboards that sync with your CRM to give you a 360-degree view of your ROAS in real-time.
               </p>
             </div>
             <div className="glass-card rounded-3xl p-5 sm:p-6 md:p-10 hover:-translate-y-2 group">
-              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none">location_on</span>
+              <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4 md:mb-6 purple-glow select-none" aria-hidden="true">location_on</span>
               <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4 group-hover:text-primary transition-colors">Indore Market Focus</h3>
               <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                 We understand local consumer behavior and optimize campaigns specifically for regional resonance.
@@ -609,7 +334,7 @@ export default function HomePage() {
             <div className="md:col-span-2 glass-card rounded-3xl p-5 sm:p-6 md:p-10 relative overflow-hidden group">
               <div className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 items-center">
                 <div className="flex-1">
-                  <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none">bolt</span>
+                  <span className="material-symbols-outlined text-brand-orange text-4xl md:text-5xl mb-4 md:mb-6 orange-glow select-none" aria-hidden="true">bolt</span>
                   <h3 className="font-sans text-2xl md:text-[28px] font-bold leading-[1.3] text-slate-900 dark:text-white mb-3 md:mb-4">Zero Friction <span className="text-brand-orange">Automation</span></h3>
                   <p className="font-sans text-base md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 leading-relaxed">
                     Integrating n8n and Zapier to ensure your sales team never misses a lead again, with instant WhatsApp follow-ups.
@@ -627,10 +352,10 @@ export default function HomePage() {
               <div className="absolute -left-20 -top-20 w-80 h-80 bg-primary/15 rounded-full blur-[80px] group-hover:bg-primary/25 transition-all duration-700"></div>
             </div>
           </div>
-        </section>
+      </section>
 
-        {/* Core Services */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      {/* Core Services */}
+      <section aria-label="Our Core Digital Marketing Services" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
             <div>
               <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
@@ -654,7 +379,7 @@ export default function HomePage() {
                   <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
                     <div>
                       <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
-                        <span className={`material-symbols-outlined ${textClass} text-2xl md:text-3xl select-none`}>{service.icon}</span>
+                      <span className={`material-symbols-outlined ${textClass} text-2xl md:text-3xl select-none`} aria-hidden="true">{service.icon}</span>
                       </div>
                       <h4 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h4>
                       <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
@@ -662,7 +387,7 @@ export default function HomePage() {
                     <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
                       {service.bullets.map((bullet, idx) => (
                         <li key={idx} className="flex items-center gap-3 text-sm md:text-base">
-                          <span className={`material-symbols-outlined ${textClass} text-lg md:text-xl select-none`}>check_circle</span>
+                          <span className={`material-symbols-outlined ${textClass} text-lg md:text-xl select-none`} aria-hidden="true">check_circle</span>
                           {bullet}
                         </li>
                       ))}
@@ -675,16 +400,16 @@ export default function HomePage() {
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
-              <Link href="/our-services">
+              <Link href="/our-services" aria-label="View all our digital marketing services">
                 More Services
-                <span className="material-symbols-outlined select-none text-base md:text-lg ml-2 group-hover:translate-x-1 transition-transform inline-block">arrow_forward</span>
+                <span className="material-symbols-outlined select-none text-base md:text-lg ml-2 group-hover:translate-x-1 transition-transform inline-block" aria-hidden="true">arrow_forward</span>
               </Link>
             </Button>
           </div>
-        </section>
+      </section>
 
-        {/* What Our Clients Say */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      {/* Testimonials */}
+      <section aria-label="Client Testimonials" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
           <div className="text-center mb-10">
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">TESTIMONIALS</span>
             <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">What Our <span className="text-brand-orange">Clients Say</span></h2>
@@ -695,7 +420,7 @@ export default function HomePage() {
               return (
                 <div key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
                   <div>
-                    <span className={`material-symbols-outlined ${textIconColor} text-3xl md:text-4xl mb-4 md:mb-6 opacity-50 select-none`}>format_quote</span>
+                    <span className={`material-symbols-outlined ${textIconColor} text-3xl md:text-4xl mb-4 md:mb-6 opacity-50 select-none`} aria-hidden="true">format_quote</span>
                     <p className="font-sans text-sm md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 mb-6 md:mb-8 italic">"{t.text}"</p>
                   </div>
                   <div className="flex items-center gap-4 border-t border-border-glass pt-5 md:pt-6">
@@ -711,10 +436,10 @@ export default function HomePage() {
               );
             })}
           </div>
-        </section>
+      </section>
 
-        {/* Frequently Asked Questions */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]" id="faq">
+      {/* FAQ */}
+      <section aria-label="Frequently Asked Questions" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]" id="faq">
           <div className="text-center mb-10">
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">FAQ</span>
             <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">Frequently Asked <span className="text-brand-orange">Questions</span></h2>
@@ -743,37 +468,37 @@ export default function HomePage() {
             </Accordion>
           </div>
           <div className="text-center mt-8">
-            <Link href="/faq" className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2">
-              See All 19 FAQs <span className="material-symbols-outlined select-none text-base">arrow_forward</span>
+            <Link href="/faq" className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See all 19 frequently asked questions">
+              See All 19 FAQs <span className="material-symbols-outlined select-none text-base" aria-hidden="true">arrow_forward</span>
             </Link>
           </div>
-        </section>
+      </section>
 
-        {/* CTA Section */}
-        <section className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
-          <div className="glass-card rounded-[32px] md:rounded-[48px] p-6 sm:p-10 md:p-28 text-center relative overflow-hidden border-primary/30 shadow-[0_0_80px_rgba(139,92,246,0.15)] bg-gradient-to-br from-white/[0.02] to-transparent">
-            <div className="absolute inset-0 bg-nebula opacity-50 pointer-events-none"></div>
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-orange/20 rounded-full blur-[100px]"></div>
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"></div>
-            <div className="relative z-10 max-w-3xl mx-auto space-y-6 md:space-y-10">
-              <h2 className="font-sans text-[28px] sm:text-4xl md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">Ready to Scale Your Business to the <span className="text-brand-orange">Next Level?</span></h2>
-              <p className="font-sans text-base md:text-xl font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
-                Get a free digital audit worth ₹15,000. Our experts will analyze your current funnel and provide a custom AI growth roadmap.
-              </p>
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
-                <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-white px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
-                  <Link href="/contact">Claim Free Audit Now</Link>
-                </Button>
-                <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
-                  <Link href="/contact">
-                    Contact our team <span className="material-symbols-outlined select-none">chat_bubble</span>
-                  </Link>
-                </Button>
-              </div>
+      {/* CTA Section */}
+      <section aria-label="Call to Action: Get a Free Digital Audit" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+        <div className="glass-card rounded-[32px] md:rounded-[48px] p-6 sm:p-10 md:p-28 text-center relative overflow-hidden border-primary/30 shadow-[0_0_80px_rgba(139,92,246,0.15)] bg-gradient-to-br from-white/[0.02] to-transparent">
+          <div className="absolute inset-0 bg-nebula opacity-50 pointer-events-none" aria-hidden="true"></div>
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-orange/20 rounded-full blur-[100px]" aria-hidden="true"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-[100px]" aria-hidden="true"></div>
+          <div className="relative z-10 max-w-3xl mx-auto space-y-6 md:space-y-10">
+            <h2 className="font-sans text-[28px] sm:text-4xl md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">Ready to Scale Your Business to the <span className="text-brand-orange">Next Level?</span></h2>
+            <p className="font-sans text-base md:text-xl font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+              Get a free digital audit worth ₹15,000. Our experts will analyze your current funnel and provide a custom AI growth roadmap.
+            </p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
+              <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-white px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
+                <Link href="/contact">Claim Free Audit Now</Link>
+              </Button>
+              <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
+                <Link href="/contact">
+                  Contact our team <span className="material-symbols-outlined select-none" aria-hidden="true">chat_bubble</span>
+                </Link>
+              </Button>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+    </div>
     </>
   );
 }

@@ -206,13 +206,35 @@ export default function RootLayout({
     <html lang="en-IN" suppressHydrationWarning>
       <head>
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="theme-color" content="#0a0d14" />
+        {/* Preconnect for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+        {/* DNS prefetch for third-party image CDNs */}
+        <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Material Symbols — non-blocking load (print media trick) */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          media="print"
+          // @ts-expect-error onLoad type mismatch for HTML attribute
+          onLoad="this.media='all'"
+        />
+        <noscript>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          />
+        </noscript>
+        {/* Organization & LocalBusiness Schema */}
         <script
           id="adsverse-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
         />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://connect.facebook.net" />
       </head>
       <body className={cn(
         "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",
@@ -230,6 +252,13 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        {/* GTM dataLayer initialization — must run before GTM script */}
+        <script
+          id="gtm-datalayer-init"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];`
+          }}
+        />
         <ScriptOptimizer />
         <ThemeProvider
             attribute="class"
