@@ -880,89 +880,167 @@ function hexToRgba(hex: string, a: number) {
 
 const CSS = `
 :root{
-  --bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--bg4:#e2e8f0;
-  --tx1:#0f172a;--tx2:#334155;--tx3:#64748b;--tx4:#94a3b8;
-  --bd:#e2e8f0;--bd2:#cbd5e1;
-  --or:#f97316;--or-dim:rgba(249,115,22,.08);--or-glow:rgba(249,115,22,.15);
-  --r:12px;--rsm:8px;--rxl:20px;
-  --sh:0 4px 12px rgba(0,0,0,.05);
+  --bg:#ffffff;--bg2:#f4f7ff;--bg3:#edf1ff;--bg4:#e2e8ff;
+  --tx1:#0f172a;--tx2:#1e293b;--tx3:#334155;--tx4:#64748b;
+  --bd:#c8d3f0;--bd2:#b0bedd;
+  --or:#f97316;--or-dim:rgba(249,115,22,.09);--or-glow:rgba(249,115,22,.18);
+  --r:14px;--rsm:9px;--rxl:20px;
+  --sh:0 4px 20px rgba(0,0,0,.07);
 }
 .dark{
-  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
-  --tx1:#e6edf3;--tx2:#c9d1d9;--tx3:#8b949e;--tx4:#6e7681;
-  --bd:#30363d;--bd2:#21262d;
-  --or:#f97316;--or-dim:rgba(249,115,22,.1);--or-glow:rgba(249,115,22,.22);
-  --sh:0 4px 24px rgba(0,0,0,.5);
+  --bg:#070b14;--bg2:#0c1120;--bg3:#111827;--bg4:#162032;
+  --tx1:#f1f5f9;--tx2:#e2e8f0;--tx3:#b8c5d6;--tx4:#8fa0b5;
+  --bd:#1e2d45;--bd2:#253556;
+  --or:#f97316;--or-dim:rgba(249,115,22,.12);--or-glow:rgba(249,115,22,.25);
+  --sh:0 4px 28px rgba(0,0,0,.6);
 }
-.services-page{background:transparent;color:var(--tx1);font-family:var(--font-plus-jakarta), sans-serif;font-size:16px;line-height:1.7;min-height:100vh;width:100%;max-width:100vw;overflow-x:hidden;display:block}
-.title-font{font-family:var(--font-instrument), sans-serif}
+.services-page{background:transparent;color:var(--tx1);font-family:var(--font-plus-jakarta),sans-serif;font-size:16px;line-height:1.7;min-height:100vh;width:100%;max-width:100vw;overflow-x:hidden;display:block}
+.title-font{font-family:var(--font-instrument),sans-serif}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 .section{padding:64px 0}
-.hero{position:relative;overflow:hidden;padding:80px 20px 64px;text-align:center;background:radial-gradient(ellipse 90% 60% at 50% -10%,rgba(249,115,22,.13) 0%,transparent 65%);border-bottom:1px solid var(--bd)}
-.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:var(--rxl);background:var(--or-dim);border:1px solid rgba(249,115,22,.28);font-size:12px;font-weight:600;color:var(--or);letter-spacing:.6px;text-transform:uppercase;margin-bottom:22px}
-.hero h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:800;line-height:1.1;margin-bottom:18px;letter-spacing:-.8px;font-family:var(--font-instrument),sans-serif}
-.hero h1 em{color:var(--or);font-style:normal}
-.hero-sub{font-size:18px;color:var(--tx2);max-width:620px;margin:0 auto 24px;line-height:1.65}
-.hero-intro-box{max-width:760px;margin:0 auto 36px;font-size:14.5px;color:var(--tx3);line-height:1.7;text-align:center;background:var(--bg2);border:1px solid var(--bd);padding:20px;border-radius:var(--r)}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;padding:96px 20px 72px;text-align:center;border-bottom:1px solid var(--bd)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(249,115,22,.18) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,92,246,.1) 0%,transparent 55%);pointer-events:none}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:var(--rxl);background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);font-size:12px;font-weight:700;color:var(--or);letter-spacing:.7px;text-transform:uppercase;margin-bottom:24px;backdrop-filter:blur(8px)}
+.hero h1{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:900;line-height:1.08;margin-bottom:20px;letter-spacing:-1px;font-family:var(--font-instrument),sans-serif}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,#f97316 0%,#fb923c 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--tx2);max-width:620px;margin:0 auto 28px;line-height:1.7;font-weight:500}
+.hero-intro-box{max-width:760px;margin:0 auto 40px;font-size:14.5px;color:var(--tx3);line-height:1.75;text-align:center;background:rgba(255,255,255,.06);border:1px solid var(--bd);padding:22px 28px;border-radius:var(--r);backdrop-filter:blur(12px)}
+.dark .hero-intro-box{background:rgba(255,255,255,.03)}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ── STATS ── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--bd)}
-.stat{background:var(--bg);padding:22px 20px;text-align:center;border-right:1px solid var(--bd)}
-.stat-n{font-family:var(--font-instrument), sans-serif;font-size:28px;font-weight:800;color:var(--or);line-height:1}
-.stat-l{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:700}
-.stat-s{font-size:10px;color:var(--tx4);margin-top:2px;text-transform:uppercase;font-weight:500;letter-spacing:0.4px}
+.stat{background:var(--bg);padding:26px 20px;text-align:center;border-right:1px solid var(--bd);transition:background .2s}
+.stat:hover{background:var(--bg2)}
+.stat-n{font-family:var(--font-instrument),sans-serif;font-size:30px;font-weight:900;background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.stat-l{font-size:12.5px;color:var(--tx2);margin-top:5px;font-weight:700}
+.stat-s{font-size:10.5px;color:var(--tx4);margin-top:3px;text-transform:uppercase;font-weight:500;letter-spacing:0.5px}
+
+/* ── TABS ── */
 .main-tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--bd);position:sticky;top:56px;z-index:40;width:100%;max-width:100vw}
-.main-tab{flex:1;padding:18px 24px;font-family:var(--font-instrument), sans-serif;font-size:15px;font-weight:700;border:none;background:transparent;color:var(--tx3);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.main-tab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(249,115,22,.04)}
+.main-tab{flex:1;padding:18px 24px;font-family:var(--font-instrument),sans-serif;font-size:15px;font-weight:700;border:none;background:transparent;color:var(--tx3);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.main-tab.on{color:var(--or);border-bottom-color:var(--or);background:rgba(249,115,22,.05)}
 .tab-count{background:var(--bg3);border:1px solid var(--bd);color:var(--tx4);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* ── CATEGORY STRIP ── */
 .cat-strip-wrap{background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:112px;z-index:39;width:100%;max-width:100vw}
 .cat-strip{display:flex;gap:8px;padding:12px 40px;overflow-x:auto;scrollbar-width:none}
 .cat-strip::-webkit-scrollbar{display:none}
-.scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--tx1);cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--tx1);cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,0.12)}
+.scroll-arrow:hover{border-color:var(--or);color:var(--or)}
 .scroll-arrow.left{left:8px}.scroll-arrow.right{right:8px}
-.cat-btn{flex-shrink:0;padding:8px 16px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:transparent;color:var(--tx3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.cat-btn.on{background:var(--or);border-color:var(--or);color:#fff}
-.cat-section{margin-bottom:56px;scroll-margin-top:170px}
-.cat-header{display:flex;align-items:center;gap:16px;padding:20px 0;margin-bottom:24px;border-bottom:2px solid var(--bd);position:relative}
-.cat-icon-big{width:44px;height:44px;border-radius:10px;background:var(--cat-dim);border:1.5px solid var(--cat-bd);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.cat-title{font-family:var(--font-instrument), sans-serif;font-size:22px;font-weight:800;color:var(--tx1);line-height:1.2}
-.cat-desc{font-size:13.5px;color:var(--tx3);margin-top:4px;max-width:600px;line-height:1.6;font-weight:500}
-.cat-service-count{font-size:11px;font-weight:700;color:var(--cat-color);background:var(--cat-dim);border:1px solid var(--cat-bd);padding:3px 12px;border-radius:20px;text-transform:uppercase}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:16px}
-.svc{background:var(--bg2);border:1.5px solid var(--bd2);border-radius:var(--r);padding:24px;position:relative;overflow:hidden;transition:all .3s flex flex-col justify-between}
-.svc:hover{border-color:var(--cat-bd2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.15)}
-.svc-name{font-family:var(--font-instrument), sans-serif;font-size:17.5px;font-weight:700;color:var(--tx1);margin-bottom:8px;line-height:1.35;letter-spacing:-0.2px}
-.svc-desc{font-size:13px;color:var(--tx3);line-height:1.6;margin-bottom:12px}
-.svc-full-desc{font-size:13.5px;color:var(--tx2);line-height:1.65;margin-bottom:16px;border-top:1px dashed var(--bd);padding-top:12px}
-.svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;margin-top:auto}
-.svc-tag{padding:3px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:20px;font-size:11px;color:var(--tx3);font-weight:600;letter-spacing:0.2px}
-.svc-actions{display:flex;gap:8px;width:100%;margin-top:16px}
-.svc-btn-quote{flex:1;text-align:center;padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:transparent;color:var(--tx2);transition:all .2s;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.svc-btn-quote:hover{background:var(--bg3);color:var(--tx1);border-color:var(--bd2)}
-.svc-btn-plan{flex:1;text-align:center;padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;border-radius:var(--rsm);border:none;background:var(--or);color:#ffffff;transition:all .2s;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(249,115,22,0.15);text-decoration:none}
-.svc-btn-plan:hover{background:#ea580c;transform:translateY(-1px);box-shadow:0 4px 12px rgba(249,115,22,0.3);color:#ffffff}
+.cat-btn{flex-shrink:0;padding:7px 16px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:var(--bg3);color:var(--tx2);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.cat-btn:hover{border-color:var(--or);color:var(--or);background:var(--or-dim)}
+.cat-btn.on{background:var(--or);border-color:var(--or);color:#fff;box-shadow:0 4px 12px rgba(249,115,22,0.3)}
 
-.process-section{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:72px 0}
-.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px}
-.process-card{background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 24px;position:relative;transition:all .2s}
-.process-card:hover{border-color:var(--or)}
-.process-num{font-family:var(--font-instrument), sans-serif;font-size:44px;font-weight:800;color:var(--or);line-height:1;margin-bottom:12px;opacity:0.95}
-.process-title{font-size:16px;font-weight:700;color:var(--tx1);margin-bottom:8px}
-.process-desc{font-size:13px;color:var(--tx3);line-height:1.6}
+/* ── CATEGORY SECTION ── */
+.cat-section{margin-bottom:60px;scroll-margin-top:170px}
+.cat-header{display:flex;align-items:center;gap:16px;padding:22px 0;margin-bottom:28px;border-bottom:2px solid var(--bd);position:relative}
+.cat-icon-big{width:48px;height:48px;border-radius:12px;background:var(--cat-dim);border:1.5px solid var(--cat-bd);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 4px 12px var(--cat-dim)}
+.cat-title{font-family:var(--font-instrument),sans-serif;font-size:24px;font-weight:900;color:var(--tx1);line-height:1.2}
+.cat-desc{font-size:14px;color:var(--tx2);margin-top:4px;max-width:600px;line-height:1.6;font-weight:500}
+.cat-service-count{margin-left:auto;font-size:11px;font-weight:700;color:var(--cat-color);background:var(--cat-dim);border:1px solid var(--cat-bd);padding:4px 14px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
 
-.verticals-section{padding:72px 0}
-.verticals-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:36px;max-width:880px;margin-left:auto;margin-right:auto}
-.vertical-pill{padding:8px 18px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:999px;font-size:13px;font-weight:600;color:var(--tx2);cursor:default;transition:all .2s}
-.vertical-pill:hover{background:var(--or);border-color:var(--or);color:#fff;transform:scale(1.03)}
+/* ── SERVICE GRID & CARDS ── */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:18px}
+.svc{
+  background:var(--bg2);
+  border:1px solid var(--bd);
+  border-left:4px solid var(--cat-color);
+  border-radius:var(--r);
+  padding:22px 22px 20px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+  display:flex;
+  flex-direction:column;
+}
+.svc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--cat-dim) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.svc:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.18),0 0 0 1px var(--cat-bd);border-color:var(--cat-bd2)}
+.svc:hover::before{opacity:1}
+.svc-name{font-family:var(--font-instrument),sans-serif;font-size:17px;font-weight:800;color:var(--tx1);margin-bottom:7px;line-height:1.3;letter-spacing:-.2px}
+.svc-desc{font-size:13px;color:var(--tx3);line-height:1.6;margin-bottom:0}
+.svc-full-desc{font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:14px;border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.svc-tag{padding:3px 10px;background:var(--cat-dim);border:1px solid var(--cat-bd);border-radius:20px;font-size:10.5px;color:var(--cat-color);font-weight:700;letter-spacing:.2px}
+.dark .svc-tag{background:rgba(255,255,255,.06)}
+.svc-actions{display:flex;gap:8px;width:100%;margin-top:auto}
+.svc-btn-quote{
+  flex:1;text-align:center;padding:9px 12px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;border-radius:var(--rsm);
+  border:1.5px solid var(--cat-bd2);background:transparent;color:var(--tx2);
+  transition:all .2s;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;text-decoration:none;
+}
+.svc-btn-quote:hover{background:var(--cat-dim);color:var(--tx1);border-color:var(--cat-color)}
+.svc-btn-plan{
+  flex:1;text-align:center;padding:9px 12px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;border-radius:var(--rsm);
+  border:none;background:var(--or);color:#fff;
+  transition:all .2s;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;box-shadow:0 3px 10px rgba(249,115,22,.25);text-decoration:none;
+}
+.svc-btn-plan:hover{background:#ea580c;transform:translateY(-1px);box-shadow:0 6px 16px rgba(249,115,22,.35);color:#fff}
+.svc-price-badge{font-size:11px;font-weight:800;color:var(--or);background:var(--or-dim);border:1px solid rgba(249,115,22,.25);padding:2px 9px;border-radius:20px;white-space:nowrap}
 
-.faq-section{background:var(--bg2);border-top:1px solid var(--bd);padding:72px 0}
+/* ── PROCESS SECTION ── */
+.process-section{background:var(--bg2);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:80px 0}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px}
+.process-card{
+  background:var(--bg);
+  border:1px solid var(--bd);
+  border-top:3px solid transparent;
+  border-radius:var(--r);
+  padding:28px 24px;
+  position:relative;
+  transition:all .25s;
+}
+.process-card:hover{border-top-color:var(--or);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.15)}
+.process-num{font-family:var(--font-instrument),sans-serif;font-size:48px;font-weight:900;background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:14px}
+.process-title{font-size:16px;font-weight:800;color:var(--tx1);margin-bottom:8px}
+.process-desc{font-size:13px;color:var(--tx3);line-height:1.65}
+
+/* ── INDUSTRY VERTICALS ── */
+.verticals-section{padding:80px 0}
+.verticals-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:36px;max-width:900px;margin-left:auto;margin-right:auto}
+.vertical-pill{
+  padding:8px 20px;
+  background:var(--bg2);
+  border:1.5px solid var(--bd);
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--tx2);
+  cursor:default;
+  transition:all .2s;
+}
+.vertical-pill:hover{background:var(--or);border-color:var(--or);color:#fff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(249,115,22,.25)}
+
+/* ── FAQ ── */
+.faq-section{background:var(--bg2);border-top:1px solid var(--bd);padding:80px 0}
 .faq-wrap{max-width:760px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px}
 .faq-details{background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s}
-.faq-details[open]{border-color:var(--or)}
-.faq-summary{padding:18px 24px;font-weight:700;font-size:15px;color:var(--tx1);cursor:pointer;list-style:none;position:relative;display:flex;justify-content:between;align-items:center;outline:none}
+.faq-details[open]{border-color:rgba(249,115,22,.5);box-shadow:0 4px 20px rgba(249,115,22,.08)}
+.faq-summary{
+  padding:18px 24px;
+  font-weight:700;
+  font-size:15px;
+  color:var(--tx1);
+  cursor:pointer;
+  list-style:none;
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  outline:none;
+  gap:12px;
+}
 .faq-summary::-webkit-details-marker{display:none}
-.faq-summary::after{content:'+';font-family:var(--font-instrument),sans-serif;font-size:20px;font-weight:600;color:var(--tx3);transition:transform .2s}
-.faq-details[open] .faq-summary::after{content:'-';color:var(--or)}
-.faq-content{padding:0 24px 20px;font-size:13.5px;color:var(--tx3);line-height:1.7}
+.faq-summary::after{content:'+';font-family:var(--font-instrument),sans-serif;font-size:22px;font-weight:700;color:var(--tx3);transition:all .2s;flex-shrink:0}
+.faq-details[open] .faq-summary::after{content:'−';color:var(--or)}
+.faq-content{padding:0 24px 22px;font-size:13.5px;color:var(--tx2);line-height:1.75}
 
 @media(max-width:1024px){
   .process-grid{grid-template-columns:repeat(2,1fr)}
@@ -972,6 +1050,7 @@ const CSS = `
   .stat{border-bottom:1px solid var(--bd)}
   .stat:nth-child(2n){border-right:none}
   .process-grid{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:1fr}
 }
 `;
 
@@ -1004,15 +1083,15 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
   const styleVars = {
     "--cat-color": cat.color,
     "--cat-dim": hexToRgba(cat.color, 0.1),
-    "--cat-bd": hexToRgba(cat.color, 0.25),
-    "--cat-bd2": hexToRgba(cat.color, 0.4),
+    "--cat-bd": hexToRgba(cat.color, 0.22),
+    "--cat-bd2": hexToRgba(cat.color, 0.42),
   } as React.CSSProperties;
 
   return (
     <div className="cat-section" id={cat.id} style={styleVars}>
       <div className="cat-header">
         <div className="cat-icon-big">{cat.icon}</div>
-        <div className="cat-info">
+        <div className="cat-info" style={{ flex: 1, minWidth: 0 }}>
           <div className="cat-title">{cat.label}</div>
           <div className="cat-desc">{cat.desc}</div>
         </div>
@@ -1023,35 +1102,32 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
           const isSelected = selectedServices.some(item => item.name === s.name);
           const price = getServicePrice(s.name);
           return (
-            <div className="svc flex flex-col justify-between" key={s.name}>
-              <div>
-                <div className="svc-name flex justify-between items-start gap-2">
-                  <span>{s.name}</span>
-                  <span className="text-xs font-bold text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-full shrink-0">
-                    ₹{price.toLocaleString('en-IN')}
-                  </span>
+            <div className="svc" key={s.name}>
+              {/* Top: name + price */}
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 7 }}>
+                  <span className="svc-name" style={{ margin: 0 }}>{s.name}</span>
+                  <span className="svc-price-badge">₹{price.toLocaleString('en-IN')}</span>
                 </div>
                 <p className="svc-desc">{s.desc}</p>
                 <p className="svc-full-desc">{s.fullDesc || s.desc}</p>
               </div>
-              <div className="mt-auto">
-                <div className="svc-tags">
-                  {s.tags?.map((t: string) => <span className="svc-tag" key={t}>{t}</span>)}
-                </div>
-                <div className="svc-actions">
-                  <Link href="/contact" className="svc-btn-quote">
-                    Get Free Quote
-                  </Link>
-                  <button
-                    onClick={() => onToggleService({ name: s.name, desc: s.desc, price })}
-                    className={`svc-btn-plan border-none outline-none text-center justify-center items-center flex transition-all ${
-                      isSelected ? "bg-red-500/20 text-red-500 hover:bg-red-500/30 border border-red-500/30" : ""
-                    }`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {isSelected ? "Remove Plan" : "Select Plan"}
-                  </button>
-                </div>
+              {/* Tags */}
+              <div className="svc-tags" style={{ marginTop: 'auto' }}>
+                {s.tags?.map((t: string) => <span className="svc-tag" key={t}>{t}</span>)}
+              </div>
+              {/* Actions */}
+              <div className="svc-actions">
+                <Link href="/contact" className="svc-btn-quote">
+                  Get Free Quote
+                </Link>
+                <button
+                  onClick={() => onToggleService({ name: s.name, desc: s.desc, price })}
+                  className="svc-btn-plan"
+                  style={isSelected ? { background: 'rgba(239,68,68,0.15)', color: '#ef4444', boxShadow: '0 3px 10px rgba(239,68,68,.2)', border: '1.5px solid rgba(239,68,68,.35)' } : {}}
+                >
+                  {isSelected ? "✓ Remove" : "Select Plan"}
+                </button>
               </div>
             </div>
           );
@@ -1180,25 +1256,38 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
       {/* ── HERO ── */}
       <div className="hero">
         <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
-          <div className="hero-pill">AI-First Agency · Vijay Nagar, Indore</div>
+          <div className="hero-pill">
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--or)', display: 'inline-block', boxShadow: '0 0 8px var(--or)' }} />
+            AI-First Agency · Vijay Nagar, Indore
+          </div>
           <h1>One Agency.<br /><em>Every Service</em> You Need.</h1>
           <p className="hero-sub">
-            {isHi 
+            {isHi
               ? "डिजिटल मार्केटिंग से लेके व्हाट्सएप एआई बॉट्स तक — इंदौर के SMBs के लिए कंप्लीट डिजिटल इकोसिस्टम एक ही जगह।"
               : "From digital marketing to WhatsApp AI bots — a complete digital ecosystem for Indore's SMBs in one place."}
           </p>
           <div className="hero-intro-box">
-            AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore. 
-            We offer 75+ in-house digital marketing and automation services — from <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link> and 
-            Google Ads to <Link href="/services/whatsapp-bot" className="text-orange-500 hover:underline font-semibold">WhatsApp AI bots</Link>, <Link href="/services/automation-tools" className="text-orange-500 hover:underline font-semibold">n8n CRM workflows</Link>, and custom <Link href="/portfolio" className="text-orange-500 hover:underline font-semibold">Next.js websites</Link> web development. 
-            No outsourcing. No white-labelling. Every service is delivered by our core team with 
+            AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore.
+            We offer 75+ in-house digital marketing and automation services — from{" "}
+            <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link> and
+            Google Ads to{" "}
+            <Link href="/services/whatsapp-bot" className="text-orange-500 hover:underline font-semibold">WhatsApp AI bots</Link>,{" "}
+            <Link href="/services/automation-tools" className="text-orange-500 hover:underline font-semibold">n8n CRM workflows</Link>, and custom{" "}
+            <Link href="/portfolio" className="text-orange-500 hover:underline font-semibold">Next.js websites</Link>.
+            No outsourcing. No white-labelling. Every service is delivered by our core team with
             full transparency, live dashboards, and a performance guarantee.
           </div>
           <div className="hero-btns">
-            <Link href="/contact" className="px-7 py-3.5 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
+            <Link
+              href="/contact"
+              className="px-8 py-3.5 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5"
+            >
               Get Free Strategy Call →
             </Link>
-            <Link href="/pricing" className="px-7 py-3.5 border-2 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg font-bold hover:border-orange-500 hover:text-orange-500 transition-all">
+            <Link
+              href="/pricing"
+              className="px-8 py-3.5 border-2 border-white/20 dark:border-white/10 text-slate-700 dark:text-slate-200 bg-white/60 dark:bg-white/5 backdrop-blur-sm rounded-xl font-bold hover:border-orange-500 hover:text-orange-500 transition-all"
+            >
               View Pricing
             </Link>
           </div>
@@ -1208,12 +1297,13 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
       {/* ── STATS ── */}
       <div className="stats">
         {[
-          ["113+", "Brands Served", "Pan-India since 2022"], 
-          ["75+", "Services In-House", "Zero outsourcing"], 
-          ["3.8x", "Avg. ROAS", "Across active ad accounts"], 
-          ["4.9★", "Google Rating", "Verified client reviews"]
-        ].map(([n, l, s]) => (
+          { n: "113+", l: "Brands Served", s: "Pan-India since 2022", icon: "🏆" },
+          { n: "75+",  l: "Services In-House", s: "Zero outsourcing", icon: "⚡" },
+          { n: "3.8x", l: "Avg. ROAS", s: "Across active ad accounts", icon: "📈" },
+          { n: "4.9★", l: "Google Rating", s: "Verified client reviews", icon: "⭐" },
+        ].map(({ n, l, s, icon }) => (
           <div className="stat" key={l}>
+            <div style={{ fontSize: 22, marginBottom: 4 }}>{icon}</div>
             <div className="stat-n">{n}</div>
             <div className="stat-l">{l}</div>
             <div className="stat-s">{s}</div>
