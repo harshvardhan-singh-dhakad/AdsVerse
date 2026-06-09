@@ -156,6 +156,45 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      <div className="border-t border-border/50 my-16" />
+
+      <section className="max-w-4xl mx-auto space-y-12">
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold font-headline text-white">Frequently Asked <span className="text-brand-orange">Questions</span></h2>
+          <p className="mt-2 text-slate-400">Everything you need to know about working with AdsVerse.</p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8 pt-4">
+          <div className="space-y-2">
+            <h3 className="text-lg font-bold text-white font-headline">What happens after I submit the contact form?</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Once you submit the form, our digital marketing and automation consultants in Vijay Nagar, Indore will analyze your website and current digital presence. We will reach out to you via email or phone within 2 business hours to schedule a 30-minute discovery call where we share our initial analysis.
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <h3 className="text-lg font-bold text-white font-headline">Is the initial audit and consultation really free?</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Yes, absolutely. We provide a complimentary SEO audit and business workflow automation assessment. This audit identifies clear growth bottlenecks in your current search presence, paid campaign performance, and manual workflows, with zero obligation to hire us.
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <h3 className="text-lg font-bold text-white font-headline">Do you serve clients outside of Indore, India?</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Yes! While our primary office is located in Scheme No. 54, Vijay Nagar, Indore, we serve clients globally. We regularly collaborate with business owners, brands, and agencies across India, North America, and the Middle East using Google Meet and Zoom for smooth communication.
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <h3 className="text-lg font-bold text-white font-headline">What services are covered under custom AI automation?</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Our AI automation capabilities include building custom n8n/Make automation workflows, CRM integrations (Zoho, HubSpot, Salesforce), automated WhatsApp AI customer support bots powered by Gemini API, and auto-lead routing systems to streamline your sales team's daily processes.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
     </>
   );

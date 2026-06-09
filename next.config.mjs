@@ -127,6 +127,10 @@ const nextConfig = {
       { source: '/hi/:path*', destination: '/:path*', permanent: true },
       { source: '/en', destination: '/', permanent: true },
       { source: '/hi', destination: '/', permanent: true },
+      { source: '/blog/content-is-king', destination: '/blog/why-content-is-still-king-in-2026-for-digital-marketing', permanent: true },
+      { source: '/blog/how-local-seo-works-for-indore-businesses', destination: '/blog/ultimate-local-seo-gbp-playbook-indore', permanent: true },
+      { source: '/blog/indore-real-estate-case-study', destination: '/blog/real-estate-digital-marketing-case-study-indore', permanent: true },
+      { source: '/blog/digital-marketing-services-indore-26', destination: '/blog/digital-marketing-services-indore', permanent: true },
     ];
   },
 };

@@ -1,5 +1,5 @@
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 600; // Cache for 10 minutes
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, User, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
-import { getFirestore, collection, query, orderBy, getDocs, where } from "firebase/firestore";
+import { getFirestore, collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 
 import { db } from "@/lib/firebase-server";
 
@@ -53,7 +53,8 @@ async function getBlogPosts() {
     const q = query(
       collection(db, "public_blogPosts"),
       where("publishedDate", "<=", now),
-      orderBy("publishedDate", "desc")
+      orderBy("publishedDate", "desc"),
+      limit(15)
     );
     const snap = await getDocs(q);
     const posts = snap.docs.map(doc => ({

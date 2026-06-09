@@ -377,6 +377,53 @@ const SEOAuditPage = () => {
                 <span className="block sm:inline ml-2">{error}</span>
             </div>
           )}
+
+          {/* Detailed Informational Guide to increase word count and add SEO value */}
+          <div className="mt-24 max-w-4xl mx-auto border-t border-border pt-16 text-left space-y-12">
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl font-bold font-headline text-foreground">Why Perform a Website SEO Audit?</h2>
+              <p className="max-w-2xl mx-auto text-sm text-muted-foreground">
+                In today's digital landscape, your website is the virtual storefront of your business. If it doesn't rank on search engines like Google, you are missing out on high-intent organic traffic and qualified leads. An SEO audit acts as a diagnostic health check to identify what is holding your site back.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold font-headline text-foreground">1. On-Page SEO Checklist</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Our instant auditing tool scans the HTML structure of your page. It analyzes critical metadata like the title tag, meta description, and header tags hierarchy (H1, H2, H3). These elements act as flags for Google's search crawlers, telling them what your content is about and how relevant it is to a searcher's query.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold font-headline text-foreground">2. Technical Crawlability</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Even with great content, technical issues can prevent search engines from indexing your pages. The tool checks for canonical links (ensuring search engines index the primary URL without duplicates), robots.txt configuration, structured schema markup, and general accessibility rules that keep search bots happy.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold font-headline text-foreground">3. Core Web Vitals & Speed</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Website load speed and performance are official Google ranking factors. A slow site frustrates users and leads to high bounce rates. We analyze page speed metrics, image sizes, render-blocking scripts, and server response times to ensure your visitors have a fast, frictionless experience on all devices.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold font-headline text-foreground">4. Mobile Responsiveness</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  With over 60% of searches happening on mobile devices, mobile-first indexing is Google's default behavior. Our system evaluates how well your website scales on mobile layouts, ensuring text is readable, click targets are properly spaced, and navigation is intuitive on smartphones.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-card/40 border border-border rounded-xl p-6 text-center space-y-3">
+              <h3 className="text-lg font-bold font-headline text-foreground">How to Use Your Audit Report</h3>
+              <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Once the audit is complete, you will receive an overall grade (A to F) and a detailed checklist of high, medium, and low-priority fixes. You can download the report as a PDF and hand it to your development team, or contact our SEO specialists in Indore to execute the recommended optimization strategy.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 

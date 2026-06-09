@@ -74,6 +74,40 @@ export default function PortfolioPage() {
       </section>
       
       <PortfolioGrid />
+
+      <div className="border-t border-primary/10 my-20" />
+
+      <section className="max-w-5xl mx-auto space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold font-headline text-foreground">Our Results-Driven <span className="text-primary">Approach</span></h2>
+          <p className="max-w-2xl mx-auto text-muted-foreground">
+            We don't believe in vanity metrics like likes or clicks. We focus on building high-performance digital systems that generate real inquiries, lower acquisition costs, and maximize revenue.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 pt-4">
+          <div className="bg-card/30 backdrop-blur-sm border border-primary/10 rounded-2xl p-6 space-y-4">
+            <h3 className="text-xl font-bold font-headline text-foreground">Data-Backed Paid Campaigns</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              We design and manage Google Ads, Meta Ads (Facebook & Instagram), and local PPC campaigns that target actual conversions. By setting up deep conversion tracking and custom audiences, we optimize for qualified business leads and actual sales ROI rather than generic impressions.
+            </p>
+          </div>
+
+          <div className="bg-card/30 backdrop-blur-sm border border-primary/10 rounded-2xl p-6 space-y-4">
+            <h3 className="text-xl font-bold font-headline text-foreground">Technical SEO & Content Strategy</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Search engine optimization is the foundation of sustainable business growth. We focus on clean code structure, mobile optimization, semantic keyword research, and high-quality local SEO schema configurations to ensure your website outranks competitors and commands search authority.
+            </p>
+          </div>
+
+          <div className="bg-card/30 backdrop-blur-sm border border-primary/10 rounded-2xl p-6 space-y-4">
+            <h3 className="text-xl font-bold font-headline text-foreground">AI Workflows & CRM Automation</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Manual lead handling leads to delayed follow-ups and lost revenue. We eliminate operational friction by integrating n8n workflows, CRM databases (Zoho, HubSpot), and custom WhatsApp bots powered by Gemini API, ensuring 24/7 client response and automated lead nurturing.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
     </>
   );
