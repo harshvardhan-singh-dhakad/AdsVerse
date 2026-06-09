@@ -361,7 +361,7 @@ export default function HomePage() {
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
-              <Link href="/our-services" prefetch={false} aria-label="View all our digital marketing services" className="flex items-center gap-2">
+              <Link href="/our-services" prefetch={false} aria-label="More Services — View all our digital marketing services" className="flex items-center gap-2">
                 More Services
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
@@ -412,7 +412,7 @@ export default function HomePage() {
             <FAQAccordion faqs={faqs} />
           </div>
           <div className="text-center mt-8">
-            <Link href="/faq" prefetch={false} className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See all 19 frequently asked questions">
+            <Link href="/faq" prefetch={false} className="text-primary hover:text-white transition-colors font-bold inline-flex items-center gap-2" aria-label="See All 19 FAQs — frequently asked questions">
               See All 19 FAQs <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>

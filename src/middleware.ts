@@ -39,5 +39,15 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|images|favicon\\.ico|favicon\\.svg|favicon-96x96\\.png|apple-touch-icon\\.png|llms\\.txt|\\.well-known|web-app-manifest|robots\\.txt|sitemap\\.xml).*)'],
+  matcher: [
+    '/en',
+    '/en/:path*',
+    '/hi',
+    '/hi/:path*',
+    '/admin',
+    '/admin/:path*',
+    '/login',
+    '/get-id',
+  ],
 };
+

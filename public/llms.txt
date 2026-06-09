@@ -33,8 +33,18 @@ Static SSG pages generated for 18 specific Indian business hubs:
 - **Jammu & Kashmir:** Srinagar, Jammu
 - **Northeast India:** Guwahati
 
+## Key Resources
+- [Homepage](https://adsverse.in)
+- [Our Services](https://adsverse.in/our-services)
+- [Insights & Blog](https://adsverse.in/blog)
+- [Locations Served](https://adsverse.in/locations)
+- [Contact Team](https://adsverse.in/contact)
+- [Portfolio & Case Studies](https://adsverse.in/portfolio)
+- [Pricing & Retainers](https://adsverse.in/pricing)
+
 ## Core Contacts
-- **Primary Domain:** https://adsverse.in
+- **Primary Domain:** [adsverse.in](https://adsverse.in)
 - **General Inquiries:** contact@adsverse.in
 - **Location Address:** Vijay Nagar, Indore, Madhya Pradesh, 452010, India
 - **Business Calls:** +91-9685123339
+
