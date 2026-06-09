@@ -2,6 +2,9 @@
 
 AdsVerse is India's leading AI-first performance marketing and business automation agency. Headquartered in Vijay Nagar, Indore, Madhya Pradesh, we serve fast-growing SMBs, retail merchants, D2C brands, and educational institutions across India.
 
+> For the comprehensive website documentation and full service package details, see [llms-full.txt](https://adsverse.in/llms-full.txt).
+
+
 ## Core Metrics (May 2026)
 - **HQ Location:** Vijay Nagar, Indore, MP, India
 - **Clients Served:** 113+ brands across India

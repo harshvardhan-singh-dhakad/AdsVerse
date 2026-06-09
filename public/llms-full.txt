@@ -1,0 +1,81 @@
+# AdsVerse | AI-First Digital Marketing & Automation Agency — Full Documentation
+
+AdsVerse is India's leading AI-first performance marketing and business automation agency. Headquartered in Vijay Nagar, Indore, Madhya Pradesh, we build conversational sales funnels, n8n workflow automations, and custom AI agents to drive 10x ROI for fast-growing SMBs, retail merchants, D2C brands, and local services.
+
+---
+
+## 1. Brand & Organization Profile
+
+- **Agency Name:** AdsVerse
+- **Focus:** AI-First Digital Marketing, Answer Engine Optimization (AEO), Generative Engine Optimization (GEO), n8n Workflow Automation, WhatsApp Business API Integrations, CRM Setup.
+- **HQ Location:** Vijay Nagar, Indore, Madhya Pradesh, 452010, India
+- **Primary Domain:** https://adsverse.in
+- **Email:** contact@adsverse.in
+- **Phone:** +91-9685123339
+- **Operating Hours:** Monday to Saturday, 10:00 AM – 7:00 PM (IST)
+- **Primary Target Audience:** Indian SMBs, local real estate builders, service studios, e-commerce retailers in Indore and Tier-2 Indian hubs.
+
+---
+
+## 2. Core Service Catalog & Pricing Packages
+
+### WhatsApp AI Sales Bot & Automation
+Official WhatsApp Business Cloud API integration powered by custom conversational LLMs (Gemini/GPT) for 24/7 lead qualification, scheduling, and multi-language Hinglish/English support.
+- **Starter Bot (₹8,000 one-time setup):** Automated greeting & FAQ replies, lead capture flow, basic keyword triggers, official API setup.
+- **Pro Sales Bot (₹20,000 one-time setup):** AI-powered dynamic conversation flows, lead qualification & scoring, CRM/Google Sheets integration, appointment booking automation, monthly reports.
+- **Enterprise Suite (Custom):** Custom AI voice/text agents, multi-language Hinglish/English support, deep accounting/CRM/payment API integrations, custom analytics dashboard.
+- *Compliance FAQ:* Official WhatsApp API usage ensures 100% anti-ban compliance. Starter bots launch in 5-7 days; Pro bots take 2-3 weeks.
+
+### Custom AI Agents & n8n Workflow Automation
+Connecting APIs, databases, CRMs, and LLMs without custom coding overhead to run backend business operations 24/7.
+- **n8n Automation Starter (₹15,000 one-time):** Lead-to-CRM sync, automatic WhatsApp/Email notifications, Notion dashboard integrations.
+- **Custom CRM Automation (₹35,000 one-time):** Full n8n workflow setup, lead qualification filtering, accounting sync, automatic sales rep assignment.
+- **Enterprise Automation (Custom):** Deep database sync, custom API development, LLM data classification pipelines, full maintenance retainers.
+
+### Meta & Google Performance Ads
+Targeted traffic campaigns focused on cost-per-acquisition (CPA) and verifiable return on ad spend (ROAS).
+- **Meta Ads Setup (₹15,000 one-time):** Funnel design, pixel setup, pixel event diagnostics, 3 custom ad creatives.
+- **Growth retainer (₹20,000/month):** End-to-end management of Meta & Google PPC ads, weekly optimizations, custom landing page conversion rate optimization (CRO).
+- **Scale retainer (₹45,000/month):** Multi-channel advertising (Meta, Google, YouTube, LinkedIn), landing page UI testing, Conversions API setup, custom analytics.
+
+### Web Design & Development
+Modern, sub-second loading React storefronts and Next.js business sites built for Core Web Vitals and zero security vulnerability.
+- **Single Page Landing (₹12,000):** CRO layout, mobile-optimized, fast load speed, analytics tracking hooks.
+- **Business Website (₹25,000):** Up to 10 Next.js pages, custom CMS integration, Tailwind CSS layout, responsive breakpoints.
+- **E-Commerce Store (₹50,000):** Cart hooks, payment gateway integration, database sync, inventory dashboards, SEO indexing rules.
+
+### SEO & GEO (Generative Engine Optimization)
+Structuring and writing content so that search engines (Google) and AI Overviews/assistant tools (ChatGPT, Claude, Gemini, Perplexity) select and cite the brand in their replies.
+- Focuses on H2/H3 direct question-answer paragraph formatting, structured JSON-LD schemas, and entity-association.
+
+---
+
+## 3. Cities & Regional Service Coverage
+
+We provide local SEO and digital marketing services customized for the following Indian business markets:
+- **Madhya Pradesh:** Indore (Vijay Nagar, LIG, Palasia, Rajwada), Bhopal, Jabalpur, Gwalior, Ujjain.
+- **Rajasthan:** Jaipur, Jodhpur, Udaipur, Kota.
+- **Chhattisgarh:** Raipur, Bilaspur.
+- **Uttar Pradesh:** Lucknow, Kanpur, Noida.
+- **Bihar:** Patna.
+- **Jammu & Kashmir:** Srinagar, Jammu.
+- **Northeast India:** Guwahati, Shillong, Gangtok.
+
+---
+
+## 4. Key Case Studies & Client Outcomes
+
+- **RK Traders (Indore):** Meta Ads optimization reduced lead cost by 40% and doubled inquiry volume within 90 days.
+- **Bloom Beauty Studio (Vijay Nagar):** WhatsApp automated bot qualified and booked over 70% of inbound appointments, freeing up 15+ manual hours weekly.
+- **TechBridge Solutions (Indore):** Local SEO and Generative Engine entity optimization placed target terms on Page 1 of Google and within top citations.
+
+---
+
+## 5. Contact & Support Resources
+
+- **Main Website:** https://adsverse.in
+- **Contact Page:** https://adsverse.in/contact
+- **Locations Page:** https://adsverse.in/locations
+- **Services Catalog:** https://adsverse.in/our-services
+- **Blog Insights:** https://adsverse.in/blog
+- **Pricing Retainers:** https://adsverse.in/pricing
