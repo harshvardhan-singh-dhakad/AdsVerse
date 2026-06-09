@@ -38,6 +38,7 @@ Static SSG pages generated for 18 specific Indian business hubs:
 
 ## Key Resources
 - [Homepage](https://adsverse.in)
+- [About Agency](https://adsverse.in/about)
 - [Our Services](https://adsverse.in/our-services)
 - [Insights & Blog](https://adsverse.in/blog)
 - [Locations Served](https://adsverse.in/locations)
