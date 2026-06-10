@@ -131,6 +131,7 @@ const nextConfig = {
       { source: '/blog/how-local-seo-works-for-indore-businesses', destination: '/blog/ultimate-local-seo-gbp-playbook-indore', permanent: true },
       { source: '/blog/indore-real-estate-case-study', destination: '/blog/real-estate-digital-marketing-case-study-indore', permanent: true },
       { source: '/blog/digital-marketing-services-indore-26', destination: '/blog/digital-marketing-services-indore', permanent: true },
+      { source: '/terms', destination: '/terms-of-service', permanent: true },
     ];
   },
 };

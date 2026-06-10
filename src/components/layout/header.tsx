@@ -43,7 +43,7 @@ export function Header({ navLinks }: HeaderProps) {
         </div>
 
         {/* Center: Desktop navigation */}
-        <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-8 items-center">
+        <nav aria-label="Main Navigation" className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-8 items-center">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
@@ -91,7 +91,7 @@ export function Header({ navLinks }: HeaderProps) {
                         <span className="text-brand-orange font-bold text-2xl leading-none">•</span>
                       </Link>
                     </div>
-                    <nav className="flex flex-col gap-4 mt-6">
+                    <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 mt-6">
                       {navLinks.map(({ href, label }) => (
                         <Link
                           key={href}

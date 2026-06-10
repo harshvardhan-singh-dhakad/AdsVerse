@@ -65,6 +65,11 @@ export default function PrivacyPolicyPage() {
             <li>To protect against legal liability</li>
         </ul>
 
+        <h2 className="text-3xl font-bold text-primary font-headline">No Third-Party Selling</h2>
+        <p>
+            We do not sell, trade, rent, or otherwise disclose your personal data to third parties for marketing or commercial purposes.
+        </p>
+
         <h2 className="text-3xl font-bold text-primary font-headline">Data Security</h2>
         <p>
             The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.

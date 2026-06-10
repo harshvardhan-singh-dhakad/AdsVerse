@@ -172,6 +172,45 @@ const faqJsonLd = {
   }))
 };
 
+const qaPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "QAPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
+
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Get Started with AdsVerse AI Marketing",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Book Free Audit",
+      "text": "Fill out the free audit form at https://adsverse.in/contact"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Strategy Call",
+      "text": "Our team reviews your business and suggests AI marketing plan"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Campaign Launch",
+      "text": "We launch and monitor campaigns with real-time AI optimization"
+    }
+  ]
+};
+
 // Orbit styles have been moved to globals.css for browser caching
 
 export default function HomePage() {
@@ -183,6 +222,18 @@ export default function HomePage() {
         id="home-faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      {/* QAPage Schema for AEO/FAQ */}
+      <script
+        id="home-qa-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(qaPageJsonLd) }}
+      />
+      {/* HowTo Schema for Getting Started */}
+      <script
+        id="home-howto-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       {/* Orbit styles moved to globals.css — no inline style injection */}
 
@@ -207,8 +258,8 @@ export default function HomePage() {
                 n8n automation, WhatsApp bots, Google &amp; Meta campaigns, and Gemini AI workflows — built for <span className="text-brand-orange font-bold">Indore SMBs</span>.
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
-                  <Link href="/contact" prefetch={false} className="flex items-center gap-2">
+                <Button asChild size="lg" aria-label="Get Free Audit" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
+                  <Link href="/contact" prefetch={false} aria-label="Get Free Audit" className="flex items-center gap-2">
                     Get Free Audit <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Link>
                 </Button>
@@ -313,7 +364,7 @@ export default function HomePage() {
       </section>
 
       {/* Core Services */}
-      <section aria-label="Our Core Digital Marketing Services" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      <section aria-label="Our Services" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
             <div>
               <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
@@ -327,37 +378,39 @@ export default function HomePage() {
               From performance marketing to deep-tech automation, we provide the full stack.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <ul aria-label="Core Services" className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {coreServices.map((service, index) => {
               const borderClass = service.color === "brand-orange" ? "border-t-brand-orange" : "border-t-primary";
               const bgClass = service.color === "brand-orange" ? "bg-brand-orange/10 group-hover:bg-brand-orange/20" : "bg-primary/10 group-hover:bg-primary/20";
               const textClass = service.color === "brand-orange" ? "text-brand-orange" : "text-primary";
               return (
-                <Link key={index} href={service.href} prefetch={false} className="block group">
-                  <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
-                    <div>
-                      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
-                        {(() => {
-                          const IconComponent = iconMap[service.icon] || Code2;
-                          return <IconComponent className={cn(textClass, "h-7 w-7 md:h-8 md:w-8")} aria-hidden="true" />;
-                        })()}
+                <li key={index}>
+                  <Link href={service.href} prefetch={false} className="block group h-full">
+                    <div className={`glass-card p-5 sm:p-8 md:p-10 h-full rounded-3xl border-t-4 ${borderClass} flex flex-col justify-between`}>
+                      <div>
+                        <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${bgClass} flex items-center justify-center mb-6 md:mb-8 transition-colors`}>
+                          {(() => {
+                            const IconComponent = iconMap[service.icon] || Code2;
+                            return <IconComponent className={cn(textClass, "h-7 w-7 md:h-8 md:w-8")} aria-hidden="true" />;
+                          })()}
+                        </div>
+                        <h3 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h3>
+                        <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
                       </div>
-                      <h3 className="font-sans text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 md:mb-4">{service.title}</h3>
-                      <p className="font-sans text-sm md:text-base leading-relaxed text-slate-800 dark:text-slate-200 mb-6 md:mb-8">{service.description}</p>
+                      <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
+                        {service.bullets.map((bullet, idx) => (
+                          <li key={idx} className="flex items-center gap-3 text-sm md:text-base">
+                            <CheckCircle2 className={cn(textClass, "h-4 w-4 md:h-5 md:w-5 shrink-0")} aria-hidden="true" />
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <ul className="space-y-3 md:space-y-4 text-slate-900 dark:text-slate-100 font-medium">
-                      {service.bullets.map((bullet, idx) => (
-                        <li key={idx} className="flex items-center gap-3 text-sm md:text-base">
-                          <CheckCircle2 className={cn(textClass, "h-4 w-4 md:h-5 md:w-5 shrink-0")} aria-hidden="true" />
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Link>
+                  </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
@@ -375,11 +428,11 @@ export default function HomePage() {
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">TESTIMONIALS</span>
             <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">What Our <span className="text-brand-orange">Clients Say</span></h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <ul aria-label="Client Testimonials" className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((t, index) => {
               const textIconColor = index % 2 === 0 ? "text-brand-orange" : "text-primary";
               return (
-                <div key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
+                <li key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
                   <div>
                     <Quote className={cn(textIconColor, "h-8 w-8 md:h-10 md:w-10 mb-4 md:mb-6 opacity-50")} aria-hidden="true" />
                     <p className="font-sans text-sm md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 mb-6 md:mb-8 italic">"{t.text}"</p>
@@ -393,10 +446,10 @@ export default function HomePage() {
                       <div className="font-sans text-xs md:text-[15px] font-medium text-slate-700 dark:text-slate-300">{t.role}</div>
                     </div>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ul>
       </section>
 
       {/* FAQ */}

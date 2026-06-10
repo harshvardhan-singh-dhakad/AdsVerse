@@ -134,6 +134,45 @@ const schemaArray = [
       ]
     }
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "AdsVerse Team",
+    "url": "https://adsverse.in",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "AdsVerse",
+      "url": "https://adsverse.in"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in",
+    "logo": "https://adsverse.in/logo.png",
+    "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp bots, Gemini AI workflows, Google & Meta Ads for Indian SMBs.",
+    "foundingDate": "2018",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Vijay Nagar",
+      "addressLocality": "Indore",
+      "addressRegion": "Madhya Pradesh",
+      "postalCode": "452010",
+      "addressCountry": "IN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "url": "https://adsverse.in/contact"
+    },
+    "sameAs": [
+      "https://www.instagram.com/adsverse.ai",
+      "https://www.facebook.com/adsverse.in",
+      "https://x.com/Adsverse",
+      "https://www.linkedin.com/company/adsverse"
+    ]
+  }
 ];
 
 export const metadata: Metadata = {
