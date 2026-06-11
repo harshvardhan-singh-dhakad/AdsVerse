@@ -15,6 +15,8 @@ import { db } from "@/lib/firebase-server";
 
 import { BlogPost } from "@/lib/definitions";
 import { ShareButtons } from "@/components/layout/share-buttons";
+import { cn } from "@/lib/utils";
+import { TableOfContents } from "@/components/layout/TableOfContents";
 
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -75,13 +77,42 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-function cleanBlogContent(html: string): string {
-  if (!html) return "";
-  // Remove the first H1 tag which is the duplicate title
+interface HeadingItem {
+  id: string;
+  text: string;
+}
+
+function processBlogContent(html: string): { cleanedHtml: string; headings: HeadingItem[] } {
+  const headings: HeadingItem[] = [];
+  if (!html) return { cleanedHtml: "", headings };
+
+  // 1. Remove the first H1 tag which is the duplicate title
   let cleaned = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/i, "");
-  // Convert any remaining H1 tags to H2 tags
+  // 2. Convert any remaining H1 tags to H2 tags
   cleaned = cleaned.replace(/<h1([^>]*)>([\s\S]*?)<\/h1>/gi, "<h2$1>$2</h2>");
-  return cleaned;
+
+  // 3. Extract and inject H2 heading IDs
+  let count = 0;
+  const cleanedHtml = cleaned.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (match, attrs, innerText) => {
+    const cleanText = innerText.replace(/<[^>]*>/g, '').trim();
+    if (!cleanText) return match;
+
+    const slugId = cleanText
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    const uniqueId = slugId ? `${slugId}-${count++}` : `section-${count++}`;
+    headings.push({ id: uniqueId, text: cleanText });
+
+    if (/id=/i.test(attrs)) {
+      return match;
+    }
+
+    return `<h2 id="${uniqueId}"${attrs}>${innerText}</h2>`;
+  });
+
+  return { cleanedHtml, headings };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -90,6 +121,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   if (!post) {
     notFound();
   }
+
+  const { cleanedHtml, headings } = processBlogContent(post.content);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -157,7 +190,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         id="breadcrumb-jsonld"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="container mx-auto py-16 px-4 sm:px-6 lg:px-10 max-w-4xl xl:max-w-5xl">
+      <div className={cn(
+        "container mx-auto py-16 px-4 sm:px-6 lg:px-10",
+        headings.length > 0 ? "max-w-5xl xl:max-w-6xl" : "max-w-4xl xl:max-w-5xl"
+      )}>
         <Button asChild variant="ghost" className="mb-8 hover:text-primary transition-colors">
           <Link href="/blog">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -203,47 +239,63 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             />
           </div>
 
-          <Card className="border-none bg-card/40 backdrop-blur-md shadow-xl overflow-hidden">
-            <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
-              <div
-                suppressHydrationWarning
-                dangerouslySetInnerHTML={{ __html: cleanBlogContent(post.content) }}
-              />
-            </CardContent>
-          </Card>
+          <div className={cn(
+            "items-start",
+            headings.length > 0 ? "grid grid-cols-1 lg:grid-cols-4 gap-12" : "block"
+          )}>
+            {headings.length > 0 && (
+              <aside className="hidden lg:block lg:col-span-1 sticky top-[100px] self-start">
+                <TableOfContents headings={headings} />
+              </aside>
+            )}
 
-          {post.whatsappShare && (
-            <ShareButtons />
-          )}
+            <div className={cn(
+              "space-y-8",
+              headings.length > 0 ? "lg:col-span-3" : "w-full"
+            )}>
+              <Card className="border-none bg-card/40 backdrop-blur-md shadow-xl overflow-hidden">
+                <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
+                  <div
+                    suppressHydrationWarning
+                    dangerouslySetInnerHTML={{ __html: cleanedHtml }}
+                  />
+                </CardContent>
+              </Card>
 
-          {post.allowComments && (
-            <section className="pt-12 border-t border-primary/10 mt-16 animate-in fade-in duration-1000">
-              <div className="bg-card/40 backdrop-blur-xl border border-primary/10 rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-5">
-                  <Share2 className="w-24 h-24 text-primary" />
-                </div>
-                
-                <h3 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h3>
-                <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                  Have insights or questions about this post? We'd love to hear from you. 
-                  Connect with our team directly or share your thoughts via WhatsApp.
-                </p>
-                
-                <div className="flex flex-wrap items-center justify-center gap-4">
-                  <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all">
-                    <Link href="/contact">Contact Our Experts</Link>
-                  </Button>
-                  <Button variant="outline" asChild className="rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs border-primary/20 hover:border-primary/40 transition-all">
-                    <a href="https://wa.me/919109090000" target="_blank" rel="noopener noreferrer">Message on WhatsApp</a>
-                  </Button>
-                </div>
-                
-                <p className="mt-8 text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black opacity-40">
-                  AdsVerse · Digital Excellence 2026
-                </p>
-              </div>
-            </section>
-          )}
+              {post.whatsappShare && (
+                <ShareButtons />
+              )}
+
+              {post.allowComments && (
+                <section className="pt-12 border-t border-primary/10 mt-16 animate-in fade-in duration-1000">
+                  <div className="bg-card/40 backdrop-blur-xl border border-primary/10 rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-5">
+                      <Share2 className="w-24 h-24 text-primary" />
+                    </div>
+                    
+                    <h3 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h3>
+                    <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+                      Have insights or questions about this post? We'd love to hear from you. 
+                      Connect with our team directly or share your thoughts via WhatsApp.
+                    </p>
+                    
+                    <div className="flex flex-wrap items-center justify-center gap-4">
+                      <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all">
+                        <Link href="/contact">Contact Our Experts</Link>
+                      </Button>
+                      <Button variant="outline" asChild className="rounded-xl px-8 h-12 font-bold uppercase tracking-widest text-xs border-primary/20 hover:border-primary/40 transition-all">
+                        <a href="https://wa.me/919109090000" target="_blank" rel="noopener noreferrer">Message on WhatsApp</a>
+                      </Button>
+                    </div>
+                    
+                    <p className="mt-8 text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black opacity-40">
+                      AdsVerse · Digital Excellence 2026
+                    </p>
+                  </div>
+                </section>
+              )}
+            </div>
+          </div>
 
         </article>
       </div>
