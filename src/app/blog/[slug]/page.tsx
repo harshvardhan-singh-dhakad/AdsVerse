@@ -75,6 +75,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
+function cleanBlogContent(html: string): string {
+  if (!html) return "";
+  // Remove the first H1 tag which is the duplicate title
+  let cleaned = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/i, "");
+  // Convert any remaining H1 tags to H2 tags
+  cleaned = cleaned.replace(/<h1([^>]*)>([\s\S]*?)<\/h1>/gi, "<h2$1>$2</h2>");
+  return cleaned;
+}
+
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getBlogPost(params.slug);
 
@@ -198,7 +207,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
               <div
                 suppressHydrationWarning
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: cleanBlogContent(post.content) }}
               />
             </CardContent>
           </Card>
