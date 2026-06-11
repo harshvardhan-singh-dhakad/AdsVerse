@@ -219,7 +219,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {posts.map((post, index) => (
-                <Card key={post.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                <Card key={post.id} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
                   <div className="relative h-64 w-full overflow-hidden">
                     <Image 
                       src={post.imageUrl}
