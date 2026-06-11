@@ -152,7 +152,7 @@ const schemaArray = [
     "url": "https://adsverse.in",
     "logo": "https://adsverse.in/logo.png",
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp bots, Gemini AI workflows, Google & Meta Ads for Indian SMBs.",
-    "foundingDate": "2018",
+    "foundingDate": "2023",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Vijay Nagar",

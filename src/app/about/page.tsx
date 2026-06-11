@@ -7,7 +7,7 @@ import Image from "next/image";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "About AdsVerse — Top Marketing Agency in Indore",
-    description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2018, we've helped 113+ clients grow through SEO, Paid Ads, and Automation.",
+    description: "Learn about AdsVerse, Indore's top AI marketing agency. Since 2023, we've helped 113+ clients grow through SEO, Paid Ads, and Automation.",
     alternates: {
       canonical: "https://adsverse.in/about",
     },
@@ -21,9 +21,7 @@ const teamMembers = [
 ];
 
 const timelineEvents = [
-  { year: "2018", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing for growing businesses.", color: "bg-brand-orange text-black" },
-  { year: "2020", title: "First Major Client", description: "Landed our first major partnership, propelling our growth and expanding our service offerings.", color: "bg-violet-600 text-white" },
-  { year: "2022", title: "Team Expansion", description: "Grew our team of experts to cover all facets of the digital marketing landscape, from SEO to social media.", color: "bg-brand-orange text-black" },
+  { year: "2023", title: "The Spark", description: "AdsVerse was founded with a mission to demystify digital marketing and introduce high-impact automation for growing businesses.", color: "bg-brand-orange text-black" },
   { year: "2024", title: "Future Forward", description: "Embracing AI and next-gen tech to deliver unparalleled results and innovative strategies for our clients.", color: "bg-violet-600 text-white" },
   { year: "2025", title: "Global Reach", description: "Expanding our services to international markets and helping businesses worldwide achieve their digital goals.", color: "bg-brand-orange text-black" },
   { year: "2026", title: "Innovation Leader", description: "Setting new standards in AI-driven marketing and automation, becoming the most trusted name in digital transformation.", color: "bg-violet-600 text-white" },

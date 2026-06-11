@@ -78,8 +78,8 @@ export default function ContactPage() {
         </p>
       </section>
 
-      <div className="grid md:grid-cols-2 gap-16">
-        <Card className="bg-card/50 backdrop-blur-sm">
+      <div className="grid grid-cols-1 md:grid-cols-10 gap-16">
+        <Card className="bg-card/50 backdrop-blur-sm md:col-span-6">
           <CardHeader>
             <CardTitle className="text-3xl font-headline text-center">Contact Us</CardTitle>
           </CardHeader>
@@ -88,7 +88,7 @@ export default function ContactPage() {
           </CardContent>
         </Card>
 
-        <div className="space-y-8">
+        <div className="space-y-8 md:col-span-4">
           <div>
             <h3 className="text-2xl font-bold mb-4 font-headline">Contact Information</h3>
             <div className="space-y-4 text-slate-300">

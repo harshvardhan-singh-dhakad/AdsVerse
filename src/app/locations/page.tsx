@@ -2,8 +2,45 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MapPin, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Metadata } from "next";
+import { cn } from "@/lib/utils";
+
+function TablerMapPin({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+      <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+    </svg>
+  );
+}
+
+const stateBorderMap: Record<string, string> = {
+  "Madhya Pradesh": "border-l-4 border-l-blue-500",
+  "Rajasthan": "border-l-4 border-l-amber-500",
+  "Chhattisgarh": "border-l-4 border-l-cyan-500",
+  "Uttar Pradesh": "border-l-4 border-l-purple-500",
+  "Bihar": "border-l-4 border-l-rose-500",
+  "Jammu & Kashmir": "border-l-4 border-l-teal-500",
+  "Northeast India": "border-l-4 border-l-pink-500",
+  "Tamil Nadu": "border-l-4 border-l-emerald-500",
+  "Kerala": "border-l-4 border-l-green-500",
+  "Karnataka": "border-l-4 border-l-yellow-500",
+  "Andhra Pradesh": "border-l-4 border-l-sky-500",
+  "Telangana": "border-l-4 border-l-orange-500",
+};
 
 export const metadata: Metadata = {
   title: "Locations We Serve | Digital Marketing & AI Agency Across India | AdsVerse",
@@ -194,20 +231,30 @@ export default function LocationsIndexPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {group.cities.map((city) => (
-                <Card key={city.slug} className="bg-card/50 backdrop-blur-sm border border-border/30 hover:border-orange-500/40 hover:shadow-[0_0_20px_rgba(249,115,22,0.08)] transition-all duration-500 flex flex-col justify-between group">
+                <Card 
+                  key={city.slug} 
+                  className={cn(
+                    "bg-card/50 backdrop-blur-sm border border-border/30 transition-all duration-500 flex flex-col justify-between group",
+                    "hover:-translate-y-1 hover:border-orange-500/50 hover:shadow-[0_12px_24px_rgba(249,115,22,0.12)]",
+                    stateBorderMap[group.state] || "border-l-4 border-l-primary"
+                  )}
+                >
                   <CardHeader className="pb-2">
                     <CardTitle className="text-xl font-headline flex items-center gap-2 group-hover:text-orange-500 transition-colors">
-                      <MapPin className="w-5 h-5 text-orange-500 shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                      <TablerMapPin className="w-4 h-4 text-orange-500 shrink-0 group-hover:scale-110 transition-transform duration-300" />
                       {city.name}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pb-6 flex-grow">
                     <p className="text-muted-foreground text-sm leading-relaxed">{city.desc}</p>
                   </CardContent>
-                  <div className="p-6 pt-0 border-t border-border/10">
-                    <Button asChild variant="link" className="p-0 text-orange-500 group-hover:text-orange-400 group-hover:gap-2 transition-all">
-                      <Link href={`/locations/${city.slug}`} className="flex items-center text-xs font-bold uppercase tracking-wider">
-                        Explore services <ArrowRight className="ml-1 w-4 h-4" />
+                  <div className="p-6 pt-4 border-t border-border/10">
+                    <Button 
+                      asChild 
+                      className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold uppercase tracking-wider text-xs h-10 shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 transition-all duration-300"
+                    >
+                      <Link href={`/locations/${city.slug}`} className="flex items-center justify-center gap-1.5">
+                        Explore services <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </Button>
                   </div>

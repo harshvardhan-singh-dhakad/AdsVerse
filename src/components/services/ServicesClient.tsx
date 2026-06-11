@@ -937,6 +937,13 @@ const CSS = `
 
 /* ── CATEGORY SECTION ── */
 .cat-section{margin-bottom:60px;scroll-margin-top:170px}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cat-section-animate {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 .cat-header{display:flex;align-items:center;gap:16px;padding:22px 0;margin-bottom:28px;border-bottom:2px solid var(--bd);position:relative}
 .cat-icon-big{width:48px;height:48px;border-radius:12px;background:var(--cat-dim);border:1.5px solid var(--cat-bd);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 4px 12px var(--cat-dim)}
 .cat-title{font-family:var(--font-instrument),sans-serif;font-size:24px;font-weight:900;color:var(--tx1);line-height:1.2}
@@ -1118,9 +1125,6 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
               </div>
               {/* Actions */}
               <div className="svc-actions">
-                <Link href="/contact" className="svc-btn-quote">
-                  Get Free Quote
-                </Link>
                 <button
                   onClick={() => onToggleService({ name: s.name, desc: s.desc, price })}
                   className="svc-btn-plan"
@@ -1246,8 +1250,6 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
   const dmTotal = dmCategories.reduce((s, c) => s + c.services.length, 0);
   const aiTotal = aiCategories.reduce((s, c) => s + c.services.length, 0);
 
-  const dmFiltered = dmCat === "all" ? dmCategories : dmCategories.filter((c) => c.id === dmCat);
-  const aiFiltered = aiCat === "all" ? aiCategories : aiCategories.filter((c) => c.id === aiCat);
 
   return (
     <div className="services-page">
@@ -1297,7 +1299,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
       {/* ── STATS ── */}
       <div className="stats">
         {[
-          { n: "113+", l: "Brands Served", s: "Pan-India since 2022", icon: "🏆" },
+          { n: "113+", l: "Brands Served", s: "Pan-India since 2023", icon: "🏆" },
           { n: "75+",  l: "Services In-House", s: "Zero outsourcing", icon: "⚡" },
           { n: "3.8x", l: "Avg. ROAS", s: "Across active ad accounts", icon: "📈" },
           { n: "4.9★", l: "Google Rating", s: "Verified client reviews", icon: "⭐" },
@@ -1337,17 +1339,16 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
             </button>
             {dmCategories.map((c) => (
-              <a
+              <button
                 key={c.id}
-                href={`#${c.id}`}
                 className={`cat-btn ${dmCat === c.id ? "on" : ""}`}
-                onClick={(e) => {
+                onClick={() => {
                   setDmCat(c.id);
                 }}
                 style={dmCat === c.id ? { background: c.color, borderColor: c.color } : {}}
               >
                 <span className="cat-icon">{c.icon}</span> {c.label}
-              </a>
+              </button>
             ))}
           </div>
           <button className="scroll-arrow right" onClick={() => scrollStrip(dmStripRef, 'right')}>
@@ -1367,9 +1368,18 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
             </p>
           </div>
 
-          {dmFiltered.map((cat) => (
-            <CatSection key={cat.id} cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
-          ))}
+          {dmCategories.map((cat) => {
+            const isVisible = dmCat === "all" || dmCat === cat.id;
+            return (
+              <div
+                key={cat.id}
+                className={isVisible ? "cat-section-animate" : ""}
+                style={{ display: isVisible ? "block" : "none" }}
+              >
+                <CatSection cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -1383,17 +1393,16 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               🗂️ {isHi ? "सभी कैटेगरीज" : "All Categories"}
             </button>
             {aiCategories.map((c) => (
-              <a
+              <button
                 key={c.id}
-                href={`#${c.id}`}
                 className={`cat-btn ${aiCat === c.id ? "on" : ""}`}
-                onClick={(e) => {
+                onClick={() => {
                   setAiCat(c.id);
                 }}
                 style={aiCat === c.id ? { background: c.color, borderColor: c.color } : {}}
               >
                 <span className="cat-icon">{c.icon}</span> {c.label}
-              </a>
+              </button>
             ))}
           </div>
           <button className="scroll-arrow right" onClick={() => scrollStrip(aiStripRef, 'right')}>
@@ -1413,9 +1422,18 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
             </p>
           </div>
 
-          {aiFiltered.map((cat) => (
-            <CatSection key={cat.id} cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
-          ))}
+          {aiCategories.map((cat) => {
+            const isVisible = aiCat === "all" || aiCat === cat.id;
+            return (
+              <div
+                key={cat.id}
+                className={isVisible ? "cat-section-animate" : ""}
+                style={{ display: isVisible ? "block" : "none" }}
+              >
+                <CatSection cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
+              </div>
+            );
+          })}
         </div>
       </div>
 

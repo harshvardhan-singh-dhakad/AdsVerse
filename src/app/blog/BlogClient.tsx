@@ -1,14 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calendar, User, Loader2 } from "lucide-react";
+import { ArrowRight, Calendar, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { collection, query, where, orderBy, limit, getDocs, startAfter } from "firebase/firestore";
-import { useFirestore } from '@/firebase';
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -53,129 +51,36 @@ interface BlogClientProps {
 }
 
 export default function BlogClient({ initialPosts }: BlogClientProps) {
-  const firestore = useFirestore();
-  const [posts, setPosts] = useState<any[]>(initialPosts);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(initialPosts.length === 15);
+  const [visibleCount, setVisibleCount] = useState<number>(15);
 
-  // When switching categories, load new posts
-  const handleCategoryChange = async (categoryId: string) => {
-    if (categoryId === activeCategory) return;
-    setActiveCategory(categoryId);
-    setIsLoading(true);
-
-    try {
-      const now = new Date().toISOString();
-      let q;
-
-      if (categoryId === 'all') {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          limit(15)
-        );
-      } else if (categoryId === 'seo') {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("category", "in", ["seo", "seo-strategy"]),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          limit(15)
-        );
-      } else {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("category", "==", categoryId),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          limit(15)
-        );
-      }
-
-      const snap = await getDocs(q);
-      const fetchedPosts = snap.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as any)
-      })) as any[];
-
-      // Sort featured posts first (match server behavior)
-      fetchedPosts.sort((a, b) => {
-        if (a.isFeatured && !b.isFeatured) return -1;
-        if (!a.isFeatured && b.isFeatured) return 1;
-        return 0;
-      });
-
-      setPosts(fetchedPosts);
-      setHasMore(fetchedPosts.length === 15);
-    } catch (error) {
-      console.error("Error filtering blog posts by category:", error);
-      setPosts([]);
-      setHasMore(false);
-    } finally {
-      setIsLoading(false);
+  // Filter posts in-memory
+  const filteredPosts = useMemo(() => {
+    if (activeCategory === 'all') {
+      return initialPosts;
     }
+    if (activeCategory === 'seo') {
+      return initialPosts.filter(
+        post => post.category === 'seo' || post.category === 'seo-strategy'
+      );
+    }
+    return initialPosts.filter(post => post.category === activeCategory);
+  }, [initialPosts, activeCategory]);
+
+  // Paginated posts to display
+  const displayedPosts = useMemo(() => {
+    return filteredPosts.slice(0, visibleCount);
+  }, [filteredPosts, visibleCount]);
+
+  const hasMore = filteredPosts.length > visibleCount;
+
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    setVisibleCount(15); // Reset pagination on category change
   };
 
-  // Load more posts (pagination)
-  const loadMorePosts = async () => {
-    if (isLoadingMore || posts.length === 0) return;
-    setIsLoadingMore(true);
-
-    try {
-      const now = new Date().toISOString();
-      const lastPost = posts[posts.length - 1];
-      const lastPostPublishedDate = lastPost.publishedDate;
-
-      let q;
-
-      if (activeCategory === 'all') {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          startAfter(lastPostPublishedDate),
-          limit(15)
-        );
-      } else if (activeCategory === 'seo') {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("category", "in", ["seo", "seo-strategy"]),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          startAfter(lastPostPublishedDate),
-          limit(15)
-        );
-      } else {
-        q = query(
-          collection(firestore, "public_blogPosts"),
-          where("category", "==", activeCategory),
-          where("publishedDate", "<=", now),
-          orderBy("publishedDate", "desc"),
-          startAfter(lastPostPublishedDate),
-          limit(15)
-        );
-      }
-
-      const snap = await getDocs(q);
-      const fetchedPosts = snap.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as any)
-      })) as any[];
-
-      if (fetchedPosts.length > 0) {
-        setPosts(prev => [...prev, ...fetchedPosts]);
-        setHasMore(fetchedPosts.length === 15);
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Error loading more blog posts:", error);
-    } finally {
-      setIsLoadingMore(false);
-    }
+  const loadMorePosts = () => {
+    setVisibleCount(prev => prev + 15);
   };
 
   return (
@@ -210,15 +115,10 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
 
       {/* Main Grid */}
       <section className="mb-24 min-h-[400px]">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-32 space-y-4">
-            <Loader2 className="w-10 h-10 animate-spin text-accent" />
-            <p className="text-muted-foreground text-sm font-medium">Loading posts...</p>
-          </div>
-        ) : posts.length > 0 ? (
+        {displayedPosts.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {posts.map((post, index) => (
+              {displayedPosts.map((post, index) => (
                 <Card key={post.id} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
                   <div className="relative h-64 w-full overflow-hidden">
                     <Image 
@@ -268,16 +168,9 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
               <div className="flex justify-center mt-16 animate-in fade-in zoom-in-95 duration-500">
                 <Button
                   onClick={loadMorePosts}
-                  disabled={isLoadingMore}
                   className="px-8 py-6 rounded-full font-bold uppercase tracking-wider text-xs bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 hover:border-accent/40 text-foreground hover:text-primary transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 hover:scale-105"
                 >
-                  {isLoadingMore ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-accent" /> Loading...
-                    </span>
-                  ) : (
-                    "More Blogs"
-                  )}
+                  More Blogs
                 </Button>
               </div>
             )}

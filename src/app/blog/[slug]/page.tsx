@@ -17,6 +17,7 @@ import { BlogPost } from "@/lib/definitions";
 import { ShareButtons } from "@/components/layout/share-buttons";
 import { cn } from "@/lib/utils";
 import { TableOfContents } from "@/components/layout/TableOfContents";
+import { ReadingProgressBar } from "@/components/layout/ReadingProgressBar";
 
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -180,6 +181,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <>
+      <ReadingProgressBar />
       <script
         type="application/ld+json"
         id="blog-posting-jsonld"

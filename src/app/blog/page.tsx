@@ -24,7 +24,7 @@ async function getBlogPosts() {
       collection(db, "public_blogPosts"),
       where("publishedDate", "<=", now),
       orderBy("publishedDate", "desc"),
-      limit(15)
+      limit(200)
     );
     const snap = await getDocs(q);
     const posts = snap.docs.map(doc => ({
