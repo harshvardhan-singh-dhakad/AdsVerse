@@ -715,6 +715,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                         <SelectItem value="automation-ai">Automation & AI</SelectItem>
                         <SelectItem value="content-marketing">Content Marketing</SelectItem>
                         <SelectItem value="social-media">Social Media</SelectItem>
+                        <SelectItem value="whatsapp-marketing">WhatsApp Marketing</SelectItem>
+                        <SelectItem value="local-seo">Local SEO</SelectItem>
                       </SelectGroup>
                       <SelectGroup>
                         <SelectLabel className="text-[10px] font-black tracking-widest uppercase text-primary mt-2">Content Types</SelectLabel>

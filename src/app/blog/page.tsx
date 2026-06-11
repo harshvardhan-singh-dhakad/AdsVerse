@@ -1,16 +1,10 @@
 
 export const revalidate = 600; // Cache for 10 minutes
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Calendar, User, Tag } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
-import { getFirestore, collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
-
+import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
+import BlogClient from "./BlogClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -20,30 +14,6 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `https://adsverse.in/blog`,
     },
   };
-}
-
-function formatPostDate(date: any) {
-  if (!date) return "N/A";
-  try {
-    let d: Date;
-    // If it's a Firestore Timestamp
-    if (date && typeof date === 'object' && 'toDate' in date) {
-      d = date.toDate();
-    } else {
-      d = new Date(date);
-    }
-    
-    if (isNaN(d.getTime())) return "N/A";
-    
-    // Use a stable, non-locale-dependent format for server/client consistency
-    return d.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  } catch (e) {
-    return "N/A";
-  }
 }
 
 async function getBlogPosts() {
@@ -121,62 +91,10 @@ export default async function BlogPage() {
           </p>
         </section>
 
-        <section className="mb-24">
-          {posts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {posts.map((post, index) => (
-                <Card key={post.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                  <div className="relative h-64 w-full overflow-hidden">
-                    <Image 
-                      src={post.imageUrl}
-                      alt={post.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={index < 3}
-                    />
-                    <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1">
-                        {post.category}
-                      </Badge>
-                      {post.isFeatured && (
-                        <Badge className="bg-primary/90 backdrop-blur-sm text-white border-none px-3 py-1 animate-pulse">
-                          Featured
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  <CardHeader className="space-y-4">
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {formatPostDate(post.publishedDate)}</span>
-                      <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "Deepak Dhakad"}</span>
-                    </div>
-                    <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
-                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                    </CardTitle>
-                    <CardDescription className="line-clamp-3 text-sm leading-relaxed">
-                      {post.excerpt}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardFooter className="mt-auto pt-6 border-t border-primary/5">
-                    <Button asChild variant="link" className="p-0 text-accent group-hover:gap-3 transition-all">
-                      <Link href={`/blog/${post.slug}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
-                        Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 bg-card/20 backdrop-blur-sm rounded-2xl border border-primary/5">
-              <h3 className="text-2xl font-headline text-primary mb-4">No insights found yet.</h3>
-              <p className="text-muted-foreground">Stay tuned for our latest digital marketing trends and strategies.</p>
-            </div>
-          )}
-        </section>
+        <BlogClient initialPosts={posts} />
       </div>
     </>
   );
 }
+
 
