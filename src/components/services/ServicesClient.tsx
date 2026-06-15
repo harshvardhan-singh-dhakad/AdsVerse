@@ -51,7 +51,8 @@ const DM_CATEGORIES = [
         name: "Social Media Account Management",
         desc: "Full-service management of all your social accounts — posting, replies & analytics.",
         fullDesc: "Full-service management of your Facebook, Instagram, LinkedIn, and X accounts — posting schedules, community replies, analytics reporting, and monthly performance reviews. We act as your in-house social media team at a fraction of the cost.",
-        tags: ["Management", "Scheduling", "Analytics"]
+        tags: ["Management", "Scheduling", "Analytics"],
+        href: "/services/social-media-management"
       },
       {
         name: "Social Media Content Creation",
@@ -80,6 +81,20 @@ const DM_CATEGORIES = [
     color: "#22c55e",
     desc: "Rank higher, get found, dominate local search",
     services: [
+      {
+        name: "SEO Optimization Services",
+        desc: "Comprehensive search engine optimization services for long-term organic growth.",
+        fullDesc: "Scale your organic traffic, rank #1 on Google for high-intent keywords, and build long-term brand equity with our custom-tailored on-page, technical, off-page, and local SEO services.",
+        tags: ["Google Rank", "Organic Traffic", "SEO"],
+        href: "/services/seo-optimization"
+      },
+      {
+        name: "GEO & AEO Optimization",
+        desc: "Optimize content for citations in AI Search engines like Gemini, ChatGPT & Perplexity.",
+        fullDesc: "Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) to make your brand visible in AI search answers by Gemini, ChatGPT, Claude, and Perplexity. We structure your website content to match AI citation criteria.",
+        tags: ["AI Search", "AEO", "GEO"],
+        href: "/services/geo-optimization"
+      },
       {
         name: "On-Page SEO",
         desc: "Title tags, meta descriptions, header optimization & internal linking.",
@@ -138,7 +153,8 @@ const DM_CATEGORIES = [
         name: "SEO Audit",
         desc: "Complete technical + on-page SEO audit with prioritized fix recommendations.",
         fullDesc: "Comprehensive SEO audit covering 150+ technical, on-page, off-page, and content factors. We deliver a prioritized action plan — not a 50-page PDF that gathers dust. Every recommendation is scoped with estimated effort and expected impact. Link keywords to our free audit tools for instant tests.",
-        tags: ["Audit", "Report", "Action Plan"]
+        tags: ["Audit", "Report", "Action Plan"],
+        href: "/tools/seo-audit"
       },
     ],
   },
@@ -177,7 +193,8 @@ const DM_CATEGORIES = [
         name: "SEO-Optimized Content",
         desc: "Content written around search intent with keyword integration.",
         fullDesc: "Content written around search intent with strategic keyword integration, LSI terms, proper header structure, and internal links. Every piece is optimized before publishing using SurferSEO or equivalent tool validation.",
-        tags: ["SEO Writing", "Intent", "Ranking"]
+        tags: ["SEO Writing", "Intent", "Ranking"],
+        href: "/services/content-marketing"
       },
       {
         name: "Video Content Creation",
@@ -240,7 +257,8 @@ const DM_CATEGORIES = [
         name: "Facebook & Instagram Ads",
         desc: "Meta campaigns for lead gen, traffic, awareness & conversions.",
         fullDesc: "Full-funnel Meta campaigns across Facebook and Instagram — awareness to conversion. We manage creative testing, audience segmentation, retargeting sequences, and campaign scaling. Managed ₹2.4Cr+ in Meta ad spend with documented ROAS across campaigns.",
-        tags: ["Meta", "Lead Gen", "Conversions"]
+        tags: ["Meta", "Lead Gen", "Conversions"],
+        href: "/services/paid-ads"
       },
       {
         name: "LinkedIn Ads",
@@ -264,7 +282,8 @@ const DM_CATEGORIES = [
         name: "Lead Generation Campaigns",
         desc: "Full-funnel lead gen — from ad to CRM entry — automated.",
         fullDesc: "Full-funnel lead gen — from ad creative to CRM entry — completely automated. Leads from Meta Lead Forms and Google Ads go directly into your WhatsApp, Google Sheets, or CRM via n8n workflows. Zero manual data entry.",
-        tags: ["Lead Gen", "Funnel", "CRM"]
+        tags: ["Lead Gen", "Funnel", "CRM"],
+        href: "/services/lead-generation"
       },
     ],
   },
@@ -402,7 +421,8 @@ const DM_CATEGORIES = [
         name: "Business Website",
         desc: "Professional 5–10 page website for your business with CMS.",
         fullDesc: "Professional 5-10 page business website built on Next.js or WordPress — fast, SEO-ready, mobile-optimized, and CMS-enabled. Includes homepage, about, services, contact, and blog setup. Average delivery: 10-15 working days.",
-        tags: ["Business", "CMS", "Responsive"]
+        tags: ["Business", "CMS", "Responsive"],
+        href: "/services/web-design-development"
       },
       {
         name: "Portfolio Website",
@@ -552,7 +572,8 @@ const DM_CATEGORIES = [
         name: "Brand Strategy",
         desc: "Positioning, messaging, USP definition & competitive differentiation.",
         fullDesc: "Positioning strategy, USP definition, target audience profiling, competitive differentiation, and messaging architecture. The strategic foundation that makes every other marketing activity more effective.",
-        tags: ["Positioning", "USP", "Messaging"]
+        tags: ["Positioning", "USP", "Messaging"],
+        href: "/services/brand-strategy"
       },
       {
         name: "Market Research",
@@ -582,7 +603,8 @@ const AI_CATEGORIES = [
         name: "WhatsApp AI Bot (Persona-Based)",
         desc: "Custom AI persona on WhatsApp — Hinglish support, lead capture & memory.",
         fullDesc: "We build custom persona-driven AI agents on the official Meta WhatsApp Business API. These bots speak Hinglish, learn your business details, and qualify leads, schedule appointments, and sync data instantly to your CRM.",
-        tags: ["AI Bot", "Persona", "Hinglish"]
+        tags: ["AI Bot", "Persona", "Hinglish"],
+        href: "/services/whatsapp-bot"
       },
       {
         name: "WhatsApp Marketing Campaigns",
@@ -621,7 +643,8 @@ const AI_CATEGORIES = [
         name: "n8n Workflow Setup",
         desc: "End-to-end n8n workflow design, deployment & cloud hosting.",
         fullDesc: "End-to-end n8n visual flow design, deployment, and secure cloud hosting. We link your websites, advertising platforms, email tools, and local software databases to automate all manual tasks with robust error monitoring.",
-        tags: ["n8n", "Self-Hosted", "Cloud"]
+        tags: ["n8n", "Self-Hosted", "Cloud"],
+        href: "/services/automation-tools"
       },
       {
         name: "Zapier Automation",
@@ -1125,6 +1148,11 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
               </div>
               {/* Actions */}
               <div className="svc-actions">
+                {s.href && (
+                  <Link href={s.href} className="svc-btn-quote">
+                    View Page
+                  </Link>
+                )}
                 <button
                   onClick={() => onToggleService({ name: s.name, desc: s.desc, price })}
                   className="svc-btn-plan"
@@ -1271,7 +1299,9 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
           <div className="hero-intro-box">
             AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore.
             We offer 75+ in-house digital marketing and automation services — from{" "}
-            <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link> and
+            <Link href="/services/seo-optimization" className="text-orange-500 hover:underline font-semibold">SEO</Link>,{" "}
+            <Link href="/services/geo-optimization" className="text-orange-500 hover:underline font-semibold">GEO Optimization</Link>,{" "}
+            <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link>, and
             Google Ads to{" "}
             <Link href="/services/whatsapp-bot" className="text-orange-500 hover:underline font-semibold">WhatsApp AI bots</Link>,{" "}
             <Link href="/services/automation-tools" className="text-orange-500 hover:underline font-semibold">n8n CRM workflows</Link>, and custom{" "}
