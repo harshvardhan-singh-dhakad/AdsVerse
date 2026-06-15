@@ -70,6 +70,11 @@ export function Footer() {
               <Link href="https://www.linkedin.com/company/adsverse" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer nofollow">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </Link>
+              <Link href="https://maps.app.goo.gl/7edcg9nx6Kofxv8M8" aria-label="Google Business Profile" target="_blank" rel="noopener noreferrer nofollow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+              </Link>
             </div>
           </div>
           <div className="md:pl-4">
@@ -90,6 +95,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li><Link href="/privacy-policy" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
               <li><Link href="/terms-of-service" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href="/refund-policy" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Refund Policy</Link></li>
             </ul>
           </div>
           <div>

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { TrendingUp, CheckCircle, ArrowLeft } from 'lucide-react';
+import { TrendingUp, CheckCircle, ArrowLeft, Bot, Megaphone, Code2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -286,6 +286,28 @@ export default function SeoOptimizationPage() {
               </AccordionItem>
             ))}
           </Accordion>
+        </section>
+
+        {/* Related Services Cross-Links */}
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold text-primary font-headline">Related Services</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <Link href="/services/geo-optimization" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <Bot className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">GEO Optimization</h4>
+              <p className="text-muted-foreground text-sm">Get cited by ChatGPT, Gemini & Perplexity — the AI search layer above Google rankings.</p>
+            </Link>
+            <Link href="/services/paid-ads" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <Megaphone className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">Google & Meta Ads</h4>
+              <p className="text-muted-foreground text-sm">Complement organic SEO with paid ads that generate leads while SEO compounds.</p>
+            </Link>
+            <Link href="/services/web-design-development" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <Code2 className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">Web Development</h4>
+              <p className="text-muted-foreground text-sm">A technically sound, fast website is the foundation every SEO strategy requires.</p>
+            </Link>
+          </div>
         </section>
 
       </div>

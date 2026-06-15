@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Megaphone, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Megaphone, CheckCircle, ArrowLeft, Bot, TrendingUp, Route } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -284,6 +284,28 @@ export default function PaidAdsPage() {
               </AccordionItem>
             ))}
           </Accordion>
+        </section>
+
+        {/* Related Services Cross-Links */}
+        <section className="space-y-4">
+          <h2 className="text-3xl font-bold text-primary font-headline">Related Services</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <Link href="/services/geo-optimization" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <Bot className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">GEO Optimization</h4>
+              <p className="text-muted-foreground text-sm">Get your business cited by ChatGPT and Gemini — the AI search layer your paid ads can’t reach.</p>
+            </Link>
+            <Link href="/services/seo-optimization" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <TrendingUp className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">SEO Optimization</h4>
+              <p className="text-muted-foreground text-sm">Organic rankings that compound over time — the long-term complement to paid ads.</p>
+            </Link>
+            <Link href="/services/lead-generation" className="p-5 rounded-xl border border-border/30 bg-card/20 hover:border-primary/40 transition-colors group">
+              <Route className="w-6 h-6 text-accent mb-2" />
+              <h4 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">Sales Funnels & Lead Gen</h4>
+              <p className="text-muted-foreground text-sm">Convert your ad traffic into qualified leads with high-converting landing pages and CRM automation.</p>
+            </Link>
+          </div>
         </section>
 
       </div>

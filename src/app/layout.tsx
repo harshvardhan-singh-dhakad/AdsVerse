@@ -137,12 +137,31 @@ const schemaArray = [
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "AdsVerse Team",
-    "url": "https://adsverse.in",
+    "name": "Deepak Dhakad",
+    "url": "https://adsverse.in/about",
+    "jobTitle": "Founder & Digital Marketing Expert",
+    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media",
+    "knowsAbout": ["SEO", "Generative Engine Optimization", "Answer Engine Optimization", "Google Ads", "Meta Ads", "Marketing Automation", "n8n Workflows", "WhatsApp AI Bots"],
     "worksFor": {
       "@type": "Organization",
       "name": "AdsVerse",
       "url": "https://adsverse.in"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/adsverse"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AdsVerse",
+    "url": "https://adsverse.in",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5",
+      "worstRating": "1",
+      "reviewCount": "113"
     }
   },
   {

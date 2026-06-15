@@ -49,3 +49,6 @@ src/app/api/seed-blogs/
 src/app/api/seed-pricing/
 src/app/api/seed-portfolio/
 src/app/[lang]/seed/
+
+# scratch/ scripts
+/scratch/

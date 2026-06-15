@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/services/automation-tools`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/brand-strategy`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/content-marketing`, priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: `${baseUrl}/services/geo-optimization`, priority: 0.9, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/lead-generation`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/paid-ads`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/seo-optimization`, priority: 0.8, changeFrequency: 'monthly' as const },
@@ -27,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/tools/seo-audit`, priority: 0.6, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: 'yearly' as const },
     { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: 'yearly' as const },
+    { url: `${baseUrl}/refund-policy`, priority: 0.3, changeFrequency: 'yearly' as const },
   ];
 
   const cities = [
