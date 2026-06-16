@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
+import { DM_CATEGORIES, AI_CATEGORIES, getServiceSlug } from "@/lib/services-data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://adsverse.in';
@@ -15,16 +16,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/faq`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/locations`, priority: 0.7, changeFrequency: 'weekly' as const },
-    { url: `${baseUrl}/services/automation-tools`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/brand-strategy`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/content-marketing`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/geo-optimization`, priority: 0.9, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/lead-generation`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/paid-ads`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/seo-optimization`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/social-media-management`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/web-design-development`, priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: `${baseUrl}/services/whatsapp-bot`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/tools/seo-audit`, priority: 0.6, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: 'yearly' as const },
     { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: 'yearly' as const },
@@ -85,7 +76,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date()
   }));
 
-  const allPages = [...allStaticPages, ...cityPages, ...blogPages];
+  const baseUrls = new Set(allStaticPages.map(page => page.url));
+
+  const allServicePages = [
+    ...DM_CATEGORIES.flatMap(cat => cat.services),
+    ...AI_CATEGORIES.flatMap(cat => cat.services)
+  ].map(s => {
+    const slug = s.href || `/services/${getServiceSlug(s.name)}`;
+    const url = slug.startsWith('http') ? slug : `${baseUrl}${slug}`;
+    return {
+      url,
+      priority: 0.8,
+      changeFrequency: 'monthly' as const,
+      lastModified: new Date()
+    };
+  }).filter(page => !baseUrls.has(page.url));
+
+  const allPages = [...allStaticPages, ...allServicePages, ...cityPages, ...blogPages];
 
   return allPages;
 }

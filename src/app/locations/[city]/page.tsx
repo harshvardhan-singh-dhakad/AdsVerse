@@ -488,25 +488,35 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const city = params.city.toLowerCase();
-  const meta = cityMeta[city];
-  if (!meta) return {};
+  const cityKey = params.city.toLowerCase();
+  const cityInfo = citiesDb[cityKey];
+  const meta = cityMeta[cityKey];
+  if (!cityInfo) return {};
+
+  const cityName = cityInfo.name;
+  const stateName = cityInfo.state;
+
+  // Dynamic keyword-optimized meta tags for SEO & GEO/AEO
+  const dynamicTitle = `Best Digital Marketing Agency in ${cityName} | AdsVerse`;
+  const dynamicDescription = `Looking for the best digital marketing agency in ${cityName}? AdsVerse provides top-rated SEO, Meta & Google Ads, WhatsApp AI automation, and web development to scale your business in ${cityName}, ${stateName}. Get a free audit today!`;
+  const canonical = meta?.canonical || `https://adsverse.in/locations/${cityKey}`;
+
   return {
-    title: meta.title,
-    description: meta.description,
-    alternates: { canonical: meta.canonical },
+    title: dynamicTitle,
+    description: dynamicDescription,
+    alternates: { canonical },
     openGraph: {
-      title: meta.title,
-      description: meta.description,
-      url: meta.canonical,
+      title: dynamicTitle,
+      description: dynamicDescription,
+      url: canonical,
       siteName: "AdsVerse",
       locale: "en_IN",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: meta.title,
-      description: meta.description,
+      title: dynamicTitle,
+      description: dynamicDescription,
       creator: "@Adsverse1",
     },
   };
@@ -643,8 +653,14 @@ export default function CityPage({ params }: PageProps) {
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight font-headline text-foreground leading-tight">
-              {introHeadline || `Digital Marketing & AI Agency in ${name}`}
+              Best Digital Marketing Agency in {name}
             </h1>
+
+            {introHeadline && (
+              <h2 className="text-xl md:text-2xl font-bold font-headline text-orange-500 leading-tight">
+                {introHeadline}
+              </h2>
+            )}
 
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
               {introBody || desc}
