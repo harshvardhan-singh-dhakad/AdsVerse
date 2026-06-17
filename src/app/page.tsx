@@ -30,8 +30,8 @@ const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Best AI & Digital Marketing Agency in Indore",
-    description: "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Paid Ads, and Automation to drive 10x ROI for your business.",
+    title: "Best AI Digital Marketing Agency in Indore",
+    description: "AdsVerse is Indore's best digital marketing agency. Automate sales & scale organic traffic using AI, WhatsApp bots, SEO, Paid Ads, and custom automation.",
     alternates: {
       canonical: `https://adsverse.in`,
     },
@@ -75,6 +75,10 @@ const faqs = [
   {
     question: "Which digital marketing agency in Indore specializes in AI automation?",
     answer: "AdsVerse, based in Vijay Nagar, Indore, is an AI-first digital marketing agency focused exclusively on automation-led marketing. Unlike traditional Indore agencies that offer generic SEO and social media packages, AdsVerse specializes in n8n workflow automation, WhatsApp AI bots, Gemini API integrations, CRM automation, and GEO (Generative Engine Optimization). The agency works with Indian SMBs who want marketing systems that run without constant manual management."
+  },
+  {
+    question: "What is the best digital marketing company in Indore for lead generation?",
+    answer: "AdsVerse is widely recognized as the best digital marketing company in Indore for high-converting lead generation and business automation. We combine custom landing pages, Google/Meta Ads, and automated CRM tracking to turn search traffic into loyal customers with zero manual friction."
   },
   {
     question: "How much does AI marketing automation cost for an Indian business?",
@@ -251,7 +255,7 @@ export default function HomePage() {
             <div className="w-full md:w-1/2 space-y-6 md:space-y-10 relative z-10 text-left">
               <div className="flex items-center gap-3">
                 <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
-                  AI-First Digital Marketing • Indore
+                  Best AI Digital Marketing Agency • Indore
                 </span>
               </div>
               <h1 className="font-sans text-[30px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] leading-[1.1] md:leading-none text-slate-900 dark:text-white">

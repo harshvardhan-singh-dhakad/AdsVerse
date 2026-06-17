@@ -90,8 +90,8 @@ const citiesDb: Record<string, { name: string, state: string, desc: string }> = 
 
 const cityMeta: Record<string, { title: string; description: string; canonical: string }> = {
   indore: {
-    title: "Best Digital Marketing Agency in Indore | SEO, WhatsApp Bots & Google Ads | AdsVerse",
-    description: "AdsVerse — AI-first digital marketing agency in Indore. Local SEO, WhatsApp automation, Google Ads, n8n workflows. 113+ brands served. Vijay Nagar, Indore.",
+    title: "Best Digital Marketing Agency in Indore | AdsVerse",
+    description: "Looking for the best digital marketing company in Indore? AdsVerse offers AI SEO, WhatsApp bots, and performance marketing in Vijay Nagar, Indore.",
     canonical: "https://adsverse.in/locations/indore",
   },
   bhopal: {
