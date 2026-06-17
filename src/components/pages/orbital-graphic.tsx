@@ -24,9 +24,14 @@ export function OrbitalGraphic() {
       <div className="absolute inset-0 bg-nebula pointer-events-none" aria-hidden="true"></div>
       
       {/* Outer Orbit (8 nodes) */}
-      <div className="orbit-outer" aria-hidden="true">
+      <div className="orbit-outer">
         {/* 1: Google Ads */}
-        <div className="node node-outer" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <Link 
+          href="/services/paid-ads" 
+          aria-label="AdsVerse Google Ads Services" 
+          className="node node-outer" 
+          style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-google-ads-100.svg"
             alt="Google Ads Icon"
@@ -36,9 +41,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 2: Meta */}
-        <div className="node node-outer" style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}>
+        <Link 
+          href="https://www.facebook.com/adsverse.in" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse Facebook Profile" 
+          className="node node-outer" 
+          style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-facebook-100.svg"
             alt="Facebook Icon"
@@ -48,9 +60,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 3: WhatsApp */}
-        <div className="node node-outer" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
+        <Link 
+          href="https://wa.me/919685123339" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="Chat with AdsVerse on WhatsApp" 
+          className="node node-outer" 
+          style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-whatsapp-100.svg"
             alt="WhatsApp Icon"
@@ -60,9 +79,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 4: LinkedIn */}
-        <div className="node node-outer" style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}>
+        <Link 
+          href="https://www.linkedin.com/company/adsverse" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse LinkedIn Profile" 
+          className="node node-outer" 
+          style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}
+        >
           <Image
             src="/images/icons/icons8-linkedin-100.svg"
             alt="LinkedIn Icon"
@@ -72,9 +98,14 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 5: Firebase Console */}
-        <div className="node node-outer" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
+        <Link 
+          href="/services/automation-tools" 
+          aria-label="AdsVerse n8n & Firebase Automation Services" 
+          className="node node-outer" 
+          style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}
+        >
           <Image
             src="/images/icons/icons8-google-firebase-console-100.svg"
             alt="Firebase Icon"
@@ -84,9 +115,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 6: GitHub */}
-        <div className="node node-outer" style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}>
+        <Link 
+          href="https://github.com/harshvardhan-singh-dhakad" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse Developer GitHub Profile" 
+          className="node node-outer" 
+          style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}
+        >
           <Image
             src="/images/icons/icons8-github-100.svg"
             alt="GitHub Icon"
@@ -96,9 +134,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 7: Instagram */}
-        <div className="node node-outer" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
+        <Link 
+          href="https://www.instagram.com/adsverse.ai" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse Instagram Profile" 
+          className="node node-outer" 
+          style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-instagram-100.svg"
             alt="Instagram Icon"
@@ -108,9 +153,16 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 8: X / Twitter */}
-        <div className="node node-outer" style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}>
+        <Link 
+          href="https://x.com/Adsverse" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse X Profile" 
+          className="node node-outer" 
+          style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-x-100.svg"
             alt="X/Twitter Icon"
@@ -120,13 +172,18 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
       </div>
 
       {/* Inner Orbit (4 nodes) */}
-      <div className="orbit-inner" aria-hidden="true">
+      <div className="orbit-inner">
         {/* 1: Chrome */}
-        <div className="node node-inner" style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <Link 
+          href="/services/web-design-development" 
+          aria-label="AdsVerse Web Design & Development Services" 
+          className="node node-inner" 
+          style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-chrome-100.svg"
             alt="Chrome Icon"
@@ -136,7 +193,7 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
         {/* 2: Telegram */}
         <div className="node node-inner" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
           <Image
@@ -162,7 +219,14 @@ export function OrbitalGraphic() {
           />
         </div>
         {/* 4: Pinterest */}
-        <div className="node node-inner" style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}>
+        <Link 
+          href="https://in.pinterest.com/adsverse_in/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="AdsVerse Pinterest Portfolio" 
+          className="node node-inner" 
+          style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}
+        >
           <Image
             src="/images/icons/icons8-pinterest-100.svg"
             alt="Pinterest Icon"
@@ -172,7 +236,7 @@ export function OrbitalGraphic() {
             priority={false}
             loading="lazy"
           />
-        </div>
+        </Link>
       </div>
 
       {/* Center Core */}
