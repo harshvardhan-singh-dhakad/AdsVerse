@@ -36,7 +36,7 @@ export function Header({ navLinks }: HeaderProps) {
         
         {/* Left: Brand/Logo */}
         <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-1">
+          <Link href="/" className="flex items-center space-x-1" aria-label="AdsVerse Home">
             <AdsVerseLogo size="text-xl sm:text-2xl" />
             <span className="text-brand-orange font-bold text-2xl leading-none animate-pulse">•</span>
           </Link>
@@ -86,7 +86,7 @@ export function Header({ navLinks }: HeaderProps) {
                 <div className="flex flex-col h-full justify-between pb-6">
                   <div>
                     <div className="border-b border-border/40 pb-4">
-                      <Link href="/" className="flex items-center space-x-1" onClick={closeMobileMenu}>
+                      <Link href="/" className="flex items-center space-x-1" onClick={closeMobileMenu} aria-label="AdsVerse Home">
                         <AdsVerseLogo size="text-2xl" />
                         <span className="text-brand-orange font-bold text-2xl leading-none">•</span>
                       </Link>

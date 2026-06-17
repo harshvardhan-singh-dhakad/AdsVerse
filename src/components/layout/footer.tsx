@@ -27,7 +27,7 @@ export function Footer() {
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col gap-6">
-            <Link href="/" className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center gap-2 group" aria-label="AdsVerse Home">
               <AdsVerseLogo size="text-2xl" />
             </Link>
             <div className="max-w-xs text-sm text-muted-foreground space-y-3">
