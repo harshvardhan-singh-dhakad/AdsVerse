@@ -177,19 +177,6 @@ const faqJsonLd = {
   }))
 };
 
-const qaPageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "QAPage",
-  "mainEntity": faqs.map(faq => ({
-    "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.answer
-    }
-  }))
-};
-
 const howToJsonLd = {
   "@context": "https://schema.org",
   "@type": "HowTo",
@@ -227,12 +214,6 @@ export default function HomePage() {
         id="home-faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      {/* QAPage Schema for AEO/FAQ */}
-      <script
-        id="home-qa-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(qaPageJsonLd) }}
       />
       {/* HowTo Schema for Getting Started */}
       <script
