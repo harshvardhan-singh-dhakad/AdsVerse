@@ -181,7 +181,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   const ratingJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "CreativeWorkSeries",
     "name": post.title,
     "image": post.imageUrl,
     "description": post.excerpt,
