@@ -327,6 +327,38 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         await deleteDoc(doc(db, 'public_blogPosts', initialData?.id || docRef.id)).catch(() => { });
       }
 
+      // Trigger IndexNow submission in background
+      try {
+        const blogUrl = `https://adsverse.in/blog/${values.slug}`;
+        const blogIndexUrl = `https://adsverse.in/blog`;
+        if (values.status === 'publish') {
+          fetch('/api/indexnow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ urls: [blogUrl, blogIndexUrl] }),
+          }).catch((err) => {
+            if (process.env.NODE_ENV === 'development') {
+              console.error('[IndexNow Client Error]', err);
+            }
+          });
+        } else if (initialData?.isPublished && !isSyncable) {
+          const oldBlogUrl = `https://adsverse.in/blog/${initialData.slug}`;
+          fetch('/api/indexnow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ urls: [oldBlogUrl, blogIndexUrl] }),
+          }).catch((err) => {
+            if (process.env.NODE_ENV === 'development') {
+              console.error('[IndexNow Client Error]', err);
+            }
+          });
+        }
+      } catch (indexNowError) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[IndexNow Trigger Error]', indexNowError);
+        }
+      }
+
       onSuccess?.();
     } catch (error) {
       console.error(error);

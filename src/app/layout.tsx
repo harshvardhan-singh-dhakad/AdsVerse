@@ -1,6 +1,5 @@
-
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Plus_Jakarta_Sans, Instrument_Sans, Outfit } from "next/font/google";
+import { Plus_Jakarta_Sans, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
@@ -12,18 +11,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import Script from "next/script";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: 'swap',
-});
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair-display',
-  display: 'swap',
-});
-
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-plus-jakarta',
@@ -33,13 +20,6 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-instrument',
-  display: 'swap',
-});
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-  weight: ['900'],
   display: 'swap',
 });
 
@@ -267,8 +247,9 @@ export default function RootLayout({
         <meta name="theme-color" content="#0a0d14" />
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
         {/* DNS prefetch for third-party image CDNs */}
-        <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Material Symbols has been removed to resolve render-blocking FCP/LCP speed issues */}
         {/* Organization & LocalBusiness Schema */}
@@ -280,11 +261,8 @@ export default function RootLayout({
       </head>
       <body className={cn(
         "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",
-        inter.variable,
-        playfairDisplay.variable,
         plusJakartaSans.variable,
-        instrumentSans.variable,
-        outfit.variable
+        instrumentSans.variable
       )}>
         <noscript>
           <iframe

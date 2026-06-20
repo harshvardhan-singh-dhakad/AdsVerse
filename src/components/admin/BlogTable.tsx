@@ -82,6 +82,21 @@ export function BlogTable() {
                         title: 'Auto-Sync', 
                         description: `"${post.title}" is now live!`,
                     });
+
+                    // Trigger IndexNow submission in background
+                    if (post.slug) {
+                        const blogUrl = `https://adsverse.in/blog/${post.slug}`;
+                        const blogIndexUrl = `https://adsverse.in/blog`;
+                        fetch('/api/indexnow', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ urls: [blogUrl, blogIndexUrl] }),
+                        }).catch((err) => {
+                            if (process.env.NODE_ENV === 'development') {
+                                console.error('[IndexNow Client Error]', err);
+                            }
+                        });
+                    }
                 } catch (err) {
                     console.error(`Failed to sync scheduled post ${post.id}:`, err);
                 }
@@ -127,10 +142,26 @@ export function BlogTable() {
 
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this post?')) return;
+        const post = posts.find(p => p.id === id);
         try {
             await deleteDoc(doc(db, 'blogPosts', id));
             await deleteDoc(doc(db, 'public_blogPosts', id)).catch(() => { });
             toast({ title: 'Success', description: 'Post deleted successfully' });
+
+            // Trigger IndexNow submission in background
+            if (post?.slug) {
+                const deletedUrl = `https://adsverse.in/blog/${post.slug}`;
+                const blogIndexUrl = `https://adsverse.in/blog`;
+                fetch('/api/indexnow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: [deletedUrl, blogIndexUrl] }),
+                }).catch((err) => {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.error('[IndexNow Client Error]', err);
+                    }
+                });
+            }
         } catch {
             toast({ title: 'Error', description: 'Failed to delete post', variant: 'destructive' });
         }
@@ -162,6 +193,21 @@ export function BlogTable() {
                 title: 'Success',
                 description: newPublishedStatus ? 'Post published' : 'Post unpublished'
             });
+
+            // Trigger IndexNow submission in background
+            if (post.slug) {
+                const blogUrl = `https://adsverse.in/blog/${post.slug}`;
+                const blogIndexUrl = `https://adsverse.in/blog`;
+                fetch('/api/indexnow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: [blogUrl, blogIndexUrl] }),
+                }).catch((err) => {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.error('[IndexNow Client Error]', err);
+                    }
+                });
+            }
         } catch (err) {
             console.error("Toggle publish error:", err);
             toast({ title: 'Error', description: 'Failed to update status', variant: 'destructive' });

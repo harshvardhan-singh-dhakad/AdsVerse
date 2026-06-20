@@ -4,6 +4,7 @@
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy, doc, deleteDoc, where } from "firebase/firestore";
 import { type Service } from "@/lib/definitions";
+import { getServiceSlug } from "@/lib/services-data";
 import {
     Table,
     TableBody,
@@ -55,9 +56,25 @@ export function ServicesTable() {
 
     const handleDelete = async (serviceId: string) => {
         if (!window.confirm("Are you sure you want to delete this service?")) return;
+        const service = services?.find(s => s.id === serviceId);
         try {
             await deleteDoc(doc(firestore, "services", serviceId));
             toast({ title: "Success", description: "Service deleted successfully." });
+
+            // Trigger IndexNow submission in background
+            if (service?.name) {
+                const serviceUrl = `https://adsverse.in/services/${getServiceSlug(service.name)}`;
+                const ourServicesUrl = `https://adsverse.in/our-services`;
+                fetch('/api/indexnow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: [serviceUrl, ourServicesUrl] }),
+                }).catch((err) => {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.error('[IndexNow Client Error]', err);
+                    }
+                });
+            }
         } catch (error: any) {
             toast({ variant: "destructive", title: "Error", description: error.message });
         }

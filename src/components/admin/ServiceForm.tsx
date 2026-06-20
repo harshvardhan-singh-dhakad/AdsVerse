@@ -14,6 +14,7 @@ import { type Service } from "@/lib/definitions";
 import { useFirestore } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getServiceSlug } from "@/lib/services-data";
 
 const SERVICE_CATEGORIES = [
   // Digital Marketing
@@ -106,6 +107,26 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
         await addDoc(collection(firestore, "services"), dataForFirestore);
         toast({ title: "Success", description: "Service added successfully." });
       }
+
+      // Trigger IndexNow submission in background
+      try {
+        const serviceUrl = `https://adsverse.in/services/${getServiceSlug(data.name)}`;
+        const ourServicesUrl = `https://adsverse.in/our-services`;
+        fetch('/api/indexnow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls: [serviceUrl, ourServicesUrl] }),
+        }).catch((err) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error('[IndexNow Client Error]', err);
+          }
+        });
+      } catch (indexNowError) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[IndexNow Trigger Error]', indexNowError);
+        }
+      }
+
       onFinished();
     } catch (error: any) {
       toast({ variant: "destructive", title: "Error", description: error.message });
