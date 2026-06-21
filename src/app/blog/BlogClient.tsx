@@ -48,11 +48,16 @@ function formatPostDate(date: any) {
 
 interface BlogClientProps {
   initialPosts: any[];
+  initialCategory?: string;
 }
 
-export default function BlogClient({ initialPosts }: BlogClientProps) {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+export default function BlogClient({ initialPosts, initialCategory = 'all' }: BlogClientProps) {
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [visibleCount, setVisibleCount] = useState<number>(15);
+
+  useEffect(() => {
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
 
   // Filter posts in-memory
   const filteredPosts = useMemo(() => {

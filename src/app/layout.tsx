@@ -10,6 +10,8 @@ import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import Script from "next/script";
+import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
+import { db } from "@/lib/firebase-server";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -235,7 +237,30 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function RootLayout({
+async function getLatestPosts() {
+  try {
+    const now = new Date().toISOString();
+    const q = query(
+      collection(db, "public_blogPosts"),
+      where("publishedDate", "<=", now),
+      orderBy("publishedDate", "desc"),
+      limit(2)
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(doc => ({
+      id: doc.id,
+      title: doc.data().title || "",
+      slug: doc.data().slug || "",
+      imageUrl: doc.data().imageUrl || "/images/og-adsverse-2026.png",
+      category: doc.data().category || "",
+    }));
+  } catch (error) {
+    console.error("Error fetching latest posts for header:", error);
+    return [];
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -293,7 +318,7 @@ export default function RootLayout({
               Skip to main content
             </a>
             <BackgroundEffects />
-            <Header navLinks={navLinks} />
+            <Header navLinks={navLinks} latestPosts={await getLatestPosts()} />
             <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
             </main>

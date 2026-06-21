@@ -28,11 +28,20 @@ type NavLink = {
   label: string;
 };
 
-type HeaderProps = {
-  navLinks: NavLink[];
+type LatestPost = {
+  id: string;
+  title: string;
+  slug: string;
+  imageUrl: string;
+  category: string;
 };
 
-export function Header({ navLinks }: HeaderProps) {
+type HeaderProps = {
+  navLinks: NavLink[];
+  latestPosts?: LatestPost[];
+};
+
+export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -174,6 +183,39 @@ export function Header({ navLinks }: HeaderProps) {
             }
 
             if (label === "Blog") {
+              const blogCategories = [
+                { id: 'paid-ads', label: 'Paid Ads' },
+                { id: 'seo', label: 'SEO Optimization' },
+                { id: 'web-development', label: 'Web Development' },
+                { id: 'automation-ai', label: 'Automation & AI' },
+                { id: 'content-marketing', label: 'Content Marketing' },
+                { id: 'social-media', label: 'Social Media' },
+                { id: 'whatsapp-marketing', label: 'WhatsApp Marketing' },
+                { id: 'local-seo', label: 'Local SEO' },
+                { id: 'case-studies', label: 'Case Studies' },
+                { id: 'tutorials', label: 'Tutorials' },
+                { id: 'industry-news', label: 'Industry News' },
+              ];
+
+              const fallbackPosts = [
+                {
+                  id: "fallback-1",
+                  title: "Demystifying SEO: A Beginner's Guide to Google Rankings",
+                  slug: "demystifying-seo",
+                  imageUrl: "/images/blog/seo-guide.png",
+                  category: "seo"
+                },
+                {
+                  id: "fallback-2",
+                  title: "Best Automation Tools for Business Growth in 2026",
+                  slug: "best-automation-tools-for-business",
+                  imageUrl: "/images/blog/automation-tools.png",
+                  category: "automation-ai"
+                }
+              ];
+
+              const displayPosts = latestPosts && latestPosts.length >= 2 ? latestPosts.slice(0, 2) : fallbackPosts;
+
               return (
                 <div key={href} className="group relative py-3">
                   <Link
@@ -191,22 +233,15 @@ export function Header({ navLinks }: HeaderProps) {
                   </Link>
 
                   {/* Mega Menu Dropdown */}
-                  <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[700px] lg:w-[800px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
+                  <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[720px] lg:w-[820px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
                     <div className="grid grid-cols-12 gap-6">
                       {/* Left: Blog Categories */}
-                      <div className="col-span-4 border-r border-border/20 pr-6 space-y-4 text-left">
+                      <div className="col-span-5 border-r border-border/20 pr-6 space-y-3 text-left">
                         <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Categories</h5>
-                        <ul className="grid grid-cols-1 gap-2.5">
-                          {[
-                            { label: "Paid Ads", href: "/blog?category=paid-ads" },
-                            { label: "SEO Optimization", href: "/blog?category=seo" },
-                            { label: "Web Development", href: "/blog?category=web-development" },
-                            { label: "Automation & AI", href: "/blog?category=automation-ai" },
-                            { label: "Content Marketing", href: "/blog?category=content-marketing" },
-                            { label: "Case Studies", href: "/blog?category=case-studies" },
-                          ].map((cat) => (
-                            <li key={cat.label}>
-                              <Link href={cat.href} className="text-xs text-foreground hover:text-primary font-semibold flex items-center transition-colors">
+                        <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+                          {blogCategories.map((cat) => (
+                            <li key={cat.id}>
+                              <Link href={`/blog?category=${cat.id}`} className="text-xs text-foreground hover:text-primary font-semibold flex items-center transition-colors">
                                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mr-2 opacity-50" />
                                 {cat.label}
                               </Link>
@@ -216,44 +251,30 @@ export function Header({ navLinks }: HeaderProps) {
                       </div>
 
                       {/* Right: Featured Articles */}
-                      <div className="col-span-8 pl-4 space-y-4 text-left">
+                      <div className="col-span-7 pl-4 space-y-4 text-left">
                         <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Featured Insights</h5>
                         <div className="grid grid-cols-2 gap-4">
-                          {/* Blog 1 */}
-                          <Link href="/blog/demystifying-seo" className="group/card block bg-muted/20 dark:bg-muted/10 rounded-xl border border-border/25 overflow-hidden hover:border-orange-500/30 transition-all">
-                            <div className="relative h-24 w-full bg-muted">
-                              <Image
-                                src="/images/blog/seo-guide.png"
-                                alt="Demystifying SEO"
-                                fill
-                                className="object-cover group-hover/card:scale-105 transition-transform duration-500"
-                              />
-                            </div>
-                            <div className="p-3 space-y-1">
-                              <span className="text-[9px] uppercase tracking-wider font-bold text-orange-500 block">SEO Strategy</span>
-                              <span className="text-xs font-bold text-foreground leading-snug block line-clamp-2 group-hover/card:text-primary transition-colors">
-                                Demystifying SEO: A Beginner's Guide to Google Rankings
-                              </span>
-                            </div>
-                          </Link>
-
-                          {/* Blog 2 */}
-                          <Link href="/blog/best-automation-tools-for-business" className="group/card block bg-muted/20 dark:bg-muted/10 rounded-xl border border-border/25 overflow-hidden hover:border-orange-500/30 transition-all">
-                            <div className="relative h-24 w-full bg-muted">
-                              <Image
-                                src="/images/blog/automation-tools.png"
-                                alt="Business Automation"
-                                fill
-                                className="object-cover group-hover/card:scale-105 transition-transform duration-500"
-                              />
-                            </div>
-                            <div className="p-3 space-y-1">
-                              <span className="text-[9px] uppercase tracking-wider font-bold text-orange-500 block">Automation & AI</span>
-                              <span className="text-xs font-bold text-foreground leading-snug block line-clamp-2 group-hover/card:text-primary transition-colors">
-                                Best Automation Tools for Business Growth in 2026
-                              </span>
-                            </div>
-                          </Link>
+                          {displayPosts.map((post) => (
+                            <Link key={post.id} href={`/blog/${post.slug}`} className="group/card block bg-muted/20 dark:bg-muted/10 rounded-xl border border-border/25 overflow-hidden hover:border-orange-500/30 transition-all">
+                              <div className="relative h-24 w-full bg-muted">
+                                <Image
+                                  src={post.imageUrl}
+                                  alt={post.title}
+                                  fill
+                                  sizes="(max-width: 768px) 100px, 200px"
+                                  className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+                                />
+                              </div>
+                              <div className="p-3 space-y-1">
+                                <span className="text-[9px] uppercase tracking-wider font-bold text-orange-500 block">
+                                  {blogCategories.find(c => c.id === post.category)?.label || "Insight"}
+                                </span>
+                                <span className="text-xs font-bold text-foreground leading-snug block line-clamp-2 group-hover/card:text-primary transition-colors capitalize">
+                                  {post.title}
+                                </span>
+                              </div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </div>

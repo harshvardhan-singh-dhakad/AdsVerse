@@ -44,8 +44,13 @@ async function getBlogPosts() {
   }
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: { category?: string };
+}) {
   const posts = await getBlogPosts();
+  const initialCategory = searchParams?.category || 'all';
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -91,7 +96,7 @@ export default async function BlogPage() {
           </p>
         </section>
 
-        <BlogClient initialPosts={posts} />
+        <BlogClient initialPosts={posts} initialCategory={initialCategory} />
       </div>
     </>
   );
