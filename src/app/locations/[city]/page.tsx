@@ -501,6 +501,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const dynamicDescription = `Looking for the best digital marketing agency in ${cityName}? AdsVerse provides top-rated SEO, Meta & Google Ads, WhatsApp AI automation, and web development to scale your business in ${cityName}, ${stateName}. Get a free audit today!`;
   const canonical = meta?.canonical || `https://adsverse.in/locations/${cityKey}`;
 
+  // Resolve absolute image URL for social media sharing
+  const relativeImg = cityImages[cityKey] || "/images/og-adsverse-2026.png";
+  const absoluteImageUrl = `https://adsverse.in${relativeImg}`;
+
   return {
     title: dynamicTitle,
     description: dynamicDescription,
@@ -512,12 +516,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: "AdsVerse",
       locale: "en_IN",
       type: "website",
+      images: [
+        {
+          url: absoluteImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${cityName} Digital Marketing - AdsVerse`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: dynamicTitle,
       description: dynamicDescription,
       creator: "@Adsverse1",
+      images: [absoluteImageUrl],
     },
   };
 }
