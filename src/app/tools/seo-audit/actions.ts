@@ -13,6 +13,21 @@ export interface SeoCategoryScores {
   social: { score: number; grade: string };
 }
 
+export interface GeoAeoScores {
+  geo: { score: number; grade: string };
+  aeo: { score: number; grade: string };
+}
+
+export interface GeoAeoCheck {
+  id: string;
+  check: string;
+  description: string;
+  fix: string;
+  passed: boolean;
+  priority: 'High' | 'Medium' | 'Low';
+  type: 'GEO' | 'AEO';
+}
+
 export interface Recommendation {
   id: string;
   check: string;
@@ -35,6 +50,8 @@ export interface AnalysisResult {
   redirected: boolean;
   overallScore: { score: number; grade: string };
   categoryScores: SeoCategoryScores;
+  geoAeoScores: GeoAeoScores;
+  geoAeoChecks: GeoAeoCheck[];
   recommendations: Recommendation[];
   title: string;
   metaDescription: string;
@@ -65,9 +82,6 @@ function isUrlBlockedByRobots(url: string, robotsTxt: string): boolean {
     if (!robotsTxt) return false;
 
     const rules = robotsTxt.split('\n');
-    let userAgentBlock = false;
-    let applicableRules: string[] = [];
-
     let currentUserAgent = '';
 
     for (const line of rules) {
@@ -129,7 +143,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
 
   const checks: Record<string, any> = {};
 
-  // --- Analysis ---
+  // --- SEO Analysis ---
   const title = $('title').text().trim();
   const metaDescription = $('meta[name="description"]').attr('content')?.trim() || '';
   const h1s = $('h1').map((_, el) => $(el).text().trim()).get();
@@ -139,7 +153,8 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const lang = $('html').attr('lang');
   const canonical = $('link[rel="canonical"]').attr('href');
   
-  const wordCount = $('body').text().replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, "").replace(/<style[^>]*>([\S\s]*?)<\/style>/gmi, "").split(/\s+/).filter(Boolean).length;
+  const bodyText = $('body').text().replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, "").replace(/<style[^>]*>([\S\s]*?)<\/style>/gmi, "");
+  const wordCount = bodyText.split(/\s+/).filter(Boolean).length;
   checks.wordCountOk = wordCount > 300;
   
   checks.titleOk = title.length > 10 && title.length < 60;
@@ -171,25 +186,35 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const robotsMeta = $('meta[name="robots"]').attr('content') || '';
   checks.isNoIndex = robotsMeta.toLowerCase().includes('noindex');
 
-  let hasLocalBusinessSchema = false;
+  // Parse all schema scripts once
+  const allSchemas: any[] = [];
   $('script[type="application/ld+json"]').each((_, el) => {
-      try {
-          const schema = JSON.parse($(el).html() || '{}');
-          const checkType = (s: any) => {
-              if (s['@type'] && s['@type'].includes('LocalBusiness')) {
-                  hasLocalBusinessSchema = true;
-              }
-          };
-          if (Array.isArray(schema)) {
-              schema.forEach(checkType);
-          } else {
-              checkType(schema);
-          }
-      } catch (e) {}
+    try {
+      const parsed = JSON.parse($(el).html() || '{}');
+      if (Array.isArray(parsed)) allSchemas.push(...parsed);
+      else allSchemas.push(parsed);
+    } catch (e) {}
   });
 
-  checks.hasSchema = $('script[type="application/ld+json"]').length > 0;
-  checks.hasLocalBusinessSchema = hasLocalBusinessSchema;
+  const hasSchemaType = (type: string) => allSchemas.some(s => s['@type'] && (Array.isArray(s['@type']) ? s['@type'].includes(type) : s['@type'] === type || s['@type'].includes(type)));
+
+  checks.hasSchema = allSchemas.length > 0;
+  checks.hasLocalBusinessSchema = hasSchemaType('LocalBusiness');
+  checks.hasFAQSchema = hasSchemaType('FAQPage');
+  checks.hasHowToSchema = hasSchemaType('HowTo');
+  checks.hasBreadcrumbSchema = hasSchemaType('BreadcrumbList');
+  checks.hasOrganizationSchema = hasSchemaType('Organization');
+  checks.hasSpeakableSchema = hasSchemaType('SpeakableSpecification') || allSchemas.some(s => s.speakable);
+  checks.hasReviewSchema = hasSchemaType('Review') || hasSchemaType('AggregateRating');
+  checks.hasArticleSchema = hasSchemaType('Article') || hasSchemaType('BlogPosting') || hasSchemaType('NewsArticle');
+
+  // Author / Date signals
+  const authorSelectors = ['[rel="author"]', '[itemprop="author"]', '.author', '#author', '[class*="author"]', '[class*="byline"]', 'article [class*="by"]'];
+  checks.hasAuthorInfo = authorSelectors.some(sel => $(sel).length > 0) || allSchemas.some(s => s.author);
+
+  const dateSelectors = ['time[datetime]', '[itemprop="datePublished"]', '[itemprop="dateModified"]', '.published', '.post-date', '[class*="date"]'];
+  checks.hasDatePublished = dateSelectors.some(sel => $(sel).length > 0) || allSchemas.some(s => s.datePublished || s.dateModified);
+
   checks.langOk = !!lang;
   checks.canonicalOk = !!canonical;
 
@@ -217,6 +242,47 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
 
   checks.isUrlSeoFriendly = finalUrl.length < 100 && !finalUrl.includes('_') && !/[A-Z]/.test(finalUrl.split('?')[0]);
 
+  // --- GEO / AEO specific checks ---
+  // Content depth check
+  checks.contentDepth = wordCount >= 800;
+
+  // Topic focus: check if H1 and title share any significant words
+  const h1Text = h1s[0] || '';
+  const commonWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'is', 'are', 'was', 'it']);
+  const titleWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 3 && !commonWords.has(w));
+  const h1Words = h1Text.toLowerCase().split(/\s+/).filter(w => w.length > 3 && !commonWords.has(w));
+  checks.hasClearTopicFocus = titleWords.some(w => h1Words.includes(w)) || h1Words.some(w => titleWords.includes(w));
+
+  // Expertise signals
+  const expertiseKeywords = /expert|certified|award|years experience|founder|specialist|consultant|professional|accredited|qualified|license/i;
+  checks.hasExpertiseSignals = expertiseKeywords.test(bodyText.slice(0, 5000));
+
+  // Table of contents (anchor links on same page)
+  const anchorLinks = $('a[href^="#"]').length;
+  checks.hasTableOfContents = anchorLinks >= 3;
+
+  // AEO: FAQ-style headings (question headings)
+  const questionHeadings = [...h2s, ...h3s].filter(h => /\?|^what|^how|^why|^when|^where|^who|^which|^can|^does|^is|^are|^do/i.test(h.trim()));
+  checks.hasFAQContent = questionHeadings.length >= 2;
+
+  // AEO: Structured list content
+  checks.hasListContent = $('ul li, ol li').length >= 3;
+
+  // AEO: Voice search optimization (natural language, short answers)
+  const paragraphs = $('p').map((_, el) => $(el).text().trim()).get();
+  const shortAnswerParagraphs = paragraphs.filter(p => p.length > 20 && p.length < 200);
+  checks.hasVoiceSearchOptimization = shortAnswerParagraphs.length >= 3 && checks.hasFAQContent;
+
+  // AEO: Direct answers after questions (check if a <p> follows an H2/H3)
+  let directAnswerCount = 0;
+  $('h2, h3').each((_, el) => {
+    const next = $(el).next('p');
+    if (next.length && next.text().length > 30 && next.text().length < 300) {
+      directAnswerCount++;
+    }
+  });
+  checks.hasDirectAnswers = directAnswerCount >= 2;
+
 
   const linkCounts: LinkCounts = { internal: 0, external: 0, nofollow: 0 };
   $('a[href]').each((_, el) => {
@@ -242,7 +308,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   });
 
 
-  // --- Scoring ---
+  // --- SEO Scoring ---
   let onPagePoints = 0;
   if (checks.titleOk) onPagePoints += 15;
   if (checks.metaDescriptionOk) onPagePoints += 10;
@@ -262,7 +328,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   if (checks.robotsTxtOk) technicalPoints += 15;
   if (!checks.isBlockedByRobots) technicalPoints += 15;
   if (checks.sitemapInRobotsOk) technicalPoints += 10;
-  if (redirected) technicalPoints -= 10; // Penalize for redirects
+  if (redirected) technicalPoints -= 10;
   technicalPoints += 20;
   const technicalScore = Math.min(100, Math.max(0, technicalPoints));
   
@@ -293,6 +359,55 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     social: { score: socialScore, grade: getGrade(socialScore) },
   };
 
+  // --- GEO Scoring (AI Search Readiness) ---
+  let geoPoints = 0;
+  if (checks.hasAuthorInfo) geoPoints += 15;
+  if (checks.hasDatePublished) geoPoints += 10;
+  if (checks.hasFAQSchema) geoPoints += 15;
+  if (checks.hasBreadcrumbSchema) geoPoints += 10;
+  if (checks.hasClearTopicFocus) geoPoints += 15;
+  if (checks.contentDepth) geoPoints += 15;
+  if (checks.hasHowToSchema) geoPoints += 10;
+  if (checks.hasExpertiseSignals) geoPoints += 10;
+  const geoScore = Math.min(100, geoPoints);
+
+  // --- AEO Scoring (Answer Engine Readiness) ---
+  let aeoPoints = 0;
+  if (checks.hasFAQContent) aeoPoints += 20;
+  if (checks.hasListContent) aeoPoints += 15;
+  if (checks.hasOrganizationSchema) aeoPoints += 20;
+  if (checks.hasReviewSchema) aeoPoints += 15;
+  if (checks.hasSpeakableSchema) aeoPoints += 10;
+  if (checks.hasVoiceSearchOptimization) aeoPoints += 10;
+  if (checks.hasDirectAnswers) aeoPoints += 10;
+  const aeoScore = Math.min(100, aeoPoints);
+
+  const geoAeoScores: GeoAeoScores = {
+    geo: { score: geoScore, grade: getGrade(geoScore) },
+    aeo: { score: aeoScore, grade: getGrade(aeoScore) },
+  };
+
+  // --- GEO + AEO Checklist ---
+  const geoAeoChecks: GeoAeoCheck[] = [
+    // GEO Checks
+    { id: 'author_info', type: 'GEO', check: 'Author / E-E-A-T Signals', description: 'AI search engines prioritize content from identifiable, credible authors. Author info is a key E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signal.', fix: 'Add a visible author byline, author bio section, or author schema markup to your page. Link to author profiles on LinkedIn or your about page.', passed: checks.hasAuthorInfo, priority: 'High' },
+    { id: 'date_published', type: 'GEO', check: 'Published / Updated Date', description: 'AI engines like ChatGPT and Gemini prefer recently updated content. A visible publication or update date signals freshness.', fix: 'Add a <time datetime="YYYY-MM-DD"> element or datePublished/dateModified in your JSON-LD schema to indicate content freshness.', passed: checks.hasDatePublished, priority: 'High' },
+    { id: 'content_depth', type: 'GEO', check: 'Content Depth (800+ words)', description: 'AI models are trained to surface comprehensive, in-depth content. Pages with 800+ words tend to perform better in AI-generated answers.', fix: `Your page has ${wordCount} words. Expand your content to cover the topic comprehensively with examples, data, and expert insights.`, passed: checks.contentDepth, priority: 'High' },
+    { id: 'topic_focus', type: 'GEO', check: 'Clear Topic Focus', description: 'AI engines extract the central topic from your H1 and title. When they align, the AI can confidently cite your page as a source.', fix: 'Make sure your H1 and title tag share key topic words. Avoid clickbait titles that differ greatly from your page heading.', passed: checks.hasClearTopicFocus, priority: 'Medium' },
+    { id: 'faq_schema', type: 'GEO', check: 'FAQ Schema Markup', description: 'FAQ schema helps AI engines directly extract your Q&A content for featured snippets and conversational AI responses.', fix: 'Add FAQPage JSON-LD schema to pages with question-and-answer content. This significantly increases your chances of being cited by AI.', passed: checks.hasFAQSchema, priority: 'High' },
+    { id: 'howto_schema', type: 'GEO', check: 'HowTo Schema Markup', description: 'HowTo schema helps AI assistants provide step-by-step instructions from your content in response to "how to" queries.', fix: 'For instructional content, add HowTo JSON-LD schema with defined steps, tools, and time estimates.', passed: checks.hasHowToSchema, priority: 'Medium' },
+    { id: 'breadcrumb_schema', type: 'GEO', check: 'Breadcrumb Schema', description: 'Breadcrumb schema helps AI engines understand the hierarchy and context of your page within your site structure.', fix: 'Add BreadcrumbList JSON-LD schema to all pages. Example: Home > Blog > Article Title.', passed: checks.hasBreadcrumbSchema, priority: 'Low' },
+    { id: 'expertise_signals', type: 'GEO', check: 'Expertise & Credibility Signals', description: 'Words like "certified", "years of experience", "expert" signal to AI engines that your content comes from a credible source.', fix: 'Include mentions of qualifications, certifications, awards, or years of experience in your page copy to build AI-readable authority.', passed: checks.hasExpertiseSignals, priority: 'Medium' },
+    // AEO Checks
+    { id: 'faq_headings', type: 'AEO', check: 'FAQ-Style Question Headings', description: 'Answer engines match user questions to pages with question-formatted headings (H2/H3). These are directly used for featured snippets and voice answers.', fix: 'Rewrite some of your H2/H3 headings as questions that your target audience would ask (e.g., "What is digital marketing?", "How does SEO work?").', passed: checks.hasFAQContent, priority: 'High' },
+    { id: 'direct_answers', type: 'AEO', check: 'Direct Answer Paragraphs', description: 'Google and voice assistants look for concise paragraphs immediately following question headings to use as featured snippet answers.', fix: 'After each question-style heading, immediately write a clear, concise answer (40-60 words) before going into detail. This is the ideal featured snippet format.', passed: checks.hasDirectAnswers, priority: 'High' },
+    { id: 'list_content', type: 'AEO', check: 'Structured List Content (UL/OL)', description: 'Bulleted and numbered lists are highly preferred by answer engines for listing steps, features, or options in search results.', fix: 'Where appropriate, convert paragraph content into bulleted lists or numbered step-by-step instructions for better AEO and featured snippet eligibility.', passed: checks.hasListContent, priority: 'Medium' },
+    { id: 'org_schema', type: 'AEO', check: 'Organization Schema', description: 'Organization schema provides AI and voice assistants with structured information about your business — name, address, phone, social links — used for "knowledge panel" and local voice queries.', fix: 'Add Organization JSON-LD schema to your homepage with your company name, URL, logo, contact info, and social media profiles.', passed: checks.hasOrganizationSchema, priority: 'High' },
+    { id: 'review_schema', type: 'AEO', check: 'Review / Rating Schema', description: 'Review and rating schema enables star ratings in search results and increases trust signals for AI-generated recommendations.', fix: 'Add Review or AggregateRating JSON-LD schema to product, service, or business pages to display star ratings in search results.', passed: checks.hasReviewSchema, priority: 'Medium' },
+    { id: 'speakable_schema', type: 'AEO', check: 'Speakable Schema', description: 'Speakable schema tells Google Assistant and other voice AI exactly which parts of your content should be read aloud in response to voice queries.', fix: 'Add Speakable JSON-LD schema pointing to the CSS selectors of your most important, concise content sections to enable voice assistant optimization.', passed: checks.hasSpeakableSchema, priority: 'Low' },
+    { id: 'voice_search', type: 'AEO', check: 'Voice Search Optimization', description: 'Voice queries are conversational and often question-based. Pages with question headings and short answer paragraphs are better suited for voice responses.', fix: 'Combine question-formatted headings with short (under 30 words) answer paragraphs written in conversational language to optimize for voice search and AEO.', passed: checks.hasVoiceSearchOptimization, priority: 'Medium' },
+  ];
+
   const recommendations: Recommendation[] = [
     { id: 'https', check: 'HTTPS Encryption', description: 'Your site is served over a secure (HTTPS) connection, which is crucial for user trust and SEO.', fix: 'Ensure all resources (images, scripts) are also loaded over HTTPS to avoid mixed content warnings.', category: 'Security', priority: 'High', passed: checks.isHttps },
     { id: 'noindex', check: 'Indexing Allowed', description: 'Checks if search engines are allowed to index this page.', fix: 'If this page is important, remove the "noindex" directive from the meta robots tag to allow search engines to show it in search results.', category: 'Technical SEO', priority: 'High', passed: !checks.isNoIndex },
@@ -322,6 +437,8 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     redirected: redirected,
     overallScore: { score: overallScoreVal, grade: getGrade(overallScoreVal) },
     categoryScores,
+    geoAeoScores,
+    geoAeoChecks,
     recommendations,
     title,
     metaDescription,
