@@ -7,6 +7,7 @@ import { ServicesTable } from "./ServicesTable";
 import { PortfolioTable } from "./PortfolioTable";
 import { PricingTable } from "./PricingTable";
 import { BlogTable } from "./BlogTable";
+import { AuditLeadsTable } from "./AuditLeadsTable";
 import { type AdminTab } from "./AdminSidebar";
 
 interface AdminDashboardProps {
@@ -19,6 +20,8 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <DashboardStats />;
     case "leads":
       return <LeadsTable />;
+    case "audit-leads":
+      return <AuditLeadsTable />;
     case "services":
       return <ServicesTable />;
     case "portfolio":

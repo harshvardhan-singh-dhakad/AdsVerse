@@ -1,10 +1,11 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, Smartphone, Zap, Share2, Wrench, CheckCircle, XCircle, AlertTriangle, 
-  ChevronDown, ChevronUp, Download, Info, ShieldCheck, Bot, Mic, Brain, Sparkles
+  ChevronDown, ChevronUp, Download, Info, ShieldCheck, Bot, Mic, Brain, Sparkles,
+  User, Mail, Phone, Globe, Lock, ArrowRight, Loader2
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationType, type GeoAeoCheck } from './actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,8 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 
 interface jsPDFWithAutoTable extends jsPDF {
   autoTable: (options: any) => jsPDF;
@@ -255,60 +258,27 @@ const GeoAeoSection = ({ id, icon: Icon, title, score, grade, accentColor, check
   );
 };
 
+const AUDIT_STEPS = [
+  { id: 1, label: 'Searching your website...', sub: 'Crawling pages, sitemap & robots.txt', icon: '🔍', duration: 18000 },
+  { id: 2, label: 'Collecting on-page data...', sub: 'Reading titles, headings, meta tags & content', icon: '📡', duration: 22000 },
+  { id: 3, label: 'Running GEO & AEO AI analysis...', sub: 'Checking AI readiness, schema & answer engine signals', icon: '🤖', duration: 24000 },
+  { id: 4, label: 'Generating your report...', sub: 'Calculating scores & preparing recommendations', icon: '📊', duration: 8000 },
+];
+
 const SEOAuditPage = () => {
+  const firestore = useFirestore();
   const [url, setUrl] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [contactInfo, setContactInfo] = useState({ name: '', email: '', phone: '' });
+  const [contactErrors, setContactErrors] = useState({ name: '', email: '' });
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [progressLabel, setProgressLabel] = useState('Analyzing Website...');
+  const [currentStep, setCurrentStep] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [stepProgress, setStepProgress] = useState(0);
   const [report, setReport] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
-  useEffect(() => {
-    if (loading) {
-      const labels = [
-        'Fetching website...',
-        'Analyzing on-page SEO...',
-        'Checking technical signals...',
-        'Running GEO analysis...',
-        'Running AEO analysis...',
-        'Generating report...',
-      ];
-      let labelIdx = 0;
-      let current = 0;
-      const interval = setInterval(() => {
-        if (current < 95) {
-          setProgress(prev => Math.min(prev + 1.5, 95));
-          current += 1.5;
-          if (current % 15 < 1.5 && labelIdx < labels.length - 1) {
-            labelIdx++;
-            setProgressLabel(labels[labelIdx]);
-          }
-        }
-      }, 120);
-      return () => clearInterval(interval);
-    }
-  }, [loading]);
-
-  const handleAudit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!url) return;
-
-    setLoading(true);
-    setReport(null);
-    setError(null);
-    setProgress(0);
-    setProgressLabel('Fetching website...');
-
-    try {
-      const res = await analyzeUrl(url);
-      setProgress(100);
-      setReport(res);
-    } catch(e: any) {
-      setError("Analysis failed. The target website might be blocking automated tools (e.g., using Cloudflare), or it might be a JavaScript-heavy Single-Page Application (SPA) that our tool cannot fully parse at the moment. Please try again with a different website.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const analysisResultRef = useRef<AnalysisResult | null>(null);
+  const analysisErrorRef = useRef<string | null>(null);
 
   const getRecsByCategory = (category: RecommendationType['category']) => {
     if (!report) return [];
@@ -317,6 +287,106 @@ const SEOAuditPage = () => {
 
   const getGeoChecks = () => report?.geoAeoChecks.filter(c => c.type === 'GEO') || [];
   const getAeoChecks = () => report?.geoAeoChecks.filter(c => c.type === 'AEO') || [];
+
+  // Run 4-step animation while loading + background analysis
+  useEffect(() => {
+    if (!loading) return;
+
+    // Start background analysis
+    const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+    (async () => {
+      try {
+        const res = await analyzeUrl(normalizedUrl);
+        analysisResultRef.current = res;
+      } catch {
+        analysisErrorRef.current = 'Analysis failed. The website may be blocking automated tools (e.g., Cloudflare) or is a JavaScript-heavy SPA. Please try again.';
+      }
+    })();
+
+    let stepTimer: ReturnType<typeof setTimeout>;
+    let progressTimer: ReturnType<typeof setInterval>;
+
+    const runStep = (idx: number) => {
+      if (idx >= AUDIT_STEPS.length) {
+        setCurrentStep(4);
+        setCompletedSteps([1, 2, 3, 4]);
+        setTimeout(() => {
+          setLoading(false);
+          if (analysisErrorRef.current) {
+            setError(analysisErrorRef.current);
+          } else {
+            setReport(analysisResultRef.current);
+          }
+          analysisResultRef.current = null;
+          analysisErrorRef.current = null;
+        }, 500);
+        return;
+      }
+      const step = AUDIT_STEPS[idx];
+      setCurrentStep(step.id);
+      setStepProgress(0);
+      const startTime = Date.now();
+      progressTimer = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const pct = Math.min((elapsed / step.duration) * 100, 99);
+        setStepProgress(pct);
+      }, 80);
+      stepTimer = setTimeout(() => {
+        clearInterval(progressTimer);
+        setStepProgress(100);
+        setCompletedSteps(prev => [...prev, step.id]);
+        setTimeout(() => runStep(idx + 1), 350);
+      }, step.duration);
+    };
+
+    runStep(0);
+    return () => { clearTimeout(stepTimer); clearInterval(progressTimer); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
+  const validateContact = () => {
+    const errs = { name: '', email: '' };
+    let valid = true;
+    if (!contactInfo.name.trim()) { errs.name = 'Name is required'; valid = false; }
+    if (!contactInfo.email.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(contactInfo.email)) {
+      errs.email = 'Valid email is required'; valid = false;
+    }
+    setContactErrors(errs);
+    return valid;
+  };
+
+  const handleAudit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!url) return;
+    setError(null);
+    setShowModal(true);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateContact()) return;
+    setShowModal(false);
+    setReport(null);
+    setError(null);
+    setCurrentStep(0);
+    setCompletedSteps([]);
+    setStepProgress(0);
+    analysisResultRef.current = null;
+    analysisErrorRef.current = null;
+    // Save lead to Firestore (non-blocking)
+    try {
+      const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+      await addDoc(collection(firestore, 'audit_leads'), {
+        name: contactInfo.name.trim(),
+        email: contactInfo.email.trim(),
+        phone: contactInfo.phone.trim() || null,
+        website: normalizedUrl,
+        submittedAt: serverTimestamp(),
+        source: 'seo-audit-tool',
+      });
+    } catch (_) { /* non-blocking */ }
+    setLoading(true);
+  };
 
   const generatePdf = () => {
     if (!report) return;
@@ -465,7 +535,98 @@ const SEOAuditPage = () => {
 
   return (
     <div className="min-h-screen font-sans text-foreground">
-      
+
+      {/* ===== CONTACT MODAL ===== */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)'}}>
+          <div className="relative w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl p-8 animate-in fade-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-violet-500/10 border border-violet-500/30 rounded-2xl mb-4">
+                <Globe className="w-7 h-7 text-violet-400" />
+              </div>
+              <h2 className="text-2xl font-extrabold text-foreground mb-1">Get Your Free Report</h2>
+              <p className="text-sm text-muted-foreground">We are analyzing:</p>
+              <p className="text-sm font-bold text-violet-400 truncate mt-0.5">{url.replace(/^https?:\/\//, '')}</p>
+            </div>
+
+            <form onSubmit={handleContactSubmit} className="space-y-4">
+              {/* Name */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">Full Name *</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Your full name"
+                    className={`pl-10 h-11 ${contactErrors.name ? 'border-red-500' : ''}`}
+                    value={contactInfo.name}
+                    onChange={e => { setContactInfo(p => ({...p, name: e.target.value})); setContactErrors(p => ({...p, name: ''})); }}
+                  />
+                </div>
+                {contactErrors.name && <p className="text-red-500 text-xs mt-1">{contactErrors.name}</p>}
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">Email Address *</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    className={`pl-10 h-11 ${contactErrors.email ? 'border-red-500' : ''}`}
+                    value={contactInfo.email}
+                    onChange={e => { setContactInfo(p => ({...p, email: e.target.value})); setContactErrors(p => ({...p, email: ''})); }}
+                  />
+                </div>
+                {contactErrors.email && <p className="text-red-500 text-xs mt-1">{contactErrors.email}</p>}
+              </div>
+
+              {/* Phone - optional */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                  Phone Number
+                  <span className="text-[10px] font-normal text-muted-foreground/60 normal-case">(optional)</span>
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    className="pl-10 h-11"
+                    value={contactInfo.phone}
+                    onChange={e => setContactInfo(p => ({...p, phone: e.target.value}))}
+                  />
+                </div>
+                <p className="text-xs text-emerald-500 mt-1">📞 Add your number to get a free 15-min SEO consultation call</p>
+              </div>
+
+              {/* CTA */}
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-violet-600 to-primary hover:opacity-90 text-white font-bold text-base flex items-center justify-center gap-2 rounded-xl mt-2"
+              >
+                Get My Free Report <ArrowRight className="w-5 h-5" />
+              </Button>
+
+              {/* Trust badge */}
+              <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground pt-1">
+                <Lock className="w-3.5 h-3.5" />
+                Your data is 100% private and secure
+              </div>
+            </form>
+
+            {/* Close */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-xl leading-none"
+              aria-label="Close modal"
+            >×</button>
+          </div>
+        </div>
+      )}
+
       {!report && (
         <div className="pt-20 pb-32 text-center px-4">
           {/* Badge */}
@@ -504,25 +665,45 @@ const SEOAuditPage = () => {
              </Button>
           </form>
 
+          {/* 4-Step Loading Animation */}
           {loading && (
-            <div className="mt-8 max-w-lg mx-auto">
-              <div className="flex justify-between text-xs font-bold text-muted-foreground mb-2">
-                <span className="animate-pulse">{progressLabel}</span>
-                <span>{Math.round(progress)}%</span>
+            <div className="mt-12 max-w-md mx-auto">
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Analyzing your website...</p>
+              <div className="space-y-5">
+                {AUDIT_STEPS.map((step) => {
+                  const isDone = completedSteps.includes(step.id);
+                  const isActive = currentStep === step.id && !isDone;
+                  return (
+                    <div key={step.id} className={`flex items-start gap-4 transition-opacity duration-300 ${!isDone && !isActive ? 'opacity-30' : 'opacity-100'}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-lg transition-all duration-300 ${
+                        isDone ? 'bg-green-500/15 border border-green-500/40' :
+                        isActive ? 'bg-violet-500/15 border border-violet-500/40 animate-pulse' :
+                        'bg-muted border border-border'
+                      }`}>
+                        {isDone ? <CheckCircle className="w-5 h-5 text-green-500" /> : isActive ? <Loader2 className="w-5 h-5 text-violet-400 animate-spin" /> : <span>{step.icon}</span>}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <p className={`text-sm font-bold ${isDone ? 'text-green-500' : isActive ? 'text-foreground' : 'text-muted-foreground'}`}>{step.label}</p>
+                          {isActive && <span className="text-xs text-muted-foreground">{Math.round(stepProgress)}%</span>}
+                          {isDone && <span className="text-xs text-green-500 font-bold">Done ✓</span>}
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-2">{step.sub}</p>
+                        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-200 ${
+                              isDone ? 'bg-green-500 w-full' :
+                              isActive ? 'bg-gradient-to-r from-violet-500 to-primary' : 'w-0'
+                            }`}
+                            style={isActive ? {width: `${stepProgress}%`} : undefined}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div 
-                className="h-2 bg-muted rounded-full overflow-hidden"
-                role="progressbar"
-                aria-valuenow={progress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label="SEO Audit analysis progress"
-              >
-                <div 
-                  className="h-full bg-gradient-to-r from-violet-500 via-primary to-cyan-500 transition-all duration-200" 
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
+              <p className="text-xs text-muted-foreground mt-8 animate-pulse">This usually takes 1–2 minutes. Please wait...</p>
             </div>
           )}
 
