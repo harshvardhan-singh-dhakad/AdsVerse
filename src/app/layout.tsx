@@ -27,7 +27,6 @@ const siteUrl = "https://adsverse.in";
 const siteName = "AdsVerse";
 const description = "AdsVerse is a digital marketing agency specializing in SEO, Paid Ads, & Web Development. We blend creativity with data to drive real results for your business.";
 const twitterHandle = "@Adsverse1";
-const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108";
 
 const schemaArray = [
   {
@@ -248,7 +247,6 @@ export default function RootLayout({
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
-        <link rel="preconnect" href="https://connect.facebook.net" />
         {/* DNS prefetch for third-party image CDNs */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Material Symbols has been removed to resolve render-blocking FCP/LCP speed issues */}

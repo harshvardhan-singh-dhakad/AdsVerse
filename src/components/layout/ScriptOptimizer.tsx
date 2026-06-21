@@ -1,27 +1,52 @@
 "use client";
 
-import Script from "next/script";
+import { useEffect } from "react";
 
 export function ScriptOptimizer() {
-  const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || "1462002154504108";
+  useEffect(() => {
+    let initialized = false;
 
-  return (
-    <>
-      {/* Google Tag Manager — full initialization snippet */}
-      <Script
-        id="gtm-script"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-M6GV59XL');
-          `
-        }}
-      />
+    const initGTM = () => {
+      if (initialized) return;
+      initialized = true;
 
-    </>
-  );
+      // Remove event listeners
+      window.removeEventListener("mousemove", initGTM);
+      window.removeEventListener("scroll", initGTM);
+      window.removeEventListener("touchstart", initGTM);
+      window.removeEventListener("keydown", initGTM);
+
+      // Initialize GTM dataLayer and load GTM script
+      const win = window as any;
+      win.dataLayer = win.dataLayer || [];
+      win.dataLayer.push({
+        "gtm.start": new Date().getTime(),
+        event: "gtm.js"
+      });
+
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-M6GV59XL";
+      document.head.appendChild(script);
+    };
+
+    // Add event listeners for user interaction
+    window.addEventListener("mousemove", initGTM, { passive: true });
+    window.addEventListener("scroll", initGTM, { passive: true });
+    window.addEventListener("touchstart", initGTM, { passive: true });
+    window.addEventListener("keydown", initGTM, { passive: true });
+
+    // Fallback: load after 4 seconds if no interaction
+    const timeout = setTimeout(initGTM, 4000);
+
+    return () => {
+      window.removeEventListener("mousemove", initGTM);
+      window.removeEventListener("scroll", initGTM);
+      window.removeEventListener("touchstart", initGTM);
+      window.removeEventListener("keydown", initGTM);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  return null;
 }
