@@ -16,7 +16,7 @@ import autoTable from 'jspdf-autotable';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { useFirestore } from '@/firebase';
+import { initializeFirebase } from '@/firebase';
 
 interface jsPDFWithAutoTable extends jsPDF {
   autoTable: (options: any) => jsPDF;
@@ -266,7 +266,6 @@ const AUDIT_STEPS = [
 ];
 
 const SEOAuditPage = () => {
-  const firestore = useFirestore();
   const [url, setUrl] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [contactInfo, setContactInfo] = useState({ name: '', email: '', phone: '' });
@@ -376,6 +375,7 @@ const SEOAuditPage = () => {
     // Save lead to Firestore (non-blocking)
     try {
       const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+      const { firestore } = initializeFirebase();
       await addDoc(collection(firestore, 'audit_leads'), {
         name: contactInfo.name.trim(),
         email: contactInfo.email.trim(),
