@@ -669,6 +669,37 @@ export default function CityPage({ params }: PageProps) {
               Best Digital Marketing Agency in {name}
             </h1>
 
+            {/* Mobile Image Showcase - visible only on mobile/tablet */}
+            <div className="block lg:hidden w-full aspect-[4/3] max-w-md rounded-2xl overflow-hidden border border-border/40 shadow-2xl hover:border-orange-500/30 transition-all duration-500 my-2">
+              <div className="relative w-full h-full">
+                <Image
+                  src={cityImgSrc}
+                  alt={`AdsVerse Digital Marketing in ${name}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="object-cover"
+                  priority={true}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent pointer-events-none" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 text-white shadow-lg">
+                    <div className="relative w-5 h-5 overflow-hidden rounded-sm">
+                      <Image
+                        src="/images/adsverse-logo.png"
+                        alt="AdsVerse Logo"
+                        fill
+                        sizes="20px"
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="text-xs font-bold tracking-wide">
+                      AdsVerse @ {name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {introHeadline && (
               <h2 className="text-xl md:text-2xl font-bold font-headline text-orange-500 leading-tight">
                 {introHeadline}
@@ -696,7 +727,7 @@ export default function CityPage({ params }: PageProps) {
           </div>
 
           {/* Right Column - Branded Local Asset Showcase */}
-          <div className="lg:col-span-5 flex justify-center w-full">
+          <div className="lg:col-span-5 hidden lg:flex justify-center w-full">
             <div className="relative group w-full aspect-[4/3] max-w-md rounded-2xl overflow-hidden border border-border/40 shadow-2xl hover:border-orange-500/30 transition-all duration-500">
               <Image
                 src={cityImgSrc}

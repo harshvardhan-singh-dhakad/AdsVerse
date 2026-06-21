@@ -10,6 +10,18 @@ import { Menu } from "lucide-react";
 import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
+import Image from "next/image";
+
+const ChevronDown = () => (
+  <svg
+    className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180 text-muted-foreground/80 group-hover:text-primary shrink-0"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+  </svg>
+);
 
 type NavLink = {
   href: string;
@@ -43,22 +55,306 @@ export function Header({ navLinks }: HeaderProps) {
         </div>
 
         {/* Center: Desktop navigation */}
-        <nav aria-label="Main Navigation" className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-8 items-center">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              prefetch={false}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary relative py-1 text-slate-700 dark:text-slate-300",
-                pathname === href 
-                  ? "text-primary font-bold after:absolute after:-bottom-[6px] after:left-0 after:right-0 after:h-[2px] after:bg-primary after:rounded-full" 
-                  : "hover:text-primary dark:hover:text-primary"
-              )}
-            >
-              {label}
-            </Link>
-          ))}
+        <nav aria-label="Main Navigation" className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-6 items-center">
+          {navLinks.map(({ href, label }) => {
+            if (label === "Services") {
+              return (
+                <div key={href} className="group relative py-3">
+                  <Link
+                    href={href}
+                    prefetch={false}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      pathname === href || pathname?.startsWith("/services")
+                        ? "text-primary font-bold"
+                        : ""
+                    )}
+                  >
+                    {label}
+                    <ChevronDown />
+                  </Link>
+                  
+                  {/* Mega Menu Dropdown */}
+                  <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[760px] lg:w-[860px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
+                    <div className="grid grid-cols-12 gap-6">
+                      {/* Left: General Info */}
+                      <div className="col-span-4 bg-muted/40 dark:bg-muted/10 rounded-xl p-5 border border-border/20 flex flex-col justify-between">
+                        <div>
+                          <h4 className="text-sm font-extrabold font-headline text-primary mb-2">AdsVerse Growth Solutions</h4>
+                          <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">
+                            We build premium high-speed Next.js platforms and design automated lead funnels using WhatsApp AI bots and n8n workflows.
+                          </p>
+                        </div>
+                        <Button asChild size="sm" className="bg-gradient-to-r from-orange-600 to-amber-500 text-white font-bold rounded-lg border-none shadow-md shadow-orange-600/10 hover:shadow-orange-500/20 text-xs px-3 py-1.5 h-8">
+                          <Link href="/contact">Schedule Consultation &rarr;</Link>
+                        </Button>
+                      </div>
+
+                      {/* Right: 3 Columns Grid */}
+                      <div className="col-span-8 grid grid-cols-3 gap-6 pl-4 text-left">
+                        {/* Traffic & SEO */}
+                        <div className="space-y-4">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Traffic & SEO</h5>
+                          <ul className="space-y-3">
+                            <li>
+                              <Link href="/services/seo-optimization" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">SEO Optimization</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Rank #1 on Google search engine.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/geo-optimization" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">GEO & AI Search</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Appear in ChatGPT and Gemini replies.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/content-marketing" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">Content Strategy</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">High-authority copy and blogs.</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Paid Ads & Campaigns */}
+                        <div className="space-y-4">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Paid Campaigns</h5>
+                          <ul className="space-y-3">
+                            <li>
+                              <Link href="/services/paid-ads" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">Meta & Google Ads</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">High-ROAS lead generation ads.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/social-media-management" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">Social Media Growth</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Consistent account updates.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/lead-generation" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">Lead Funnels</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">High-intent client acquisition.</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Tech & Automation */}
+                        <div className="space-y-4">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Tech & Automation</h5>
+                          <ul className="space-y-3">
+                            <li>
+                              <Link href="/services/whatsapp-bot" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">WhatsApp AI Bots</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Gemini-powered chat assistants.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/automation-tools" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">n8n CRM Sync</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Eliminate B2B manual data entry.</span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/services/web-design-development" className="group/item block">
+                                <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">Web Design & Dev</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Sub-second load Next.js sites.</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            if (label === "Blog") {
+              return (
+                <div key={href} className="group relative py-3">
+                  <Link
+                    href={href}
+                    prefetch={false}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      pathname === href || pathname?.startsWith("/blog")
+                        ? "text-primary font-bold"
+                        : ""
+                    )}
+                  >
+                    {label}
+                    <ChevronDown />
+                  </Link>
+
+                  {/* Mega Menu Dropdown */}
+                  <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[700px] lg:w-[800px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
+                    <div className="grid grid-cols-12 gap-6">
+                      {/* Left: Blog Categories */}
+                      <div className="col-span-4 border-r border-border/20 pr-6 space-y-4 text-left">
+                        <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Categories</h5>
+                        <ul className="grid grid-cols-1 gap-2.5">
+                          {[
+                            { label: "Paid Ads", href: "/blog?category=paid-ads" },
+                            { label: "SEO Optimization", href: "/blog?category=seo" },
+                            { label: "Web Development", href: "/blog?category=web-development" },
+                            { label: "Automation & AI", href: "/blog?category=automation-ai" },
+                            { label: "Content Marketing", href: "/blog?category=content-marketing" },
+                            { label: "Case Studies", href: "/blog?category=case-studies" },
+                          ].map((cat) => (
+                            <li key={cat.label}>
+                              <Link href={cat.href} className="text-xs text-foreground hover:text-primary font-semibold flex items-center transition-colors">
+                                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mr-2 opacity-50" />
+                                {cat.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Right: Featured Articles */}
+                      <div className="col-span-8 pl-4 space-y-4 text-left">
+                        <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Featured Insights</h5>
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* Blog 1 */}
+                          <Link href="/blog/demystifying-seo" className="group/card block bg-muted/20 dark:bg-muted/10 rounded-xl border border-border/25 overflow-hidden hover:border-orange-500/30 transition-all">
+                            <div className="relative h-24 w-full bg-muted">
+                              <Image
+                                src="/images/blog/seo-guide.png"
+                                alt="Demystifying SEO"
+                                fill
+                                className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                            <div className="p-3 space-y-1">
+                              <span className="text-[9px] uppercase tracking-wider font-bold text-orange-500 block">SEO Strategy</span>
+                              <span className="text-xs font-bold text-foreground leading-snug block line-clamp-2 group-hover/card:text-primary transition-colors">
+                                Demystifying SEO: A Beginner's Guide to Google Rankings
+                              </span>
+                            </div>
+                          </Link>
+
+                          {/* Blog 2 */}
+                          <Link href="/blog/best-automation-tools-for-business" className="group/card block bg-muted/20 dark:bg-muted/10 rounded-xl border border-border/25 overflow-hidden hover:border-orange-500/30 transition-all">
+                            <div className="relative h-24 w-full bg-muted">
+                              <Image
+                                src="/images/blog/automation-tools.png"
+                                alt="Business Automation"
+                                fill
+                                className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                            <div className="p-3 space-y-1">
+                              <span className="text-[9px] uppercase tracking-wider font-bold text-orange-500 block">Automation & AI</span>
+                              <span className="text-xs font-bold text-foreground leading-snug block line-clamp-2 group-hover/card:text-primary transition-colors">
+                                Best Automation Tools for Business Growth in 2026
+                              </span>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            if (label === "Locations") {
+              return (
+                <div key={href} className="group relative py-3">
+                  <Link
+                    href={href}
+                    prefetch={false}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      pathname === href || pathname?.startsWith("/locations")
+                        ? "text-primary font-bold"
+                        : ""
+                    )}
+                  >
+                    {label}
+                    <ChevronDown />
+                  </Link>
+
+                  {/* Mega Menu Dropdown */}
+                  <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[720px] lg:w-[820px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
+                    <div className="grid grid-cols-12 gap-6">
+                      {/* Left Side */}
+                      <div className="col-span-4 bg-muted/40 dark:bg-muted/10 rounded-xl p-5 border border-border/20 flex flex-col justify-between text-left">
+                        <div>
+                          <h4 className="text-sm font-extrabold font-headline text-primary mb-2">Scale Locally</h4>
+                          <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">
+                            We help businesses rank #1 for local searches across major regional growth hubs in India.
+                          </p>
+                        </div>
+                        <Button asChild size="sm" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:text-orange-500 hover:bg-orange-500/5 font-bold rounded-lg text-xs px-3 h-8">
+                          <Link href="/locations">View All 37+ Cities &rarr;</Link>
+                        </Button>
+                      </div>
+
+                      {/* Right Side: regional columns */}
+                      <div className="col-span-8 grid grid-cols-3 gap-6 pl-4 text-left">
+                        {/* Madhya Pradesh */}
+                        <div className="space-y-3">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Madhya Pradesh</h5>
+                          <ul className="space-y-2 text-xs font-semibold">
+                            <li><Link href="/locations/indore" className="text-muted-foreground hover:text-primary transition-colors">Indore</Link></li>
+                            <li><Link href="/locations/bhopal" className="text-muted-foreground hover:text-primary transition-colors">Bhopal</Link></li>
+                            <li><Link href="/locations/jabalpur" className="text-muted-foreground hover:text-primary transition-colors">Jabalpur</Link></li>
+                            <li><Link href="/locations/gwalior" className="text-muted-foreground hover:text-primary transition-colors">Gwalior</Link></li>
+                            <li><Link href="/locations/ujjain" className="text-muted-foreground hover:text-primary transition-colors">Ujjain</Link></li>
+                          </ul>
+                        </div>
+
+                        {/* Rajasthan */}
+                        <div className="space-y-3">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Rajasthan</h5>
+                          <ul className="space-y-2 text-xs font-semibold">
+                            <li><Link href="/locations/jaipur" className="text-muted-foreground hover:text-primary transition-colors">Jaipur</Link></li>
+                            <li><Link href="/locations/jodhpur" className="text-muted-foreground hover:text-primary transition-colors">Jodhpur</Link></li>
+                            <li><Link href="/locations/udaipur" className="text-muted-foreground hover:text-primary transition-colors">Udaipur</Link></li>
+                            <li><Link href="/locations/kota" className="text-muted-foreground hover:text-primary transition-colors">Kota</Link></li>
+                          </ul>
+                        </div>
+
+                        {/* Metros & Hubs */}
+                        <div className="space-y-3">
+                          <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500">Major Cities</h5>
+                          <ul className="space-y-2 text-xs font-semibold">
+                            <li><Link href="/locations/noida" className="text-muted-foreground hover:text-primary transition-colors">Noida (NCR)</Link></li>
+                            <li><Link href="/locations/lucknow" className="text-muted-foreground hover:text-primary transition-colors">Lucknow</Link></li>
+                            <li><Link href="/locations/patna" className="text-muted-foreground hover:text-primary transition-colors">Patna</Link></li>
+                            <li><Link href="/locations/kochi" className="text-muted-foreground hover:text-primary transition-colors">Kochi</Link></li>
+                            <li><Link href="/locations/coimbatore" className="text-muted-foreground hover:text-primary transition-colors">Coimbatore</Link></li>
+                            <li><Link href="/locations/visakhapatnam" className="text-muted-foreground hover:text-primary transition-colors">Vizag</Link></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                prefetch={false}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary relative py-1 text-slate-700 dark:text-slate-300",
+                  pathname === href
+                    ? "text-primary font-bold after:absolute after:-bottom-[6px] after:left-0 after:right-0 after:h-[2px] after:bg-primary after:rounded-full"
+                    : "hover:text-primary dark:hover:text-primary"
+                )}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right: Desktop CTA + Toggle + Mobile Menu Trigger */}
