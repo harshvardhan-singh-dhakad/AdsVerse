@@ -44,8 +44,12 @@ type HeaderProps = {
 export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
 
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setOpenMobileSection(null);
+  };
 
   const isAdminPath = pathname?.includes('/admin');
 
@@ -391,7 +395,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
           
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <Sheet open={isMobileMenuOpen} onOpenChange={(open) => {
+              setIsMobileMenuOpen(open);
+              if (!open) setOpenMobileSection(null);
+            }}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover:bg-slate-100 dark:hover:bg-slate-800">
                   <Menu className="h-6 w-6" aria-hidden="true" />
@@ -401,31 +408,199 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
               <SheetContent side="left" className="w-[300px] border-r border-border bg-background/95 backdrop-blur-md">
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full justify-between pb-6">
-                  <div>
-                    <div className="border-b border-border/40 pb-4">
+                  <div className="flex flex-col h-[calc(100vh-140px)]">
+                    <div className="border-b border-border/40 pb-4 shrink-0">
                       <Link href="/" className="flex items-center space-x-1" onClick={closeMobileMenu} aria-label="AdsVerse Home">
                         <AdsVerseLogo size="text-2xl" />
                         <span className="text-brand-orange font-bold text-2xl leading-none">•</span>
                       </Link>
                     </div>
-                    <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 mt-6">
-                      {navLinks.map(({ href, label }) => (
-                        <Link
-                          key={href}
-                          href={href}
-                          prefetch={false}
-                          onClick={closeMobileMenu}
-                          className={cn(
-                            "text-lg font-semibold transition-colors hover:text-primary",
-                            pathname === href ? "text-primary" : "text-foreground"
-                          )}
-                        >
-                          {label}
-                        </Link>
-                      ))}
+                    <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 mt-6 overflow-y-auto pr-2 pb-6">
+                      {navLinks.map(({ href, label }) => {
+                        const hasDropdown = ["Services", "Blog", "Locations"].includes(label);
+                        const isExpanded = openMobileSection === label;
+
+                        if (hasDropdown) {
+                          return (
+                            <div key={href} className="flex flex-col shrink-0">
+                              <button
+                                onClick={() => setOpenMobileSection(isExpanded ? null : label)}
+                                className={cn(
+                                  "text-lg font-semibold transition-colors hover:text-primary flex items-center justify-between py-1 text-left w-full",
+                                  pathname?.startsWith(href) ? "text-primary" : "text-foreground"
+                                )}
+                              >
+                                <span>{label}</span>
+                                <svg
+                                  className={cn(
+                                    "w-4 h-4 transition-transform duration-200 text-muted-foreground",
+                                    isExpanded ? "rotate-180 text-primary" : ""
+                                  )}
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                              
+                              <div
+                                className={cn(
+                                  "grid transition-all duration-300 ease-in-out pl-4 border-l border-border/60 mt-1 space-y-3",
+                                  isExpanded ? "grid-rows-[1fr] opacity-100 py-2" : "grid-rows-[0fr] opacity-0 pointer-events-none h-0 overflow-hidden"
+                                )}
+                              >
+                                <div className="overflow-hidden space-y-3.5">
+                                  {label === "Services" && (
+                                    <>
+                                      <Link
+                                        href="/our-services"
+                                        onClick={closeMobileMenu}
+                                        className="text-xs font-bold text-orange-500 hover:text-primary transition-colors block"
+                                      >
+                                        All Services &rarr;
+                                      </Link>
+                                      
+                                      {/* Traffic & SEO */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Traffic & SEO</div>
+                                        <div className="flex flex-col gap-1.5 pl-1">
+                                          <Link href="/services/seo-optimization" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">SEO Optimization</Link>
+                                          <Link href="/services/geo-optimization" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">GEO & AI Search</Link>
+                                          <Link href="/services/content-marketing" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Content Strategy</Link>
+                                        </div>
+                                      </div>
+
+                                      {/* Paid Campaigns */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Paid Campaigns</div>
+                                        <div className="flex flex-col gap-1.5 pl-1">
+                                          <Link href="/services/paid-ads" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Meta & Google Ads</Link>
+                                          <Link href="/services/social-media-management" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Social Media Growth</Link>
+                                          <Link href="/services/lead-generation" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Lead Funnels</Link>
+                                        </div>
+                                      </div>
+
+                                      {/* Tech & Automation */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Tech & Automation</div>
+                                        <div className="flex flex-col gap-1.5 pl-1">
+                                          <Link href="/services/whatsapp-bot" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">WhatsApp AI Bots</Link>
+                                          <Link href="/services/automation-tools" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">n8n CRM Sync</Link>
+                                          <Link href="/services/web-design-development" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Web Design & Dev</Link>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+
+                                  {label === "Blog" && (
+                                    <>
+                                      <Link
+                                        href="/blog"
+                                        onClick={closeMobileMenu}
+                                        className="text-xs font-bold text-orange-500 hover:text-primary transition-colors block"
+                                      >
+                                        All Blog Posts &rarr;
+                                      </Link>
+                                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70 mb-1">Categories</div>
+                                      <div className="grid grid-cols-2 gap-x-2 gap-y-2 pl-1">
+                                        {[
+                                          { id: 'paid-ads', label: 'Paid Ads' },
+                                          { id: 'seo', label: 'SEO' },
+                                          { id: 'web-development', label: 'Web Dev' },
+                                          { id: 'automation-ai', label: 'Automation & AI' },
+                                          { id: 'content-marketing', label: 'Content' },
+                                          { id: 'social-media', label: 'Social Media' },
+                                          { id: 'whatsapp-marketing', label: 'WhatsApp' },
+                                          { id: 'local-seo', label: 'Local SEO' },
+                                          { id: 'case-studies', label: 'Case Studies' },
+                                          { id: 'tutorials', label: 'Tutorials' },
+                                          { id: 'industry-news', label: 'News' },
+                                        ].map((cat) => (
+                                          <Link
+                                            key={cat.id}
+                                            href={`/blog?category=${cat.id}`}
+                                            onClick={closeMobileMenu}
+                                            className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors truncate"
+                                          >
+                                            • {cat.label}
+                                          </Link>
+                                        ))}
+                                      </div>
+                                    </>
+                                  )}
+
+                                  {label === "Locations" && (
+                                    <>
+                                      <Link
+                                        href="/locations"
+                                        onClick={closeMobileMenu}
+                                        className="text-xs font-bold text-orange-500 hover:text-primary transition-colors block"
+                                      >
+                                        View All 37+ Cities &rarr;
+                                      </Link>
+                                      
+                                      {/* Madhya Pradesh */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Madhya Pradesh</div>
+                                        <div className="grid grid-cols-2 gap-1.5 pl-1">
+                                          <Link href="/locations/indore" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Indore</Link>
+                                          <Link href="/locations/bhopal" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Bhopal</Link>
+                                          <Link href="/locations/jabalpur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Jabalpur</Link>
+                                          <Link href="/locations/gwalior" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Gwalior</Link>
+                                          <Link href="/locations/ujjain" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Ujjain</Link>
+                                        </div>
+                                      </div>
+
+                                      {/* Rajasthan */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Rajasthan</div>
+                                        <div className="grid grid-cols-2 gap-1.5 pl-1">
+                                          <Link href="/locations/jaipur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Jaipur</Link>
+                                          <Link href="/locations/jodhpur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Jodhpur</Link>
+                                          <Link href="/locations/udaipur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Udaipur</Link>
+                                          <Link href="/locations/kota" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Kota</Link>
+                                        </div>
+                                      </div>
+
+                                      {/* Major Cities */}
+                                      <div className="space-y-1.5">
+                                        <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Major Cities</div>
+                                        <div className="grid grid-cols-2 gap-1.5 pl-1">
+                                          <Link href="/locations/noida" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Noida</Link>
+                                          <Link href="/locations/lucknow" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Lucknow</Link>
+                                          <Link href="/locations/patna" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Patna</Link>
+                                          <Link href="/locations/kochi" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Kochi</Link>
+                                          <Link href="/locations/coimbatore" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Coimbatore</Link>
+                                          <Link href="/locations/visakhapatnam" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Vizag</Link>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <Link
+                            key={href}
+                            href={href}
+                            prefetch={false}
+                            onClick={closeMobileMenu}
+                            className={cn(
+                              "text-lg font-semibold transition-colors hover:text-primary py-1 shrink-0",
+                              pathname === href ? "text-primary" : "text-foreground"
+                            )}
+                          >
+                            {label}
+                          </Link>
+                        );
+                      })}
                     </nav>
                   </div>
-                  <div className="mt-auto border-t border-border/40 pt-6">
+                  <div className="mt-auto border-t border-border/40 pt-6 shrink-0">
                     <Button asChild className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl py-3 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all justify-center border-none">
                       <Link href="/tools/seo-audit" prefetch={false} onClick={closeMobileMenu}>
                         Free Audit &rarr;
