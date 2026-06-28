@@ -57,6 +57,16 @@ service cloud.firestore {
       );
     }
 
+    // Helper function to validate email format
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // Helper function to check if request has only allowed keys
+    function hasOnlyAllowedFields(data, allowedFields) {
+      return data.keys().hasOnly(allowedFields);
+    }
+
     // -------------------------------------------------------------------------
     // Collection Rules
     // -------------------------------------------------------------------------
@@ -118,6 +128,26 @@ service cloud.firestore {
     match /leads/{leadId} {
       allow get, list: if isAdmin();
       allow create: if true;
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores website SEO audit leads. Anyone can submit an audit lead.
+     * Only administrators can read or manage these leads.
+     * @path /audit_leads/{leadId}
+     * @allow (create) by any user to submit an SEO audit lead.
+     * @allow (get, list, update, delete) by an authenticated admin.
+     * @principle Public write for data submission, but private read/manage for sensitive data.
+     */
+    match /audit_leads/{leadId} {
+      allow get, list: if isAdmin();
+      allow create: if request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 &&
+                       isValidEmail(request.resource.data.email) &&
+                       (request.resource.data.phone == null || (request.resource.data.phone is string && request.resource.data.phone.size() >= 5 && request.resource.data.phone.size() <= 30)) &&
+                       request.resource.data.website is string && request.resource.data.website.size() > 0 && request.resource.data.website.size() <= 256 &&
+                       request.resource.data.submittedAt is timestamp &&
+                       request.resource.data.source == 'seo-audit-tool' &&
+                       hasOnlyAllowedFields(request.resource.data, ['name', 'email', 'phone', 'website', 'submittedAt', 'source']);
       allow update, delete: if isAdmin() && resource != null;
     }
 
