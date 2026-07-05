@@ -644,7 +644,7 @@ export default function CityPage({ params }: PageProps) {
     />
     <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="mb-8">
-        <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-orange-500">
+        <Button asChild variant="link" className="p-0 text-slate-700 dark:text-muted-foreground hover:text-orange-500">
           <Link href="/locations">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Locations
@@ -706,11 +706,11 @@ export default function CityPage({ params }: PageProps) {
               </h2>
             )}
 
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-base md:text-lg text-slate-800 dark:text-muted-foreground leading-relaxed">
               {introBody || desc}
             </p>
             
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            <p className="text-sm md:text-base text-slate-800 dark:text-muted-foreground leading-relaxed">
               AdsVerse brings localized digital growth and custom business automation tools to Tier-2 hubs in {state}. From boosting local search visibility with premium SEO to building automated sales pipelines using <Link href="/services/whatsapp-bot" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">WhatsApp AI bots</Link> and <Link href="/services/automation-tools" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">n8n CRM automation</Link>, we serve local brands with premium modern engineering. We run high-converting <Link href="/services/paid-ads" className="text-orange-500 hover:text-orange-400 hover:underline font-semibold">Google & Meta Ads</Link> campaigns that speak the language of local buyers.
             </p>
             
@@ -763,7 +763,7 @@ export default function CityPage({ params }: PageProps) {
       <section className="mb-20 space-y-12">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-bold font-headline">Services We Offer in {name}</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-slate-800 dark:text-muted-foreground max-w-xl mx-auto">
             Explore our specialized categories designed to accelerate leads and streamline operations.
           </p>
         </div>
@@ -777,7 +777,7 @@ export default function CityPage({ params }: PageProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-6">
-                <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-slate-800 dark:text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
               </CardContent>
               <div className="p-6 pt-0 border-t border-border/10">
                 <Button asChild variant="link" className="p-0 text-orange-500 group-hover:text-orange-400 group-hover:gap-2 transition-all">
@@ -806,7 +806,7 @@ export default function CityPage({ params }: PageProps) {
                 <CheckCircle className="w-5 h-5 text-orange-500 shrink-0 mt-1" />
                 <div>
                   <h4 className="font-bold text-foreground">{v.title}</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{v.text}</p>
+                  <p className="text-slate-800 dark:text-muted-foreground text-sm leading-relaxed">{v.text}</p>
                 </div>
               </div>
             ))}
@@ -814,17 +814,17 @@ export default function CityPage({ params }: PageProps) {
         </div>
         <div className="text-center p-8 rounded-2xl bg-background/50 border border-border/40 space-y-4">
           <h3 className="text-2xl font-bold font-headline text-orange-500">113+ Brands Served</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-slate-800 dark:text-muted-foreground text-sm">
             We work with small service brands, wholesale merchants, educational prep centers, and fast startups pan-India.
           </p>
           <div className="grid grid-cols-2 gap-4 pt-4">
             <div className="p-4 rounded-xl bg-card/50 border border-border/20">
               <p className="text-2xl font-extrabold text-primary">68%</p>
-              <p className="text-[10px] text-muted-foreground uppercase font-semibold">Lead Cost reduction</p>
+              <p className="text-[10px] text-slate-700 dark:text-muted-foreground uppercase font-semibold">Lead Cost reduction</p>
             </div>
             <div className="p-4 rounded-xl bg-card/50 border border-border/20">
               <p className="text-2xl font-extrabold text-primary">94%</p>
-              <p className="text-[10px] text-muted-foreground uppercase font-semibold">Retention Rate</p>
+              <p className="text-[10px] text-slate-700 dark:text-muted-foreground uppercase font-semibold">Retention Rate</p>
             </div>
           </div>
         </div>
@@ -839,7 +839,7 @@ export default function CityPage({ params }: PageProps) {
               <AccordionTrigger className="text-base text-left hover:no-underline font-headline font-semibold text-foreground py-4">
                 {faq.q}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+              <AccordionContent className="text-slate-800 dark:text-muted-foreground text-sm leading-relaxed pb-4">
                 {faq.a}
               </AccordionContent>
             </AccordionItem>

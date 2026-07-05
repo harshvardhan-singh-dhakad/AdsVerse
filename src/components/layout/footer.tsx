@@ -30,7 +30,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2 group" aria-label="AdsVerse Home">
               <AdsVerseLogo size="text-2xl" />
             </Link>
-            <div className="max-w-xs text-sm text-muted-foreground space-y-3">
+            <div className="max-w-xs text-sm text-slate-800 dark:text-muted-foreground space-y-3">
               <p className="leading-relaxed">
                 We are a forward-thinking digital marketing agency specializing in AI-powered growth strategies.
               </p>
@@ -80,27 +80,27 @@ export function Footer() {
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href="/our-services" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
-              <li><Link href="/portfolio" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Portfolio</Link></li>
-              <li><Link href="/blog" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href="/faq" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">FAQ</Link></li>
-              <li><Link href="/pricing" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
-              <li><Link href="/locations" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Locations</Link></li>
-              <li><Link href="/contact" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Contact</Link></li>
+              <li><Link href="/about" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href="/our-services" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Services</Link></li>
+              <li><Link href="/portfolio" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Portfolio</Link></li>
+              <li><Link href="/blog" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="/faq" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">FAQ</Link></li>
+              <li><Link href="/pricing" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/locations" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Locations</Link></li>
+              <li><Link href="/contact" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div className="md:pl-4">
             <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
             <ul className="space-y-2">
-              <li><Link href="/privacy-policy" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
-              <li><Link href="/refund-policy" prefetch={false} className="text-sm text-muted-foreground hover:text-primary">Refund Policy</Link></li>
+              <li><Link href="/privacy-policy" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              <li><Link href="/refund-policy" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Refund Policy</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold mb-4 text-foreground">Newsletter</h3>
-            <p className="text-sm text-muted-foreground mb-2">Stay updated with our latest insights.</p>
+            <p className="text-sm text-slate-800 dark:text-muted-foreground mb-2">Stay updated with our latest insights.</p>
             <form className="flex space-x-2">
               <Input type="email" placeholder="Enter your email" className="flex-1" aria-label="Email for newsletter subscription" />
               <Button type="submit" size="icon" className="bg-accent hover:bg-accent/90" aria-label="Subscribe to newsletter">
@@ -109,7 +109,7 @@ export function Footer() {
             </form>
           </div>
         </div>
-        <div className="mt-8 pt-8 pb-28 md:pb-8 border-t border-border/40 text-center text-sm text-muted-foreground">
+        <div className="mt-8 pt-8 pb-28 md:pb-8 border-t border-border/40 text-center text-sm text-slate-800 dark:text-muted-foreground">
           <p className="text-xs text-muted-foreground">
             &copy; {mounted ? currentYear : ''} AdsVerse. All rights reserved.
           </p>

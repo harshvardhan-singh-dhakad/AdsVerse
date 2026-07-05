@@ -21,7 +21,7 @@ export function AISearchInsights({ title, insights, takeaways }: AISearchInsight
           <div className="flex-1">
             <Badge variant="outline" className="mb-4 border-accent text-accent">AI & SEARCH INSIGHTS</Badge>
             <h2 className="text-2xl md:text-3xl font-bold font-headline mb-4 text-primary">{title}</h2>
-            <div className="space-y-4 text-muted-foreground">
+            <div className="space-y-4 text-slate-800 dark:text-muted-foreground">
               {insights.map((insight, index) => (
                 <p key={index}>
                   <strong>{insight.title}:</strong> {insight.description}
@@ -32,7 +32,7 @@ export function AISearchInsights({ title, insights, takeaways }: AISearchInsight
           <div className="flex-shrink-0 w-full md:w-64">
             <Card className="bg-card/50 backdrop-blur-sm p-6 border-accent/20 text-center">
               <h3 className="font-bold text-accent mb-2">Key Takeaways</h3>
-              <ul className="text-sm space-y-2 list-none p-0 opacity-80">
+              <ul className="text-sm space-y-2 list-none p-0 text-slate-800 dark:text-slate-200">
                 {takeaways.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}

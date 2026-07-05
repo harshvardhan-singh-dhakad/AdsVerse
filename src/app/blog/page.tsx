@@ -91,7 +91,7 @@ export default async function BlogPage({
       <div className="container mx-auto py-16 px-4">
         <section className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight font-headline text-primary mb-6">Our Insights</h1>
-          <p className="max-w-2xl mx-auto text-xl text-muted-foreground leading-relaxed">
+          <p className="max-w-2xl mx-auto text-xl text-slate-800 dark:text-muted-foreground leading-relaxed">
             Expert strategies, industry trends, and actionable insights to scale your digital presence in 2026 and beyond.
           </p>
         </section>

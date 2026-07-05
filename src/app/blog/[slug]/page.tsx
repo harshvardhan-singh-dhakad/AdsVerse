@@ -230,7 +230,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               {post.title}
             </h1>
             
-            <div className="flex flex-wrap items-center gap-6 text-muted-foreground pt-2">
+            <div className="flex flex-wrap items-center gap-6 text-slate-800 dark:text-muted-foreground pt-2">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-accent" />
                 <span>{post.author || "Deepak Dhakad"}</span>
@@ -294,7 +294,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                     </div>
                     
                     <h3 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h3>
-                    <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+                    <p className="text-slate-800 dark:text-muted-foreground mb-8 max-w-lg mx-auto">
                       Have insights or questions about this post? We'd love to hear from you. 
                       Connect with our team directly or share your thoughts via WhatsApp.
                     </p>
@@ -308,7 +308,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       </Button>
                     </div>
                     
-                    <p className="mt-8 text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black opacity-40">
+                    <p className="mt-8 text-[10px] text-slate-700 dark:text-muted-foreground uppercase tracking-[0.2em] font-black opacity-70">
                       AdsVerse · Digital Excellence 2026
                     </p>
                   </div>

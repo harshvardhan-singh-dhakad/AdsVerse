@@ -110,7 +110,7 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
               "px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider border transition-all duration-300 whitespace-nowrap",
               activeCategory === cat.id
                 ? "bg-gradient-to-r from-primary to-accent text-white border-transparent shadow-lg shadow-primary/20 scale-105"
-                : "bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 text-muted-foreground hover:text-foreground"
+                : "bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 text-slate-700 dark:text-muted-foreground hover:text-foreground"
             )}
           >
             {cat.label}
@@ -146,14 +146,14 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
                     </div>
                   </div>
                   <CardHeader className="space-y-4">
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-4 text-xs text-slate-700 dark:text-muted-foreground">
                       <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-accent" /> {formatPostDate(post.publishedDate)}</span>
                       <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "Deepak Dhakad"}</span>
                     </div>
                     <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
                       <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                     </CardTitle>
-                    <CardDescription className="line-clamp-3 text-sm leading-relaxed">
+                    <CardDescription className="line-clamp-3 text-sm leading-relaxed text-slate-800 dark:text-muted-foreground">
                       {post.excerpt}
                     </CardDescription>
                   </CardHeader>
@@ -183,7 +183,7 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
         ) : (
           <div className="text-center py-20 bg-card/20 backdrop-blur-sm rounded-2xl border border-primary/5">
             <h3 className="text-2xl font-headline text-primary mb-4">No insights found.</h3>
-            <p className="text-muted-foreground">Try selecting a different category or check back later.</p>
+            <p className="text-slate-800 dark:text-muted-foreground">Try selecting a different category or check back later.</p>
           </div>
         )}
       </section>

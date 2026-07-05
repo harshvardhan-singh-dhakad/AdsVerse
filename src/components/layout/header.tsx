@@ -77,10 +77,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                     href={href}
                     prefetch={false}
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center",
                       pathname === href || pathname?.startsWith("/services")
-                        ? "text-primary font-bold"
-                        : ""
+                        ? "text-blue-600 dark:text-primary font-bold"
+                        : "text-blue-600 dark:text-slate-300"
                     )}
                   >
                     {label}
@@ -226,10 +226,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                     href={href}
                     prefetch={false}
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center",
                       pathname === href || pathname?.startsWith("/blog")
-                        ? "text-primary font-bold"
-                        : ""
+                        ? "text-blue-600 dark:text-primary font-bold"
+                        : "text-blue-600 dark:text-slate-300"
                     )}
                   >
                     {label}
@@ -294,10 +294,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                     href={href}
                     prefetch={false}
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary flex items-center text-slate-700 dark:text-slate-300",
+                      "text-sm font-medium transition-colors hover:text-primary flex items-center",
                       pathname === href || pathname?.startsWith("/locations")
-                        ? "text-primary font-bold"
-                        : ""
+                        ? "text-blue-600 dark:text-primary font-bold"
+                        : "text-blue-600 dark:text-slate-300"
                     )}
                   >
                     {label}
@@ -370,10 +370,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                 href={href}
                 prefetch={false}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary relative py-1 text-slate-700 dark:text-slate-300",
+                  "text-sm font-medium transition-colors hover:text-primary relative py-1",
                   pathname === href
-                    ? "text-primary font-bold after:absolute after:-bottom-[6px] after:left-0 after:right-0 after:h-[2px] after:bg-primary after:rounded-full"
-                    : "hover:text-primary dark:hover:text-primary"
+                    ? "text-blue-600 dark:text-primary font-bold after:absolute after:-bottom-[6px] after:left-0 after:right-0 after:h-[2px] after:bg-blue-600 dark:after:bg-primary after:rounded-full"
+                    : "text-blue-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary"
                 )}
               >
                 {label}
@@ -427,7 +427,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                 onClick={() => setOpenMobileSection(isExpanded ? null : label)}
                                 className={cn(
                                   "text-lg font-semibold transition-colors hover:text-primary flex items-center justify-between py-1 text-left w-full",
-                                  pathname?.startsWith(href) ? "text-primary" : "text-foreground"
+                                  pathname?.startsWith(href) ? "text-blue-600 dark:text-primary font-bold" : "text-blue-600 dark:text-foreground"
                                 )}
                               >
                                 <span>{label}</span>
@@ -591,7 +591,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                             onClick={closeMobileMenu}
                             className={cn(
                               "text-lg font-semibold transition-colors hover:text-primary py-1 shrink-0",
-                              pathname === href ? "text-primary" : "text-foreground"
+                              pathname === href ? "text-blue-600 dark:text-primary font-bold" : "text-blue-600 dark:text-foreground"
                             )}
                           >
                             {label}
