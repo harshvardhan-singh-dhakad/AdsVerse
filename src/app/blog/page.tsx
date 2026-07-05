@@ -77,7 +77,7 @@ export default async function BlogPage({
         "name": post.author || "Deepak Dhakad",
         "jobTitle": "Digital Marketing & AI Automation Expert",
         "url": "https://adsverse.in/about",
-        "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
+        "image": "https://adsverse.in/images/deepak-dhakad-founder.webp"
       }
     }))
   };

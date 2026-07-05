@@ -144,7 +144,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 items-center">
             <div className="md:col-span-1 h-full">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media"
+                src="/images/deepak-dhakad-founder.webp"
                 alt="Deepak Dhakad - Digital Marketing Expert and Founder, AdsVerse Indore"
                 width={400}
                 height={600}

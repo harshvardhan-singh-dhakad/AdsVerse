@@ -121,7 +121,7 @@ const schemaArray = [
     "name": "Deepak Dhakad",
     "url": "https://adsverse.in/about",
     "jobTitle": "Founder & Digital Marketing Expert",
-    "image": "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FTeam%2FDEEPAK.ABOUT.png?alt=media",
+    "image": "https://adsverse.in/images/deepak-dhakad-founder.webp",
     "knowsAbout": ["SEO", "Generative Engine Optimization", "Answer Engine Optimization", "Google Ads", "Meta Ads", "Marketing Automation", "n8n Workflows", "WhatsApp AI Bots"],
     "worksFor": {
       "@type": "Organization",
