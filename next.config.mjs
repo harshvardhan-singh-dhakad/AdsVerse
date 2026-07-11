@@ -132,6 +132,19 @@ const nextConfig = {
       { source: '/blog/indore-real-estate-case-study', destination: '/blog/real-estate-digital-marketing-case-study-indore', permanent: true },
       { source: '/blog/digital-marketing-services-indore-26', destination: '/blog/digital-marketing-services-indore', permanent: true },
       { source: '/terms', destination: '/terms-of-service', permanent: true },
+      // Tier-B city consolidation — 301 to pan-India remote page
+      { source: '/locations/coimbatore', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/madurai', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/trichy', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/kochi', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/trivandrum', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/kozhikode', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/mysore', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/mangalore', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/visakhapatnam', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/vijayawada', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/guntur', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/locations/warangal', destination: '/locations/pan-india-remote', permanent: true },
     ];
   },
 };

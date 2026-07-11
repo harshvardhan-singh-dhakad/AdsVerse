@@ -35,11 +35,6 @@ const stateBorderMap: Record<string, string> = {
   "Bihar": "border-l-4 border-l-rose-500",
   "Jammu & Kashmir": "border-l-4 border-l-teal-500",
   "Northeast India": "border-l-4 border-l-pink-500",
-  "Tamil Nadu": "border-l-4 border-l-emerald-500",
-  "Kerala": "border-l-4 border-l-green-500",
-  "Karnataka": "border-l-4 border-l-yellow-500",
-  "Andhra Pradesh": "border-l-4 border-l-sky-500",
-  "Telangana": "border-l-4 border-l-orange-500",
 };
 
 export const metadata: Metadata = {
@@ -59,7 +54,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Locations We Serve | AdsVerse",
-    description: "AI-first digital marketing across 18+ Indian cities. SEO, WhatsApp bots, Google/Meta Ads.",
+    description: "AI-first digital marketing across 24 Indian cities in our core markets. SEO, WhatsApp bots, Google/Meta Ads.",
     creator: "@Adsverse1",
   },
 };
@@ -68,98 +63,61 @@ const locationsGrouped = [
   {
     state: "Madhya Pradesh",
     cities: [
-      { slug: "indore", name: "Indore", desc: "Best digital marketing agency in Indore. AI-first SEO, WhatsApp bots & Google Ads — headquartered in Vijay Nagar." },
-      { slug: "bhopal", name: "Bhopal", desc: "Top digital marketing agency in Bhopal MP. Local SEO, Meta Ads & WhatsApp AI automation for Bhopal businesses." },
-      { slug: "jabalpur", name: "Jabalpur", desc: "Grow with SEO, Google Ads & WhatsApp automation in Jabalpur. Local search ranking specialists." },
-      { slug: "gwalior", name: "Gwalior", desc: "Performance marketing, web development & CRM automation for Gwalior businesses." },
-      { slug: "ujjain", name: "Ujjain", desc: "Local SEO & tourism marketing for Ujjain retail, temple-economy services & hospitality brands." },
+      { slug: "indore", name: "Indore", desc: "Best digital marketing agency in Indore. AI-first SEO, WhatsApp bots & Google Ads — headquartered in Vijay Nagar. Our home base and most tested execution environment." },
+      { slug: "bhopal", name: "Bhopal", desc: "Coaching institutes and education businesses are our primary Bhopal segment. Local SEO, Meta Ads & WhatsApp AI automation built around admission-cycle lead volumes." },
+      { slug: "jabalpur", name: "Jabalpur", desc: "Local search ranking is the primary offer for Jabalpur — not broad brand campaigns. Low competition means faster wins for early movers." },
+      { slug: "gwalior", name: "Gwalior", desc: "Performance marketing structured separately for Gwalior heritage tourism versus local retail and services — two different audiences, two different campaign setups." },
+      { slug: "ujjain", name: "Ujjain", desc: "Seasonal campaign scheduling built around Ujjain's pilgrimage and religious tourism calendar. Temple economy footfall captured digitally." },
     ],
   },
   {
     state: "Rajasthan",
     cities: [
-      { slug: "jaipur", name: "Jaipur", desc: "Digital marketing agency in Jaipur — high-ROAS Meta & Google Ads for D2C, retail & service businesses." },
-      { slug: "jodhpur", name: "Jodhpur", desc: "SEO & web development agency in Jodhpur. Rank higher, convert better with performance marketing." },
-      { slug: "udaipur", name: "Udaipur", desc: "Tourism & hospitality digital marketing in Udaipur. Drive hotel bookings and service enquiries." },
-      { slug: "kota", name: "Kota", desc: "WhatsApp bots & n8n automation for Kota coaching institutes. Lead gen, batch notifications & enrollment funnels." },
+      { slug: "jaipur", name: "Jaipur", desc: "Fast creative testing and tight ROAS targets for Jaipur D2C, retail & service brands. Jaipur's ad-literate market demands iteration, not set-and-forget campaigns." },
+      { slug: "jodhpur", name: "Jodhpur", desc: "Web design & SEO foundation first, then paid ads — the right order for Jodhpur handicraft and export-facing businesses." },
+      { slug: "udaipur", name: "Udaipur", desc: "Booking-funnel-first campaign structure for Udaipur hotels, resorts & wedding venues. Direct reservations, not just traffic." },
+      { slug: "kota", name: "Kota", desc: "WhatsApp bots & n8n automation designed around Kota's admission-cycle timing. Lead gen, batch notifications & enrollment funnels for coaching institutes." },
     ],
   },
   {
     state: "Chhattisgarh",
     cities: [
-      { slug: "raipur", name: "Raipur", desc: "B2B digital marketing & CRM automation for industrial, retail & service businesses in Raipur." },
-      { slug: "bilaspur", name: "Bilaspur", desc: "Local SEO & automation for Bilaspur businesses. Rank for transactional keywords in Chhattisgarh." },
+      { slug: "raipur", name: "Raipur", desc: "CRM automation leads every Raipur engagement. n8n + CRM sync, B2B lead generation & SEO for Chhattisgarh's industrial and retail businesses." },
+      { slug: "bilaspur", name: "Bilaspur", desc: "Transactional keyword-focused local SEO for Bilaspur. Low competition means faster ranking timelines than bigger cities." },
     ],
   },
   {
     state: "Uttar Pradesh",
     cities: [
-      { slug: "lucknow", name: "Lucknow", desc: "Digital marketing agency in Lucknow. B2B outreach, SEO & WhatsApp automation for UP businesses." },
-      { slug: "kanpur", name: "Kanpur", desc: "WhatsApp automation & SEO for Kanpur textile, retail & distribution businesses." },
-      { slug: "noida", name: "Noida", desc: "AI content systems, Next.js development & performance marketing for Noida tech startups." },
+      { slug: "lucknow", name: "Lucknow", desc: "Combined B2B outreach + SEO scoping from day one for Lucknow businesses. Both channels working together from the start." },
+      { slug: "kanpur", name: "Kanpur", desc: "WhatsApp automation built around Kanpur's existing textile and distribution order workflows — plugging into habits, not replacing them." },
+      { slug: "noida", name: "Noida", desc: "Next.js development and performance marketing scoped for startup speed. 2-week sprint cycles for Noida tech startups in NCR." },
     ],
   },
   {
     state: "Bihar",
     cities: [
-      { slug: "patna", name: "Patna", desc: "High-volume lead generation & SEO for Bihar consumer and service businesses in Patna." },
+      { slug: "patna", name: "Patna", desc: "Lead-qualification-first setup for high-volume Patna campaigns. SEO & performance ads for Bihar consumer and service businesses." },
     ],
   },
   {
     state: "Jammu & Kashmir",
     cities: [
-      { slug: "srinagar", name: "Srinagar", desc: "Digital marketing for Srinagar hospitality, handicrafts & retail — local ads & SEO." },
-      { slug: "jammu", name: "Jammu", desc: "Targeted local SEO & responsive web design for Jammu businesses." },
+      { slug: "srinagar", name: "Srinagar", desc: "Seasonal SEO and ads calendar aligned to Kashmir's tourism cycles. Digital presence built for Srinagar hospitality and handicraft businesses." },
+      { slug: "jammu", name: "Jammu", desc: "Mobile-first web builds and local SEO for Jammu retail and services. Most searches here happen on mobile — we build for that." },
     ],
   },
   {
     state: "Northeast India",
     cities: [
-      { slug: "guwahati", name: "Guwahati", desc: "Performance marketing, WhatsApp automation & SEO for Guwahati and Northeast India brands." },
-      { slug: "shillong", name: "Shillong", desc: "Accelerate Shillong's hospitality, eco-tourism resorts, and schools with targeted SEO and Meta Ads." },
-      { slug: "gangtok", name: "Gangtok", desc: "Position Sikkim's premium organic brands and heritage hotels in front of high-value seekers nationwide." },
-      { slug: "agartala", name: "Agartala", desc: "Empower Tripura's growing retail SMBs and healthcare diagnostic networks with optimized local SEO." },
-      { slug: "aizawl", name: "Aizawl", desc: "Help Mizoram's stylish local handlooms and boutique D2C brands scale nationwide with Next.js e-commerce." },
-      { slug: "dimapur", name: "Dimapur", desc: "Automate Nagaland's commercial wholesale orders via custom WhatsApp AI bots and n8n CRM sync." },
-      { slug: "kohima", name: "Kohima", desc: "Drive tourist bookings, local arts outreach, and organic product sales for Kohima heritage stays." },
-      { slug: "imphal", name: "Imphal", desc: "Construct highly authoritative local search profiles, responsive web designs, and ad setups in Manipur." },
-    ],
-  },
-  {
-    state: "Tamil Nadu",
-    cities: [
-      { slug: "coimbatore", name: "Coimbatore", desc: "Optimize industrial machinery, B2B manufacturing, and textile pump set leads with n8n and CRM flows." },
-      { slug: "madurai", name: "Madurai", desc: "Launch high-converting Meta Ads and localized Google Search campaigns for Madurai retail bazaar chains." },
-      { slug: "trichy", name: "Trichy", desc: "Deploy AI-backed enrollment funnels, WhatsApp booking bots, and professional sites for schools & clinics." },
-    ],
-  },
-  {
-    state: "Kerala",
-    cities: [
-      { slug: "kochi", name: "Kochi", desc: "Scale Kochi's high-ROI tourism portals, luxury real estate developers, and international spice exporters." },
-      { slug: "trivandrum", name: "Trivandrum", desc: "Position Trivandrum's technology firms, private clinics, and local services on Page 1 of Google Search." },
-      { slug: "kozhikode", name: "Kozhikode", desc: "Build sub-second speed Next.js websites and automated WhatsApp enquiry workflows for Kozhikode brands." },
-    ],
-  },
-  {
-    state: "Karnataka",
-    cities: [
-      { slug: "mysore", name: "Mysore", desc: "Attract global wellness seekers, yoga retreats, and heritage tour enquiries for Mysore operators." },
-      { slug: "mangalore", name: "Mangalore", desc: "Streamline port shipping and export pipelines with robust n8n synchronization to Vyapar and sheets." },
-    ],
-  },
-  {
-    state: "Andhra Pradesh",
-    cities: [
-      { slug: "visakhapatnam", name: "Visakhapatnam", desc: "Dominate Vizag's premium real estate builders, technology startups, and logistics companies with paid ads." },
-      { slug: "vijayawada", name: "Vijayawada", desc: "Capture high-intent transactional local buyers and wholesale leads for Vijayawada retail networks." },
-      { slug: "guntur", name: "Guntur", desc: "Automate regional agricultural trading pipelines, cotton supply chains, and local hospital lead collections." },
-    ],
-  },
-  {
-    state: "Telangana",
-    cities: [
-      { slug: "warangal", name: "Warangal", desc: "Connect Warangal's retail showrooms, local academies, and professional services with high-ROI local SEO." },
+      { slug: "guwahati", name: "Guwahati", desc: "Pan-Northeast geo-targeting for Guwahati brands. Performance marketing, WhatsApp automation & SEO reaching all 8 Northeast states." },
+      { slug: "shillong", name: "Shillong", desc: "Niche keyword targeting for Shillong's hospitality, eco-tourism resorts, and schools. Broad keywords waste budget here." },
+      { slug: "gangtok", name: "Gangtok", desc: "Nationwide-buyer SEO for Sikkim's premium organic brands and heritage hotels. Their customers are in metros, not just Gangtok." },
+      { slug: "agartala", name: "Agartala", desc: "Lower-competition local SEO environment in Agartala means faster ranking timelines. Early movers own rankings for years." },
+      { slug: "aizawl", name: "Aizawl", desc: "E-commerce builds scoped for nationwide handloom and D2C shipping from Aizawl. Next.js stores reaching buyers across India." },
+      { slug: "dimapur", name: "Dimapur", desc: "Wholesale order automation via custom WhatsApp AI bots and n8n CRM sync. The lead service for Dimapur's commercial trading hub." },
+      { slug: "kohima", name: "Kohima", desc: "Festival and tourism-calendar-aligned campaign scheduling for Kohima heritage stays and arts businesses." },
+      { slug: "imphal", name: "Imphal", desc: "Local SEO fundamentals prioritized before ad spend for Imphal businesses. Clean foundation, then campaigns." },
     ],
   },
 ];
@@ -172,11 +130,6 @@ const stateHeaderMap: Record<string, string> = {
   "Bihar": "Performance Marketing Agency in Bihar",
   "Jammu & Kashmir": "Digital Marketing Agency in Jammu & Kashmir",
   "Northeast India": "Digital Marketing & WhatsApp Automation — Northeast India",
-  "Tamil Nadu": "Performance Marketing & AI Agency in Tamil Nadu",
-  "Kerala": "Digital Marketing & Custom Web Agency in Kerala",
-  "Karnataka": "SEO & E-commerce Marketing Agency in Karnataka",
-  "Andhra Pradesh": "B2B Lead Generation & Local SEO in Andhra Pradesh",
-  "Telangana": "Digital Marketing & WhatsApp Automation in Telangana",
 };
 
 const allCitiesList = locationsGrouped.flatMap(group => group.cities);
@@ -185,16 +138,26 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Cities Served by AdsVerse Digital Marketing Agency",
-  "description": "AdsVerse provides AI-first digital marketing, SEO, and WhatsApp automation across 18+ Indian cities.",
+  "description": "AdsVerse provides AI-first digital marketing, SEO, and WhatsApp automation across 24 Indian cities in its core service regions.",
   "url": "https://adsverse.in/locations",
-  "numberOfItems": allCitiesList.length,
-  "itemListElement": allCitiesList.map((city, index) => ({
-    "@type": "ListItem",
-    "position": index + 1,
-    "url": `https://adsverse.in/locations/${city.slug}`,
-    "name": `Digital Marketing Agency in ${city.name}`
-  }))
+  "numberOfItems": allCitiesList.length + 1,
+  "itemListElement": [
+    ...allCitiesList.map((city, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://adsverse.in/locations/${city.slug}`,
+      "name": `Digital Marketing Agency in ${city.name}`
+    })),
+    {
+      "@type": "ListItem",
+      "position": allCitiesList.length + 1,
+      "url": "https://adsverse.in/locations/pan-india-remote",
+      "name": "Remote Digital Marketing Services — Pan India"
+    }
+  ]
 };
+
+
 
 export default function LocationsIndexPage() {
   return (
@@ -215,8 +178,8 @@ export default function LocationsIndexPage() {
           AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore,
           serving 113+ brands across Madhya Pradesh, Rajasthan, Chhattisgarh, Uttar Pradesh, Bihar,
           Jammu &amp; Kashmir, and Northeast India. From local SEO and Google Ads to WhatsApp AI bots
-          and n8n CRM automation — we deliver Tier-1 results in Tier-2 markets. Select your city
-          below to see services, pricing, and local case studies.
+          and n8n CRM automation &mdash; we deliver Tier-1 results in Tier-2 markets. Select your city
+          below to learn how we work in your market.
         </p>
       </div>
 
@@ -263,6 +226,23 @@ export default function LocationsIndexPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Pan-India Remote Link */}
+      <div className="mt-16 border border-border/30 bg-card/25 backdrop-blur-sm rounded-2xl p-8 text-center space-y-4">
+        <h2 className="text-2xl font-bold font-headline">Outside Our Core Regions?</h2>
+        <p className="text-slate-700 dark:text-slate-400 max-w-2xl mx-auto text-sm leading-relaxed">
+          AdsVerse works with clients from across India remotely &mdash; everything via video calls, WhatsApp, and shared dashboards.
+          No local office required.
+        </p>
+        <Button
+          asChild
+          className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold uppercase tracking-wider text-xs h-10 shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 transition-all duration-300"
+        >
+          <Link href="/locations/pan-india-remote" className="flex items-center justify-center gap-1.5">
+            Remote Services &mdash; How It Works <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </Button>
       </div>
     </div>
     </>
