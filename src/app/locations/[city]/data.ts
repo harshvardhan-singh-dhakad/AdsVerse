@@ -84,8 +84,8 @@ export const citiesDb: Record<string, { name: string, state: string, desc: strin
 
 export const cityMeta: Record<string, { title: string; description: string; canonical: string }> = {
   indore: {
-    title: "Best Digital Marketing Agency in Indore | AdsVerse",
-    description: "Looking for the best digital marketing company in Indore? AdsVerse offers AI SEO, WhatsApp bots, and performance marketing in Vijay Nagar, Indore.",
+    title: "Best Digital Marketing Agency in Indore | Top Company — AdsVerse",
+    description: "Looking for the best digital marketing agency in Indore? AdsVerse (Vijay Nagar) delivers AI-first SEO, WhatsApp bots, Google & Meta Ads, and sales automation for local businesses.",
     canonical: "https://adsverse.in/locations/indore",
   },
   bhopal: {
@@ -212,8 +212,8 @@ export const cityMeta: Record<string, { title: string; description: string; cano
 
 export const cityIntro: Record<string, { headline: string; body: string }> = {
   indore: {
-    headline: "Indore — Central India's Fastest-Growing Business Corridor",
-    body: "Vijay Nagar is where AdsVerse is headquartered — and where we have run our longest client relationships. Indore's fast-growing startup and retail scene needs AI-first execution, not agency overhead. From IT parks to coaching corridors to retail showrooms, this is our home market — and our most tested execution environment.",
+    headline: "Best Digital Marketing Agency in Indore — Headquartered in Vijay Nagar",
+    body: "AdsVerse is the best digital marketing agency in Indore, headquartered in Vijay Nagar. We combine AI-first SEO, n8n workflow automation, WhatsApp chatbots, and performance Google & Meta Ads to deliver real sales outcomes for Indore startups, retail showrooms, IT companies, and educational institutes.",
   },
   bhopal: {
     headline: "Bhopal — MP's Capital, Where Coaching Institutes Need Fast Lead Systems",

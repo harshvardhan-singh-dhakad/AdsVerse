@@ -6,10 +6,22 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WhatsApp Bot for Lead Generation India — 24/7 AI Sales Bot | AdsVerse",
-  description: "Automate your WhatsApp with AdsVerse's AI-powered sales bot. Capture leads, qualify prospects & close deals 24/7 — the #1 WhatsApp automation solution for Indian businesses in Indore.",
+  title: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse",
+  description: "AdsVerse is the #1 WhatsApp AI chatbot development company in Indore. Automate customer support, capture leads 24/7, and qualify sales prospects with Gemini-powered WhatsApp bots.",
+  keywords: [
+    "whatsapp ai chatbot development company indore",
+    "whatsapp automation agency india",
+    "whatsapp business api chatbot indore",
+    "ai sales bot for whatsapp",
+  ],
   alternates: {
     canonical: 'https://adsverse.in/services/whatsapp-bot',
+  },
+  openGraph: {
+    title: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse",
+    description: "Automate sales & customer support 24/7 on WhatsApp with AdsVerse's AI bots. Based in Vijay Nagar, Indore.",
+    url: 'https://adsverse.in/services/whatsapp-bot',
+    siteName: 'AdsVerse',
   },
 };
 

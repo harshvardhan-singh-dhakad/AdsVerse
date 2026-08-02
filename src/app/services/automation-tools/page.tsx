@@ -7,10 +7,23 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "AI & WhatsApp Business Automation Agency India | AdsVerse",
-  description: "Automate your business 24/7 with AdsVerse's custom AI bots, WhatsApp automation & n8n workflows. Save time, generate leads, and scale faster — built for Indian businesses in Indore.",
+  title: "n8n Workflow & Marketing Automation Agency in Indore | AdsVerse",
+  description: "AdsVerse is India's top marketing automation agency & n8n workflow specialist based in Indore. Custom WhatsApp AI bots, CRM automation, and 24/7 lead workflows for SMBs.",
+  keywords: [
+    "n8n workflow automation agency india",
+    "marketing automation agency in indore",
+    "whatsapp ai chatbot development company",
+    "crm automation services india",
+    "business automation agency indore",
+  ],
   alternates: {
     canonical: 'https://adsverse.in/services/automation-tools',
+  },
+  openGraph: {
+    title: "n8n Workflow & Marketing Automation Agency in Indore | AdsVerse",
+    description: "Automate your business 24/7 with custom n8n workflows, WhatsApp AI chatbots, and CRM sync. Built by AdsVerse in Indore.",
+    url: 'https://adsverse.in/services/automation-tools',
+    siteName: 'AdsVerse',
   },
 };
 

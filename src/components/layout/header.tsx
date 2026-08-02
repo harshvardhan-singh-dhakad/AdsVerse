@@ -11,6 +11,8 @@ import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
+import { useContext } from "react";
+import { FirebaseContext } from "@/firebase/provider";
 
 const ChevronDown = () => (
   <svg
@@ -42,6 +44,10 @@ type HeaderProps = {
 };
 
 export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
+  // Safely read Firebase context — context may be undefined during static rendering
+  const firebaseCtx = useContext(FirebaseContext);
+  const isLoggedIn = !!(firebaseCtx?.user);
+  const activeNavLinks = isLoggedIn ? [...navLinks, { href: '/dashboard', label: 'Dashboard' }] : navLinks;
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
@@ -69,7 +75,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
 
         {/* Center: Desktop navigation */}
         <nav aria-label="Main Navigation" className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 gap-6 items-center">
-          {navLinks.map(({ href, label }) => {
+          {activeNavLinks.map(({ href, label }) => {
             if (label === "Services") {
               return (
                 <div key={href} className="group relative py-3">
@@ -416,7 +422,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                       </Link>
                     </div>
                     <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 mt-6 overflow-y-auto pr-2 pb-6">
-                      {navLinks.map(({ href, label }) => {
+                      {activeNavLinks.map(({ href, label }) => {
                         const hasDropdown = ["Services", "Blog", "Locations"].includes(label);
                         const isExpanded = openMobileSection === label;
 

@@ -30,10 +30,23 @@ const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Best AI Digital Marketing Agency in Indore",
-    description: "AdsVerse is Indore's best digital marketing agency. Automate sales & scale organic traffic using AI, WhatsApp bots, SEO, Paid Ads, and custom automation.",
+    title: "AI-First Digital Marketing Agency in Indore | Best AI Agency — AdsVerse",
+    description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. We scale local businesses & Indian SMBs using AI SEO, GEO (AI Search), WhatsApp automation, n8n workflows, and high-ROI Google & Meta Ads.",
+    keywords: [
+      "ai first digital marketing agency in indore",
+      "best ai digital marketing agency in indore",
+      "digital marketing agency in indore",
+      "seo agency indore",
+      "whatsapp automation indore",
+    ],
     alternates: {
       canonical: `https://adsverse.in`,
+    },
+    openGraph: {
+      title: "AI-First Digital Marketing Agency in Indore | AdsVerse",
+      description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. Scale sales & organic search traffic with AI automation, SEO, and performance ads.",
+      url: "https://adsverse.in",
+      siteName: "AdsVerse",
     },
   };
 }
@@ -236,15 +249,14 @@ export default function HomePage() {
             <div className="w-full md:w-1/2 space-y-6 md:space-y-10 relative z-10 text-left">
               <div className="flex items-center gap-3">
                 <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
-                  Best AI Digital Marketing Agency • Indore
+                  #1 AI-First Digital Marketing Agency • Indore
                 </span>
               </div>
-              <h1 className="font-sans text-[30px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] leading-[1.1] md:leading-none text-slate-900 dark:text-white">
-                Grow Your Business <br /> Faster with <br />
-                <span className="gradient-text">AI-Powered</span> <span className="text-brand-orange">Marketing</span>
+              <h1 className="font-sans text-[30px] sm:text-5xl md:text-[64px] font-extrabold tracking-[-0.03em] leading-[1.1] text-slate-900 dark:text-white">
+                Best <span className="gradient-text">AI-First</span> Digital Marketing Agency in <span className="text-brand-orange">Indore</span>
               </h1>
               <p className="font-sans text-base sm:text-lg md:text-xl font-medium text-slate-800 dark:text-slate-100 max-w-lg leading-relaxed">
-                n8n automation, WhatsApp bots, Google &amp; Meta campaigns, and Gemini AI workflows — built for <span className="text-brand-orange font-bold">Indore SMBs</span>.
+                Grow sales faster with n8n automation, WhatsApp AI bots, GEO (AI Search), and Google &amp; Meta Ads — built by Indore's top digital marketing experts.
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
                 <Button asChild size="lg" aria-label="Get Free Audit" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">

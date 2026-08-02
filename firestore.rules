@@ -207,5 +207,52 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    /**
+     * @description Stores SEO audit reports per user.
+     * Users can only read their own reports. All writes are server-side via Admin SDK.
+     * @path /audit_reports/{reportId}
+     */
+    match /audit_reports/{reportId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow write: if false; // server-only via Admin SDK
+    }
+
+    /**
+     * @description Stores audit tool user profiles (plan, phone, etc).
+     * Users can read their own profile only. Writes are server-side.
+     * @path /audit_users/{uid}
+     */
+    match /audit_users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // server-only via Admin SDK
+    }
+
+    /**
+     * @description Stores per-user rate limit tracking docs for the free audit tier.
+     * Doc ID = sha256(userId + normalizedUrl). Fully server-side managed.
+     * @path /rate_limit/{docId}
+     */
+    match /rate_limit/{docId} {
+      allow read, write: if false; // server-only via Admin SDK
+    }
+
+    /**
+     * @description Stores LLM-generated GEO/AEO scoring data, cached for 7 days.
+     * Doc ID = sha256(domain). Fully server-side managed.
+     * @path /geo_aeo_cache/{docId}
+     */
+    match /geo_aeo_cache/{docId} {
+      allow read, write: if false; // server-only via Admin SDK
+    }
+
+    /**
+     * @description Stores system-wide daily caps for LLM API calls.
+     * Doc ID = YYYY-MM-DD. Fully server-side managed.
+     * @path /system_audit_limits/{docId}
+     */
+    match /system_audit_limits/{docId} {
+      allow read, write: if false; // server-only via Admin SDK
+    }
+
   }
 }

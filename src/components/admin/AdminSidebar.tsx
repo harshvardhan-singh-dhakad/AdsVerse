@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, Briefcase, IndianRupee, LogOut, ChevronRight, FileText, Globe } from "lucide-react";
+import { LayoutDashboard, Users, Briefcase, IndianRupee, LogOut, ChevronRight, FileText, Globe, Crown, Sparkles } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
-export type AdminTab = "dashboard" | "leads" | "audit-leads" | "services" | "portfolio" | "pricing" | "blogs";
+export type AdminTab = "dashboard" | "leads" | "audit-leads" | "subscriptions" | "seo-radar" | "services" | "portfolio" | "pricing" | "blogs";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -29,6 +29,8 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "leads", label: "Leads", icon: Users },
     { id: "audit-leads", label: "Audit Leads", icon: Globe },
+    { id: "subscriptions", label: "Subscriptions", icon: Crown },
+    { id: "seo-radar", label: "SEO & AI Radar", icon: Sparkles },
     { id: "services", label: "Services", icon: Briefcase },
     { id: "portfolio", label: "Portfolio", icon: ChevronRight },
     { id: "pricing", label: "Pricing", icon: IndianRupee },

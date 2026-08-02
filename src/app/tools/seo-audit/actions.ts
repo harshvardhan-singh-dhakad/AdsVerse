@@ -1,8 +1,9 @@
-
 'use server';
 
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { fetchPageSpeedData, type PageSpeedMetrics } from '@/lib/pagespeed';
+import type { LlmGeoAeoResult } from '@/lib/gemini-geo-aeo';
 
 // Interfaces for structured results
 export interface SeoCategoryScores {
@@ -23,7 +24,7 @@ export interface GeoAeoCheck {
   check: string;
   description: string;
   fix: string;
-  passed: boolean;
+  status: 'pass' | 'fail' | 'warning';
   priority: 'High' | 'Medium' | 'Low';
   type: 'GEO' | 'AEO';
 }
@@ -35,13 +36,14 @@ export interface Recommendation {
   fix: string;
   category: 'On-Page SEO' | 'Performance' | 'Accessibility' | 'Social' | 'Technical SEO' | 'Security';
   priority: 'High' | 'Medium' | 'Low';
-  passed: boolean;
+  status: 'pass' | 'fail' | 'warning';
 }
 
 export interface LinkCounts {
-    internal: number;
-    external: number;
-    nofollow: number;
+  internal: number;
+  external: number;
+  nofollow: number;
+  broken: number;
 }
 
 export interface AnalysisResult {
@@ -67,6 +69,9 @@ export interface AnalysisResult {
   lang: string | undefined;
   canonical: string | undefined;
   loadTime: number;
+  pageSpeedMetrics?: PageSpeedMetrics | null;
+  bodyTextExcerpt: string;
+  llmGeoAeo?: LlmGeoAeoResult;
 }
 
 function getGrade(score: number): string {
@@ -79,30 +84,46 @@ function getGrade(score: number): string {
 }
 
 function isUrlBlockedByRobots(url: string, robotsTxt: string): boolean {
-    if (!robotsTxt) return false;
+  if (!robotsTxt) return false;
+  const rules = robotsTxt.split('\n');
+  let currentUserAgent = '';
 
-    const rules = robotsTxt.split('\n');
-    let currentUserAgent = '';
-
-    for (const line of rules) {
-        const trimmedLine = line.trim();
-        if (trimmedLine.toLowerCase().startsWith('user-agent:')) {
-            const agent = trimmedLine.split(':')[1].trim();
-            currentUserAgent = agent;
-        }
-
-        if (currentUserAgent === '*' || currentUserAgent === 'Googlebot') {
-            if (trimmedLine.toLowerCase().startsWith('disallow:')) {
-                const path = trimmedLine.split(':')[1].trim();
-                if (path && new URL(url).pathname.startsWith(path)) {
-                    return true;
-                }
-            }
-        }
+  for (const line of rules) {
+    const trimmedLine = line.trim();
+    if (trimmedLine.toLowerCase().startsWith('user-agent:')) {
+      currentUserAgent = trimmedLine.split(':')[1].trim();
     }
-    return false;
+    if (currentUserAgent === '*' || currentUserAgent.toLowerCase() === 'googlebot') {
+      if (trimmedLine.toLowerCase().startsWith('disallow:')) {
+        const path = trimmedLine.split(':')[1].trim();
+        if (path && new URL(url).pathname.startsWith(path)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
+// Broken link checker helper (limits to 20 to avoid timeouts)
+async function checkBrokenLinks(links: string[], baseUrl: string): Promise<number> {
+  const toCheck = links.slice(0, 20); // Limit to top 20 links
+  let brokenCount = 0;
+  
+  await Promise.allSettled(
+    toCheck.map(async (link) => {
+      try {
+        const fullUrl = new URL(link, baseUrl).href;
+        if (!fullUrl.startsWith('http')) return;
+        const res = await axios.head(fullUrl, { timeout: 3000 });
+        if (res.status >= 400) brokenCount++;
+      } catch (e) {
+        brokenCount++;
+      }
+    })
+  );
+  return brokenCount;
+}
 
 export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   if (!url.startsWith('http')) {
@@ -114,6 +135,9 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   let loadTime: number;
   let responseHeaders: any;
   let redirected = false;
+
+  // Run PageSpeed Insights in parallel with the main fetch
+  const psiPromise = fetchPageSpeedData(url).catch(() => null);
 
   try {
     const startTime = Date.now();
@@ -132,18 +156,18 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     responseHeaders = response.headers;
     loadTime = (endTime - startTime) / 1000;
     redirected = new URL(url).href !== new URL(finalUrl).href;
-
   } catch (error) {
     console.error('Error fetching URL:', error);
     throw new Error('Failed to fetch the website. Please check the URL and try again. The site may be blocking analysis tools.');
   }
 
+  const psiData = await psiPromise;
   const $ = cheerio.load(html);
   const siteUrl = new URL(finalUrl);
 
   const checks: Record<string, any> = {};
 
-  // --- SEO Analysis ---
+  // --- Comprehensive SEO Data Extraction ---
   const title = $('title').text().trim();
   const metaDescription = $('meta[name="description"]').attr('content')?.trim() || '';
   const h1s = $('h1').map((_, el) => $(el).text().trim()).get();
@@ -156,20 +180,44 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const bodyText = $('body').text().replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, "").replace(/<style[^>]*>([\S\s]*?)<\/style>/gmi, "");
   const wordCount = bodyText.split(/\s+/).filter(Boolean).length;
   checks.wordCountOk = wordCount > 300;
-  
-  checks.titleOk = title.length > 10 && title.length < 60;
-  checks.metaDescriptionOk = metaDescription.length > 70 && metaDescription.length < 160;
-  checks.h1Ok = h1s.length === 1 && !!h1s[0];
 
+  // Title checks
+  checks.titleLengthStatus = title.length === 0 ? 'fail' : (title.length >= 50 && title.length <= 60 ? 'pass' : 'warning');
+  
+  // Meta description checks
+  checks.metaDescStatus = metaDescription.length === 0 ? 'fail' : (metaDescription.length >= 120 && metaDescription.length <= 160 ? 'pass' : 'warning');
+  
+  // Duplicate content signal
+  const titleWordsStr = title.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+  const h1WordsStr = h1s[0]?.toLowerCase().replace(/[^a-z0-9\s]/g, '') || '';
+  checks.duplicateTitleH1 = titleWordsStr && titleWordsStr === h1WordsStr;
+
+  // H1 checks
+  if (h1s.length === 1 && !!h1s[0]) {
+    checks.h1Status = 'pass';
+  } else if (h1s.length > 1) {
+    checks.h1Status = 'warning'; // Multiple H1s are okay in HTML5, but single is best practice
+  } else {
+    checks.h1Status = 'fail';
+  }
+
+  // Header hierarchy
+  checks.headerHierarchyStatus = 'pass';
+  if (h3s.length > 0 && h2s.length === 0) checks.headerHierarchyStatus = 'fail'; // Skipped H2
+
+  // Image alt texts
   const images = {
     total: $('img').length,
     withAlt: $('img[alt][alt!=""]').length,
   };
-  checks.altTagsOk = images.total === 0 || (images.withAlt / images.total >= 0.9);
+  if (images.total === 0) checks.altTagsStatus = 'pass';
+  else if (images.withAlt / images.total >= 0.95) checks.altTagsStatus = 'pass';
+  else if (images.withAlt / images.total >= 0.5) checks.altTagsStatus = 'warning';
+  else checks.altTagsStatus = 'fail';
 
   checks.isHttps = siteUrl.protocol === 'https:';
-  checks.loadTimeOk = loadTime < 2.5;
 
+  // Robots.txt + Sitemap
   let robotsTxtContent = '';
   let hasRobotsTxt = false;
   try {
@@ -186,7 +234,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   const robotsMeta = $('meta[name="robots"]').attr('content') || '';
   checks.isNoIndex = robotsMeta.toLowerCase().includes('noindex');
 
-  // Parse all schema scripts once
+  // Parse all schema scripts
   const allSchemas: any[] = [];
   $('script[type="application/ld+json"]').each((_, el) => {
     try {
@@ -208,7 +256,7 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   checks.hasReviewSchema = hasSchemaType('Review') || hasSchemaType('AggregateRating');
   checks.hasArticleSchema = hasSchemaType('Article') || hasSchemaType('BlogPosting') || hasSchemaType('NewsArticle');
 
-  // Author / Date signals
+  // E-E-A-T Signals
   const authorSelectors = ['[rel="author"]', '[itemprop="author"]', '.author', '#author', '[class*="author"]', '[class*="byline"]', 'article [class*="by"]'];
   checks.hasAuthorInfo = authorSelectors.some(sel => $(sel).length > 0) || allSchemas.some(s => s.author);
 
@@ -216,7 +264,15 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   checks.hasDatePublished = dateSelectors.some(sel => $(sel).length > 0) || allSchemas.some(s => s.datePublished || s.dateModified);
 
   checks.langOk = !!lang;
-  checks.canonicalOk = !!canonical;
+  
+  // Canonical check
+  if (!canonical) {
+    checks.canonicalStatus = 'fail';
+  } else if (new URL(canonical, finalUrl).href !== finalUrl) {
+    checks.canonicalStatus = 'warning'; // Canonicalized elsewhere, which could be fine, but worth noting
+  } else {
+    checks.canonicalStatus = 'pass';
+  }
 
   const viewport = $('meta[name="viewport"]').attr('content');
   checks.mobileFriendly = !!viewport && viewport.includes('width=device-width');
@@ -234,46 +290,65 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   }
   checks.hasMixedContent = hasMixedContent;
   
-  const foundSecurityHeaders = ['content-security-policy', 'x-content-type-options', 'x-frame-options'].filter(h => responseHeaders[h]);
-  checks.hasSecurityHeaders = foundSecurityHeaders.length > 1;
+  const foundSecurityHeaders = ['content-security-policy', 'x-content-type-options', 'x-frame-options', 'strict-transport-security'].filter(h => responseHeaders[h]);
+  if (foundSecurityHeaders.length >= 3) checks.securityHeadersStatus = 'pass';
+  else if (foundSecurityHeaders.length > 0) checks.securityHeadersStatus = 'warning';
+  else checks.securityHeadersStatus = 'fail';
 
   const cachingHeader = responseHeaders['cache-control'] || '';
   checks.hasCachingHeaders = /max-age|public|private/.test(cachingHeader);
 
   checks.isUrlSeoFriendly = finalUrl.length < 100 && !finalUrl.includes('_') && !/[A-Z]/.test(finalUrl.split('?')[0]);
 
-  // --- GEO / AEO specific checks ---
-  // Content depth check
-  checks.contentDepth = wordCount >= 800;
+  // Broken Links & Internal linking density
+  const linkCounts: LinkCounts = { internal: 0, external: 0, nofollow: 0, broken: 0 };
+  const linksToCheck: string[] = [];
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    
+    if ($(el).attr('rel')?.includes('nofollow')) linkCounts.nofollow++;
 
-  // Topic focus: check if H1 and title share any significant words
+    try {
+      const linkUrl = new URL(href, siteUrl.href);
+      if (linkUrl.hostname === siteUrl.hostname) {
+        linkCounts.internal++;
+      } else {
+        linkCounts.external++;
+      }
+      linksToCheck.push(linkUrl.href);
+    } catch (e) {
+      if (!href.startsWith('http') && !href.startsWith('//')) {
+        linkCounts.internal++;
+      }
+    }
+  });
+
+  // Test top 20 links for broken status
+  linkCounts.broken = await checkBrokenLinks(linksToCheck, finalUrl);
+  checks.brokenLinksStatus = linkCounts.broken === 0 ? 'pass' : 'fail';
+  checks.internalLinkingStatus = linkCounts.internal >= 5 ? 'pass' : (linkCounts.internal > 0 ? 'warning' : 'fail');
+
+  // --- GEO / AEO specific checks ---
+  checks.contentDepth = wordCount >= 800;
   const h1Text = h1s[0] || '';
   const commonWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'is', 'are', 'was', 'it']);
   const titleWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 3 && !commonWords.has(w));
   const h1Words = h1Text.toLowerCase().split(/\s+/).filter(w => w.length > 3 && !commonWords.has(w));
   checks.hasClearTopicFocus = titleWords.some(w => h1Words.includes(w)) || h1Words.some(w => titleWords.includes(w));
-
-  // Expertise signals
   const expertiseKeywords = /expert|certified|award|years experience|founder|specialist|consultant|professional|accredited|qualified|license/i;
   checks.hasExpertiseSignals = expertiseKeywords.test(bodyText.slice(0, 5000));
-
-  // Table of contents (anchor links on same page)
   const anchorLinks = $('a[href^="#"]').length;
   checks.hasTableOfContents = anchorLinks >= 3;
-
-  // AEO: FAQ-style headings (question headings)
+  
   const questionHeadings = [...h2s, ...h3s].filter(h => /\?|^what|^how|^why|^when|^where|^who|^which|^can|^does|^is|^are|^do/i.test(h.trim()));
   checks.hasFAQContent = questionHeadings.length >= 2;
-
-  // AEO: Structured list content
   checks.hasListContent = $('ul li, ol li').length >= 3;
-
-  // AEO: Voice search optimization (natural language, short answers)
+  
   const paragraphs = $('p').map((_, el) => $(el).text().trim()).get();
   const shortAnswerParagraphs = paragraphs.filter(p => p.length > 20 && p.length < 200);
   checks.hasVoiceSearchOptimization = shortAnswerParagraphs.length >= 3 && checks.hasFAQContent;
 
-  // AEO: Direct answers after questions (check if a <p> follows an H2/H3)
   let directAnswerCount = 0;
   $('h2, h3').each((_, el) => {
     const next = $(el).next('p');
@@ -283,64 +358,77 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
   });
   checks.hasDirectAnswers = directAnswerCount >= 2;
 
-
-  const linkCounts: LinkCounts = { internal: 0, external: 0, nofollow: 0 };
-  $('a[href]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (!href) return;
+  // --- PageSpeed Insights Mapping ---
+  let lcpStatus: 'pass' | 'fail' | 'warning' = 'warning';
+  let clsStatus: 'pass' | 'fail' | 'warning' = 'warning';
+  let fcpStatus: 'pass' | 'fail' | 'warning' = 'warning';
+  
+  if (psiData) {
+    if (psiData.lcp <= 2500) lcpStatus = 'pass';
+    else if (psiData.lcp > 4000) lcpStatus = 'fail';
     
-    if ($(el).attr('rel')?.includes('nofollow')) {
-        linkCounts.nofollow++;
-    }
-
-    try {
-        const linkUrl = new URL(href, siteUrl.href);
-        if (linkUrl.hostname === siteUrl.hostname) {
-            linkCounts.internal++;
-        } else {
-            linkCounts.external++;
-        }
-    } catch (e) {
-        if (!href.startsWith('http') && !href.startsWith('//') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
-            linkCounts.internal++;
-        }
-    }
-  });
+    if (psiData.cls <= 0.1) clsStatus = 'pass';
+    else if (psiData.cls > 0.25) clsStatus = 'fail';
+    
+    if (psiData.fcp <= 1800) fcpStatus = 'pass';
+    else if (psiData.fcp > 3000) fcpStatus = 'fail';
+  } else {
+    // Fallback if API fails
+    if (loadTime < 2.5) { lcpStatus = 'pass'; fcpStatus = 'pass'; clsStatus = 'pass'; }
+    else if (loadTime < 4.0) { lcpStatus = 'warning'; fcpStatus = 'warning'; clsStatus = 'pass'; }
+    else { lcpStatus = 'fail'; fcpStatus = 'fail'; clsStatus = 'warning'; }
+  }
 
 
   // --- SEO Scoring ---
   let onPagePoints = 0;
-  if (checks.titleOk) onPagePoints += 15;
-  if (checks.metaDescriptionOk) onPagePoints += 10;
-  if (checks.h1Ok) onPagePoints += 15;
+  if (checks.titleLengthStatus === 'pass') onPagePoints += 15;
+  else if (checks.titleLengthStatus === 'warning') onPagePoints += 7;
+  
+  if (checks.metaDescStatus === 'pass') onPagePoints += 10;
+  else if (checks.metaDescStatus === 'warning') onPagePoints += 5;
+  
+  if (checks.h1Status === 'pass') onPagePoints += 15;
+  else if (checks.h1Status === 'warning') onPagePoints += 7;
+  
   if (checks.wordCountOk) onPagePoints += 10;
-  if (linkCounts.internal > 5) onPagePoints += 10;
+  if (checks.internalLinkingStatus === 'pass') onPagePoints += 10;
+  else if (checks.internalLinkingStatus === 'warning') onPagePoints += 5;
+  
   if (lang) onPagePoints += 5;
-  if ($('h2').length > 0) onPagePoints += 5;
+  if (checks.headerHierarchyStatus === 'pass') onPagePoints += 5;
   if (checks.isUrlSeoFriendly) onPagePoints += 5;
   if (checks.hasLocalBusinessSchema) onPagePoints += 5;
   onPagePoints += 20; // Base points
   const onPageScore = Math.min(100, onPagePoints);
 
   let technicalPoints = 0;
-  if (checks.canonicalOk) technicalPoints += 20;
+  if (checks.canonicalStatus === 'pass') technicalPoints += 20;
+  else if (checks.canonicalStatus === 'warning') technicalPoints += 10;
+  
   if (!checks.isNoIndex) technicalPoints += 20;
   if (checks.robotsTxtOk) technicalPoints += 15;
   if (!checks.isBlockedByRobots) technicalPoints += 15;
   if (checks.sitemapInRobotsOk) technicalPoints += 10;
+  if (checks.brokenLinksStatus === 'pass') technicalPoints += 10;
   if (redirected) technicalPoints -= 10;
-  technicalPoints += 20;
+  technicalPoints += 10; // Base
   const technicalScore = Math.min(100, Math.max(0, technicalPoints));
   
   let performancePoints = 0;
-  if (checks.loadTimeOk) performancePoints += 80; 
-  else if (loadTime < 4) performancePoints += 40; 
-  if (checks.hasCachingHeaders) performancePoints += 20;
+  if (psiData) {
+    performancePoints = Math.round(psiData.score * 100);
+  } else {
+    if (lcpStatus === 'pass') performancePoints += 80; 
+    else if (lcpStatus === 'warning') performancePoints += 40; 
+    if (checks.hasCachingHeaders) performancePoints += 20;
+  }
   const performanceScore = Math.min(100, performancePoints);
   
   let accessibilityPoints = 0;
   if (checks.mobileFriendly) accessibilityPoints += 50;
-  if (checks.altTagsOk) accessibilityPoints += 50;
+  if (checks.altTagsStatus === 'pass') accessibilityPoints += 50;
+  else if (checks.altTagsStatus === 'warning') accessibilityPoints += 25;
   const accessibilityScore = accessibilityPoints;
 
   let socialPoints = 0;
@@ -387,54 +475,145 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     aeo: { score: aeoScore, grade: getGrade(aeoScore) },
   };
 
-  // --- GEO + AEO Checklist ---
-  const geoAeoChecks: GeoAeoCheck[] = [
-    // GEO Checks
-    { id: 'author_info', type: 'GEO', check: 'Author / E-E-A-T Signals', description: 'AI search engines prioritize content from identifiable, credible authors. Author info is a key E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signal.', fix: 'Add a visible author byline, author bio section, or author schema markup to your page. Link to author profiles on LinkedIn or your about page.', passed: checks.hasAuthorInfo, priority: 'High' },
-    { id: 'date_published', type: 'GEO', check: 'Published / Updated Date', description: 'AI engines like ChatGPT and Gemini prefer recently updated content. A visible publication or update date signals freshness.', fix: 'Add a <time datetime="YYYY-MM-DD"> element or datePublished/dateModified in your JSON-LD schema to indicate content freshness.', passed: checks.hasDatePublished, priority: 'High' },
-    { id: 'content_depth', type: 'GEO', check: 'Content Depth (800+ words)', description: 'AI models are trained to surface comprehensive, in-depth content. Pages with 800+ words tend to perform better in AI-generated answers.', fix: `Your page has ${wordCount} words. Expand your content to cover the topic comprehensively with examples, data, and expert insights.`, passed: checks.contentDepth, priority: 'High' },
-    { id: 'topic_focus', type: 'GEO', check: 'Clear Topic Focus', description: 'AI engines extract the central topic from your H1 and title. When they align, the AI can confidently cite your page as a source.', fix: 'Make sure your H1 and title tag share key topic words. Avoid clickbait titles that differ greatly from your page heading.', passed: checks.hasClearTopicFocus, priority: 'Medium' },
-    { id: 'faq_schema', type: 'GEO', check: 'FAQ Schema Markup', description: 'FAQ schema helps AI engines directly extract your Q&A content for featured snippets and conversational AI responses.', fix: 'Add FAQPage JSON-LD schema to pages with question-and-answer content. This significantly increases your chances of being cited by AI.', passed: checks.hasFAQSchema, priority: 'High' },
-    { id: 'howto_schema', type: 'GEO', check: 'HowTo Schema Markup', description: 'HowTo schema helps AI assistants provide step-by-step instructions from your content in response to "how to" queries.', fix: 'For instructional content, add HowTo JSON-LD schema with defined steps, tools, and time estimates.', passed: checks.hasHowToSchema, priority: 'Medium' },
-    { id: 'breadcrumb_schema', type: 'GEO', check: 'Breadcrumb Schema', description: 'Breadcrumb schema helps AI engines understand the hierarchy and context of your page within your site structure.', fix: 'Add BreadcrumbList JSON-LD schema to all pages. Example: Home > Blog > Article Title.', passed: checks.hasBreadcrumbSchema, priority: 'Low' },
-    { id: 'expertise_signals', type: 'GEO', check: 'Expertise & Credibility Signals', description: 'Words like "certified", "years of experience", "expert" signal to AI engines that your content comes from a credible source.', fix: 'Include mentions of qualifications, certifications, awards, or years of experience in your page copy to build AI-readable authority.', passed: checks.hasExpertiseSignals, priority: 'Medium' },
-    // AEO Checks
-    { id: 'faq_headings', type: 'AEO', check: 'FAQ-Style Question Headings', description: 'Answer engines match user questions to pages with question-formatted headings (H2/H3). These are directly used for featured snippets and voice answers.', fix: 'Rewrite some of your H2/H3 headings as questions that your target audience would ask (e.g., "What is digital marketing?", "How does SEO work?").', passed: checks.hasFAQContent, priority: 'High' },
-    { id: 'direct_answers', type: 'AEO', check: 'Direct Answer Paragraphs', description: 'Google and voice assistants look for concise paragraphs immediately following question headings to use as featured snippet answers.', fix: 'After each question-style heading, immediately write a clear, concise answer (40-60 words) before going into detail. This is the ideal featured snippet format.', passed: checks.hasDirectAnswers, priority: 'High' },
-    { id: 'list_content', type: 'AEO', check: 'Structured List Content (UL/OL)', description: 'Bulleted and numbered lists are highly preferred by answer engines for listing steps, features, or options in search results.', fix: 'Where appropriate, convert paragraph content into bulleted lists or numbered step-by-step instructions for better AEO and featured snippet eligibility.', passed: checks.hasListContent, priority: 'Medium' },
-    { id: 'org_schema', type: 'AEO', check: 'Organization Schema', description: 'Organization schema provides AI and voice assistants with structured information about your business — name, address, phone, social links — used for "knowledge panel" and local voice queries.', fix: 'Add Organization JSON-LD schema to your homepage with your company name, URL, logo, contact info, and social media profiles.', passed: checks.hasOrganizationSchema, priority: 'High' },
-    { id: 'review_schema', type: 'AEO', check: 'Review / Rating Schema', description: 'Review and rating schema enables star ratings in search results and increases trust signals for AI-generated recommendations.', fix: 'Add Review or AggregateRating JSON-LD schema to product, service, or business pages to display star ratings in search results.', passed: checks.hasReviewSchema, priority: 'Medium' },
-    { id: 'speakable_schema', type: 'AEO', check: 'Speakable Schema', description: 'Speakable schema tells Google Assistant and other voice AI exactly which parts of your content should be read aloud in response to voice queries.', fix: 'Add Speakable JSON-LD schema pointing to the CSS selectors of your most important, concise content sections to enable voice assistant optimization.', passed: checks.hasSpeakableSchema, priority: 'Low' },
-    { id: 'voice_search', type: 'AEO', check: 'Voice Search Optimization', description: 'Voice queries are conversational and often question-based. Pages with question headings and short answer paragraphs are better suited for voice responses.', fix: 'Combine question-formatted headings with short (under 30 words) answer paragraphs written in conversational language to optimize for voice search and AEO.', passed: checks.hasVoiceSearchOptimization, priority: 'Medium' },
+  // --- Recommendations Generation ---
+  const recommendations: Recommendation[] = [
+    // On-Page SEO
+    { 
+      id: 'title', check: 'Title Tag Length', description: 'Your title tag is the main headline in search results. It should be 50-60 characters.', 
+      fix: checks.titleLengthStatus === 'pass' ? 'Title length is optimal.' : 'Adjust title length to be between 50 and 60 characters.', 
+      category: 'On-Page SEO', priority: 'High', status: checks.titleLengthStatus 
+    },
+    { 
+      id: 'title_dup', check: 'Duplicate Title & H1', description: 'Search engines prefer distinct Titles and H1s to capture more keyword variations.', 
+      fix: checks.duplicateTitleH1 ? 'Rewrite your H1 to be a natural variation of your Title tag.' : 'Title and H1 are distinct.', 
+      category: 'On-Page SEO', priority: 'Medium', status: checks.duplicateTitleH1 ? 'warning' : 'pass' 
+    },
+    { 
+      id: 'meta', check: 'Meta Description Length', description: 'Meta descriptions act as ad copy in search results. Optimal length is 120-160 characters.', 
+      fix: checks.metaDescStatus === 'pass' ? 'Meta description is optimal.' : 'Rewrite meta description to be between 120 and 160 characters.', 
+      category: 'On-Page SEO', priority: 'High', status: checks.metaDescStatus 
+    },
+    { 
+      id: 'h1', check: 'H1 Tag Presence', description: 'The H1 tag is the main heading. You should have exactly one per page.', 
+      fix: checks.h1Status === 'pass' ? 'Single H1 detected.' : (checks.h1Status === 'warning' ? 'Remove extra H1 tags so there is only one.' : 'Add a descriptive H1 tag to the page.'), 
+      category: 'On-Page SEO', priority: 'High', status: checks.h1Status 
+    },
+    { 
+      id: 'header_hierarchy', check: 'Header Hierarchy', description: 'Headers (H1, H2, H3) should follow a logical top-down structure without skipping levels.', 
+      fix: checks.headerHierarchyStatus === 'pass' ? 'Hierarchy is logical.' : 'Ensure you don\'t skip header levels (e.g., don\'t jump from H1 directly to H3).', 
+      category: 'On-Page SEO', priority: 'Medium', status: checks.headerHierarchyStatus 
+    },
+    { 
+      id: 'internal_links', check: 'Internal Linking Density', description: 'Internal links distribute PageRank and help search engines crawl your site.', 
+      fix: checks.internalLinkingStatus === 'pass' ? 'Good amount of internal links.' : 'Add more contextually relevant internal links to other pages on your site.', 
+      category: 'On-Page SEO', priority: 'Medium', status: checks.internalLinkingStatus 
+    },
+    { 
+      id: 'content', check: 'Sufficient Content', description: `In-depth content tends to rank better. Your page has ${wordCount} words.`, 
+      fix: checks.wordCountOk ? 'Content length is sufficient.' : 'Aim for at least 300 words of valuable content.', 
+      category: 'On-Page SEO', priority: 'Medium', status: checks.wordCountOk ? 'pass' : 'fail' 
+    },
+    
+    // Technical SEO
+    { 
+      id: 'canonical', check: 'Canonical Correctness', description: 'A canonical tag prevents duplicate content issues by specifying the "preferred" version of a page.', 
+      fix: checks.canonicalStatus === 'pass' ? 'Canonical tag is correct.' : (checks.canonicalStatus === 'warning' ? 'Ensure the canonical points to the right intended version.' : 'Add a self-referencing canonical tag.'), 
+      category: 'Technical SEO', priority: 'High', status: checks.canonicalStatus 
+    },
+    { 
+      id: 'noindex', check: 'Indexing Allowed', description: 'Checks if search engines are allowed to index this page.', 
+      fix: !checks.isNoIndex ? 'Page is indexable.' : 'Remove the "noindex" directive from the meta robots tag.', 
+      category: 'Technical SEO', priority: 'High', status: !checks.isNoIndex ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'robots', check: 'Robots.txt Valid', description: 'A robots.txt file guides search engines on how to crawl your site.', 
+      fix: checks.robotsTxtOk ? 'Robots.txt found.' : 'Create a valid robots.txt file in your root directory.', 
+      category: 'Technical SEO', priority: 'Medium', status: checks.robotsTxtOk ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'sitemap', check: 'Sitemap in Robots.txt', description: 'Including your sitemap in robots.txt helps search engines find all your pages.', 
+      fix: checks.sitemapInRobotsOk ? 'Sitemap found in robots.txt.' : 'Add a "Sitemap: URL" line to your robots.txt.', 
+      category: 'Technical SEO', priority: 'Low', status: checks.sitemapInRobotsOk ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'broken_links', check: 'Broken Links', description: `We checked up to 20 links on your page. ${linkCounts.broken} were broken.`, 
+      fix: checks.brokenLinksStatus === 'pass' ? 'No broken links detected in the sample.' : 'Fix or remove the 4xx/5xx broken links on this page.', 
+      category: 'Technical SEO', priority: 'High', status: checks.brokenLinksStatus 
+    },
+
+    // Security
+    { 
+      id: 'https', check: 'HTTPS Encryption', description: 'Your site must be served over a secure (HTTPS) connection.', 
+      fix: checks.isHttps ? 'Connection is secure.' : 'Migrate your page to HTTPS.', 
+      category: 'Security', priority: 'High', status: checks.isHttps ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'mixed_content', check: 'Mixed Content', description: 'An HTTPS page should not load insecure (HTTP) resources.', 
+      fix: !checks.hasMixedContent ? 'No mixed content.' : 'Change HTTP resource URLs to HTTPS.', 
+      category: 'Security', priority: 'High', status: !checks.hasMixedContent ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'security_headers', check: 'Security Headers', description: 'HTTP security headers protect your site from common attacks (HSTS, CSP, X-Frame-Options).', 
+      fix: checks.securityHeadersStatus === 'pass' ? 'Security headers are well configured.' : 'Implement missing security headers via your server configuration.', 
+      category: 'Security', priority: 'Medium', status: checks.securityHeadersStatus 
+    },
+
+    // Performance (Core Web Vitals from PSI)
+    { 
+      id: 'lcp', check: 'Largest Contentful Paint (LCP)', description: `LCP measures loading performance. Value: ${psiData ? (psiData.lcp/1000).toFixed(2)+'s' : loadTime.toFixed(2)+'s'}. Target: < 2.5s.`, 
+      fix: lcpStatus === 'pass' ? 'LCP is fast.' : 'Optimize the largest image or text block. Use a CDN and optimize server response times.', 
+      category: 'Performance', priority: 'High', status: lcpStatus 
+    },
+    { 
+      id: 'cls', check: 'Cumulative Layout Shift (CLS)', description: `CLS measures visual stability. Value: ${psiData ? psiData.cls.toFixed(3) : 'N/A'}. Target: < 0.1.`, 
+      fix: clsStatus === 'pass' ? 'Layout is stable.' : 'Set explicit width/height on images and ads to prevent layout shifts.', 
+      category: 'Performance', priority: 'High', status: clsStatus 
+    },
+    { 
+      id: 'fcp', check: 'First Contentful Paint (FCP)', description: `FCP marks when the first text/image is painted. Value: ${psiData ? (psiData.fcp/1000).toFixed(2)+'s' : loadTime.toFixed(2)+'s'}. Target: < 1.8s.`, 
+      fix: fcpStatus === 'pass' ? 'FCP is fast.' : 'Eliminate render-blocking resources and reduce server response time (TTFB).', 
+      category: 'Performance', priority: 'Medium', status: fcpStatus 
+    },
+
+    // Accessibility & Social
+    { 
+      id: 'mobile', check: 'Mobile-Friendliness', description: 'A mobile-friendly site is essential as most users search on mobile devices.', 
+      fix: checks.mobileFriendly ? 'Viewport meta tag is present.' : 'Add the viewport meta tag for responsive design.', 
+      category: 'Accessibility', priority: 'High', status: checks.mobileFriendly ? 'pass' : 'fail' 
+    },
+    { 
+      id: 'alt', check: 'Image Alt Text Coverage', description: `You have alt text on ${images.withAlt} of ${images.total} images. Target: >95%.`, 
+      fix: checks.altTagsStatus === 'pass' ? 'Alt text coverage is good.' : 'Add descriptive alt text to all informative images.', 
+      category: 'Accessibility', priority: 'Medium', status: checks.altTagsStatus 
+    },
+    { 
+      id: 'schema', check: 'Structured Data Presence', description: 'Schema markup helps search engines understand your content better.', 
+      fix: checks.hasSchema ? 'Schema found.' : 'Implement JSON-LD structured data on your page.', 
+      category: 'Social', priority: 'Medium', status: checks.hasSchema ? 'pass' : 'warning' 
+    },
   ];
 
-  const recommendations: Recommendation[] = [
-    { id: 'https', check: 'HTTPS Encryption', description: 'Your site is served over a secure (HTTPS) connection, which is crucial for user trust and SEO.', fix: 'Ensure all resources (images, scripts) are also loaded over HTTPS to avoid mixed content warnings.', category: 'Security', priority: 'High', passed: checks.isHttps },
-    { id: 'noindex', check: 'Indexing Allowed', description: 'Checks if search engines are allowed to index this page.', fix: 'If this page is important, remove the "noindex" directive from the meta robots tag to allow search engines to show it in search results.', category: 'Technical SEO', priority: 'High', passed: !checks.isNoIndex },
-    { id: 'mixed_content', check: 'No Mixed Content', description: 'An HTTPS page should not load insecure (HTTP) resources like images or scripts.', fix: 'Find all resources loaded over HTTP on this page and change their URLs to use HTTPS.', category: 'Security', priority: 'High', passed: !checks.hasMixedContent },
-    { id: 'speed', check: 'Page Load Speed', description: `Your page loaded in ${loadTime.toFixed(2)} seconds. A fast website improves user experience and rankings.`, fix: 'Optimize images, leverage browser caching, minify CSS/JS, and use a Content Delivery Network (CDN) to get your load time under 2.5 seconds.', category: 'Performance', priority: 'High', passed: checks.loadTimeOk },
-    { id: 'title', check: 'Title Tag', description: 'Your title tag is the main headline in search results and should be concise and descriptive.', fix: 'Write a unique and compelling title between 10 and 60 characters long. Include your main target keyword near the beginning.', category: 'On-Page SEO', priority: 'High', passed: checks.titleOk },
-    { id: 'meta', check: 'Meta Description', description: 'The meta description summarizes your page content, encouraging users to click from search results.', fix: 'Write a unique and engaging meta description between 70 and 160 characters. Think of it as ad copy for your page.', category: 'On-Page SEO', priority: 'High', passed: checks.metaDescriptionOk },
-    { id: 'h1', check: 'Single H1 Tag', description: 'The H1 tag is the main heading on your page, telling users and search engines what the page is about.', fix: 'Your page should have exactly one H1 tag that is descriptive and contains your primary keyword.', category: 'On-Page SEO', priority: 'High', passed: checks.h1Ok },
-    { id: 'mobile', check: 'Mobile-Friendliness', description: 'A mobile-friendly site is essential for modern SEO as most users search on mobile devices.', fix: 'Ensure your site has a responsive design and includes the viewport meta tag. Test your site on various mobile devices.', category: 'Accessibility', priority: 'High', passed: checks.mobileFriendly },
-    { id: 'content', check: 'Sufficient Content', description: `Your page has ${wordCount} words. In-depth content tends to rank better.`, fix: 'For important pages, aim for at least 300 words of valuable, relevant, and well-structured content that fully answers a user\'s query.', category: 'On-Page SEO', priority: 'Medium', passed: checks.wordCountOk },
-    { id: 'alt', check: 'Image Alt Text', description: `You are using alt text on ${images.withAlt} of your ${images.total} images. Alt text is vital for accessibility and image SEO.`, fix: 'Add descriptive alt text to all important images to improve accessibility for visually impaired users and help search engines understand image content.', category: 'Accessibility', priority: 'Medium', passed: checks.altTagsOk },
-    { id: 'robots', check: 'Robots.txt File', description: 'A robots.txt file guides search engines on how to crawl your site.', fix: 'Create a valid robots.txt file in your root directory. Ensure you aren\'t accidentally blocking important pages or resources.', category: 'Technical SEO', priority: 'Medium', passed: checks.robotsTxtOk },
-    { id: 'sitemap', check: 'Sitemap in Robots.txt', description: 'Including your sitemap in robots.txt helps search engines find all your pages.', fix: 'Add a line to your robots.txt file like: "Sitemap: https://yourdomain.com/sitemap.xml".', category: 'Technical SEO', priority: 'Low', passed: checks.sitemapInRobotsOk },
-    { id: 'canonical', check: 'Canonical Tag', description: 'A canonical tag prevents duplicate content issues by specifying the "preferred" version of a page.', fix: 'Ensure all pages have a self-referencing canonical tag, or a tag pointing to the original version if the content is syndicated.', category: 'Technical SEO', priority: 'Medium', passed: checks.canonicalOk },
-    { id: 'security_headers', check: 'Security Headers', description: 'HTTP security headers protect your site and users from common attacks.', fix: 'Implement security headers like Content-Security-Policy, X-Frame-Options, and X-Content-Type-Options via your server configuration.', category: 'Security', priority: 'Medium', passed: checks.hasSecurityHeaders },
-    { id: 'caching', check: 'Browser Caching', description: 'Caching headers tell browsers to store static files locally, speeding up repeat visits.', fix: 'Configure your server to send Cache-Control or Expires headers for static assets like images, CSS, and JS.', category: 'Performance', priority: 'Medium', passed: checks.hasCachingHeaders },
-    { id: 'lang', check: 'Language Declaration', description: 'Declaring the language of the page helps search engines and browsers.', fix: 'Add a "lang" attribute to your <html> tag, for example: <html lang="en">.', category: 'On-Page SEO', priority: 'Low', passed: checks.langOk },
-    { id: 'schema', check: 'Schema Markup', description: 'Schema markup helps search engines understand your content better and can enable rich snippets in search results.', fix: 'Implement structured data (e.g., Article, Product, or LocalBusiness schema) using JSON-LD to enhance your search appearance.', category: 'Social', priority: 'Low', passed: checks.hasSchema },
-    { id: 'local_schema', check: 'Local Business Schema', description: 'If you are a local business, this schema helps you appear in local search results and map packs.', fix: 'Add LocalBusiness structured data to your homepage or contact page, including your Name, Address, and Phone number (NAP).', category: 'On-Page SEO', priority: 'Low', passed: checks.hasLocalBusinessSchema },
-    { id: 'social', check: 'Social Meta Tags', description: 'Open Graph and Twitter Cards control how your content appears when shared on social media.', fix: 'Add Open Graph (og:title, og:description, og:image) and Twitter Card tags to all shareable pages for optimized social sharing.', category: 'Social', priority: 'Low', passed: checks.socialTagsOk },
-    { id: 'friendly_url', check: 'SEO-Friendly URL', description: 'Clean, readable URLs are better for users and search engines.', fix: 'Use short, lowercase URLs with hyphens to separate words. Avoid using underscores, special characters, or long strings of numbers.', category: 'On-Page SEO', priority: 'Low', passed: checks.isUrlSeoFriendly },
+  // --- GEO + AEO Checklist ---
+  const geoAeoChecks: GeoAeoCheck[] = [
+    { id: 'author_info', type: 'GEO', check: 'Author / E-E-A-T Signals', description: 'AI search engines prioritize content from identifiable, credible authors.', fix: 'Add a visible author byline or author schema markup.', status: checks.hasAuthorInfo ? 'pass' : 'fail', priority: 'High' },
+    { id: 'date_published', type: 'GEO', check: 'Published / Updated Date', description: 'AI engines prefer recently updated content.', fix: 'Add a <time> element or datePublished schema.', status: checks.hasDatePublished ? 'pass' : 'fail', priority: 'High' },
+    { id: 'content_depth', type: 'GEO', check: 'Content Depth (800+ words)', description: 'AI models surface comprehensive content.', fix: `Expand your content to cover the topic comprehensively (currently ${wordCount} words).`, status: checks.contentDepth ? 'pass' : 'warning', priority: 'High' },
+    { id: 'topic_focus', type: 'GEO', check: 'Clear Topic Focus', description: 'AI engines extract the central topic from your H1 and title.', fix: 'Make sure your H1 and title tag share key topic words.', status: checks.hasClearTopicFocus ? 'pass' : 'warning', priority: 'Medium' },
+    { id: 'faq_schema', type: 'GEO', check: 'FAQ Schema Markup', description: 'FAQ schema helps AI engines directly extract Q&A content.', fix: 'Add FAQPage JSON-LD schema.', status: checks.hasFAQSchema ? 'pass' : 'fail', priority: 'High' },
+    { id: 'howto_schema', type: 'GEO', check: 'HowTo Schema Markup', description: 'Helps AI assistants provide step-by-step instructions.', fix: 'Add HowTo JSON-LD schema with defined steps.', status: checks.hasHowToSchema ? 'pass' : 'fail', priority: 'Medium' },
+    { id: 'expertise_signals', type: 'GEO', check: 'Expertise Signals', description: 'Words like "certified", "expert" signal credibility.', fix: 'Include mentions of qualifications or years of experience.', status: checks.hasExpertiseSignals ? 'pass' : 'warning', priority: 'Medium' },
+    
+    { id: 'faq_headings', type: 'AEO', check: 'FAQ-Style Headings', description: 'Answer engines match user questions to question-formatted headings.', fix: 'Rewrite some headings as questions.', status: checks.hasFAQContent ? 'pass' : 'fail', priority: 'High' },
+    { id: 'direct_answers', type: 'AEO', check: 'Direct Answer Paragraphs', description: 'Google looks for concise paragraphs immediately following question headings.', fix: 'Write a clear, concise answer (40-60 words) right after headings.', status: checks.hasDirectAnswers ? 'pass' : 'fail', priority: 'High' },
+    { id: 'list_content', type: 'AEO', check: 'Structured List Content', description: 'Lists are preferred for steps or features in featured snippets.', fix: 'Convert some paragraph content into bulleted lists.', status: checks.hasListContent ? 'pass' : 'warning', priority: 'Medium' },
+    { id: 'org_schema', type: 'AEO', check: 'Organization Schema', description: 'Provides AI structured information about your business.', fix: 'Add Organization JSON-LD schema.', status: checks.hasOrganizationSchema ? 'pass' : 'fail', priority: 'High' },
+    { id: 'review_schema', type: 'AEO', check: 'Review Schema', description: 'Increases trust signals for AI-generated recommendations.', fix: 'Add Review or AggregateRating schema.', status: checks.hasReviewSchema ? 'pass' : 'fail', priority: 'Medium' },
   ];
 
   return {
-    url: url,
-    finalUrl: finalUrl,
-    redirected: redirected,
+    url,
+    finalUrl,
+    redirected,
     overallScore: { score: overallScoreVal, grade: getGrade(overallScoreVal) },
     categoryScores,
     geoAeoScores,
@@ -450,6 +629,8 @@ export async function analyzeUrl(url: string): Promise<AnalysisResult> {
     hasSitemapInRobots: checks.sitemapInRobotsOk,
     lang,
     canonical,
-    loadTime
+    loadTime,
+    pageSpeedMetrics: psiData,
+    bodyTextExcerpt: bodyText.slice(0, 1000)
   };
 }
