@@ -11,9 +11,8 @@ import { analyzeUrl, type AnalysisResult, type Recommendation as RecommendationT
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import Link from 'next/link';
+import type jsPDF from 'jspdf';
 import { Badge } from '@/components/ui/badge';
 import { useUser } from '@/firebase/provider';
 import { initializeFirebase } from '@/firebase';
@@ -540,8 +539,10 @@ const SEOAuditPage = () => {
   };
 
   // ── PDF Generation ─────────────────────────────────────────────────────────
-  const generatePdf = (): string | null => {
+  const generatePdf = async (): Promise<string | null> => {
     if (!report) return null;
+    const { default: jsPDF } = await import('jspdf');
+    const { default: autoTable } = await import('jspdf-autotable');
     const doc = new jsPDF() as jsPDFWithAutoTable;
 
     const addHeader = () => {
@@ -576,7 +577,7 @@ const SEOAuditPage = () => {
     doc.setFontSize(10);
     doc.text(`${report.overallScore.score}/100`, 20, yPos + 28);
     
-    doc.autoTable({
+    (doc as any).autoTable({
         startY: yPos,
         margin: { left: 80 },
         head: [['Category', 'Score', 'Grade']],
@@ -593,7 +594,7 @@ const SEOAuditPage = () => {
     doc.setFontSize(16);
     doc.text("Page Details", 20, yPos);
     yPos += 8;
-    doc.autoTable({
+    (doc as any).autoTable({
         startY: yPos,
         body: [
             ['Title', doc.splitTextToSize(report.title, 160)],
@@ -611,7 +612,7 @@ const SEOAuditPage = () => {
     doc.setFontSize(16);
     doc.text("SEO Audit Checklist", 20, yPos);
     yPos += 8;
-    doc.autoTable({
+    (doc as any).autoTable({
         startY: yPos,
         head: [['Status', 'Check', 'Priority', 'Category']],
         body: report.recommendations.map(rec => [rec.status.toUpperCase(), rec.check, rec.priority, rec.category]),
@@ -635,7 +636,7 @@ const SEOAuditPage = () => {
     doc.setFontSize(16);
     doc.text("GEO + AEO Checklist", 20, yPos);
     yPos += 8;
-    doc.autoTable({
+    (doc as any).autoTable({
         startY: yPos,
         head: [['Status', 'Type', 'Check', 'Priority']],
         body: report.geoAeoChecks.map(c => [c.status.toUpperCase(), c.type, c.check, c.priority]),
@@ -657,7 +658,7 @@ const SEOAuditPage = () => {
         doc.setFontSize(16);
         doc.text("Actionable Fixes", 20, yPos);
         yPos += 8;
-        doc.autoTable({
+        (doc as any).autoTable({
             startY: yPos,
             head: [['Priority', 'Issue', 'How to Fix']],
             body: failedChecks.map(rec => [rec.priority, rec.check, doc.splitTextToSize(rec.fix, 120)]),
@@ -670,9 +671,9 @@ const SEOAuditPage = () => {
     return doc.output('datauristring'); // return base64 for email
   };
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     if (!report) return;
-    const dataUri = generatePdf();
+    const dataUri = await generatePdf();
     if (dataUri) {
       const link = document.createElement('a');
       link.href = dataUri;
@@ -687,7 +688,7 @@ const SEOAuditPage = () => {
     if (!report || !user) return;
     setEmailSending(true);
     try {
-      const pdfDataUri = generatePdf();
+      const pdfDataUri = await generatePdf();
       if (!pdfDataUri) throw new Error('PDF generation failed');
       
       // Strip data URI prefix to get pure base64
