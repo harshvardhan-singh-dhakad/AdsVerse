@@ -968,10 +968,12 @@ const SEOAuditPage = () => {
             </div>
           )}
 
-          {/* Audit History (always shown when logged in, below form) */}
-          <div className="mt-10 max-w-2xl mx-auto">
-            <AuditHistory uid={user.uid} plan={userPlan} onRescan={handleRescan} />
-          </div>
+          {/* Audit History (shown when logged in, below form) */}
+          {user && (
+            <div className="mt-10 max-w-2xl mx-auto">
+              <AuditHistory uid={user.uid} plan={userPlan} onRescan={handleRescan} />
+            </div>
+          )}
 
           {/* Informational Guide */}
           <div className="mt-24 max-w-4xl mx-auto border-t border-border pt-16 text-left space-y-16">
@@ -1138,10 +1140,12 @@ const SEOAuditPage = () => {
                   <a href="#aeo-report" className="block px-3 py-2 text-cyan-400 hover:bg-cyan-500/10 rounded mb-1">🎙️ AEO Report</a>
                 </nav>
 
-                {/* History in sidebar */}
-                <div className="p-2 border-t border-border">
-                  <AuditHistory uid={user.uid} plan={userPlan} onRescan={handleRescan} />
-                </div>
+                {/* History in sidebar (shown when logged in) */}
+                {user && (
+                  <div className="p-2 border-t border-border">
+                    <AuditHistory uid={user.uid} plan={userPlan} onRescan={handleRescan} />
+                  </div>
+                )}
               </div>
             </aside>
 
@@ -1165,110 +1169,21 @@ const SEOAuditPage = () => {
               </div>
 
               
-              {userPlan === 'free' ? (
-                <div className="relative" style={{ maxHeight: '600px', overflow: 'hidden' }}>
-                  {/* Blurred Content */}
-                  <ReportSection id="on-page-seo" icon={categoryIcons.onPage} title="On-Page SEO" data={{...report.categoryScores.onPage, recommendations: getRecsByCategory('On-Page SEO')}}>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                      <p><strong>Title:</strong> <span className='text-foreground'>{report.title || 'Not Found'}</span></p>
-                      <p><strong>Meta Description:</strong> <span className='text-foreground'>{report.metaDescription || 'Not Found'}</span></p>
-                      <div className='grid grid-cols-2 gap-x-4'>
-                        <p><strong>H1s:</strong> <span className='text-foreground'>{report.h1s.length}</span></p>
-                        <p><strong>H2s:</strong> <span className='text-foreground'>{report.h2s.length}</span></p>
-                        <p><strong>H3s:</strong> <span className='text-foreground'>{report.h3s.length}</span></p>
-                        <p><strong>H4s:</strong> <span className='text-foreground'>{report.h4s.length}</span></p>
-                        <p><strong>Word Count:</strong> <span className='text-foreground'>{report.wordCount}</span></p>
-                        <p><strong>Language:</strong> <span className='text-foreground'>{report.lang?.toUpperCase() || 'Not Declared'}</span></p>
-                        <p><strong>Internal Links:</strong> <span className='text-foreground'>{report.linkCounts.internal}</span></p>
-                        <p><strong>External Links:</strong> <span className='text-foreground'>{report.linkCounts.external}</span></p>
-                      </div>
-                  </div>
-              </ReportSection>
-
-              <ReportSection id="technical-seo" icon={categoryIcons.technical} title="Technical SEO" data={{...report.categoryScores.technical, recommendations: getRecsByCategory('Technical SEO')}} />
-
-              <ReportSection id="performance" icon={categoryIcons.performance} title="Performance" data={{...report.categoryScores.performance, recommendations: getRecsByCategory('Performance')}} />
-
-              <ReportSection id="accessibility" icon={categoryIcons.accessibility} title="Accessibility" data={{...report.categoryScores.accessibility, recommendations: getRecsByCategory('Accessibility')}} />
-
-              <ReportSection id="security" icon={categoryIcons.security} title="Security" data={{...report.categoryScores.social, recommendations: getRecsByCategory('Security')}} />
-
-              <ReportSection id="social" icon={categoryIcons.social} title="Structured Data & Social" data={{...report.categoryScores.social, recommendations: getRecsByCategory('Social')}} />
-
-              <GeoAeoSection
-                id="geo-report"
-                icon={Bot}
-                title="GEO — Generative Engine Optimization"
-                score={report.geoAeoScores.geo.score}
-                grade={report.geoAeoScores.geo.grade}
-                accentColor="text-violet-500"
-                checks={getGeoChecks()} llmDetails={report.llmGeoAeo?.geoDetails} whatIs="GEO is the practice of optimizing your content to be cited and referenced by AI-powered search engines like ChatGPT Search, Google Gemini, and Perplexity AI."
-                explanation="Unlike traditional SEO which focuses on keyword rankings, GEO focuses on authority signals, content depth, structured data, and E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) — the factors AI models use to decide which sources to cite."
-              />
-
-              <GeoAeoSection
-                id="aeo-report"
-                icon={Mic}
-                title="AEO — Answer Engine Optimization"
-                score={report.geoAeoScores.aeo.score}
-                grade={report.geoAeoScores.aeo.grade}
-                accentColor="text-cyan-500"
-                checks={getAeoChecks()} llmDetails={report.llmGeoAeo?.aeoDetails} whatIs="AEO is the process of optimizing your content to appear as featured snippets, voice search results, and direct answers in Google, Alexa, and other AI assistants."
-                explanation="Answer engines extract concise, accurate responses to specific queries. Pages with question-style headings, structured FAQ schema, organization markup, and short direct-answer paragraphs are most likely to be selected as the 'answer' shown to users."
-              />
-
-              <div id="off-page-seo" className="bg-card rounded-lg shadow-sm border border-border p-6 scroll-mt-24">
-                <CardHeader className="p-0 mb-4">
-                  <CardTitle className="text-lg font-bold text-foreground">Off-Page SEO</CardTitle>
-                </CardHeader>
-                <CardContent className='p-0'>
-                  <p className='text-sm text-muted-foreground'>
-                    Off-page SEO analysis, which includes checking backlinks and referring domains, requires access to massive, constantly updated databases of web data. These checks are beyond the scope of a real-time analysis tool and are best performed using specialized subscription services like Ahrefs or SEMrush.
-                  </p>
-                </CardContent>
-              </div>
-
-            
-                  
-                  {/* Paywall Overlay */}
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-12 pt-32 bg-gradient-to-t from-background via-background/90 to-transparent backdrop-blur-[3px]">
-                    <div className="bg-card border border-border p-8 rounded-xl shadow-2xl text-center max-w-md mx-auto">
-                      <Crown className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-foreground mb-2">Unlock Full Report</h3>
-                      <p className="text-sm text-muted-foreground mb-6">
-                        Your free audit reveals your overall scores and top issues. Upgrade to unlock the full step-by-step checklist, live AI citation evidence, and PDF reports.
-                      </p>
-                      <Link href="/pricing">
-                        <Button
-                          className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold h-12 shadow-md"
-                          onClick={() => {
-                            // GA4: paywall CTA clicked (paywall was viewed when this block rendered)
-                            if (report) trackPaywallViewed(report.finalUrl);
-                          }}
-                        >
-                          View Paid Plans <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
+              <ReportSection id="on-page-seo" icon={categoryIcons.onPage} title="On-Page SEO" data={{...report.categoryScores.onPage, recommendations: getRecsByCategory('On-Page SEO')}}>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                    <p><strong>Title:</strong> <span className='text-foreground'>{report.title || 'Not Found'}</span></p>
+                    <p><strong>Meta Description:</strong> <span className='text-foreground'>{report.metaDescription || 'Not Found'}</span></p>
+                    <div className='grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2 pt-2'>
+                      <p><strong>H1s:</strong> <span className='text-foreground'>{report.h1s.length}</span></p>
+                      <p><strong>H2s:</strong> <span className='text-foreground'>{report.h2s.length}</span></p>
+                      <p><strong>H3s:</strong> <span className='text-foreground'>{report.h3s.length}</span></p>
+                      <p><strong>H4s:</strong> <span className='text-foreground'>{report.h4s.length}</span></p>
+                      <p><strong>Word Count:</strong> <span className='text-foreground'>{report.wordCount}</span></p>
+                      <p><strong>Language:</strong> <span className='text-foreground'>{report.lang?.toUpperCase() || 'Not Declared'}</span></p>
+                      <p><strong>Internal Links:</strong> <span className='text-foreground'>{report.linkCounts.internal}</span></p>
+                      <p><strong>External Links:</strong> <span className='text-foreground'>{report.linkCounts.external}</span></p>
                     </div>
-                  </div>
                 </div>
-              ) : (
-                <>
-                  <ReportSection id="on-page-seo" icon={categoryIcons.onPage} title="On-Page SEO" data={{...report.categoryScores.onPage, recommendations: getRecsByCategory('On-Page SEO')}}>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                      <p><strong>Title:</strong> <span className='text-foreground'>{report.title || 'Not Found'}</span></p>
-                      <p><strong>Meta Description:</strong> <span className='text-foreground'>{report.metaDescription || 'Not Found'}</span></p>
-                      <div className='grid grid-cols-2 gap-x-4'>
-                        <p><strong>H1s:</strong> <span className='text-foreground'>{report.h1s.length}</span></p>
-                        <p><strong>H2s:</strong> <span className='text-foreground'>{report.h2s.length}</span></p>
-                        <p><strong>H3s:</strong> <span className='text-foreground'>{report.h3s.length}</span></p>
-                        <p><strong>H4s:</strong> <span className='text-foreground'>{report.h4s.length}</span></p>
-                        <p><strong>Word Count:</strong> <span className='text-foreground'>{report.wordCount}</span></p>
-                        <p><strong>Language:</strong> <span className='text-foreground'>{report.lang?.toUpperCase() || 'Not Declared'}</span></p>
-                        <p><strong>Internal Links:</strong> <span className='text-foreground'>{report.linkCounts.internal}</span></p>
-                        <p><strong>External Links:</strong> <span className='text-foreground'>{report.linkCounts.external}</span></p>
-                      </div>
-                  </div>
               </ReportSection>
 
               <ReportSection id="technical-seo" icon={categoryIcons.technical} title="Technical SEO" data={{...report.categoryScores.technical, recommendations: getRecsByCategory('Technical SEO')}} />
@@ -1313,11 +1228,7 @@ const SEOAuditPage = () => {
                   </p>
                 </CardContent>
               </div>
-
-            
-                </>
-              )}
-  </main>
+            </main>
           </div>
         </div>
       )}
