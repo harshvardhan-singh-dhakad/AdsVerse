@@ -1,0 +1,340 @@
+/* ═══════════════════════════════════════ */
+/*  SCOPED STYLES FOR ADSVERSE.AI AUDIT   */
+/* ═══════════════════════════════════════ */
+
+.rankai-app {
+  font-family: 'Inter', sans-serif;
+  background: #060912;
+  color: #f1f5f9;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom Scrollbar for this page */
+.rankai-app ::-webkit-scrollbar { width: 6px; }
+.rankai-app ::-webkit-scrollbar-track { background: #060912; }
+.rankai-app ::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.4); border-radius: 3px; }
+
+/* Star Canvas */
+.rankai-app #starCanvas {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* Navbar overrides */
+.rankai-app .navbar-custom {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 64px;
+  background: rgba(6, 9, 18, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.rankai-app .nav-logo {
+  font-size: 22px; font-weight: 900;
+  background: linear-gradient(135deg, #7c3aed, #2563eb, #10b981);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: -0.5px;
+}
+.rankai-app .nav-cta {
+  padding: 9px 22px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  color: #fff; background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none; cursor: pointer;
+}
+.rankai-app .nav-cta:hover {
+  transform: translateY(-1px); box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Hero Section */
+.rankai-app .hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 80px 20px 40px; position: relative; z-index: 10;
+}
+.rankai-app .hero::before {
+  content: ''; position: absolute; top: -120px; left: 50%;
+  transform: translateX(-50%); width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.rankai-app .pill-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 500;
+  color: #a78bfa; background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.2); margin-bottom: 28px;
+}
+.rankai-app .pill-badge .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #10b981;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.rankai-app .hero-heading {
+  font-size: clamp(36px, 5.5vw, 64px); font-weight: 900; line-height: 1.08;
+  letter-spacing: -1.5px; margin-bottom: 20px;
+}
+.rankai-app .grad-seo { background: linear-gradient(135deg, #7c3aed, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.rankai-app .grad-geo { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.rankai-app .grad-aeo { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.rankai-app .dot-sep { color: #374151; margin: 0 4px; }
+.rankai-app .hero-sub { font-size: 17px; color: #64748b; max-width: 540px; margin: 0 auto 32px; line-height: 1.7; }
+
+/* Tabs */
+.rankai-app .tool-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; justify-content: center; }
+.rankai-app .tool-tab {
+  display: flex; align-items: center; gap: 7px; padding: 10px 18px;
+  border-radius: 12px; font-size: 13px; font-weight: 600; color: #94a3b8;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.3s; cursor: default;
+}
+.rankai-app .tool-tab .tab-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.rankai-app .tool-tab.active-blue { color: #60a5fa; background: rgba(37, 99, 235, 0.1); border-color: rgba(37, 99, 235, 0.3); }
+.rankai-app .tool-tab.active-green { color: #34d399; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); }
+.rankai-app .tool-tab.active-amber { color: #fbbf24; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); }
+.rankai-app .tool-tab.active-purple { color: #a78bfa; background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.3); }
+
+/* URL Input */
+.rankai-app .url-row {
+  display: flex; max-width: 680px; width: 100%; margin: 0 auto 16px;
+  border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.rankai-app .url-row:focus-within { border-color: rgba(124, 58, 237, 0.5); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
+.rankai-app .url-input-wrap { flex: 1; display: flex; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0 16px; }
+.rankai-app .url-input-wrap input {
+  flex: 1; background: none; color: #f1f5f9; font-size: 15px; padding: 16px 0; border: none; outline: none;
+}
+.rankai-app .url-input-wrap input::placeholder { color: #374151; }
+.rankai-app .analyze-btn {
+  padding: 16px 32px; font-size: 15px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #2563eb); border: none;
+  cursor: pointer; transition: box-shadow 0.3s, transform 0.2s; white-space: nowrap;
+}
+.rankai-app .analyze-btn:hover { box-shadow: 0 4px 24px rgba(124, 58, 237, 0.45); transform: translateY(-1px); }
+.rankai-app .url-hint { font-size: 12px; color: #374151; margin-bottom: 40px; }
+
+/* Trust Badges */
+.rankai-app .trust-row { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+.rankai-app .trust-badge { font-size: 13px; color: #64748b; display: flex; align-items: center; gap: 6px; }
+
+/* Shake animation */
+@keyframes rankai-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.rankai-app .shake { animation: rankai-shake 0.4s ease; }
+
+/* Loading State */
+.rankai-app .loading-screen {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 20px; text-align: center; z-index: 10; position: relative;
+}
+.rankai-app .spinner-wrap { position: relative; width: 90px; height: 90px; margin-bottom: 32px; }
+.rankai-app .spinner-outer { position: absolute; inset: 0; border: 3px solid rgba(255, 255, 255, 0.06); border-top-color: #7c3aed; border-radius: 50%; animation: spin-cw 0.9s linear infinite; }
+.rankai-app .spinner-inner { position: absolute; inset: 8px; border: 3px solid rgba(255, 255, 255, 0.06); border-bottom-color: #2563eb; border-radius: 50%; animation: spin-ccw 1.4s linear infinite; }
+.rankai-app .spinner-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+@keyframes spin-cw { to { transform: rotate(360deg); } }
+@keyframes spin-ccw { to { transform: rotate(-360deg); } }
+
+.rankai-app .loading-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.rankai-app .url-display { color: #a78bfa; }
+.rankai-app .loading-sub { font-size: 14px; color: #64748b; margin-bottom: 32px; }
+.rankai-app .steps-list { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; text-align: left; }
+.rankai-app .step-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #374151; transition: color 0.4s; }
+.rankai-app .step-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #374151; flex-shrink: 0; transition: all 0.4s; }
+.rankai-app .step-row.active .step-dot { background: #7c3aed; border-color: #7c3aed; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
+.rankai-app .step-row.active { color: #a78bfa; }
+.rankai-app .step-row.done .step-dot { background: #10b981; border-color: #10b981; box-shadow: none; }
+.rankai-app .step-row.done { color: #34d399; }
+
+/* Dashboard */
+.rankai-app .results { padding: 100px 20px 60px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+.rankai-app .glass {
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px; padding: 24px; transition: transform 0.25s, border-color 0.25s;
+}
+.rankai-app .glass:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.12); }
+.rankai-app .site-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.rankai-app .site-info { display: flex; align-items: center; gap: 14px; }
+.rankai-app .site-favicon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.rankai-app .site-url { font-size: 17px; font-weight: 700; }
+.rankai-app .site-meta { font-size: 13px; color: #64748b; }
+.rankai-app .site-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Buttons */
+.rankai-app .btn-outline {
+  padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #94a3b8;
+  background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; transition: all 0.25s;
+}
+.rankai-app .btn-outline:hover { border-color: rgba(255, 255, 255, 0.25); color: #f1f5f9; }
+.rankai-app .btn-purple {
+  padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #e0d4ff;
+  background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.25); cursor: pointer; transition: all 0.25s;
+}
+.rankai-app .btn-purple:hover { background: rgba(124, 58, 237, 0.25); }
+
+/* Result Tabs */
+.rankai-app .result-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+.rankai-app .result-tab {
+  padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; color: #64748b;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; transition: all 0.3s;
+}
+.rankai-app .result-tab.active { color: #a78bfa; background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.3); }
+.rankai-app .result-tab[data-tab="seo"].active { color: #60a5fa; background: rgba(37, 99, 235, 0.1); border-color: rgba(37, 99, 235, 0.3); }
+.rankai-app .result-tab[data-tab="geo"].active { color: #34d399; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); }
+.rankai-app .result-tab[data-tab="aeo"].active { color: #fbbf24; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); }
+.rankai-app .result-tab.pro-tab { display: flex; align-items: center; gap: 6px; }
+.rankai-app .result-tab.pro-tab .pro-badge { background: linear-gradient(90deg, #f59e0b, #ef4444); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.rankai-app .result-tab.pro-tab.active { color: #f472b6; background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); }
+
+/* Scores */
+.rankai-app .score-overview { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-bottom: 28px; }
+@media(max-width:800px) { .rankai-app .score-overview { grid-template-columns: 1fr; } }
+.rankai-app .main-score { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 24px; }
+.rankai-app .score-ring-wrap { position: relative; width: 160px; height: 160px; margin-bottom: 18px; }
+.rankai-app .score-ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.rankai-app .ring-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 12; }
+.rankai-app .ring-fill { fill: none; stroke: #a78bfa; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.rankai-app .score-val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.rankai-app .score-num { font-size: 46px; font-weight: 900; color: #a78bfa; }
+.rankai-app .score-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; }
+.rankai-app .grade-badge { display: inline-block; padding: 6px 20px; border-radius: 10px; font-size: 15px; font-weight: 800; margin: 8px 0 12px; }
+.rankai-app .grade-a { color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
+.rankai-app .grade-b { color: #fbbf24; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+.rankai-app .grade-c { color: #f97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.2); }
+.rankai-app .grade-f { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+.rankai-app .main-score-label { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+.rankai-app .tally-row { display: flex; gap: 12px; width: 100%; }
+.rankai-app .tally-box { flex: 1; text-align: center; padding: 10px 6px; border-radius: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }
+.rankai-app .tally-num { font-size: 18px; font-weight: 800; }
+.rankai-app .tally-label { font-size: 11px; color: #64748b; }
+.rankai-app .t-green { color: #10b981; }
+.rankai-app .t-amber { color: #f59e0b; }
+.rankai-app .t-red { color: #ef4444; }
+
+/* Category Cards */
+.rankai-app .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media(max-width:650px) { .rankai-app .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+.rankai-app .cat-card { padding: 20px; position: relative; overflow: hidden; }
+.rankai-app .cat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.rankai-app .cat-icon { font-size: 20px; margin-bottom: 6px; display: block; }
+.rankai-app .cat-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 4px; }
+.rankai-app .cat-score { font-size: 30px; font-weight: 800; margin-bottom: 10px; }
+.rankai-app .cat-bar { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.rankai-app .cat-bar-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.rankai-app .cat-blue::before { background: linear-gradient(90deg, #2563eb, #3b82f6); } .rankai-app .cat-blue .cat-score { color: #60a5fa; } .rankai-app .cat-blue .cat-bar-fill { background: #2563eb; }
+.rankai-app .cat-green::before { background: linear-gradient(90deg, #10b981, #34d399); } .rankai-app .cat-green .cat-score { color: #34d399; } .rankai-app .cat-green .cat-bar-fill { background: #10b981; }
+.rankai-app .cat-amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); } .rankai-app .cat-amber .cat-score { color: #fbbf24; } .rankai-app .cat-amber .cat-bar-fill { background: #f59e0b; }
+.rankai-app .cat-red::before { background: linear-gradient(90deg, #ef4444, #f87171); } .rankai-app .cat-red .cat-score { color: #f87171; } .rankai-app .cat-red .cat-bar-fill { background: #ef4444; }
+.rankai-app .cat-purple::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); } .rankai-app .cat-purple .cat-score { color: #a78bfa; } .rankai-app .cat-purple .cat-bar-fill { background: #7c3aed; }
+.rankai-app .cat-cyan::before { background: linear-gradient(90deg, #06b6d4, #22d3ee); } .rankai-app .cat-cyan .cat-score { color: #22d3ee; } .rankai-app .cat-cyan .cat-bar-fill { background: #06b6d4; }
+
+/* Accordion Checks */
+.rankai-app .checks-section { margin-bottom: 28px; }
+.rankai-app .checks-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.rankai-app .checks-title { font-size: 18px; font-weight: 700; }
+.rankai-app .checks-sub { font-size: 13px; color: #64748b; }
+.rankai-app .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.rankai-app .filter-pill { padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #64748b; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; transition: all 0.25s; }
+.rankai-app .filter-pill.active { color: #a78bfa; background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.3); }
+
+.rankai-app .check-row { border-radius: 12px; margin-bottom: 8px; overflow: hidden; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: border-color 0.3s; }
+.rankai-app .check-row:hover { border-color: rgba(255, 255, 255, 0.1); }
+.rankai-app .check-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; }
+.rankai-app .check-status { font-size: 16px; flex-shrink: 0; }
+.rankai-app .check-name { font-weight: 600; font-size: 14px; flex: 1; }
+.rankai-app .check-desc { font-size: 13px; color: #64748b; flex: 2; }
+@media(max-width:768px) { .rankai-app .check-desc { display: none; } }
+.rankai-app .check-badge { padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; flex-shrink: 0; }
+.rankai-app .badge-pass { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.rankai-app .badge-warn { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.rankai-app .badge-error { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+.rankai-app .check-arrow { color: #374151; font-size: 12px; transition: transform 0.3s; flex-shrink: 0; }
+.rankai-app .check-row.open .check-arrow { transform: rotate(180deg); }
+.rankai-app .check-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s; }
+.rankai-app .check-row.open .check-detail { max-height: 500px; padding: 0 18px 18px; }
+.rankai-app .check-detail-inner { font-size: 13px; color: #94a3b8; line-height: 1.7; }
+.rankai-app .fix-box { margin-top: 10px; padding: 12px 16px; border-radius: 10px; background: rgba(37, 99, 235, 0.06); border-left: 3px solid #2563eb; font-size: 13px; color: #93c5fd; }
+.rankai-app .fix-box strong { color: #60a5fa; }
+
+/* Geo & Aeo Summaries */
+.rankai-app .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.rankai-app .section-head h3 { font-size: 18px; font-weight: 700; }
+.rankai-app .section-head span { font-size: 13px; color: #64748b; }
+.rankai-app .metric-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+@media(max-width:600px) { .rankai-app .metric-trio { grid-template-columns: 1fr; } }
+.rankai-app .metric-card { text-align: center; padding: 28px 20px; }
+.rankai-app .metric-val { font-size: 38px; font-weight: 900; margin-bottom: 4px; }
+.rankai-app .metric-name { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px; }
+.rankai-app .metric-bar { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.rankai-app .metric-bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.rankai-app .m-green .metric-val { color: #34d399; } .rankai-app .m-green .metric-bar-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+.rankai-app .m-blue .metric-val { color: #60a5fa; } .rankai-app .m-blue .metric-bar-fill { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+.rankai-app .m-purple .metric-val { color: #a78bfa; } .rankai-app .m-purple .metric-bar-fill { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+
+/* AEO Grid */
+.rankai-app .aeo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+@media(max-width:700px) { .rankai-app .aeo-grid { grid-template-columns: repeat(2, 1fr); } }
+.rankai-app .aeo-card { text-align: center; padding: 22px 14px; }
+.rankai-app .aeo-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+.rankai-app .aeo-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 6px; }
+.rankai-app .aeo-val { font-size: 22px; font-weight: 800; color: #f1f5f9; margin-bottom: 10px; }
+.rankai-app .aeo-status { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.rankai-app .s-amber { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.rankai-app .s-green { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+.rankai-app .s-red { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
+/* Platform card */
+.rankai-app .platform-card { margin-bottom: 28px; padding: 28px; }
+.rankai-app .platform-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.rankai-app .platform-row:last-child { border-bottom: none; }
+.rankai-app .platform-name { font-size: 14px; font-weight: 600; min-width: 160px; display: flex; align-items: center; gap: 8px; }
+.rankai-app .platform-bar { flex: 1; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.05); overflow: hidden; }
+.rankai-app .platform-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #7c3aed, #2563eb); width: 0; transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.rankai-app .platform-pct { font-size: 15px; font-weight: 700; color: #a78bfa; min-width: 45px; text-align: right; }
+
+/* Snippet Card */
+.rankai-app .snippet-card { margin-bottom: 28px; padding: 28px; }
+.rankai-app .snippet-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 14px; }
+.rankai-app .snippet-row:last-child { border-bottom: none; }
+.rankai-app .snippet-q { color: #94a3b8; }
+.rankai-app .snippet-status { font-size: 13px; font-weight: 600; }
+.rankai-app .snippet-miss { color: #ef4444; }
+.rankai-app .snippet-rank { color: #10b981; }
+
+/* Paywall Overlay */
+.rankai-app .pro-paywall {
+  text-align: center; padding: 80px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  border: 1px dashed rgba(255,255,255,0.2); border-radius: 18px;
+}
+.rankai-app .pro-paywall-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+.rankai-app .pro-paywall-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #f1f5f9; }
+.rankai-app .pro-paywall-desc { font-size: 15px; color: #94a3b8; max-width: 500px; margin: 0 auto 32px; line-height: 1.6; }
+.rankai-app .btn-pro {
+  padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.rankai-app .btn-pro:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4); }
+
+/* Competitor Specifics (Mock) */
+.rankai-app .comp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; filter: blur(4px); pointer-events: none; opacity: 0.5; }
+.rankai-app .comp-card { text-align: center; padding: 28px 20px; }
+.rankai-app .comp-domain { font-size: 15px; font-weight: 700; color: #f1f5f9; margin-bottom: 16px; }
+.rankai-app .comp-ring-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 16px; }
+.rankai-app .comp-ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.rankai-app .comp-ring-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 10; }
+.rankai-app .comp-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; }
+.rankai-app .comp-score-val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 800; }

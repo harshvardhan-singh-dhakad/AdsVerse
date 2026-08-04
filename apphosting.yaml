@@ -16,7 +16,7 @@ env:
       - BUILD
 
   - variable: GEMINI_API_KEY
-    value: AQ.Ab8RN6JYPClKknREhPjCiG9JZnUcYkV1AJN1IpZoSQ4fEm5qlg
+    value: "SET_YOUR_KEY_IN_FIREBASE_CONSOLE_OR_LOCAL_ENV"
     availability:
       - RUNTIME
       - BUILD

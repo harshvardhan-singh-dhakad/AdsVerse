@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RankAI — SEO · GEO · AEO Website Audit Tool</title>
+<meta name="description" content="Get a complete website audit — SEO rankings, AI search visibility, answer engine optimization, and competitor analysis. All in one click.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════ */
+/*  RESET & BASE                          */
+/* ═══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#060912;color:#f1f5f9;min-height:100vh;overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input{font-family:inherit;outline:none;border:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#060912}
+::-webkit-scrollbar-thumb{background:rgba(124,58,237,.4);border-radius:3px}
+
+/* ═══════════════════════════════════════ */
+/*  STAR BACKGROUND CANVAS                */
+/* ═══════════════════════════════════════ */
+#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ═══════════════════════════════════════ */
+/*  NAVBAR                                */
+/* ═══════════════════════════════════════ */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:rgba(6,9,18,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{font-size:22px;font-weight:900;background:linear-gradient(135deg,#7c3aed,#2563eb,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:14px;color:#64748b;font-weight:500;transition:color .25s}
+.nav-links a:hover{color:#f1f5f9}
+.nav-cta{padding:9px 22px;border-radius:10px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#7c3aed,#6d28d9);transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,58,237,.4)}
+
+/* ═══════════════════════════════════════ */
+/*  STATE CONTAINERS                      */
+/* ═══════════════════════════════════════ */
+.state{display:none;position:relative;z-index:1}
+.state.active{display:block}
+
+/* ═══════════════════════════════════════ */
+/*  STATE 1 — HERO                        */
+/* ═══════════════════════════════════════ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px 40px;position:relative}
+.hero::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.15) 0%,transparent 70%);pointer-events:none;z-index:0}
+.hero>*{position:relative;z-index:1}
+
+.pill-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:50px;font-size:13px;font-weight:500;color:#a78bfa;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);margin-bottom:28px}
+.pill-badge .dot{width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+.hero-heading{font-size:clamp(36px,5.5vw,64px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px}
+.hero-heading .grad-seo{background:linear-gradient(135deg,#7c3aed,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-heading .grad-geo{background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-heading .grad-aeo{background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-heading .dot-sep{color:#374151;margin:0 4px}
+
+.hero-sub{font-size:17px;color:#64748b;max-width:540px;margin:0 auto 32px;line-height:1.7}
+
+/* Tool Tabs */
+.tool-tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
+.tool-tab{display:flex;align-items:center;gap:7px;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;color:#94a3b8;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);transition:all .3s}
+.tool-tab .tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tool-tab.active-blue{color:#60a5fa;background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.3)}
+.tool-tab.active-green{color:#34d399;background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
+.tool-tab.active-amber{color:#fbbf24;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)}
+.tool-tab.active-purple{color:#a78bfa;background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.3)}
+
+/* URL Input */
+.url-row{display:flex;max-width:680px;width:100%;margin:0 auto 16px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.07);transition:border-color .3s,box-shadow .3s}
+.url-row:focus-within{border-color:rgba(124,58,237,.5);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.url-input-wrap{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.03);padding:0 16px}
+.url-input-wrap .globe{font-size:18px;margin-right:10px;opacity:.5}
+.url-input-wrap input{flex:1;background:none;color:#f1f5f9;font-size:15px;padding:16px 0}
+.url-input-wrap input::placeholder{color:#374151}
+.analyze-btn{padding:16px 32px;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,#7c3aed,#2563eb);white-space:nowrap;transition:box-shadow .3s,transform .2s}
+.analyze-btn:hover{box-shadow:0 4px 24px rgba(124,58,237,.45);transform:translateY(-1px)}
+.url-hint{font-size:12px;color:#374151;margin-bottom:40px}
+
+/* Trust Badges */
+.trust-row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.trust-badge{font-size:13px;color:#64748b;display:flex;align-items:center;gap:6px}
+
+/* Shake animation */
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease}
+
+/* ═══════════════════════════════════════ */
+/*  STATE 2 — LOADING                     */
+/* ═══════════════════════════════════════ */
+.loading-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.spinner-wrap{position:relative;width:90px;height:90px;margin-bottom:32px}
+.spinner-outer{position:absolute;inset:0;border:3px solid rgba(255,255,255,.06);border-top-color:#7c3aed;border-radius:50%;animation:spin-cw .9s linear infinite}
+.spinner-inner{position:absolute;inset:8px;border:3px solid rgba(255,255,255,.06);border-bottom-color:#2563eb;border-radius:50%;animation:spin-ccw 1.4s linear infinite}
+.spinner-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px}
+@keyframes spin-cw{to{transform:rotate(360deg)}}
+@keyframes spin-ccw{to{transform:rotate(-360deg)}}
+
+.loading-title{font-size:20px;font-weight:700;margin-bottom:8px}
+.loading-title .url-display{color:#a78bfa}
+.loading-sub{font-size:14px;color:#64748b;margin-bottom:32px}
+
+.steps-list{display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left}
+.step-row{display:flex;align-items:center;gap:12px;font-size:14px;color:#374151;transition:color .4s}
+.step-dot{width:12px;height:12px;border-radius:50%;border:2px solid #374151;flex-shrink:0;transition:all .4s}
+.step-row.active .step-dot{background:#7c3aed;border-color:#7c3aed;box-shadow:0 0 12px rgba(124,58,237,.5)}
+.step-row.active{color:#a78bfa}
+.step-row.done .step-dot{background:#10b981;border-color:#10b981;box-shadow:none}
+.step-row.done{color:#34d399}
+
+/* ═══════════════════════════════════════ */
+/*  STATE 3 — RESULTS                     */
+/* ═══════════════════════════════════════ */
+.results{padding:80px 20px 60px;max-width:1200px;margin:0 auto}
+
+/* GLASS CARD utility */
+.glass{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px;transition:transform .25s,border-color .25s}
+.glass:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.12)}
+
+/* Site bar */
+.site-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px}
+.site-info{display:flex;align-items:center;gap:14px}
+.site-favicon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:22px}
+.site-url{font-size:17px;font-weight:700}
+.site-meta{font-size:13px;color:#64748b}
+.site-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-outline{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#94a3b8;background:transparent;border:1px solid rgba(255,255,255,.1);transition:all .25s}
+.btn-outline:hover{border-color:rgba(255,255,255,.25);color:#f1f5f9}
+.btn-purple{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#e0d4ff;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.25);transition:all .25s}
+.btn-purple:hover{background:rgba(124,58,237,.25)}
+
+/* Result tabs */
+.result-tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.result-tab{padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;color:#64748b;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:all .3s}
+.result-tab.active{color:#a78bfa;background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.3)}
+.result-tab[data-tab="seo"].active{color:#60a5fa;background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.3)}
+.result-tab[data-tab="geo"].active{color:#34d399;background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
+.result-tab[data-tab="aeo"].active{color:#fbbf24;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)}
+.result-tab[data-tab="competitors"].active{color:#f472b6;background:rgba(236,72,153,.1);border-color:rgba(236,72,153,.3)}
+
+/* Tab panels */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ══════════ FULL REPORT TAB ══════════ */
+.score-overview{display:grid;grid-template-columns:280px 1fr;gap:24px;margin-bottom:28px}
+@media(max-width:800px){.score-overview{grid-template-columns:1fr}}
+
+/* Main score card */
+.main-score{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 24px}
+.score-ring-wrap{position:relative;width:160px;height:160px;margin-bottom:18px}
+.score-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:12}
+.ring-fill{fill:none;stroke:#a78bfa;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+.score-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num{font-size:46px;font-weight:900;color:#a78bfa}
+.score-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#64748b}
+.grade-badge{display:inline-block;padding:6px 20px;border-radius:10px;font-size:15px;font-weight:800;margin:8px 0 12px}
+.grade-b{color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2)}
+.main-score-label{font-size:13px;color:#64748b;margin-bottom:16px}
+.tally-row{display:flex;gap:12px;width:100%}
+.tally-box{flex:1;text-align:center;padding:10px 6px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.tally-num{font-size:18px;font-weight:800}
+.tally-label{font-size:11px;color:#64748b}
+.t-green{color:#10b981}
+.t-amber{color:#f59e0b}
+.t-red{color:#ef4444}
+
+/* Category cards */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:650px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{padding:20px;position:relative;overflow:hidden}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.cat-card .cat-icon{font-size:20px;margin-bottom:6px}
+.cat-card .cat-name{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:4px}
+.cat-card .cat-score{font-size:30px;font-weight:800;margin-bottom:10px}
+.cat-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden}
+.cat-bar-fill{height:100%;border-radius:2px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+
+.cat-blue::before{background:linear-gradient(90deg,#2563eb,#3b82f6)} .cat-blue .cat-score{color:#60a5fa} .cat-blue .cat-bar-fill{background:#2563eb}
+.cat-green::before{background:linear-gradient(90deg,#10b981,#34d399)} .cat-green .cat-score{color:#34d399} .cat-green .cat-bar-fill{background:#10b981}
+.cat-amber::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)} .cat-amber .cat-score{color:#fbbf24} .cat-amber .cat-bar-fill{background:#f59e0b}
+.cat-red::before{background:linear-gradient(90deg,#ef4444,#f87171)} .cat-red .cat-score{color:#f87171} .cat-red .cat-bar-fill{background:#ef4444}
+.cat-purple::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)} .cat-purple .cat-score{color:#a78bfa} .cat-purple .cat-bar-fill{background:#7c3aed}
+.cat-cyan::before{background:linear-gradient(90deg,#06b6d4,#22d3ee)} .cat-cyan .cat-score{color:#22d3ee} .cat-cyan .cat-bar-fill{background:#06b6d4}
+
+/* ══════════ CHECKS ACCORDION ══════════ */
+.checks-section{margin-bottom:28px}
+.checks-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.checks-title{font-size:18px;font-weight:700}
+.checks-sub{font-size:13px;color:#64748b}
+.filter-pills{display:flex;gap:6px;flex-wrap:wrap}
+.filter-pill{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;color:#64748b;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:all .25s}
+.filter-pill.active{color:#a78bfa;background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.3)}
+.filter-pill:hover{border-color:rgba(255,255,255,.15)}
+
+.check-row{border-radius:12px;margin-bottom:8px;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);transition:border-color .3s}
+.check-row:hover{border-color:rgba(255,255,255,.1)}
+.check-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none}
+.check-status{font-size:16px;flex-shrink:0}
+.check-name{font-weight:600;font-size:14px;flex:1}
+.check-desc{font-size:13px;color:#64748b;flex:2}
+.check-badge{padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;flex-shrink:0}
+.badge-pass{color:#10b981;background:rgba(16,185,129,.1)}
+.badge-warn{color:#f59e0b;background:rgba(245,158,11,.1)}
+.badge-error{color:#ef4444;background:rgba(239,68,68,.1)}
+.check-arrow{color:#374151;font-size:12px;transition:transform .3s;flex-shrink:0}
+.check-row.open .check-arrow{transform:rotate(180deg)}
+.check-detail{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),padding .3s}
+.check-row.open .check-detail{max-height:300px;padding:0 18px 18px}
+.check-detail-inner{font-size:13px;color:#94a3b8;line-height:1.7}
+.fix-box{margin-top:10px;padding:12px 16px;border-radius:10px;background:rgba(37,99,235,.06);border-left:3px solid #2563eb;font-size:13px;color:#93c5fd}
+.fix-box strong{color:#60a5fa}
+
+/* ══════════ GEO SUMMARY ══════════ */
+.geo-summary,.aeo-summary{margin-bottom:28px}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.section-head h3{font-size:18px;font-weight:700}
+.section-head span{font-size:13px;color:#64748b}
+.metric-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:600px){.metric-trio{grid-template-columns:1fr}}
+.metric-card{text-align:center;padding:28px 20px}
+.metric-val{font-size:38px;font-weight:900;margin-bottom:4px}
+.metric-name{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:12px}
+.metric-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.metric-bar-fill{height:100%;border-radius:3px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.m-green .metric-val{color:#34d399} .m-green .metric-bar-fill{background:linear-gradient(90deg,#10b981,#34d399)}
+.m-blue .metric-val{color:#60a5fa} .m-blue .metric-bar-fill{background:linear-gradient(90deg,#2563eb,#60a5fa)}
+.m-purple .metric-val{color:#a78bfa} .m-purple .metric-bar-fill{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+
+/* ══════════ AEO SUMMARY ══════════ */
+.aeo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:700px){.aeo-grid{grid-template-columns:repeat(2,1fr)}}
+.aeo-card{text-align:center;padding:22px 14px}
+.aeo-card .aeo-icon{font-size:24px;margin-bottom:8px}
+.aeo-card .aeo-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:6px}
+.aeo-card .aeo-val{font-size:22px;font-weight:800;color:#f1f5f9;margin-bottom:10px}
+.aeo-status{display:inline-block;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700}
+.s-amber{color:#f59e0b;background:rgba(245,158,11,.1)}
+.s-green{color:#10b981;background:rgba(16,185,129,.1)}
+.s-red{color:#ef4444;background:rgba(239,68,68,.1)}
+
+/* ══════════ GEO TAB ══════════ */
+.platform-card{margin-bottom:28px;padding:28px}
+.platform-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.platform-row:last-child{border-bottom:none}
+.platform-name{font-size:14px;font-weight:600;min-width:160px;display:flex;align-items:center;gap:8px}
+.platform-bar{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,.05);overflow:hidden}
+.platform-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7c3aed,#2563eb);width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.platform-pct{font-size:15px;font-weight:700;color:#a78bfa;min-width:45px;text-align:right}
+
+/* ══════════ AEO TAB ══════════ */
+.snippet-card{margin-bottom:28px;padding:28px}
+.snippet-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px}
+.snippet-row:last-child{border-bottom:none}
+.snippet-q{color:#94a3b8}
+.snippet-status{font-size:13px;font-weight:600}
+.snippet-miss{color:#ef4444}
+.snippet-rank{color:#10b981}
+
+/* ══════════ COMPETITOR TAB ══════════ */
+.comp-table-wrap{overflow-x:auto;margin-bottom:28px}
+.comp-table{width:100%;border-collapse:collapse;font-size:13px}
+.comp-table th{padding:12px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;border-bottom:1px solid rgba(255,255,255,.07)}
+.comp-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.comp-table tr:hover td{background:rgba(255,255,255,.02)}
+.comp-table .your-col{color:#a78bfa;font-weight:700}
+.comp-table .leader{color:#10b981;font-weight:700}
+.comp-table .gap-pos{color:#10b981;font-weight:700}
+.comp-table .gap-neg{color:#ef4444;font-weight:700}
+
+.comp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+@media(max-width:800px){.comp-cards{grid-template-columns:1fr}}
+.comp-card{text-align:center;padding:28px 20px}
+.comp-domain{font-size:15px;font-weight:700;color:#f1f5f9;margin-bottom:16px}
+.comp-ring-wrap{position:relative;width:100px;height:100px;margin:0 auto 16px}
+.comp-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.comp-ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:10}
+.comp-ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+.comp-score-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800}
+.comp-strengths,.comp-weaknesses{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.comp-strengths .tag{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;color:#10b981;background:rgba(16,185,129,.1)}
+.comp-weaknesses .tag{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;color:#ef4444;background:rgba(239,68,68,.1)}
+.comp-section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-top:14px;margin-bottom:6px}
+
+/* SERP comparison */
+.serp-card{margin-bottom:28px;padding:28px}
+.serp-table{width:100%;border-collapse:collapse;font-size:13px}
+.serp-table th{padding:10px 12px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;border-bottom:1px solid rgba(255,255,255,.07)}
+.serp-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.rank-good{color:#10b981;font-weight:700}
+.rank-mid{color:#f59e0b;font-weight:700}
+.rank-bad{color:#ef4444;font-weight:700}
+.rank-na{color:#374151}
+
+/* ══════════ RESPONSIVE ══════════ */
+@media(max-width:768px){
+  .navbar{padding:0 16px}
+  .nav-links{display:none}
+  .hero-heading{font-size:32px}
+  .url-row{flex-direction:column}
+  .analyze-btn{border-radius:0 0 14px 14px}
+  .check-desc{display:none}
+  .score-overview{grid-template-columns:1fr}
+  .metric-trio{grid-template-columns:1fr}
+  .aeo-grid{grid-template-columns:repeat(2,1fr)}
+  .comp-cards{grid-template-columns:1fr}
+  .comp-table{font-size:11px}
+  .platform-name{min-width:100px;font-size:12px}
+  .results{padding:74px 12px 40px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ STAR BACKGROUND ═══════ -->
+<canvas id="starCanvas"></canvas>
+
+<!-- ═══════ NAVBAR ═══════ -->
+<nav class="navbar">
+  <div class="nav-logo">RankAI</div>
+  <div class="nav-links">
+    <a href="#">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">Blog</a>
+  </div>
+  <button class="nav-cta">Start Free Trial</button>
+</nav>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  STATE 1 — HERO LANDING               -->
+<!-- ═══════════════════════════════════════ -->
+<section id="stateHero" class="state active">
+  <div class="hero">
+    <div class="pill-badge"><span class="dot"></span> SEO · GEO · AEO — All in One Tool</div>
+    <h1 class="hero-heading">
+      Analyze Your Website for<br>
+      <span class="grad-seo">SEO</span><span class="dot-sep"> · </span><span class="grad-geo">GEO</span><span class="dot-sep"> · </span><span class="grad-aeo">AEO</span>
+    </h1>
+    <p class="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
+
+    <div class="tool-tabs">
+      <button class="tool-tab active-blue" onclick="setToolTab(this)"><span class="tab-dot" style="background:#2563eb"></span> SEO Audit</button>
+      <button class="tool-tab" onclick="setToolTab(this)"><span class="tab-dot" style="background:#10b981"></span> GEO Analysis</button>
+      <button class="tool-tab" onclick="setToolTab(this)"><span class="tab-dot" style="background:#f59e0b"></span> AEO Report</button>
+      <button class="tool-tab active-purple" onclick="setToolTab(this)">✦ Full Report</button>
+    </div>
+
+    <div class="url-row" id="urlRow">
+      <div class="url-input-wrap">
+        <span class="globe">🌐</span>
+        <input type="text" id="urlInput" placeholder="https://yourwebsite.com" autocomplete="off">
+      </div>
+      <button class="analyze-btn" onclick="startAnalysis()">Analyze Now →</button>
+    </div>
+    <p class="url-hint">Free · No signup required · Results in ~10 seconds</p>
+
+    <div class="trust-row">
+      <span class="trust-badge">✅ 3M+ Websites Analyzed</span>
+      <span class="trust-badge">⚡ Instant Results</span>
+      <span class="trust-badge">🤖 AI-Powered Insights</span>
+      <span class="trust-badge">🔒 100% Private</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  STATE 2 — LOADING                     -->
+<!-- ═══════════════════════════════════════ -->
+<section id="stateLoading" class="state">
+  <div class="loading-screen">
+    <div class="spinner-wrap">
+      <div class="spinner-outer"></div>
+      <div class="spinner-inner"></div>
+      <div class="spinner-icon">🔍</div>
+    </div>
+    <h2 class="loading-title">Analyzing <span class="url-display" id="loadingUrl"></span></h2>
+    <p class="loading-sub">This takes about 10–15 seconds</p>
+    <div class="steps-list" id="stepsList">
+      <div class="step-row"><span class="step-dot"></span> Crawling website structure...</div>
+      <div class="step-row"><span class="step-dot"></span> Checking On-Page SEO signals...</div>
+      <div class="step-row"><span class="step-dot"></span> Analyzing GEO visibility on AI platforms...</div>
+      <div class="step-row"><span class="step-dot"></span> Running AEO and featured snippet checks...</div>
+      <div class="step-row"><span class="step-dot"></span> Generating your full report...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  STATE 3 — RESULTS DASHBOARD           -->
+<!-- ═══════════════════════════════════════ -->
+<section id="stateResults" class="state">
+  <div class="results">
+
+    <!-- Site Info Bar -->
+    <div class="glass site-bar">
+      <div class="site-info">
+        <div class="site-favicon">🌐</div>
+        <div>
+          <div class="site-url" id="resultUrl"></div>
+          <div class="site-meta">Analyzed just now · Full Report</div>
+        </div>
+      </div>
+      <div class="site-actions">
+        <button class="btn-outline" onclick="newAnalysis()">← New Analysis</button>
+        <button class="btn-outline" onclick="copyReport()">📋 Copy Report</button>
+        <button class="btn-purple" onclick="exportPDF()">⬇ Export PDF</button>
+      </div>
+    </div>
+
+    <!-- Result Tabs -->
+    <div class="result-tabs">
+      <button class="result-tab active" data-tab="full" onclick="switchResultTab('full',this)">✦ Full Report</button>
+      <button class="result-tab" data-tab="seo" onclick="switchResultTab('seo',this)">🔵 SEO</button>
+      <button class="result-tab" data-tab="geo" onclick="switchResultTab('geo',this)">🟢 GEO</button>
+      <button class="result-tab" data-tab="aeo" onclick="switchResultTab('aeo',this)">🟡 AEO</button>
+      <button class="result-tab" data-tab="competitors" onclick="switchResultTab('competitors',this)">🏆 Competitors</button>
+    </div>
+
+    <!-- ════════ FULL REPORT PANEL ════════ -->
+    <div id="panel-full" class="tab-panel active">
+
+      <!-- Score Overview -->
+      <div class="score-overview">
+        <!-- Main score ring -->
+        <div class="glass main-score">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 148 148">
+              <circle class="ring-bg" cx="74" cy="74" r="58"/>
+              <circle class="ring-fill" id="mainRing" cx="74" cy="74" r="58" stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+            </svg>
+            <div class="score-val">
+              <span class="score-num" id="mainScoreNum">0</span>
+              <span class="score-label">Overall</span>
+            </div>
+          </div>
+          <span class="grade-badge grade-b">B</span>
+          <p class="main-score-label">Overall Website Score</p>
+          <div class="tally-row">
+            <div class="tally-box"><div class="tally-num t-green" data-count="8">0</div><div class="tally-label">Passed</div></div>
+            <div class="tally-box"><div class="tally-num t-amber" data-count="3">0</div><div class="tally-label">Warnings</div></div>
+            <div class="tally-box"><div class="tally-num t-red" data-count="2">0</div><div class="tally-label">Errors</div></div>
+          </div>
+        </div>
+
+        <!-- Category cards -->
+        <div class="cat-grid">
+          <div class="glass cat-card cat-blue"><span class="cat-icon">📄</span><div class="cat-name">On-Page SEO</div><div class="cat-score" data-count="78">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="78"></div></div></div>
+          <div class="glass cat-card cat-green"><span class="cat-icon">⚡</span><div class="cat-name">Performance</div><div class="cat-score" data-count="65">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="65"></div></div></div>
+          <div class="glass cat-card cat-amber"><span class="cat-icon">📱</span><div class="cat-name">Mobile</div><div class="cat-score" data-count="88">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="88"></div></div></div>
+          <div class="glass cat-card cat-red"><span class="cat-icon">🔒</span><div class="cat-name">Security</div><div class="cat-score" data-count="92">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="92"></div></div></div>
+          <div class="glass cat-card cat-purple"><span class="cat-icon">🔗</span><div class="cat-name">Links</div><div class="cat-score" data-count="54">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="54"></div></div></div>
+          <div class="glass cat-card cat-cyan"><span class="cat-icon">⚙️</span><div class="cat-name">Technical</div><div class="cat-score" data-count="47">0</div><div class="cat-bar"><div class="cat-bar-fill" data-w="47"></div></div></div>
+        </div>
+      </div>
+
+      <!-- SEO Checks (Full Report) -->
+      <div class="glass checks-section" id="fullSeoChecks">
+        <div class="checks-header">
+          <div><span class="checks-title">🔍 Detailed SEO Checks</span><br><span class="checks-sub">10 checks across on-page, technical & content</span></div>
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="filterChecks('all',this,'fullSeoChecks')">All</button>
+            <button class="filter-pill" onclick="filterChecks('pass',this,'fullSeoChecks')">✅ Passed</button>
+            <button class="filter-pill" onclick="filterChecks('warn',this,'fullSeoChecks')">⚠️ Warnings</button>
+            <button class="filter-pill" onclick="filterChecks('error',this,'fullSeoChecks')">❌ Errors</button>
+          </div>
+        </div>
+        <div class="checks-list">
+          <!-- 10 check rows generated by JS -->
+        </div>
+      </div>
+
+      <!-- GEO Summary -->
+      <div class="geo-summary">
+        <div class="section-head"><h3>🌍 GEO — AI Search Visibility</h3><span>How your brand appears in AI-generated answers</span></div>
+        <div class="metric-trio">
+          <div class="glass metric-card m-green"><div class="metric-val" data-count="42">0%</div><div class="metric-name">AI Visibility</div><div class="metric-bar"><div class="metric-bar-fill" data-w="42"></div></div></div>
+          <div class="glass metric-card m-blue"><div class="metric-val" data-suffix="">#<span data-count="5">0</span></div><div class="metric-name">Avg AI Position</div><div class="metric-bar"><div class="metric-bar-fill" data-w="50"></div></div></div>
+          <div class="glass metric-card m-purple"><div class="metric-val" data-count="74">0%</div><div class="metric-name">Sentiment Score</div><div class="metric-bar"><div class="metric-bar-fill" data-w="74"></div></div></div>
+        </div>
+      </div>
+
+      <!-- AEO Summary -->
+      <div class="aeo-summary">
+        <div class="section-head"><h3>🤖 AEO — Answer Engine Optimization</h3><span>Your readiness for answer engines & voice search</span></div>
+        <div class="aeo-grid">
+          <div class="glass aeo-card"><span class="aeo-icon">🎯</span><div class="aeo-label">Featured Snippets</div><div class="aeo-val">3/10</div><span class="aeo-status s-amber">Needs Work</span></div>
+          <div class="glass aeo-card"><span class="aeo-icon">🎤</span><div class="aeo-label">Voice Search</div><div class="aeo-val">62%</div><span class="aeo-status s-green">Good</span></div>
+          <div class="glass aeo-card"><span class="aeo-icon">📦</span><div class="aeo-label">Schema Markup</div><div class="aeo-val">Missing</div><span class="aeo-status s-red">Critical</span></div>
+          <div class="glass aeo-card"><span class="aeo-icon">❓</span><div class="aeo-label">FAQ Coverage</div><div class="aeo-val">Low</div><span class="aeo-status s-amber">Improve</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ SEO PANEL ════════ -->
+    <div id="panel-seo" class="tab-panel">
+      <div class="glass checks-section" id="seoChecks">
+        <div class="checks-header">
+          <div><span class="checks-title">🔍 Detailed SEO Checks</span><br><span class="checks-sub">10 checks across on-page, technical & content</span></div>
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="filterChecks('all',this,'seoChecks')">All</button>
+            <button class="filter-pill" onclick="filterChecks('pass',this,'seoChecks')">✅ Passed</button>
+            <button class="filter-pill" onclick="filterChecks('warn',this,'seoChecks')">⚠️ Warnings</button>
+            <button class="filter-pill" onclick="filterChecks('error',this,'seoChecks')">❌ Errors</button>
+          </div>
+        </div>
+        <div class="checks-list"></div>
+      </div>
+    </div>
+
+    <!-- ════════ GEO PANEL ════════ -->
+    <div id="panel-geo" class="tab-panel">
+      <div class="metric-trio" style="margin-bottom:28px">
+        <div class="glass metric-card m-green"><div class="metric-val" data-count="42">0%</div><div class="metric-name">AI Visibility</div><div class="metric-bar"><div class="metric-bar-fill geo-bar" data-w="42"></div></div></div>
+        <div class="glass metric-card m-blue"><div class="metric-val">#<span data-count="5">0</span></div><div class="metric-name">Avg AI Position</div><div class="metric-bar"><div class="metric-bar-fill geo-bar" data-w="50"></div></div></div>
+        <div class="glass metric-card m-purple"><div class="metric-val" data-count="74">0%</div><div class="metric-name">Sentiment Score</div><div class="metric-bar"><div class="metric-bar-fill geo-bar" data-w="74"></div></div></div>
+      </div>
+
+      <!-- AI Platform Visibility -->
+      <div class="glass platform-card">
+        <div class="section-head"><h3>🤖 AI Platform Visibility</h3><span>Brand mention % across major AI engines</span></div>
+        <div class="platform-row"><span class="platform-name">🟢 ChatGPT</span><div class="platform-bar"><div class="platform-bar-fill" data-w="67"></div></div><span class="platform-pct" data-count="67">0%</span></div>
+        <div class="platform-row"><span class="platform-name">🔵 Google Gemini</span><div class="platform-bar"><div class="platform-bar-fill" data-w="45"></div></div><span class="platform-pct" data-count="45">0%</span></div>
+        <div class="platform-row"><span class="platform-name">🟣 Perplexity AI</span><div class="platform-bar"><div class="platform-bar-fill" data-w="38"></div></div><span class="platform-pct" data-count="38">0%</span></div>
+        <div class="platform-row"><span class="platform-name">🟠 Claude</span><div class="platform-bar"><div class="platform-bar-fill" data-w="29"></div></div><span class="platform-pct" data-count="29">0%</span></div>
+        <div class="platform-row"><span class="platform-name">🔷 Microsoft Copilot</span><div class="platform-bar"><div class="platform-bar-fill" data-w="52"></div></div><span class="platform-pct" data-count="52">0%</span></div>
+      </div>
+
+      <!-- GEO Checks -->
+      <div class="glass checks-section" id="geoChecks">
+        <div class="checks-header">
+          <div><span class="checks-title">🌍 GEO Detailed Checks</span><br><span class="checks-sub">5 checks for AI search optimization</span></div>
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="filterChecks('all',this,'geoChecks')">All</button>
+            <button class="filter-pill" onclick="filterChecks('pass',this,'geoChecks')">✅ Passed</button>
+            <button class="filter-pill" onclick="filterChecks('warn',this,'geoChecks')">⚠️ Warnings</button>
+            <button class="filter-pill" onclick="filterChecks('error',this,'geoChecks')">❌ Errors</button>
+          </div>
+        </div>
+        <div class="checks-list"></div>
+      </div>
+    </div>
+
+    <!-- ════════ AEO PANEL ════════ -->
+    <div id="panel-aeo" class="tab-panel">
+      <div class="aeo-grid" style="margin-bottom:28px">
+        <div class="glass aeo-card"><span class="aeo-icon">🎯</span><div class="aeo-label">Featured Snippets</div><div class="aeo-val">3/10</div><span class="aeo-status s-amber">Needs Work</span></div>
+        <div class="glass aeo-card"><span class="aeo-icon">🎤</span><div class="aeo-label">Voice Search Ready</div><div class="aeo-val">62%</div><span class="aeo-status s-green">Good</span></div>
+        <div class="glass aeo-card"><span class="aeo-icon">📦</span><div class="aeo-label">Schema Markup</div><div class="aeo-val">Missing</div><span class="aeo-status s-red">Critical</span></div>
+        <div class="glass aeo-card"><span class="aeo-icon">❓</span><div class="aeo-label">FAQ Coverage</div><div class="aeo-val">Low</div><span class="aeo-status s-amber">Improve</span></div>
+      </div>
+
+      <!-- Featured Snippet Opportunities -->
+      <div class="glass snippet-card">
+        <div class="section-head"><h3>🔍 Featured Snippet Opportunities</h3></div>
+        <div class="snippet-row"><span class="snippet-q">What is [brand name]?</span><span class="snippet-status snippet-miss">❌ Opportunity Missed</span></div>
+        <div class="snippet-row"><span class="snippet-q">How does the product work?</span><span class="snippet-status snippet-miss">❌ Opportunity Missed</span></div>
+        <div class="snippet-row"><span class="snippet-q">Best tools in this category 2024</span><span class="snippet-status snippet-rank">✅ Currently Ranking</span></div>
+        <div class="snippet-row"><span class="snippet-q">How to get started guide</span><span class="snippet-status snippet-miss">❌ Opportunity Missed</span></div>
+        <div class="snippet-row"><span class="snippet-q">Brand vs competitors comparison</span><span class="snippet-status snippet-rank">✅ Currently Ranking</span></div>
+        <div class="snippet-row"><span class="snippet-q">Brand pricing and plans</span><span class="snippet-status snippet-miss">❌ Opportunity Missed</span></div>
+      </div>
+
+      <!-- AEO Checks -->
+      <div class="glass checks-section" id="aeoChecks">
+        <div class="checks-header">
+          <div><span class="checks-title">🤖 AEO Detailed Checks</span><br><span class="checks-sub">6 checks for answer engine readiness</span></div>
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="filterChecks('all',this,'aeoChecks')">All</button>
+            <button class="filter-pill" onclick="filterChecks('pass',this,'aeoChecks')">✅ Passed</button>
+            <button class="filter-pill" onclick="filterChecks('warn',this,'aeoChecks')">⚠️ Warnings</button>
+            <button class="filter-pill" onclick="filterChecks('error',this,'aeoChecks')">❌ Errors</button>
+          </div>
+        </div>
+        <div class="checks-list"></div>
+      </div>
+    </div>
+
+    <!-- ════════ COMPETITORS PANEL ════════ -->
+    <div id="panel-competitors" class="tab-panel">
+      <div class="section-head" style="margin-bottom:24px"><h3>🏆 Competitor Analysis</h3><span>See how you stack up against your top competitors</span></div>
+
+      <!-- Comparison Table -->
+      <div class="glass comp-table-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Metric</th><th>Your Site</th><th>competitor-a.com</th><th>competitor-b.com</th><th>competitor-c.com</th><th>Leader</th><th>Gap</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Overall Score</td><td class="your-col">72</td><td>81</td><td>68</td><td>75</td><td class="leader">competitor-a ✓</td><td class="gap-neg">-9</td></tr>
+            <tr><td>On-Page SEO</td><td class="your-col">78</td><td>85</td><td>71</td><td>79</td><td class="leader">competitor-a ✓</td><td class="gap-neg">-7</td></tr>
+            <tr><td>Performance</td><td class="your-col">65</td><td>72</td><td>88</td><td>69</td><td class="leader">competitor-b ✓</td><td class="gap-neg">-23</td></tr>
+            <tr><td>Mobile</td><td class="your-col">88</td><td>79</td><td>82</td><td>76</td><td class="leader">YOU ✓</td><td class="gap-pos">+9</td></tr>
+            <tr><td>Security</td><td class="your-col">92</td><td>90</td><td>85</td><td>88</td><td class="leader">YOU ✓</td><td class="gap-pos">+2</td></tr>
+            <tr><td>GEO Visibility</td><td class="your-col">42%</td><td>58%</td><td>45%</td><td>61%</td><td class="leader">competitor-c ✓</td><td class="gap-neg">-19%</td></tr>
+            <tr><td>AEO Score</td><td class="your-col">55</td><td>67</td><td>48</td><td>52</td><td class="leader">competitor-a ✓</td><td class="gap-neg">-12</td></tr>
+            <tr><td>Content Quality</td><td class="your-col">70</td><td>75</td><td>82</td><td>68</td><td class="leader">competitor-b ✓</td><td class="gap-neg">-12</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Competitor Cards -->
+      <div class="comp-cards">
+        <div class="glass comp-card">
+          <div class="comp-domain">competitor-a.com</div>
+          <div class="comp-ring-wrap">
+            <svg viewBox="0 0 100 100"><circle class="comp-ring-bg" cx="50" cy="50" r="38"/><circle class="comp-ring-fill" cx="50" cy="50" r="38" stroke-dasharray="238.8" stroke-dashoffset="238.8" data-score="81" style="stroke:#60a5fa"/></svg>
+            <div class="comp-score-val" style="color:#60a5fa" data-count="81">0</div>
+          </div>
+          <div class="comp-section-label">Strengths</div>
+          <div class="comp-strengths"><span class="tag">On-Page SEO</span><span class="tag">AEO Score</span></div>
+          <div class="comp-section-label">Weaknesses</div>
+          <div class="comp-weaknesses"><span class="tag">Mobile</span><span class="tag">Security</span></div>
+        </div>
+        <div class="glass comp-card">
+          <div class="comp-domain">competitor-b.com</div>
+          <div class="comp-ring-wrap">
+            <svg viewBox="0 0 100 100"><circle class="comp-ring-bg" cx="50" cy="50" r="38"/><circle class="comp-ring-fill" cx="50" cy="50" r="38" stroke-dasharray="238.8" stroke-dashoffset="238.8" data-score="68" style="stroke:#34d399"/></svg>
+            <div class="comp-score-val" style="color:#34d399" data-count="68">0</div>
+          </div>
+          <div class="comp-section-label">Strengths</div>
+          <div class="comp-strengths"><span class="tag">Performance</span><span class="tag">Content Quality</span></div>
+          <div class="comp-section-label">Weaknesses</div>
+          <div class="comp-weaknesses"><span class="tag">On-Page SEO</span><span class="tag">AEO Score</span></div>
+        </div>
+        <div class="glass comp-card">
+          <div class="comp-domain">competitor-c.com</div>
+          <div class="comp-ring-wrap">
+            <svg viewBox="0 0 100 100"><circle class="comp-ring-bg" cx="50" cy="50" r="38"/><circle class="comp-ring-fill" cx="50" cy="50" r="38" stroke-dasharray="238.8" stroke-dashoffset="238.8" data-score="75" style="stroke:#fbbf24"/></svg>
+            <div class="comp-score-val" style="color:#fbbf24" data-count="75">0</div>
+          </div>
+          <div class="comp-section-label">Strengths</div>
+          <div class="comp-strengths"><span class="tag">GEO Visibility</span><span class="tag">Mobile</span></div>
+          <div class="comp-section-label">Weaknesses</div>
+          <div class="comp-weaknesses"><span class="tag">Content Quality</span><span class="tag">Performance</span></div>
+        </div>
+      </div>
+
+      <!-- SERP Position Comparison -->
+      <div class="glass serp-card">
+        <div class="section-head"><h3>📊 SERP Position Comparison</h3><span>Keyword ranking positions across all sites</span></div>
+        <table class="serp-table">
+          <thead>
+            <tr><th>Keyword</th><th>Your Site</th><th>Comp A</th><th>Comp B</th><th>Comp C</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>digital marketing agency</td><td class="rank-mid">#7</td><td class="rank-good">#3</td><td class="rank-mid">#9</td><td class="rank-mid">#5</td></tr>
+            <tr><td>seo services near me</td><td class="rank-good">#2</td><td class="rank-mid">#6</td><td class="rank-bad">#14</td><td class="rank-mid">#4</td></tr>
+            <tr><td>best marketing tools 2024</td><td class="rank-bad">#18</td><td class="rank-mid">#5</td><td class="rank-good">#1</td><td class="rank-mid">#8</td></tr>
+            <tr><td>ai marketing automation</td><td class="rank-mid">#9</td><td class="rank-good">#2</td><td class="rank-mid">#7</td><td class="rank-good">#3</td></tr>
+            <tr><td>content strategy services</td><td class="rank-good">#3</td><td class="rank-mid">#8</td><td class="rank-mid">#5</td><td class="rank-bad">#12</td></tr>
+            <tr><td>website audit tool free</td><td class="rank-bad">#22</td><td class="rank-mid">#4</td><td class="rank-mid">#6</td><td class="rank-bad">#15</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Gap Analysis Accordion -->
+      <div class="glass checks-section" id="gapChecks">
+        <div class="checks-header">
+          <div><span class="checks-title">🎯 Gap Analysis</span><br><span class="checks-sub">Actionable items to close the gap with competitors</span></div>
+        </div>
+        <div class="checks-list"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/* ═══════════════════════════════════════ */
+/*  STAR BACKGROUND — Canvas animation    */
+/* ═══════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('starCanvas'),ctx=c.getContext('2d');
+  let stars=[],w,h;
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;initStars()}
+  function initStars(){
+    stars=[];
+    const count=Math.floor((w*h)/3200);
+    for(let i=0;i<count;i++){
+      stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,a:Math.random(),da:(.003+Math.random()*.008)*(Math.random()>.5?1:-1),dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.1});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      s.a+=s.da;if(s.a>1||s.a<.1)s.da*=-1;
+      s.x+=s.dx;s.y+=s.dy;
+      if(s.x<0)s.x=w;if(s.x>w)s.x=0;if(s.y<0)s.y=h;if(s.y>h)s.y=0;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${s.a*.6})`;ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+/* ═══════════════════════════════════════ */
+/*  CHECK DATA                            */
+/* ═══════════════════════════════════════ */
+const seoChecksData=[
+  {status:'pass',icon:'✅',name:'Title Tag',desc:'Well optimized, 58 characters',detail:'Your title tag is within the recommended 50–60 character range.',fix:'Keep maintaining descriptive keyword-rich titles under 60 characters.'},
+  {status:'error',icon:'❌',name:'Meta Description',desc:'Missing on homepage',detail:'No meta description found. Search engines use this in result snippets.',fix:'Add a unique meta description of 150–160 characters with your primary keyword.'},
+  {status:'pass',icon:'✅',name:'H1 Heading',desc:'Present and relevant',detail:'Your H1 is present and well structured.',fix:'Ensure your H1 contains your primary keyword naturally.'},
+  {status:'warn',icon:'⚠️',name:'Image Alt Tags',desc:'3 images missing alt text',detail:'3 out of 11 images have no alt attributes, hurting accessibility and image SEO.',fix:'Add descriptive alt text to all images especially above the fold.'},
+  {status:'pass',icon:'✅',name:'SSL Certificate',desc:'Valid and active',detail:'Your site is served over HTTPS with a valid SSL certificate.',fix:'Ensure your SSL certificate auto-renews before expiry.'},
+  {status:'warn',icon:'⚠️',name:'Page Speed',desc:'4.2 second load time',detail:'Your load time is 4.2 seconds. Google recommends under 2.5 seconds.',fix:'Compress images, enable caching, and minify CSS and JS files.'},
+  {status:'pass',icon:'✅',name:'Mobile Friendly',desc:'Responsive design detected',detail:'Your website passes Google mobile friendly test.',fix:'Continue testing on various screen sizes.'},
+  {status:'error',icon:'❌',name:'Robots.txt',desc:'File not found',detail:'No robots.txt file detected. This causes crawl issues.',fix:'Create a robots.txt file at your domain root to guide search engine crawlers.'},
+  {status:'pass',icon:'✅',name:'XML Sitemap',desc:'Found at /sitemap.xml',detail:'An XML sitemap was found and properly structured.',fix:'Submit your sitemap to Google Search Console.'},
+  {status:'warn',icon:'⚠️',name:'Canonical Tags',desc:'Missing on key pages',detail:'No canonical tag on homepage can cause duplicate content issues.',fix:'Add canonical link tags to all important pages.'}
+];
+const geoChecksData=[
+  {status:'pass',icon:'✅',name:'Brand Entity Established',desc:'Referenced across authoritative sources',detail:'Your brand appears in multiple authoritative online sources.',fix:'Continue building brand mentions through PR and guest posts.'},
+  {status:'error',icon:'❌',name:'Wikipedia Presence',desc:'No Wikipedia page found',detail:'AI models heavily reference Wikipedia for brand knowledge.',fix:'Build notability through press coverage then create a Wikipedia page.'},
+  {status:'warn',icon:'⚠️',name:'Knowledge Panel',desc:'Partial Google Knowledge Panel detected',detail:'You have a partial Knowledge Panel but it is incomplete.',fix:'Verify your Google Business Profile and add structured data.'},
+  {status:'pass',icon:'✅',name:'Authoritative Backlinks',desc:'Strong referring domain profile',detail:'Your backlink profile shows authority signals.',fix:'Continue earning links from high domain authority sites.'},
+  {status:'error',icon:'❌',name:'LLM Accessibility File',desc:'No /llms.txt file found',detail:'The llms.txt file helps AI models understand your brand.',fix:'Create an /llms.txt file following the llmstxt.org specification.'}
+];
+const aeoChecksData=[
+  {status:'error',icon:'❌',name:'Structured Data Schema',desc:'No schema markup detected',detail:'Schema markup helps search engines and AI understand your content.',fix:'Add JSON-LD schema markup for Organization, WebSite, and your main content type.'},
+  {status:'warn',icon:'⚠️',name:'FAQ Schema',desc:'FAQ content exists but no schema markup',detail:'You have FAQ-style content but it lacks FAQ schema.',fix:'Wrap your FAQ sections in FAQPage JSON-LD schema markup.'},
+  {status:'pass',icon:'✅',name:'Question Answer Format',desc:'Content directly answers user questions',detail:'Your content is structured to answer questions clearly.',fix:'Continue using clear question headings followed by direct answers.'},
+  {status:'error',icon:'❌',name:'HowTo Schema',desc:'No HowTo markup found',detail:'HowTo schema can earn rich results in search for instructional content.',fix:'Add HowTo JSON-LD schema to any step-by-step content pages.'},
+  {status:'warn',icon:'⚠️',name:'Content Readability',desc:'Flesch score 58 — moderate difficulty',detail:'A Flesch score of 58 means content is moderately difficult to read.',fix:'Use shorter sentences, simpler words, and more subheadings to improve readability.'},
+  {status:'pass',icon:'✅',name:'HTTPS Secure Connection',desc:'Verified secure',detail:'Your site uses HTTPS which is required for trust signals.',fix:'Maintain your SSL certificate and ensure all assets load over HTTPS.'}
+];
+const gapChecksData=[
+  {status:'error',icon:'❌',name:'Page Speed',desc:'Competitors avg 1.8s vs your 4.2s',detail:'Your page load time is 2.3x slower than the competitor average. This directly impacts bounce rate and SEO rankings.',fix:'Implement lazy loading, upgrade hosting, compress all images to WebP, and minify all CSS/JS bundles.'},
+  {status:'error',icon:'❌',name:'Schema Markup',desc:'2/3 competitors use full schema',detail:'Competitor A and C have complete JSON-LD schema including Organization, FAQ, and Product types. You have none.',fix:'Add JSON-LD structured data to all key pages — start with Organization and FAQPage schemas.'},
+  {status:'warn',icon:'⚠️',name:'Content Depth',desc:'Competitor A has 3x more pillar content',detail:'Competitor A publishes long-form pillar content (2000+ words) with internal linking clusters. Your content averages 600 words.',fix:'Create 5-10 pillar content pages around your primary keywords with in-depth coverage and internal links.'},
+  {status:'warn',icon:'⚠️',name:'Backlink Volume',desc:'Competitor B has 2.4x more referring domains',detail:'Competitor B has 1,200 referring domains compared to your 500. Quality is comparable.',fix:'Launch a digital PR campaign, pursue guest posting on industry sites, and create linkable assets like tools and infographics.'},
+  {status:'pass',icon:'✅',name:'Mobile Score',desc:'You lead all competitors on mobile',detail:'Your mobile score of 88 is the highest among all analyzed sites. Keep this advantage.',fix:'Continue optimizing for mobile-first indexing and test across multiple devices.'}
+];
+
+/* ═══════════════════════════════════════ */
+/*  BUILD CHECK ROWS                      */
+/* ═══════════════════════════════════════ */
+/** Generates accordion check rows inside a parent section */
+function buildChecks(containerId,data){
+  const list=document.querySelector('#'+containerId+' .checks-list');
+  list.innerHTML='';
+  data.forEach(c=>{
+    const badgeClass=c.status==='pass'?'badge-pass':c.status==='warn'?'badge-warn':'badge-error';
+    const badgeText=c.status==='pass'?'Pass':c.status==='warn'?'Warning':'Error';
+    const row=document.createElement('div');
+    row.className='check-row';
+    row.setAttribute('data-status',c.status);
+    row.innerHTML=`
+      <div class="check-head" onclick="toggleCheck(this.parentElement)">
+        <span class="check-status">${c.icon}</span>
+        <span class="check-name">${c.name}</span>
+        <span class="check-desc">${c.desc}</span>
+        <span class="check-badge ${badgeClass}">${badgeText}</span>
+        <span class="check-arrow">▼</span>
+      </div>
+      <div class="check-detail">
+        <div class="check-detail-inner">
+          ${c.detail}
+          <div class="fix-box"><strong>💡 Fix:</strong> ${c.fix}</div>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+/* ═══════════════════════════════════════ */
+/*  TOOL TAB (hero)                       */
+/* ═══════════════════════════════════════ */
+function setToolTab(btn){
+  document.querySelectorAll('.tool-tab').forEach(t=>{t.className='tool-tab'});
+  // detect which tab
+  const txt=btn.textContent.trim();
+  if(txt.includes('SEO'))btn.classList.add('active-blue');
+  else if(txt.includes('GEO'))btn.classList.add('active-green');
+  else if(txt.includes('AEO'))btn.classList.add('active-amber');
+  else btn.classList.add('active-purple');
+}
+
+/* ═══════════════════════════════════════ */
+/*  START ANALYSIS                        */
+/* ═══════════════════════════════════════ */
+function startAnalysis(){
+  const input=document.getElementById('urlInput');
+  let url=input.value.trim();
+  // Validate
+  if(!url){
+    const row=document.getElementById('urlRow');
+    row.classList.add('shake');
+    input.style.borderColor='#ef4444';
+    input.placeholder='⚠ Please enter a URL';
+    setTimeout(()=>{row.classList.remove('shake');input.style.borderColor='';input.placeholder='https://yourwebsite.com'},1200);
+    return;
+  }
+  if(!url.startsWith('http'))url='https://'+url;
+
+  // Switch to loading state
+  showState('stateLoading');
+  document.getElementById('loadingUrl').textContent=url;
+
+  // Step animation
+  const steps=document.querySelectorAll('#stepsList .step-row');
+  steps.forEach(s=>{s.className='step-row'});
+  let current=0;
+  steps[0].classList.add('active');
+
+  const interval=setInterval(()=>{
+    if(current>0)steps[current-1].classList.replace('active','done');
+    if(current<steps.length){
+      steps[current].classList.add('active');
+    }
+    current++;
+    if(current>steps.length){
+      clearInterval(interval);
+      // Show results
+      setTimeout(()=>{
+        document.getElementById('resultUrl').textContent=url;
+        showState('stateResults');
+        buildAllChecks();
+        switchResultTab('full',document.querySelector('.result-tab[data-tab="full"]'));
+        setTimeout(animateScores,100);
+      },400);
+    }
+  },2000);
+}
+
+/* ═══════════════════════════════════════ */
+/*  SWITCH STATE                          */
+/* ═══════════════════════════════════════ */
+function showState(id){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'auto'});
+}
+
+/* ═══════════════════════════════════════ */
+/*  NEW ANALYSIS                          */
+/* ═══════════════════════════════════════ */
+function newAnalysis(){
+  showState('stateHero');
+  document.getElementById('urlInput').value='';
+  // Reset animations
+  document.getElementById('mainRing').style.strokeDashoffset='364.4';
+  document.getElementById('mainScoreNum').textContent='0';
+}
+
+/* ═══════════════════════════════════════ */
+/*  SWITCH RESULT TAB                     */
+/* ═══════════════════════════════════════ */
+function switchResultTab(tab,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.result-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  btn.classList.add('active');
+  // Re-trigger animations for this tab
+  setTimeout(()=>animateVisibleBars(),200);
+}
+
+/* ═══════════════════════════════════════ */
+/*  TOGGLE CHECK ACCORDION                */
+/* ═══════════════════════════════════════ */
+function toggleCheck(row){
+  row.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════ */
+/*  FILTER CHECKS                         */
+/* ═══════════════════════════════════════ */
+function filterChecks(type,pill,sectionId){
+  // Update active pill
+  const pills=pill.parentElement.querySelectorAll('.filter-pill');
+  pills.forEach(p=>p.classList.remove('active'));
+  pill.classList.add('active');
+  // Filter rows
+  const rows=document.querySelectorAll('#'+sectionId+' .check-row');
+  rows.forEach(r=>{
+    if(type==='all'){r.style.display=''}
+    else{r.style.display=r.getAttribute('data-status')===type?'':'none'}
+  });
+}
+
+/* ═══════════════════════════════════════ */
+/*  BUILD ALL CHECKS                      */
+/* ═══════════════════════════════════════ */
+function buildAllChecks(){
+  buildChecks('fullSeoChecks',seoChecksData);
+  buildChecks('seoChecks',seoChecksData);
+  buildChecks('geoChecks',geoChecksData);
+  buildChecks('aeoChecks',aeoChecksData);
+  buildChecks('gapChecks',gapChecksData);
+}
+
+/* ═══════════════════════════════════════ */
+/*  ANIMATE SCORES                        */
+/* ═══════════════════════════════════════ */
+function animateScores(){
+  // Main donut ring (72/100)
+  const ring=document.getElementById('mainRing');
+  const target=72;
+  const circumference=364.4;
+  ring.style.strokeDashoffset=circumference*(1-target/100);
+
+  // Main score count
+  countUp(document.getElementById('mainScoreNum'),target);
+
+  // Tally counts
+  document.querySelectorAll('.tally-num[data-count]').forEach(el=>{
+    countUp(el,parseInt(el.getAttribute('data-count')));
+  });
+
+  // Category scores
+  document.querySelectorAll('.cat-score[data-count]').forEach(el=>{
+    countUp(el,parseInt(el.getAttribute('data-count')));
+  });
+
+  // Category bars
+  document.querySelectorAll('.cat-bar-fill[data-w]').forEach(el=>{
+    el.style.width=el.getAttribute('data-w')+'%';
+  });
+
+  // Metric bars
+  document.querySelectorAll('.metric-bar-fill[data-w]').forEach(el=>{
+    el.style.width=el.getAttribute('data-w')+'%';
+  });
+
+  // Metric values count
+  document.querySelectorAll('.metric-val[data-count]').forEach(el=>{
+    const v=parseInt(el.getAttribute('data-count'));
+    const suffix=el.textContent.includes('%')?'%':'';
+    const span=el.querySelector('span[data-count]');
+    if(span)countUp(span,parseInt(span.getAttribute('data-count')));
+    else countUpSuffix(el,v,suffix);
+  });
+
+  // Platform bars
+  document.querySelectorAll('.platform-bar-fill[data-w]').forEach(el=>{
+    el.style.width=el.getAttribute('data-w')+'%';
+  });
+  document.querySelectorAll('.platform-pct[data-count]').forEach(el=>{
+    countUpSuffix(el,parseInt(el.getAttribute('data-count')),'%');
+  });
+
+  // Competitor rings
+  document.querySelectorAll('.comp-ring-fill[data-score]').forEach(el=>{
+    const score=parseInt(el.getAttribute('data-score'));
+    const circ=238.8;
+    el.style.strokeDashoffset=circ*(1-score/100);
+  });
+  document.querySelectorAll('.comp-score-val[data-count]').forEach(el=>{
+    countUp(el,parseInt(el.getAttribute('data-count')));
+  });
+}
+
+/** Animate bars that are visible in current tab */
+function animateVisibleBars(){
+  document.querySelectorAll('.tab-panel.active .cat-bar-fill[data-w]').forEach(el=>{el.style.width=el.getAttribute('data-w')+'%'});
+  document.querySelectorAll('.tab-panel.active .metric-bar-fill[data-w]').forEach(el=>{el.style.width=el.getAttribute('data-w')+'%'});
+  document.querySelectorAll('.tab-panel.active .platform-bar-fill[data-w]').forEach(el=>{el.style.width=el.getAttribute('data-w')+'%'});
+  document.querySelectorAll('.tab-panel.active .comp-ring-fill[data-score]').forEach(el=>{
+    const score=parseInt(el.getAttribute('data-score'));el.style.strokeDashoffset=238.8*(1-score/100);
+  });
+  // Count ups
+  document.querySelectorAll('.tab-panel.active .platform-pct[data-count]').forEach(el=>{countUpSuffix(el,parseInt(el.getAttribute('data-count')),'%')});
+  document.querySelectorAll('.tab-panel.active .comp-score-val[data-count]').forEach(el=>{countUp(el,parseInt(el.getAttribute('data-count')))});
+  document.querySelectorAll('.tab-panel.active .metric-val[data-count]').forEach(el=>{
+    const v=parseInt(el.getAttribute('data-count'));
+    const suffix=el.textContent.includes('%')?'%':'';
+    const span=el.querySelector('span[data-count]');
+    if(span)countUp(span,parseInt(span.getAttribute('data-count')));
+    else countUpSuffix(el,v,suffix);
+  });
+}
+
+/* ═══════════════════════════════════════ */
+/*  COUNT UP ANIMATION                    */
+/* ═══════════════════════════════════════ */
+function countUp(el,target,duration){
+  duration=duration||1200;
+  let start=0;const step=Math.ceil(target/(duration/16));
+  const timer=setInterval(()=>{
+    start+=step;if(start>=target){start=target;clearInterval(timer)}
+    el.textContent=start;
+  },16);
+}
+function countUpSuffix(el,target,suffix,duration){
+  duration=duration||1200;
+  let start=0;const step=Math.ceil(target/(duration/16));
+  const timer=setInterval(()=>{
+    start+=step;if(start>=target){start=target;clearInterval(timer)}
+    el.textContent=start+suffix;
+  },16);
+}
+
+/* ═══════════════════════════════════════ */
+/*  COPY REPORT (simple)                  */
+/* ═══════════════════════════════════════ */
+function copyReport(){
+  const url=document.getElementById('resultUrl').textContent;
+  const text=`RankAI Audit Report\nURL: ${url}\nOverall Score: 72/100 (B)\n\nOn-Page SEO: 78 | Performance: 65 | Mobile: 88\nSecurity: 92 | Links: 54 | Technical: 47\n\nGEO Visibility: 42% | AI Position: #5 | Sentiment: 74%\nFeatured Snippets: 3/10 | Voice Search: 62%\nSchema: Missing | FAQ Coverage: Low`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.querySelector('.btn-outline:nth-child(2)');
+    const orig=btn.textContent;btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent=orig,1500);
+  });
+}
+
+/** Export PDF placeholder */
+function exportPDF(){
+  alert('📄 PDF export feature — coming soon!\n\nThis will generate a downloadable PDF of your complete audit report.');
+}
+
+/* ═══════════════════════════════════════ */
+/*  ENTER KEY support                     */
+/* ═══════════════════════════════════════ */
+document.getElementById('urlInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter')startAnalysis();
+});
+</script>
+</body>
+</html>

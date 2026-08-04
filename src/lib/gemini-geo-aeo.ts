@@ -12,6 +12,7 @@
 import crypto from 'crypto';
 import { adminDb } from '@/lib/firebase-admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
+import { scrapeLiveSearchResults } from './scraper-agent';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -216,15 +217,31 @@ async function testCitationPrompts(
 ): Promise<GeoLlmCitation[]> {
   const results: GeoLlmCitation[] = [];
 
-  // Run in batches of 5 to avoid rate limits
+  // Run in batches or sequentially
   for (let i = 0; i < prompts.length; i++) {
     const prompt = prompts[i];
     try {
-      const response = await callGemini(
-        `${prompt}\n\nProvide a helpful, factual answer mentioning specific companies, tools, or platforms if relevant.`,
-        false,
-        15000,
-      );
+      // 1. Secretly scrape DuckDuckGo for live search results
+      const liveResults = await scrapeLiveSearchResults(prompt, 7);
+      
+      let contextText = "";
+      if (liveResults.length > 0) {
+        contextText = liveResults.map((r, idx) => `[Rank ${idx+1}] Title: ${r.title} | Snippet: ${r.snippet} | URL: ${r.url}`).join('\n');
+      } else {
+        contextText = "No live search results could be fetched. Answer based on your general knowledge.";
+      }
+
+      // 2. Feed live results to Gemini
+      const aiPrompt = `
+You are analyzing live web search results for the query: "${prompt}"
+
+LIVE SEARCH RESULTS:
+${contextText}
+
+Based ONLY on these search results (or your general knowledge if none provided), provide a factual answer to the query mentioning specific companies or platforms. Focus on finding if the brand "${brand}" or domain "${domain}" appears.
+      `.trim();
+
+      const response = await callGemini(aiPrompt, false, 20000);
 
       const { cited, position, context } = extractCitationContext(response, domain, brand);
 
@@ -244,7 +261,7 @@ async function testCitationPrompts(
 
     // Small delay between calls to be rate-limit friendly
     if (i < prompts.length - 1) {
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 400));
     }
   }
 
