@@ -1,4 +1,6 @@
 import React from "react";
+import { notFound } from "next/navigation";
+import { cleanTitle, validateMeta } from "@/lib/seo-guard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -32,14 +34,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = cityMeta[cityKey];
 
   if (!meta) {
-    return {
-      title: "Digital Marketing Agency | AdsVerse",
-      description: "AdsVerse offers AI-first SEO, WhatsApp bots, and performance marketing.",
-    };
+    notFound();
+  }
+
+  const cleanT = cleanTitle(meta.title);
+
+  try {
+    validateMeta(meta.canonical, cleanT, meta.description);
+  } catch (e) {
+    console.warn(e);
   }
 
   return {
-    title: meta.title,
+    title: cleanT,
     description: meta.description,
     alternates: {
       canonical: meta.canonical,
@@ -70,15 +77,7 @@ export default function LocationPage({ params }: Props) {
   const serviceSubtitle = cityServiceSubtitle[cityKey] || "Tailored digital marketing for your local business needs.";
 
   if (!cityData) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-8">
-        <h1 className="text-3xl font-bold font-headline mb-4">Location Not Found</h1>
-        <p className="text-slate-600 dark:text-slate-400 mb-8">We couldn't find the page for this location.</p>
-        <Button asChild>
-          <Link href="/locations">View All Locations</Link>
-        </Button>
-      </div>
-    );
+    notFound();
   }
 
   const { name, state } = cityData;
@@ -104,16 +103,18 @@ export default function LocationPage({ params }: Props) {
       "addressRegion": state,
       "addressCountry": "IN"
     },
-    "geo": coords ? {
-      "@type": "GeoCoordinates",
-      "latitude": coords.lat,
-      "longitude": coords.lng
-    } : undefined,
-    "sameAs": wikiLink ? [wikiLink] : [],
+    ...(coords ? {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": coords.lat,
+        "longitude": coords.lng
+      }
+    } : {}),
+    ...(wikiLink ? { "sameAs": [wikiLink] } : {}),
     "areaServed": {
       "@type": "AdministrativeArea",
       "name": name,
-      "sameAs": wikiLink
+      ...(wikiLink ? { "sameAs": wikiLink } : {})
     }
   };
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Future of Automation in Indore: CRM, WhatsApp & Funnels | AdsVerse",
+  title: { absolute: "Future of Automation in Indore: CRM, WhatsApp & Funnels | AdsVerse" },
   description: "Indore's businesses are adopting automation. Discover how CRM, WhatsApp chatbots, and automated funnels are becoming essential for growth and customer engagement.",
   alternates: {
     canonical: '/blog/future-of-automation-in-indore',

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { cleanTitle, validateMeta } from "@/lib/seo-guard";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -32,16 +33,26 @@ interface PageProps {
 // Generate dynamic SEO Metadata
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const result = getServiceBySlug(params.slug);
-  if (!result) return {};
+  if (!result) notFound();
 
   const { service, category } = result;
   const capitalizedCategory = category.label;
 
+  const rawTitle = `${service.name} | AdsVerse — ${capitalizedCategory} Agency Indore`;
+  const cleanT = cleanTitle(rawTitle);
+  const fullUrl = `https://adsverse.in/services/${params.slug}`;
+
+  try {
+    validateMeta(fullUrl, cleanT, service.desc);
+  } catch(e) {
+    console.warn(e);
+  }
+
   return {
-    title: `${service.name} | AdsVerse — ${capitalizedCategory} Agency Indore`,
-    description: `${service.desc} Professional ${service.name} services by AdsVerse in Vijay Nagar, Indore. Custom packages, certified experts, and dynamic results.`,
+    title: cleanT,
+    description: service.desc,
     alternates: {
-      canonical: `https://adsverse.in/services/${params.slug}`,
+      canonical: fullUrl,
     },
   };
 }

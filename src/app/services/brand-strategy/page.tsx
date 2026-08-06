@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Brand Strategy & Logo Design Agency India | AdsVerse",
+  title: { absolute: "Brand Strategy & Logo Design Agency India | AdsVerse" },
   description: "Build a powerful brand identity for your business with AdsVerse. We offer brand strategy, logo design & brand guidelines — crafted for Indian startups and growing businesses in Indore.",
   alternates: {
     canonical: 'https://adsverse.in/services/brand-strategy',

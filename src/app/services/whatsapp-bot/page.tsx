@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse",
+  title: { absolute: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse" },
   description: "AdsVerse is the #1 WhatsApp AI chatbot development company in Indore. Automate customer support, capture leads 24/7, and qualify sales prospects with Gemini-powered WhatsApp bots.",
   keywords: [
     "whatsapp ai chatbot development company indore",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     canonical: 'https://adsverse.in/services/whatsapp-bot',
   },
   openGraph: {
-    title: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse",
+    title: { absolute: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse" },
     description: "Automate sales & customer support 24/7 on WhatsApp with AdsVerse's AI bots. Based in Vijay Nagar, Indore.",
     url: 'https://adsverse.in/services/whatsapp-bot',
     siteName: 'AdsVerse',

@@ -37,7 +37,7 @@ export function Footer() {
               <div className="space-y-2 pt-2 border-t border-border/20">
                 <p className="flex items-start gap-2">
                   <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <span>Vijay Nagar, Indore, Madhya Pradesh - 452010</span>
+                  <span>329/11, Meghdoot Nagar, Indore, MP 452011</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-primary shrink-0" />

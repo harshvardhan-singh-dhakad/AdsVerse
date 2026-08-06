@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Google Ads & Meta Ads Agency in Indore | Performance Marketing | AdsVerse",
+  title: { absolute: "Google Ads & Meta Ads Agency in Indore | Performance Marketing | AdsVerse" },
   description: "AdsVerse manages high-ROI Google Ads and Meta Ads campaigns for Indore businesses. Transparent reporting, no minimum ad spend lock-in. Average 3.8x ROAS.",
   alternates: {
     canonical: 'https://adsverse.in/services/paid-ads',

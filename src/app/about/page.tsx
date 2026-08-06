@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "About AdsVerse — AI-First Digital Marketing Agency in Indore",
+    title: { absolute: "About AdsVerse — AI-First Digital Marketing Agency in Indore" },
     description: "AdsVerse is Indore's leading AI-first digital marketing agency specialising in SEO, GEO, AEO, Google Ads, Meta Ads, and Marketing Automation. Founded by Deepak Dhakad to help businesses achieve measurable, lasting growth.",
     alternates: {
       canonical: "https://adsverse.in/about",

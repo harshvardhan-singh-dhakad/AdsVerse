@@ -55,7 +55,7 @@ export const cityRegionLabel: Record<string, string> = {
 };
 
 export const citiesDb: Record<string, { name: string, state: string, desc: string }> = {
-  indore: { name: "Indore", state: "Madhya Pradesh", desc: "Our main headquarters in Vijay Nagar. Dominate central India's fastest-growing tech and startup corridor." },
+  indore: { name: "Indore", state: "Madhya Pradesh", desc: "Our main headquarters in Meghdoot Nagar. Dominate central India's fastest-growing tech and startup corridor." },
   bhopal: { name: "Bhopal", state: "Madhya Pradesh", desc: "Drive growth for your Bhopal retail brand, coaching institute, or service firm with localized AI outreach." },
   jabalpur: { name: "Jabalpur", state: "Madhya Pradesh", desc: "Capture transactional leads and rank #1 locally for high-intent search terms across Jabalpur." },
   gwalior: { name: "Gwalior", state: "Madhya Pradesh", desc: "Build premium digital setups and automate sales pipelines for Gwalior's expanding business base." },
@@ -85,7 +85,7 @@ export const citiesDb: Record<string, { name: string, state: string, desc: strin
 export const cityMeta: Record<string, { title: string; description: string; canonical: string }> = {
   indore: {
     title: "Best Digital Marketing Agency in Indore | Top Company — AdsVerse",
-    description: "Looking for the best digital marketing agency in Indore? AdsVerse (Vijay Nagar) delivers AI-first SEO, WhatsApp bots, Google & Meta Ads, and sales automation for local businesses.",
+    description: "Looking for the best digital marketing agency in Indore? AdsVerse (Meghdoot Nagar) delivers AI-first SEO, WhatsApp bots, Google & Meta Ads, and sales automation for local businesses.",
     canonical: "https://adsverse.in/locations/indore",
   },
   bhopal: {
@@ -212,8 +212,8 @@ export const cityMeta: Record<string, { title: string; description: string; cano
 
 export const cityIntro: Record<string, { headline: string; body: string }> = {
   indore: {
-    headline: "Best Digital Marketing Agency in Indore — Headquartered in Vijay Nagar",
-    body: "AdsVerse is the best digital marketing agency in Indore, headquartered in Vijay Nagar. We combine AI-first SEO, n8n workflow automation, WhatsApp chatbots, and performance Google & Meta Ads to deliver real sales outcomes for Indore startups, retail showrooms, IT companies, and educational institutes.",
+    headline: "Best Digital Marketing Agency in Indore — Headquartered in Meghdoot Nagar",
+    body: "AdsVerse is the best digital marketing agency in Indore, headquartered in Meghdoot Nagar. We combine AI-first SEO, n8n workflow automation, WhatsApp chatbots, and performance Google & Meta Ads to deliver real sales outcomes for Indore startups, retail showrooms, IT companies, and educational institutes.",
   },
   bhopal: {
     headline: "Bhopal — MP's Capital, Where Coaching Institutes Need Fast Lead Systems",
@@ -314,7 +314,7 @@ export const cityIntro: Record<string, { headline: string; body: string }> = {
 };
 
 export const cityProofPoint: Record<string, string> = {
-  indore: "Our only city with an in-person team — same-day meetings available at our Vijay Nagar office. Every new automation and AI workflow is piloted here first before rolling out to other locations.",
+  indore: "Our only city with an in-person team — same-day meetings available at our Meghdoot Nagar office. Every new automation and AI workflow is piloted here first before rolling out to other locations.",
   bhopal: "We have published detailed local cost and lead-generation guides specifically for Bhopal coaching institutes — check our blog for the digital marketing cost and coaching-institute-specific content we have built for this market.",
   jabalpur: "Local search ranking is our primary offer for Jabalpur clients — not B2B brand campaigns. Most Jabalpur businesses see the fastest ROI from ranking for city-specific transactional terms, not national keywords.",
   gwalior: "Performance marketing setups in Gwalior are structured separately for tourism footfall versus local resident search — two different audiences, two different campaign structures, both tracked independently.",

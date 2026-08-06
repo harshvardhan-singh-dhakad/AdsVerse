@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Contact AdsVerse — Free Audit & Consultation",
+    title: { absolute: "Contact AdsVerse — Free Audit & Consultation" },
     description: "Get a free SEO audit and consultation from AdsVerse, Indore's top AI marketing agency. Contact us at +91-9685123339.",
     alternates: {
       canonical: "https://adsverse.in/contact",
@@ -38,9 +38,10 @@ const jsonLd = {
     },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Scheme No. 54, Vijay Nagar",
+      "streetAddress": "329/11, Meghdoot Nagar",
       "addressLocality": "Indore",
-      "postalCode": "452010",
+      "addressRegion": "Madhya Pradesh",
+      "postalCode": "452011",
       "addressCountry": "IN"
     }
   },
@@ -102,7 +103,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-4">
                 <MapPin className="w-6 h-6 text-primary" />
-                <span>Scheme No. 54, Vijay Nagar, Indore (452010), INDIA</span>
+                <span>329/11, Meghdoot Nagar, Indore, MP 452011, INDIA</span>
               </div>
             </div>
           </div>
@@ -183,7 +184,7 @@ export default function ContactPage() {
           <div className="space-y-2">
             <h3 className="text-lg font-bold text-slate-950 dark:text-white font-headline">Do you serve clients outside of Indore, India?</h3>
             <p className="text-sm text-slate-800 dark:text-slate-300 leading-relaxed">
-              Yes! While our primary office is located in Scheme No. 54, Vijay Nagar, Indore, we serve clients globally. We regularly collaborate with business owners, brands, and agencies across India, North America, and the Middle East using Google Meet and Zoom for smooth communication.
+              Yes! While our primary office is located in Meghdoot Nagar, Indore, we serve clients globally. We regularly collaborate with business owners, brands, and agencies across India, North America, and the Middle East using Google Meet and Zoom for smooth communication.
             </p>
           </div>
           

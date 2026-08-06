@@ -46,10 +46,10 @@ const schemaArray = [
     "email": "contact@adsverse.in",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Vijay Nagar",
+      "streetAddress": "329/11, Meghdoot Nagar",
       "addressLocality": "Indore",
       "addressRegion": "Madhya Pradesh",
-      "postalCode": "452010",
+      "postalCode": "452011",
       "addressCountry": "IN"
     },
     "geo": {
@@ -137,13 +137,9 @@ const schemaArray = [
     "@type": "Organization",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "bestRating": "5",
-      "worstRating": "1",
-      "reviewCount": "113"
-    }
+    "numberOfEmployees": { "@type": "QuantitativeValue", "value": "10" },
+    "knowsAbout": ["Search Engine Optimization","Generative Engine Optimization","Google Ads","Meta Ads","n8n Workflow Automation","WhatsApp Business API","CRM Automation"],
+    "slogan": "Automate. Elevate. Dominate."
   },
   {
     "@context": "https://schema.org",
@@ -155,10 +151,10 @@ const schemaArray = [
     "foundingDate": "2023",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Vijay Nagar",
+      "streetAddress": "329/11, Meghdoot Nagar",
       "addressLocality": "Indore",
       "addressRegion": "Madhya Pradesh",
-      "postalCode": "452010",
+      "postalCode": "452011",
       "addressCountry": "IN"
     },
     "contactPoint": {
@@ -178,7 +174,7 @@ const schemaArray = [
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "AdsVerse | AI-Powered Digital Marketing & Automation Agency",
+    default: "AdsVerse | AI Marketing & Automation Agency",
     template: "%s | AdsVerse",
   },
   description: "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Google & Meta Ads, and Automation to drive measurable growth for your business.",

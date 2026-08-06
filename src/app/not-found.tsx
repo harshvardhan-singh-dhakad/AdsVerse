@@ -21,7 +21,10 @@ export default function NotFound() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+    <>
+      <title>{t.title}</title>
+      <meta name="robots" content="noindex, nofollow" />
+      <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
       <div className="relative mb-8">
         <h1 className="text-9xl font-bold text-primary opacity-20">404</h1>
         <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold text-foreground w-full">
@@ -48,5 +51,6 @@ export default function NotFound() {
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -z-10 animate-pulse"></div>
       <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/10 rounded-full blur-[100px] -z-10 animate-pulse delay-700"></div>
     </div>
+    </>
   );
 }

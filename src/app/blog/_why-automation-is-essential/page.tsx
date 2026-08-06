@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Why Automation is Essential for Your Business | AdsVerse",
+  title: { absolute: "Why Automation is Essential for Your Business | AdsVerse" },
   description: "Learn how automation tools can save you time, reduce costly errors, and free up your team to focus on business growth and innovation. It's no longer a luxury.",
   alternates: {
     canonical: '/blog/why-automation-is-essential',

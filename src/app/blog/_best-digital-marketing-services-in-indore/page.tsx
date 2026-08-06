@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Digital Marketing Services in Indore | AdsVerse",
+  title: { absolute: "Best Digital Marketing Services in Indore | AdsVerse" },
   description: "Looking for the best digital marketing services in Indore? This guide covers why it matters, what to look for, and how to find the right agency for your business.",
   alternates: {
     canonical: 'https://adsverse.in/en/blog/best-digital-marketing-services-in-indore',

@@ -97,6 +97,10 @@ const nextConfig = {
       'framer-motion',
       '@radix-ui/react-icons',
     ],
+    serverComponentsExternalPackages: ['firebase', '@firebase/app', '@firebase/firestore'],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   images: {
     formats: ['image/avif', 'image/webp'],

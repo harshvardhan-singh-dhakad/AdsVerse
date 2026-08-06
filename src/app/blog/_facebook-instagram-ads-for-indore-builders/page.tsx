@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Facebook & Instagram Ads for Indore Builders: A Winning Guide | AdsVerse",
+  title: { absolute: "Facebook & Instagram Ads for Indore Builders: A Winning Guide | AdsVerse" },
   description: "Learn how real estate builders in Indore can leverage Facebook and Instagram ads to generate high-quality leads, target the right homebuyers, and boost property sales.",
   alternates: {
     canonical: '/blog/facebook-instagram-ads-for-indore-builders',

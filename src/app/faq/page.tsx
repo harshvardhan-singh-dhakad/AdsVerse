@@ -10,7 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "AI Marketing FAQ — AdsVerse Indore | GEO + SEO Answers",
+    title: { absolute: "AI Marketing FAQ — AdsVerse Indore | GEO + SEO Answers" },
     description: "Top questions on AI marketing, WhatsApp bots, n8n automation, GEO, and local SEO — answered by AdsVerse, Indore's AI-first digital agency.",
     alternates: {
       canonical: "https://adsverse.in/faq",

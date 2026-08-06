@@ -48,12 +48,22 @@ Allow: /
 User-agent: YouBot
 Allow: /
 
-# ── BLOCK MALICIOUS SCRAPERS ──
+# ── SEO MEASUREMENT TOOLS (own-site monitoring) ──
 User-agent: AhrefsBot
-Disallow: /
+Allow: /
+Crawl-delay: 10
+
+User-agent: AhrefsSiteAudit
+Allow: /
+Crawl-delay: 10
 
 User-agent: SemrushBot
-Disallow: /
+Allow: /
+Crawl-delay: 10
+
+User-agent: SiteAuditBot
+Allow: /
+Crawl-delay: 10
 
 User-agent: Rogerbot
 Disallow: /

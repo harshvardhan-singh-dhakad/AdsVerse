@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Agency in Indore India — Get More Qualified Leads | AdsVerse",
+  title: { absolute: "Lead Generation Agency in Indore India — Get More Qualified Leads | AdsVerse" },
   description: "Stop chasing cold leads. AdsVerse generates high-quality, ready-to-buy leads for your business using Google Ads, Meta Ads, SEO & WhatsApp automation — proven ROI for Indian businesses.",
   alternates: {
     canonical: 'https://adsverse.in/services/lead-generation',

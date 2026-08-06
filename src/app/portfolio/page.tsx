@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: 'https://adsverse.in/portfolio',
   },
   openGraph: {
-    title: "Portfolio & Success Stories | AdsVerse",
+    title: { absolute: "Portfolio & Success Stories | AdsVerse" },
     description: "Explore the successful digital marketing projects and case studies delivered by AdsVerse for brands across India.",
     url: "https://adsverse.in/portfolio",
     siteName: "AdsVerse",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Portfolio & Success Stories | AdsVerse",
+    title: { absolute: "Portfolio & Success Stories | AdsVerse" },
     description: "Explore the successful digital marketing projects and case studies delivered by AdsVerse for brands across India.",
     images: ["https://adsverse.in/images/og-adsverse-2026.png"],
   },

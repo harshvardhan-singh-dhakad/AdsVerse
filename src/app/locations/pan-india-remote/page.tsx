@@ -6,14 +6,14 @@ import { ArrowLeft, ArrowRight, CheckCircle, Video, MessageCircle, BarChart2, Ca
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Remote Digital Marketing Services Across India | AdsVerse",
+  title: { absolute: "Remote Digital Marketing Services Across India | AdsVerse" },
   description:
     "AdsVerse is headquartered in Indore and works with clients across India remotely — SEO, WhatsApp automation, and paid ads delivered via video calls, WhatsApp, and shared dashboards. No local office required.",
   alternates: {
     canonical: "https://adsverse.in/locations/pan-india-remote",
   },
   openGraph: {
-    title: "Remote Digital Marketing Services Across India | AdsVerse",
+    title: { absolute: "Remote Digital Marketing Services Across India | AdsVerse" },
     description:
       "AI-first digital marketing for clients anywhere in India. Everything — strategy, reporting, WhatsApp bots, ad reviews — happens over video call and shared dashboards.",
     url: "https://adsverse.in/locations/pan-india-remote",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Remote Digital Marketing Services | AdsVerse",
+    title: { absolute: "Remote Digital Marketing Services | AdsVerse" },
     description:
       "AdsVerse works with clients across India remotely — SEO, WhatsApp automation, and paid ads via video calls and shared dashboards.",
     creator: "@Adsverse1",
