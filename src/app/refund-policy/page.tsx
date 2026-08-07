@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Refund & Cancellation Policy | AdsVerse",
+  title: { absolute: "Refund & Cancellation Policy | AdsVerse" },
   description: "AdsVerse refund and cancellation policy. Understand our transparent billing, cancellation process, and refund eligibility for digital marketing services.",
   alternates: {
     canonical: "https://adsverse.in/refund-policy",

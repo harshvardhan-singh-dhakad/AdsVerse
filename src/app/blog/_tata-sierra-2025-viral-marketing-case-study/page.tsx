@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Legend Returns: Why the Tata Sierra 2025 Went Viral | AdsVerse",
+  title: { absolute: "The Legend Returns: Why the Tata Sierra 2025 Went Viral | AdsVerse" },
   description: "A marketing case study on how Tata Motors used nostalgia, disruptive pricing, and unique design to make the Sierra 2025 launch a massive viral success.",
   alternates: {
     canonical: '/blog/tata-sierra-2025-viral-marketing-case-study',

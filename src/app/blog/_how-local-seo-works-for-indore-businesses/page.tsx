@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How Digital Marketing Helps Small Businesses in Indore | AdsVerse",
+  title: { absolute: "How Digital Marketing Helps Small Businesses in Indore | AdsVerse" },
   description: "Local SEO is no longer optional—it's a survival strategy for every business in Indore. Learn how to rank higher in local searches.",
   alternates: {
     canonical: '/blog/how-local-seo-works-for-indore-businesses',

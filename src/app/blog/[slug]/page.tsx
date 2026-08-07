@@ -9,11 +9,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, limit, orderBy } from "firebase/firestore";
 
 import { db } from "@/lib/firebase-server";
 
 import { BlogPost } from "@/lib/definitions";
+import { validateMeta } from "@/lib/seo-guard";
 import { ShareButtons } from "@/components/layout/share-buttons";
 import { cn } from "@/lib/utils";
 import { TableOfContents } from "@/components/layout/TableOfContents";
@@ -35,20 +36,50 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
   if (post.publishedDate > now) {
     return null;
   }
-  
   return post;
+}
+
+async function getRelatedPosts(category: string, currentSlug: string) {
+  const now = new Date().toISOString();
+  const q = query(
+    collection(db, "public_blogPosts"),
+    where("category", "==", category),
+    where("publishedDate", "<=", now),
+    orderBy("publishedDate", "desc"),
+    limit(4)
+  );
+  const snap = await getDocs(q);
+  const posts = snap.docs
+    .map(doc => doc.data() as BlogPost)
+    .filter(post => post.slug !== currentSlug)
+    .slice(0, 3);
+  return posts;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getBlogPost(params.slug);
-  if (!post) return { title: "Post Not Found" };
+  if (!post) notFound();
 
   const fullUrl = `https://adsverse.in/blog/${post.slug}`;
   const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-adsverse-2026.png';
 
+  // Strip "(NNN chars)" artifacts from excerpt if present
+  const cleanExcerpt = post.excerpt.replace(/\s*\(\d+\s*chars?\)\s*$/i, '');
+  const finalTitle = `${post.title} | AdsVerse Blog`;
+
+  // We are not throwing right now for validateMeta since we are just adding it.
+  // Actually, wait, validateMeta throws on duplicate brand.
+  // I will just prepare it for now.
+  try {
+    validateMeta(fullUrl, finalTitle, cleanExcerpt);
+  } catch (e) {
+    // Only warn for now until we fix titles in Batch 2
+    console.warn(e);
+  }
+
   return {
-    title: `${post.title} | AdsVerse Blog`,
-    description: post.excerpt,
+    title: finalTitle,
+    description: cleanExcerpt,
     alternates: {
       canonical: fullUrl,
     },
@@ -123,6 +154,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     notFound();
   }
 
+  const relatedPosts = await getRelatedPosts(post.category, post.slug);
+
   const { cleanedHtml, headings } = processBlogContent(post.content);
 
   const jsonLd = {
@@ -135,7 +168,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       "@type": "Person",
       "name": post.author || "Deepak Dhakad",
       "jobTitle": "Digital Marketing & AI Automation Expert",
-      "url": "https://adsverse.in/about",
+      "url": "https://adsverse.in/author/deepak-dhakad",
       "image": "https://adsverse.in/images/deepak-dhakad-founder.webp"
     },
     "publisher": {
@@ -179,18 +212,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     ]
   };
 
-  const ratingJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWorkSeries",
-    "name": post.title,
-    "image": post.imageUrl,
-    "description": post.excerpt,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "3155"
-    }
-  };
 
   return (
     <>
@@ -205,11 +226,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         id="breadcrumb-jsonld"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        id="blog-rating-jsonld"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ratingJsonLd) }}
-      />
+
       <div className={cn(
         "container mx-auto py-16 px-4 sm:px-6 lg:px-10",
         headings.length > 0 ? "max-w-5xl xl:max-w-6xl" : "max-w-4xl xl:max-w-5xl"
@@ -311,6 +328,32 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                     <p className="mt-8 text-[10px] text-slate-700 dark:text-muted-foreground uppercase tracking-[0.2em] font-black opacity-70">
                       AdsVerse · Digital Excellence 2026
                     </p>
+                  </div>
+                </section>
+              )}
+              
+              {relatedPosts.length > 0 && (
+                <section className="pt-12 mt-16 border-t border-primary/10">
+                  <h3 className="text-3xl font-black font-headline mb-8 text-foreground text-center md:text-left">Related Articles</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {relatedPosts.map(rp => (
+                      <Card key={rp.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500">
+                        <div className="relative h-40 w-full overflow-hidden">
+                          <Image 
+                            src={rp.imageUrl}
+                            alt={rp.title}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        </div>
+                        <CardHeader className="space-y-2 p-4">
+                          <CardTitle className="font-headline text-lg leading-tight group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
+                            <Link href={`/blog/${rp.slug}`}>{rp.title}</Link>
+                          </CardTitle>
+                        </CardHeader>
+                      </Card>
+                    ))}
                   </div>
                 </section>
               )}

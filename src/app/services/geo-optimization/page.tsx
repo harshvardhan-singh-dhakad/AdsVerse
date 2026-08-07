@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "GEO Services — Generative Engine Optimization in Indore | AdsVerse",
+  title: { absolute: "GEO Services — Generative Engine Optimization in Indore | AdsVerse" },
   description: "AdsVerse offers Generative Engine Optimization (GEO) services in Indore. Get your business cited by ChatGPT, Gemini, Perplexity, and Claude. AI search visibility for Indian businesses.",
   alternates: {
     canonical: 'https://adsverse.in/services/geo-optimization',

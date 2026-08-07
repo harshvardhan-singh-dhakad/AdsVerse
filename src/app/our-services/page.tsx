@@ -5,13 +5,13 @@ import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Digital Marketing and AI Automation Services | SEO, Ads, WhatsApp Bots | AdsVerse",
+  title: { absolute: "Digital Marketing and AI Automation Services | SEO, Ads, WhatsApp Bots | AdsVerse" },
   description: "AdsVerse offers 75+ digital marketing services in India — SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n workflows and web development. AI-first agency, Indore. Get free strategy call.",
   alternates: {
     canonical: "https://adsverse.in/our-services",
   },
   openGraph: {
-    title: "Digital Marketing and AI Automation Services | AdsVerse",
+    title: { absolute: "Digital Marketing and AI Automation Services | AdsVerse" },
     description: "75+ services: SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n automation and web development. AI-first digital marketing agency in Indore serving pan-India.",
     url: "https://adsverse.in/our-services",
     siteName: "AdsVerse",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Marketing and AI Automation Services | AdsVerse",
+    title: { absolute: "Digital Marketing and AI Automation Services | AdsVerse" },
     description: "75+ services: SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n automation. AI-first agency, Indore.",
     creator: "@Adsverse1",
   },

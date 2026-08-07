@@ -38,13 +38,13 @@ const stateBorderMap: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "Locations We Serve | Digital Marketing & AI Agency Across India | AdsVerse",
+  title: { absolute: "Locations We Serve | Digital Marketing & AI Agency Across India | AdsVerse" },
   description: "AdsVerse delivers AI-first SEO, WhatsApp automation, and performance ads in Indore, Bhopal, Jaipur, Lucknow, Raipur, Guwahati & 18+ Indian cities. Tier-2 focused, Tier-1 results.",
   alternates: {
     canonical: "https://adsverse.in/locations",
   },
   openGraph: {
-    title: "Locations We Serve | AdsVerse Digital Marketing Agency",
+    title: { absolute: "Locations We Serve | AdsVerse Digital Marketing Agency" },
     description: "AI-first digital marketing across Madhya Pradesh, Rajasthan, UP, Chhattisgarh & Northeast India. SEO, WhatsApp bots, Google/Meta Ads.",
     url: "https://adsverse.in/locations",
     siteName: "AdsVerse",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Locations We Serve | AdsVerse",
+    title: { absolute: "Locations We Serve | AdsVerse" },
     description: "AI-first digital marketing across 24 Indian cities in our core markets. SEO, WhatsApp bots, Google/Meta Ads.",
     creator: "@Adsverse1",
   },

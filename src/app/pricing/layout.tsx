@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     canonical: 'https://adsverse.in/pricing',
   },
   openGraph: {
-    title: "Performance Marketing Plans & Pricing | AdsVerse",
+    title: { absolute: "Performance Marketing Plans & Pricing | AdsVerse" },
     description: "Transparent pricing for SEO, Google Ads, and AI Automation in Indore.",
     url: "https://adsverse.in/pricing",
     siteName: "AdsVerse",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Performance Marketing Plans & Pricing | AdsVerse",
+    title: { absolute: "Performance Marketing Plans & Pricing | AdsVerse" },
     description: "Transparent pricing for SEO, Google Ads, and AI Automation in Indore.",
     images: ["https://adsverse.in/images/og-adsverse-2026.png"],
   },

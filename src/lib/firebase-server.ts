@@ -17,3 +17,5 @@ export function getFirebaseApp() {
 }
 
 export const db = getFirestore(getFirebaseApp());
+import { getFirestore as getFirestoreLite } from "firebase/firestore/lite";
+export const dbLite = getFirestoreLite(getFirebaseApp());

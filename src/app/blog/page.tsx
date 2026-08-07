@@ -8,7 +8,7 @@ import BlogClient from "./BlogClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Insights & Digital Trends — AdsVerse Blog",
+    title: { absolute: "Insights & Digital Trends — AdsVerse Blog" },
     description: "Latest digital marketing trends and strategies from AdsVerse. Expert tips on SEO, Paid Ads, and AI Automation.",
     alternates: {
       canonical: `https://adsverse.in/blog`,
@@ -76,7 +76,7 @@ export default async function BlogPage({
         "@type": "Person",
         "name": post.author || "Deepak Dhakad",
         "jobTitle": "Digital Marketing & AI Automation Expert",
-        "url": "https://adsverse.in/about",
+        "url": "https://adsverse.in/author/deepak-dhakad",
         "image": "https://adsverse.in/images/deepak-dhakad-founder.webp"
       }
     }))

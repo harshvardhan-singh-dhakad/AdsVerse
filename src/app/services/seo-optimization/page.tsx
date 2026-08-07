@@ -7,7 +7,7 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "SEO Services in Indore | Rank #1 on Google | AdsVerse",
+  title: { absolute: "SEO Services in Indore | Rank #1 on Google | AdsVerse" },
   description: "AdsVerse offers results-driven SEO services in Indore — from technical audits to GEO (Generative Engine Optimization). Rank higher, get found by AI. Free audit available.",
   alternates: {
     canonical: 'https://adsverse.in/services/seo-optimization',

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Social Media Strategies for Indore Local Businesses | AdsVerse",
+  title: { absolute: "Best Social Media Strategies for Indore Local Businesses | AdsVerse" },
   description: "Boost your Indore business with these top social media strategies. Learn how to engage local customers on Instagram and Facebook with examples from Indore's market.",
   alternates: {
     canonical: '/blog/best-social-media-strategies-for-indore-businesses',

@@ -30,7 +30,7 @@ const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "AI-First Digital Marketing Agency in Indore | Best AI Agency — AdsVerse",
+    title: { absolute: "AI-First Digital Marketing Agency in Indore | Best AI Agency — AdsVerse" },
     description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. We scale local businesses & Indian SMBs using AI SEO, GEO (AI Search), WhatsApp automation, n8n workflows, and high-ROI Google & Meta Ads.",
     keywords: [
       "ai first digital marketing agency in indore",
@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `https://adsverse.in`,
     },
     openGraph: {
-      title: "AI-First Digital Marketing Agency in Indore | AdsVerse",
+      title: { absolute: "AI-First Digital Marketing Agency in Indore | AdsVerse" },
       description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. Scale sales & organic search traffic with AI automation, SEO, and performance ads.",
       url: "https://adsverse.in",
       siteName: "AdsVerse",
@@ -190,28 +190,15 @@ const faqJsonLd = {
   }))
 };
 
-const howToJsonLd = {
+const breadcrumbJsonLd = {
   "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "How to Get Started with AdsVerse AI Marketing",
-  "step": [
+  "@type": "BreadcrumbList",
+  "itemListElement": [
     {
-      "@type": "HowToStep",
+      "@type": "ListItem",
       "position": 1,
-      "name": "Book Free Audit",
-      "text": "Fill out the free audit form at https://adsverse.in/contact"
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Strategy Call",
-      "text": "Our team reviews your business and suggests AI marketing plan"
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Campaign Launch",
-      "text": "We launch and monitor campaigns with real-time AI optimization"
+      "name": "Home",
+      "item": "https://adsverse.in"
     }
   ]
 };
@@ -228,11 +215,11 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      {/* HowTo Schema for Getting Started */}
+      {/* Breadcrumb Schema */}
       <script
-        id="home-howto-schema"
+        id="home-breadcrumb-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {/* Orbit styles moved to globals.css — no inline style injection */}
 

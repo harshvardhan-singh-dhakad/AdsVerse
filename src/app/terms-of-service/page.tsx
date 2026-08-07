@@ -2,7 +2,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Terms of Service | AdsVerse",
+    title: { absolute: "Terms of Service | AdsVerse" },
     description: "Please read our Terms of Service carefully before using the AdsVerse website. This document outlines the rules and regulations for the use of our services.",
     alternates: {
         canonical: 'https://adsverse.in/terms-of-service',
