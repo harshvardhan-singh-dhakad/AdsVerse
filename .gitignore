@@ -52,3 +52,4 @@ src/app/[lang]/seed/
 
 # scratch/ scripts
 /scratch/
+test*.js

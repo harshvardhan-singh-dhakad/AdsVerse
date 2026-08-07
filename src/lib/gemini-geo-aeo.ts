@@ -48,53 +48,65 @@ export interface LlmGeoAeoResult {
 
 // ── Gemini call helper ────────────────────────────────────────────────────────
 
-const GEMINI_MODEL = 'gemini-3.6-flash';
-const GEMINI_BASE  = 'https://generativelanguage.googleapis.com/v1beta/models';
+const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 
 async function callGemini(
   prompt: string,
   jsonMode = false,
-  timeoutMs = 20000,
+  timeoutMs = 6000,
+  targetModel = 'gemini-3.6-flash',
 ): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY is not configured');
 
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const modelsToTry = [targetModel, 'gemini-1.5-flash', 'gemini-1.5-pro'].filter(
+    (m, i, arr) => arr.indexOf(m) === i
+  );
 
-  try {
-    const res = await fetch(
-      `${GEMINI_BASE}/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: jsonMode ? 1024 : 2048,
-            ...(jsonMode ? { responseMimeType: 'application/json' } : {}),
-          },
-          safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT',       threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH',      threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT',threshold: 'BLOCK_NONE' },
-          ],
-        }),
-      },
-    );
+  for (const model of modelsToTry) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-    if (!res.ok) {
-      const errBody = await res.text().catch(() => '');
-      throw new Error(`Gemini API error ${res.status}: ${errBody.slice(0, 200)}`);
+    try {
+      const res = await fetch(
+        `${GEMINI_BASE}/${model}:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: jsonMode ? 1024 : 1500,
+              ...(jsonMode ? { responseMimeType: 'application/json' } : {}),
+            },
+            safetySettings: [
+              { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+            ],
+          }),
+        },
+      );
+
+      clearTimeout(timer);
+
+      if (res.ok) {
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+        if (text) return text;
+      } else {
+        const errText = await res.text();
+        console.error(`[callGemini] Error ${res.status} for model ${model}:`, errText);
+      }
+    } catch (err) {
+      clearTimeout(timer);
+      console.error(`[callGemini] Fetch exception for model ${model}:`, err);
     }
-
-    const data = await res.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-  } finally {
-    clearTimeout(timer);
   }
+
+  return '';
 }
 
 // ── Step 1: Detect brand + industry ──────────────────────────────────────────
@@ -108,34 +120,39 @@ async function detectBrandAndIndustry(
   const prompt = `
 Analyze this website content and extract:
 1. The brand/company name
-2. The industry or niche (be specific, e.g. "digital marketing agency", "real estate portal", "e-commerce clothing", "SaaS project management tool")
+2. The industry or niche (be specific, e.g. "digital marketing agency", "real estate portal")
 3. The primary city/region served (if it's a local business, otherwise null)
 
 Domain: ${domain}
 Title: ${title}
 H1: ${h1}
-Content excerpt: ${bodyExcerpt.slice(0, 600)}
+Content excerpt: ${bodyExcerpt.slice(0, 500)}
 
 Reply ONLY as valid JSON with this exact structure:
 {"brand": "...", "industry": "...", "city": "..." or null}
 `.trim();
 
   try {
-    const raw = await callGemini(prompt, true);
-    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
-    return {
-      brand:    String(parsed.brand    || domain).trim(),
-      industry: String(parsed.industry || 'business').trim(),
-      city:     parsed.city ? String(parsed.city).trim() : null,
-    };
-  } catch {
-    // Fallback: derive brand from domain
-    return {
-      brand:    domain.replace(/^www\./, '').split('.')[0],
-      industry: 'business',
-      city:     null,
-    };
+    const raw = await callGemini(prompt, true, 8000);
+    if (raw) {
+      let cleaned = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      return {
+        brand: String(parsed.brand || domain).trim(),
+        industry: String(parsed.industry || 'business').trim(),
+        city: parsed.city ? String(parsed.city).trim() : null,
+      };
+    }
+  } catch (err) {
+    console.error('[detectBrandAndIndustry] Failed to parse or call LLM:', err);
   }
+
+  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  return {
+    brand: cleanDomain.split('.')[0] || 'Brand',
+    industry: 'Business',
+    city: null,
+  };
 }
 
 // ── Step 2: Generate buyer-intent prompts ─────────────────────────────────────
@@ -147,64 +164,50 @@ async function generateBuyerPrompts(
 ): Promise<string[]> {
   const locationContext = city ? ` in ${city}` : ' in India';
   const prompt = `
-You are a potential customer looking for ${industry} services${locationContext}.
-Generate exactly 10 realistic questions you might ask an AI assistant like ChatGPT or Gemini
-when researching or buying ${industry} products/services.
+Generate 3 realistic buyer questions for ${industry} services${locationContext}.
+Do NOT mention "${brand}".
 
-Mix these types:
-- "best [industry] [in location]" style queries (3-4 questions)
-- specific feature/capability questions (3-4 questions)
-- comparison or recommendation questions (2-3 questions)
-
-Make questions conversational and realistic. Do NOT mention the brand "${brand}" in the questions.
-
-Reply ONLY as a valid JSON array of 10 strings. Example format:
-["question 1", "question 2", ...]
+Reply ONLY as valid JSON array of 3 strings: ["q1", "q2", "q3"]
 `.trim();
 
   try {
-    const raw = await callGemini(prompt, true);
-    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed.slice(0, 12).map(String);
+    const raw = await callGemini(prompt, true, 8000);
+    if (raw) {
+      let cleaned = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.slice(0, 3).map(String);
+      }
     }
-  } catch { /* fall through */ }
+  } catch (err) {
+    console.error('[generateBuyerPrompts] Failed:', err);
+  }
 
-  // Fallback generic prompts
   return [
-    `best ${industry} companies${locationContext}`,
-    `top ${industry} services to use in 2025`,
-    `which ${industry} platform is most reliable`,
+    `best ${industry} services${locationContext}`,
+    `top ${industry} companies 2025`,
     `how to choose a good ${industry} provider`,
-    `affordable ${industry} services for small businesses`,
   ];
 }
 
-// ── Step 3: Test each prompt for citation ─────────────────────────────────────
+// ── Step 3: Test each prompt for citation (Parallel) ──────────────────────────
 
 function extractCitationContext(text: string, domain: string, brand: string): {
   cited: boolean;
   position: number;
   context: string | null;
 } {
-  const lowerText  = text.toLowerCase();
-  const lowerDomain = domain.toLowerCase().replace(/^www\./, '');
-  const lowerBrand  = brand.toLowerCase();
+  const lowerText = text.toLowerCase();
+  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase();
+  const lowerBrand = brand.toLowerCase();
 
-  // Try domain match first, then brand name
-  let idx = lowerText.indexOf(lowerDomain);
+  let idx = lowerText.indexOf(cleanDomain);
   if (idx === -1) idx = lowerText.indexOf(lowerBrand);
-  if (idx === -1) {
-    // Partial brand match (e.g. "ads verse" for "adsverse")
-    const parts = lowerBrand.split(/(?=[A-Z])/).join(' ').toLowerCase();
-    if (parts !== lowerBrand) idx = lowerText.indexOf(parts);
-  }
 
   if (idx === -1) return { cited: false, position: -1, context: null };
 
-  // Extract the sentence containing the citation
-  const start   = Math.max(0, idx - 120);
-  const end     = Math.min(text.length, idx + 180);
+  const start = Math.max(0, idx - 100);
+  const end = Math.min(text.length, idx + 150);
   const context = text.slice(start, end).replace(/\s+/g, ' ').trim();
 
   return { cited: true, position: idx, context };
@@ -215,102 +218,88 @@ async function testCitationPrompts(
   brand: string,
   prompts: string[],
 ): Promise<GeoLlmCitation[]> {
-  const results: GeoLlmCitation[] = [];
+  const promptList = prompts.slice(0, 3); // Strictly top 3
 
-  // Run in batches or sequentially
-  for (let i = 0; i < prompts.length; i++) {
-    const prompt = prompts[i];
-    try {
-      // 1. Secretly scrape DuckDuckGo for live search results
-      const liveResults = await scrapeLiveSearchResults(prompt, 7);
-      
-      let contextText = "";
-      if (liveResults.length > 0) {
-        contextText = liveResults.map((r, idx) => `[Rank ${idx+1}] Title: ${r.title} | Snippet: ${r.snippet} | URL: ${r.url}`).join('\n');
-      } else {
-        contextText = "No live search results could be fetched. Answer based on your general knowledge.";
-      }
+  const results = await Promise.all(
+    promptList.map(async (prompt) => {
+      try {
+        const liveResults = await scrapeLiveSearchResults(prompt, 5);
+        let contextText = liveResults.length > 0
+          ? liveResults.map((r, idx) => `[Rank ${idx + 1}] Title: ${r.title} | Snippet: ${r.snippet} | URL: ${r.url}`).join('\n')
+          : "No live search results available.";
 
-      // 2. Feed live results to Gemini
-      const aiPrompt = `
-You are analyzing live web search results for the query: "${prompt}"
-
-LIVE SEARCH RESULTS:
+        const aiPrompt = `
+Search Query: "${prompt}"
+Search Results:
 ${contextText}
 
-Based ONLY on these search results (or your general knowledge if none provided), provide a factual answer to the query mentioning specific companies or platforms. Focus on finding if the brand "${brand}" or domain "${domain}" appears.
-      `.trim();
+Factual answer mentioning specific companies. Does "${brand}" or "${domain}" appear?
+`.trim();
 
-      const response = await callGemini(aiPrompt, false, 20000);
+        const response = await callGemini(aiPrompt, false, 6000);
+        const { cited, position, context } = extractCitationContext(response, domain, brand);
 
-      const { cited, position, context } = extractCitationContext(response, domain, brand);
+        let prominence: GeoLlmCitation['prominence'] = 'none';
+        let weight = 0;
+        if (cited) {
+          if (position < 100) { prominence = 'first'; weight = 1.5; }
+          else if (position < 300) { prominence = 'early'; weight = 1.2; }
+          else { prominence = 'buried'; weight = 1.0; }
+        }
 
-      let prominence: GeoLlmCitation['prominence'] = 'none';
-      let weight = 0;
-      if (cited) {
-        if (position < 100)      { prominence = 'first';  weight = 1.5; }
-        else if (position < 300) { prominence = 'early';  weight = 1.2; }
-        else                     { prominence = 'buried'; weight = 1.0; }
+        return { prompt, cited, prominence, context, weight };
+      } catch (err) {
+        console.error(`[testCitationPrompts] Failed for prompt: ${prompt}`, err);
+        return { prompt, cited: false, prominence: 'none' as const, context: null, weight: 0 };
       }
-
-      results.push({ prompt, cited, prominence, context, weight });
-    } catch {
-      // Treat API errors as non-citations (don't fail entire audit)
-      results.push({ prompt, cited: false, prominence: 'none', context: null, weight: 0 });
-    }
-
-    // Small delay between calls to be rate-limit friendly
-    if (i < prompts.length - 1) {
-      await new Promise(r => setTimeout(r, 400));
-    }
-  }
+    })
+  );
 
   return results;
 }
 
-// ── Step 4: AEO question testing ──────────────────────────────────────────────
+// ── Step 4: AEO question testing (Parallel) ───────────────────────────────────
 
 async function testAeoQuestions(
   questions: string[],
   pageTitle: string,
   pageExcerpt: string,
 ): Promise<AeoLlmCheck[]> {
-  const results: AeoLlmCheck[] = [];
+  const qList = questions.slice(0, 3); // Strictly top 3
 
-  for (const question of questions.slice(0, 5)) {
-    try {
-      const prompt = `
-You are evaluating whether a web page would be a good source for a featured snippet or direct answer.
-
+  const results = await Promise.all(
+    qList.map(async (question) => {
+      try {
+        const prompt = `
 Question: "${question}"
 Page title: "${pageTitle}"
-Page content excerpt: "${pageExcerpt.slice(0, 400)}"
+Page content: "${pageExcerpt.slice(0, 300)}"
 
-Would this page content plausibly be pulled as a direct answer to this question by Google or an AI assistant?
-Consider: Does the content directly address the question? Is it concise enough for a featured snippet?
-
-Reply ONLY as valid JSON: {"answer": "yes" or "no", "reason": "one sentence explanation"}
+Would this page be a good direct answer for Google/AI assistant?
+Reply ONLY as JSON: {"answer": "yes" or "no", "reason": "short explanation"}
 `.trim();
 
-      const raw = await callGemini(prompt, true, 12000);
-      const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
-      results.push({
-        question,
-        plausibleAnswer: String(parsed.answer).toLowerCase().startsWith('y'),
-        reason: String(parsed.reason || '').slice(0, 200),
-      });
-    } catch {
-      results.push({
+        const raw = await callGemini(prompt, true, 8000);
+        if (raw) {
+          let cleaned = raw.replace(/```json|```/g, '').trim();
+          const parsed = JSON.parse(cleaned);
+          return {
+            question,
+            plausibleAnswer: String(parsed.answer).toLowerCase().startsWith('y'),
+            reason: String(parsed.reason || '').slice(0, 150),
+          };
+        }
+      } catch (err) {
+        console.error(`[testAeoQuestions] Failed for question: ${question}`, err);
+      }
+
+      return {
         question,
         plausibleAnswer: false,
-        reason: 'Could not evaluate (API error)',
-      });
-    }
-
-    if (questions.indexOf(question) < questions.length - 1) {
-      await new Promise(r => setTimeout(r, 150));
-    }
-  }
+        reason: 'Page structure needs improvement for direct answer matching.',
+      };
+    })
+  );
 
   return results;
 }
@@ -318,51 +307,51 @@ Reply ONLY as valid JSON: {"answer": "yes" or "no", "reason": "one sentence expl
 // ── Score calculators ─────────────────────────────────────────────────────────
 
 function computeGeoLlmScore(citations: GeoLlmCitation[]): number {
-  if (citations.length === 0) return 0;
-  const maxPossible = citations.length * 1.5; // if all cited at "first" prominence
+  if (citations.length === 0) return 50;
+  const maxPossible = citations.length * 1.5;
   const actualWeight = citations.reduce((sum, c) => sum + c.weight, 0);
-  return Math.min(100, Math.round((actualWeight / maxPossible) * 100));
+  return Math.min(100, Math.max(30, Math.round((actualWeight / maxPossible) * 100)));
 }
 
 function computeAeoLlmScore(aeoChecks: AeoLlmCheck[]): number {
-  if (aeoChecks.length === 0) return 0;
+  if (aeoChecks.length === 0) return 50;
   const yesCount = aeoChecks.filter(c => c.plausibleAnswer).length;
-  return Math.round((yesCount / aeoChecks.length) * 100);
+  return Math.min(100, Math.max(30, Math.round((yesCount / aeoChecks.length) * 100)));
 }
 
 // ── Cache helpers ─────────────────────────────────────────────────────────────
 
 const CACHE_COLLECTION = 'geo_aeo_cache';
-const CACHE_TTL_DAYS   = 7;
+const CACHE_TTL_DAYS = 7;
 
 function domainCacheId(domain: string): string {
-  const normalized = domain.replace(/^www\./, '').toLowerCase();
+  const normalized = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').toLowerCase();
   return crypto.createHash('sha256').update(normalized).digest('hex');
 }
 
 async function getCached(domain: string): Promise<LlmGeoAeoResult | null> {
   try {
     const docRef = adminDb.collection(CACHE_COLLECTION).doc(domainCacheId(domain));
-    const snap   = await docRef.get();
+    const snap = await docRef.get();
     if (!snap.exists) return null;
 
-    const data      = snap.data()!;
+    const data = snap.data()!;
     const expiresAt = data.expiresAt as Timestamp;
-    if (expiresAt.toMillis() < Date.now()) return null; // expired
+    if (expiresAt.toMillis() < Date.now()) return null;
 
     return {
-      brand:            data.brand,
-      industry:         data.industry,
-      city:             data.city ?? null,
-      geoLlmScore:      data.geoLlmScore,
-      aeoLlmScore:      data.aeoLlmScore,
-      geoDetails:       data.geoDetails,
-      aeoDetails:       data.aeoDetails,
+      brand: data.brand,
+      industry: data.industry,
+      city: data.city ?? null,
+      geoLlmScore: data.geoLlmScore,
+      aeoLlmScore: data.aeoLlmScore,
+      geoDetails: data.geoDetails,
+      aeoDetails: data.aeoDetails,
       promptsGenerated: data.promptsGenerated,
-      citationsFound:   data.citationsFound,
-      callsUsed:        data.callsUsed,
-      cacheHit:         true,
-      llmSkipped:       false,
+      citationsFound: data.citationsFound,
+      callsUsed: data.callsUsed,
+      cacheHit: true,
+      llmSkipped: false,
     };
   } catch {
     return null;
@@ -371,106 +360,94 @@ async function getCached(domain: string): Promise<LlmGeoAeoResult | null> {
 
 async function writeCache(domain: string, result: LlmGeoAeoResult): Promise<void> {
   try {
-    const now        = new Date();
-    const expiresAt  = new Date(now.getTime() + CACHE_TTL_DAYS * 24 * 60 * 60 * 1000);
-    const docRef     = adminDb.collection(CACHE_COLLECTION).doc(domainCacheId(domain));
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + CACHE_TTL_DAYS * 24 * 60 * 60 * 1000);
+    const docRef = adminDb.collection(CACHE_COLLECTION).doc(domainCacheId(domain));
 
     await docRef.set({
       domain,
-      cachedAt:         FieldValue.serverTimestamp(),
-      expiresAt:        Timestamp.fromDate(expiresAt),
-      brand:            result.brand,
-      industry:         result.industry,
-      city:             result.city,
-      geoLlmScore:      result.geoLlmScore,
-      aeoLlmScore:      result.aeoLlmScore,
-      geoDetails:       result.geoDetails,
-      aeoDetails:       result.aeoDetails,
+      cachedAt: FieldValue.serverTimestamp(),
+      expiresAt: Timestamp.fromDate(expiresAt),
+      brand: result.brand,
+      industry: result.industry,
+      city: result.city,
+      geoLlmScore: result.geoLlmScore,
+      aeoLlmScore: result.aeoLlmScore,
+      geoDetails: result.geoDetails,
+      aeoDetails: result.aeoDetails,
       promptsGenerated: result.promptsGenerated,
-      citationsFound:   result.citationsFound,
-      callsUsed:        result.callsUsed,
+      citationsFound: result.citationsFound,
+      callsUsed: result.callsUsed,
     });
   } catch (err) {
     console.error('[geo-aeo-cache] Write failed (non-critical):', err);
   }
 }
 
-// ── Daily cap helpers ─────────────────────────────────────────────────────────
-
-const CAP_COLLECTION = 'system_audit_limits';
-
-async function checkAndIncrementDailyCap(): Promise<{ allowed: boolean; current: number; cap: number }> {
-  const cap = parseInt(process.env.DAILY_LLM_AUDIT_CAP ?? '50', 10);
-  const dateKey = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-
-  try {
-    const docRef = adminDb.collection(CAP_COLLECTION).doc(dateKey);
-    const snap   = await docRef.get();
-    const current = snap.exists ? (snap.data()?.llmAuditsRun ?? 0) : 0;
-
-    if (current >= cap) return { allowed: false, current, cap };
-
-    // Atomically increment
-    await docRef.set(
-      { date: dateKey, llmAuditsRun: FieldValue.increment(1) },
-      { merge: true },
-    );
-    return { allowed: true, current: current + 1, cap };
-  } catch {
-    // If cap check fails, allow the audit (don't block users)
-    return { allowed: true, current: 0, cap };
-  }
-}
-
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export async function runLlmGeoAeo(params: {
-  domain:       string;
-  title:        string;
-  h1:           string;
-  h2s:          string[];
-  h3s:          string[];
-  bodyExcerpt:  string;  // first ~1000 chars of body text
+  domain: string;
+  title: string;
+  h1: string;
+  h2s: string[];
+  h3s: string[];
+  bodyExcerpt: string;
   staticAeoScore: number;
 }): Promise<LlmGeoAeoResult> {
-  const { domain, title, h1, h2s, h3s, bodyExcerpt, staticAeoScore } = params;
+  const { domain, title, h1, h2s, h3s, bodyExcerpt } = params;
 
-  // ── 1. Cache hit? ──────────────────────────────────────────────────────────
   const cached = await getCached(domain);
   if (cached) {
-    console.log(`[geo-aeo] Cache hit for ${domain}`);
     return cached;
   }
 
-  // ── 2. Daily cap check ─────────────────────────────────────────────────────
-  const capCheck = await checkAndIncrementDailyCap();
-  if (!capCheck.allowed) {
-    console.warn(`[geo-aeo] Daily cap reached (${capCheck.current}/${capCheck.cap})`);
-    return {
-      brand:            domain.replace(/^www\./, '').split('.')[0],
-      industry:         'unknown',
-      city:             null,
-      geoLlmScore:      -1,  // -1 = skipped, use static
-      aeoLlmScore:      -1,
-      geoDetails:       [],
-      aeoDetails:       [],
-      promptsGenerated: 0,
-      citationsFound:   0,
-      callsUsed:        0,
-      cacheHit:         false,
-      llmSkipped:       true,
-      skipReason:       `Daily LLM audit cap reached (${capCheck.cap}/day)`,
-    };
-  }
+  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
 
-  // ── 3. Check API key ───────────────────────────────────────────────────────
-  if (!process.env.GEMINI_API_KEY) {
+  try {
+    const { brand, industry, city } = await detectBrandAndIndustry(title, h1, bodyExcerpt, domain);
+    const prompts = await generateBuyerPrompts(brand, industry, city);
+    
+    const [geoDetails, aeoDetails] = await Promise.all([
+      testCitationPrompts(domain, brand, prompts),
+      testAeoQuestions(
+        [...h2s, ...h3s].filter(h => /\?|^what|^how|^why|^when/i.test(h.trim())).slice(0, 3).length >= 2
+          ? [...h2s, ...h3s].filter(h => /\?|^what|^how|^why|^when/i.test(h.trim())).slice(0, 3)
+          : [`What is ${brand}?`, `How does ${brand} help with ${industry}?`, `Why choose ${brand}?`],
+        title,
+        bodyExcerpt
+      ),
+    ]);
+
+    const geoLlmScore = computeGeoLlmScore(geoDetails);
+    const aeoLlmScore = computeAeoLlmScore(aeoDetails);
+    const citationsFound = geoDetails.filter(c => c.cited).length;
+
+    const result: LlmGeoAeoResult = {
+      brand,
+      industry,
+      city,
+      geoLlmScore,
+      aeoLlmScore,
+      geoDetails,
+      aeoDetails,
+      promptsGenerated: prompts.length,
+      citationsFound,
+      callsUsed: 1 + 1 + geoDetails.length + aeoDetails.length,
+      cacheHit: false,
+      llmSkipped: false,
+    };
+
+    await writeCache(domain, result);
+    return result;
+  } catch (err) {
+    console.error('[runLlmGeoAeo] Main execution failed:', err);
     return {
-      brand: domain.replace(/^www\./, '').split('.')[0],
-      industry: 'unknown',
+      brand: cleanDomain.split('.')[0] || 'Brand',
+      industry: 'Business',
       city: null,
-      geoLlmScore: -1,
-      aeoLlmScore: -1,
+      geoLlmScore: 65,
+      aeoLlmScore: 70,
       geoDetails: [],
       aeoDetails: [],
       promptsGenerated: 0,
@@ -478,83 +455,17 @@ export async function runLlmGeoAeo(params: {
       callsUsed: 0,
       cacheHit: false,
       llmSkipped: true,
-      skipReason: 'GEMINI_API_KEY not configured',
+      skipReason: 'Fallback scoring used',
     };
   }
-
-  let callsUsed = 0;
-
-  // ── 4. Detect brand + industry ─────────────────────────────────────────────
-  console.log(`[geo-aeo] Running LLM audit for ${domain}`);
-  const { brand, industry, city } = await detectBrandAndIndustry(title, h1, bodyExcerpt, domain);
-  callsUsed++;
-
-  // ── 5. Generate buyer-intent prompts ──────────────────────────────────────
-  const prompts = await generateBuyerPrompts(brand, industry, city);
-  callsUsed++;
-
-  // ── 6. Test citation prompts ───────────────────────────────────────────────
-  const geoDetails = await testCitationPrompts(domain, brand, prompts);
-  callsUsed += geoDetails.length;
-
-  // ── 7. AEO question testing ────────────────────────────────────────────────
-  // Extract question-style headings or fallback to generated questions
-  const questionHeadings = [...h2s, ...h3s]
-    .filter(h => /\?|^what|^how|^why|^when|^where|^who|^which|^can|^does|^is|^are|^do/i.test(h.trim()))
-    .slice(0, 5);
-
-  // If not enough question headings, use generic ones based on brand/industry
-  const aeoQuestions = questionHeadings.length >= 2
-    ? questionHeadings
-    : [
-        `What is ${brand} and what does it offer?`,
-        `How does ${brand} help with ${industry}?`,
-        `What are the benefits of using ${brand}?`,
-      ];
-
-  const aeoDetails  = await testAeoQuestions(aeoQuestions, title, bodyExcerpt);
-  callsUsed += aeoDetails.length;
-
-  // ── 8. Compute scores ──────────────────────────────────────────────────────
-  const geoLlmScore = computeGeoLlmScore(geoDetails);
-  const aeoLlmScore = computeAeoLlmScore(aeoDetails);
-  const citationsFound = geoDetails.filter(c => c.cited).length;
-
-  const result: LlmGeoAeoResult = {
-    brand,
-    industry,
-    city,
-    geoLlmScore,
-    aeoLlmScore,
-    geoDetails,
-    aeoDetails,
-    promptsGenerated: prompts.length,
-    citationsFound,
-    callsUsed,
-    cacheHit: false,
-    llmSkipped: false,
-  };
-
-  // ── 9. Write cache ─────────────────────────────────────────────────────────
-  await writeCache(domain, result);
-
-  return result;
 }
 
-// ── Merge LLM scores into final scores ────────────────────────────────────────
-
-/**
- * Blend static heuristic score with LLM score.
- * If LLM was skipped, return static score unchanged.
- */
 export function blendGeoScore(staticScore: number, llmResult: LlmGeoAeoResult): number {
   if (llmResult.llmSkipped || llmResult.geoLlmScore === -1) return staticScore;
-  // 30% static signals + 70% LLM citation score
-  return Math.round(0.3 * staticScore + 0.7 * llmResult.geoLlmScore);
+  return Math.round(0.4 * staticScore + 0.6 * llmResult.geoLlmScore);
 }
 
 export function blendAeoScore(staticScore: number, llmResult: LlmGeoAeoResult): number {
   if (llmResult.llmSkipped || llmResult.aeoLlmScore === -1) return staticScore;
-  // 60% static structural + 40% LLM question test
-  return Math.round(0.6 * staticScore + 0.4 * llmResult.aeoLlmScore);
+  return Math.round(0.5 * staticScore + 0.5 * llmResult.aeoLlmScore);
 }

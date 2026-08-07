@@ -12,11 +12,15 @@ export interface SearchResult {
  * to be blocked by captchas compared to direct Google scraping.
  */
 export async function scrapeLiveSearchResults(query: string, maxResults = 10): Promise<SearchResult[]> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 3000);
+
   try {
     const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
     
     // Use a realistic user-agent to prevent immediate blocking
     const response = await fetch(searchUrl, {
+      signal: controller.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
@@ -24,6 +28,7 @@ export async function scrapeLiveSearchResults(query: string, maxResults = 10): P
       },
       next: { revalidate: 3600 } // optionally cache similar queries for an hour if running on Next.js edge
     });
+    clearTimeout(timer);
 
     if (!response.ok) {
       console.warn(`[ScraperAgent] Failed to fetch search results for "${query}" (Status: ${response.status})`);

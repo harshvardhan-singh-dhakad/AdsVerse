@@ -18,8 +18,15 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
     apiUrl += `&key=${apiKey}`;
   }
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 4000);
+
   try {
-    const response = await fetch(apiUrl, { next: { revalidate: 3600 } });
+    const response = await fetch(apiUrl, { 
+      signal: controller.signal,
+      next: { revalidate: 3600 } 
+    });
+    clearTimeout(timer);
     if (!response.ok) {
       console.warn(`[PageSpeed] API returned ${response.status} for ${url}`);
       return null;
