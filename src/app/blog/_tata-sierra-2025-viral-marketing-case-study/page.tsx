@@ -115,7 +115,7 @@ export default function TataSierraPage({ params: { lang } }: { params: { lang: s
           Fast forward to 2025, and Tata Motors has dropped the bomb. The Tata Sierra is back, and the internet has absolutely lost its calm. But as marketers and auto-enthusiasts, we need to ask: Why?
         </p>
         <p>
-          Why did a car launch turn into a viral cultural moment? It’s not just about the specifications; it’s about a brilliant <Link href="/our-services" className="text-accent hover:underline">marketing mix</Link>. Let's decode the Sierra Strategy.
+          Why did a car launch turn into a viral cultural moment? It’s not just about the specifications; it’s about a brilliant <Link href="/services" className="text-accent hover:underline">marketing mix</Link>. Let's decode the Sierra Strategy.
         </p>
 
         <h2 className="text-3xl font-bold text-primary font-headline">1. The Weaponization of Nostalgia</h2>

@@ -81,7 +81,7 @@ export function Footer() {
             <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link href="/about" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link href="/our-services" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Services</Link></li>
+              <li><Link href="/services" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Services</Link></li>
               <li><Link href="/portfolio" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Portfolio</Link></li>
               <li><Link href="/blog" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Blog</Link></li>
               <li><Link href="/faq" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">FAQ</Link></li>

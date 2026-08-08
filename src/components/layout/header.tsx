@@ -460,7 +460,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                   {label === "Services" && (
                                     <>
                                       <Link
-                                        href="/our-services"
+                                        href="/services"
                                         onClick={closeMobileMenu}
                                         className="text-xs font-bold text-orange-500 hover:text-primary transition-colors block"
                                       >

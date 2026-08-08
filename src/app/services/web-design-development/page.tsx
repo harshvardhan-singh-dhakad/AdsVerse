@@ -7,10 +7,34 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Web Design & Development Company Indore India | AdsVerse" },
-  description: "Get a high-performing, SEO-optimized website for your business from AdsVerse — Indore's top web design & development company. Custom websites built on Next.js for speed, design & conversions.",
+  title: "Website Design & Development Company in Indore | AdsVerse",
+  description: "AdsVerse is the top website design company in Indore. Custom business websites, e-commerce development, landing pages & website redesigning — built on Next.js for speed, SEO & conversions. Serving Indore and pan-India.",
+  keywords: [
+    "website design company in indore",
+    "web designing company in indore",
+    "website developer in indore",
+    "website development company in indore",
+    "website redesigning company indore",
+    "web design company in indore",
+    "website development company",
+    "website designing in indore",
+  ],
   alternates: {
     canonical: 'https://adsverse.in/services/web-design-development',
+  },
+  openGraph: {
+    title: "Website Design & Development Company in Indore | AdsVerse",
+    description: "Top website design company in Indore — custom business websites, e-commerce, landing pages. Next.js, SEO-ready, mobile-first. Starting ₹30,000.",
+    url: 'https://adsverse.in/services/web-design-development',
+    siteName: 'AdsVerse',
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Website Design Company in Indore | AdsVerse',
+    description: 'Best website design company in Indore. Custom websites, e-commerce, landing pages. Next.js, SEO-ready. Starting ₹30,000.',
+    creator: '@Adsverse1',
   },
 };
 
@@ -104,7 +128,7 @@ const jsonLd = {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in" },
-        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/our-services" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/services" },
         { "@type": "ListItem", "position": 3, "name": "Web Design & Development", "item": "https://adsverse.in/services/web-design-development" }
       ]
     },
@@ -132,7 +156,7 @@ export default function WebDesignDevelopmentPage() {
     <div className="container mx-auto py-16 px-4 max-w-5xl">
       <div className="mb-8">
         <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-          <Link href="/our-services">
+          <Link href="/services">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Services
           </Link>
@@ -142,7 +166,11 @@ export default function WebDesignDevelopmentPage() {
       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-6">{service.icon}</div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">{service.title}</h1>
+          <div className="inline-flex items-center justify-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent mb-4 mx-auto">
+            website design company in indore · 1,300/mo | web designing company in indore · 1,300/mo
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">Website Design &amp; Development Company in Indore</h1>
+          <p className="text-muted-foreground text-base mt-3 max-w-xl mx-auto">Custom websites built on Next.js — fast, SEO-ready, and mobile-first. Serving Indore businesses and pan-India brands.</p>
         </CardHeader>
         <CardContent className="px-6 md:px-12 py-8 space-y-8">
           <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -266,6 +294,66 @@ export default function WebDesignDevelopmentPage() {
               <div key={i} className="p-5 rounded-xl border border-border/30 bg-card/20">
                 <h4 className="font-bold text-accent mb-2">{w.type}</h4>
                 <p className="text-muted-foreground text-sm leading-relaxed">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Block 4b: Web Design Services List — Keyword-Targeted */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold text-primary font-headline">Website Design Services in Indore</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            As the top <strong>website design company in Indore</strong>, AdsVerse offers the full range of web development services — from custom business websites and e-commerce stores to landing pages and complete website redesigns. All projects are built on Next.js for maximum speed, SEO readiness, and mobile-first performance.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              {
+                title: "Business Website Design Indore",
+                keyword: "website design company in indore · 1,300/mo",
+                desc: "Custom business websites — 5 to 20 pages, CMS-powered, SEO-ready, and built to convert visitors into customers. Starting ₹30,000.",
+                tier: "Tier 1 — Indore",
+              },
+              {
+                title: "E-Commerce Website Development",
+                keyword: "ecommerce website development company india",
+                desc: "Shopify or custom Next.js e-commerce stores — product catalog, cart, payment gateway (Razorpay, Stripe), and order management. Starting ₹65,000.",
+                tier: "Tier 2 — National",
+              },
+              {
+                title: "Landing Page Design & Development",
+                keyword: "landing page design company in indore",
+                desc: "High-converting, single-page funnels for Google Ads and Meta Ads. Fast (sub-1s load), tracked, and designed to convert. Starting ₹8,000.",
+                tier: "Tier 1 — Indore",
+              },
+              {
+                title: "Website Redesigning Company Indore",
+                keyword: "website redesigning company indore · 210/mo",
+                desc: "Complete website redesign service — same content, completely new UI/UX and tech stack. Migration to Next.js from WordPress, Wix, or old custom sites. Starting ₹20,000.",
+                tier: "Tier 1 — Indore",
+              },
+              {
+                title: "UI/UX Design Indore",
+                keyword: "ui ux design company in indore",
+                desc: "User experience design, wireframing, Figma prototypes, and design systems for apps, SaaS platforms, and enterprise dashboards.",
+                tier: "Tier 1 — Indore",
+              },
+              {
+                title: "Website Maintenance & AMC",
+                keyword: "website maintenance company india",
+                desc: "Annual Maintenance Contracts (AMC) covering content updates, code updates, backups, SSL renewal, and performance monitoring. Starting ₹5,000/yr.",
+                tier: "Tier 2 — National",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
+                <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-bold text-foreground text-base mb-0.5">{item.title}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-0.5 rounded">{item.tier}</span>
+                    <span className="text-xs text-muted-foreground">{item.keyword}</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>

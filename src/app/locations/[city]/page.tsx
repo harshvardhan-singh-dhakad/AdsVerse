@@ -445,66 +445,192 @@ export default function LocationPage({ params }: Props) {
           </div>
         )}
 
-        {/* SERVICES SECTION */}
+        {/* SERVICES SECTION — All 3 Pillars */}
         <div id="services" className="py-24 bg-slate-50 dark:bg-slate-900 border-b border-border/40">
           <div className="container px-4 max-w-6xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold font-headline">
-                Services We Deliver in {name}
+                Services We Deliver in <span className="text-orange-600">{name}</span>
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-lg">
                 {serviceSubtitle}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Local Search & SEO",
-                  desc: "Dominate Google search results for transactional keywords in your city.",
-                  icon: <MapPin className="w-6 h-6 text-orange-500" />
-                },
-                {
-                  title: "Meta & Google Ads",
-                  desc: "Fast setup, transparent tracking, and ROI-focused campaign management.",
-                  icon: <Megaphone className="w-6 h-6 text-orange-500" />
-                },
-                {
-                  title: "WhatsApp AI Bots",
-                  desc: "Automate lead qualification and customer support on WhatsApp 24/7.",
-                  icon: <Bot className="w-6 h-6 text-orange-500" />
-                },
-                {
-                  title: "Next.js Web Development",
-                  desc: "Blazing fast, SEO-optimized websites built for high conversion rates.",
-                  icon: <Code className="w-6 h-6 text-orange-500" />
-                },
-                {
-                  title: "n8n CRM Automation",
-                  desc: "Connect your ads, forms, and WhatsApp directly into your sales team's sheets or CRM.",
-                  icon: <FileText className="w-6 h-6 text-orange-500" />
-                },
-                {
-                  title: "B2B Lead Generation",
-                  desc: "Targeted outbound campaigns to reach decision-makers in your specific industry.",
-                  icon: <Users className="w-6 h-6 text-orange-500" />
-                }
-              ].map((service, idx) => (
-                <Card key={idx} className="border-border/50 hover:border-orange-500/50 transition-colors bg-white dark:bg-slate-950">
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center mb-4 border border-orange-100 dark:border-orange-900/50">
-                      {service.icon}
-                    </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                      {service.desc}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+            {/* Pillar 1: Digital Marketing */}
+            <div className="mb-14">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center border border-orange-100 dark:border-orange-900/50">
+                  <Megaphone className="w-5 h-5 text-orange-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
+                    Digital Marketing Services in {name}
+                  </h3>
+                  {cityKey === "indore" && (
+                    <p className="text-xs text-slate-500 dark:text-slate-400">digital marketing agency in indore · seo company in indore · ad agency in indore</p>
+                  )}
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-5">
+                {[
+                  {
+                    title: cityKey === "indore" ? "SEO Services in Indore" : `Local SEO in ${name}`,
+                    desc: cityKey === "indore"
+                      ? "Top-ranked SEO company in Indore — on-page SEO, technical SEO, local SEO, and Google Business Profile ranking for Indore businesses."
+                      : `Rank higher on Google for high-intent local keywords in ${name}. On-page, technical, and local SEO optimised for your market.`,
+                    href: "/services/seo-optimization",
+                    badge: cityKey === "indore" ? "seo company in indore · 1,000/mo" : null,
+                  },
+                  {
+                    title: cityKey === "indore" ? "Google & Meta Ads — Ad Agency Indore" : `Google & Meta Ads in ${name}`,
+                    desc: cityKey === "indore"
+                      ? "Best ad agency in Indore. Google Search Ads, Meta (Facebook + Instagram) Ads — 4.8x average ROAS across all Indore ad clients."
+                      : `Performance-driven Google and Meta ad campaigns for ${name} businesses. Full attribution tracking and ROAS reporting.`,
+                    href: "/services/paid-ads",
+                    badge: cityKey === "indore" ? "ad agency in indore · 590/mo" : null,
+                  },
+                  {
+                    title: cityKey === "indore" ? "Social Media Marketing Agency Indore" : `Social Media Marketing in ${name}`,
+                    desc: cityKey === "indore"
+                      ? "Instagram, Facebook, LinkedIn management + paid amplification. Social media marketing agency in Indore with proven local results."
+                      : `Full social media management — Instagram, Facebook, LinkedIn, YouTube — content creation, community management, and paid campaigns.`,
+                    href: "/services/social-media-management",
+                    badge: cityKey === "indore" ? "social media agency in indore · 170/mo" : null,
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} className="border-border/50 hover:border-orange-500/50 transition-colors bg-white dark:bg-slate-950">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base">{item.title}</CardTitle>
+                      {item.badge && (
+                        <span className="text-xs text-slate-400">{item.badge}</span>
+                      )}
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                      <Link href={item.href} className="text-orange-500 hover:text-orange-600 text-xs font-semibold">
+                        View service →
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <div className="mt-4 text-right">
+                <Link href="/services/digital-marketing" className="text-orange-500 hover:text-orange-600 text-sm font-bold">
+                  All Digital Marketing Services →
+                </Link>
+              </div>
             </div>
+
+            {/* Pillar 2: AI Automation */}
+            <div className="mb-14">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center border border-purple-100 dark:border-purple-900/50">
+                  <Bot className="w-5 h-5 text-purple-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
+                    AI Automation Services
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Business process automation · WhatsApp AI · CRM workflow automation</p>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-5">
+                {[
+                  {
+                    title: "WhatsApp AI Bot",
+                    desc: `Persona-based AI on WhatsApp that qualifies leads, handles queries in Hinglish, and syncs to your CRM — 24/7 without human intervention.`,
+                    href: "/services/whatsapp-bot",
+                  },
+                  {
+                    title: "n8n Workflow Automation",
+                    desc: `Connect your ads, forms, CRM, and email into one automated pipeline. From lead capture to follow-up — fully automated.`,
+                    href: "/services/automation-tools",
+                  },
+                  {
+                    title: "CRM & Sales Automation",
+                    desc: `Auto lead capture, pipeline stage automation, and multi-channel follow-up sequences (email + WhatsApp + SMS) — set once, runs forever.`,
+                    href: "/services/ai-automation",
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} className="border-border/50 hover:border-purple-500/50 transition-colors bg-white dark:bg-slate-950">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base">{item.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                      <Link href={item.href} className="text-purple-500 hover:text-purple-600 text-xs font-semibold">
+                        View service →
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <div className="mt-4 text-right">
+                <Link href="/services/ai-automation" className="text-purple-500 hover:text-purple-600 text-sm font-bold">
+                  All AI Automation Services →
+                </Link>
+              </div>
+            </div>
+
+            {/* Pillar 3: Web Design */}
+            <div className="mb-4">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center border border-blue-100 dark:border-blue-900/50">
+                  <Code className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
+                    Website Design & Development{cityKey === "indore" ? " in Indore" : ""}
+                  </h3>
+                  {cityKey === "indore" && (
+                    <p className="text-xs text-slate-500 dark:text-slate-400">website design company in indore · web designing company in indore · website developer in indore</p>
+                  )}
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-5">
+                {[
+                  {
+                    title: cityKey === "indore" ? "Business Website Design Indore" : `Business Website for ${name}`,
+                    desc: cityKey === "indore"
+                      ? "Custom business websites by the top website design company in Indore. Next.js, SEO-ready, mobile-first. Starting ₹30,000."
+                      : `Professional business websites — custom design, CMS, SEO-optimized, mobile-first. Starting ₹30,000.`,
+                    badge: cityKey === "indore" ? "website design company in indore · 1,300/mo" : null,
+                  },
+                  {
+                    title: "E-Commerce Website",
+                    desc: `Full e-commerce store on Shopify or custom Next.js — product pages, cart, payment gateway, and order management. Starting ₹65,000.`,
+                    badge: null,
+                  },
+                  {
+                    title: cityKey === "indore" ? "Landing Page Design Indore" : "Landing Pages",
+                    desc: `High-converting single-page funnels for Google Ads and Meta Ads campaigns. Fast, tracked, and built to convert.`,
+                    badge: null,
+                  },
+                ].map((item, idx) => (
+                  <Card key={idx} className="border-border/50 hover:border-blue-500/50 transition-colors bg-white dark:bg-slate-950">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base">{item.title}</CardTitle>
+                      {item.badge && (
+                        <span className="text-xs text-slate-400">{item.badge}</span>
+                      )}
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                      <Link href="/services/web-design-development" className="text-blue-500 hover:text-blue-600 text-xs font-semibold">
+                        View service →
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <div className="mt-4 text-right">
+                <Link href="/services/web-design-development" className="text-blue-500 hover:text-blue-600 text-sm font-bold">
+                  All Web Design Services →
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
 

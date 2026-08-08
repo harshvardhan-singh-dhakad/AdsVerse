@@ -172,7 +172,7 @@ export default function DynamicServicePage({ params }: PageProps) {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://adsverse.in" },
-          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/our-services" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://adsverse.in/services" },
           { "@type": "ListItem", "position": 3, "name": service.name, "item": `https://adsverse.in/services/${params.slug}` },
         ],
       },
@@ -200,7 +200,7 @@ export default function DynamicServicePage({ params }: PageProps) {
         {/* Back Button */}
         <div className="mb-8">
           <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
-            <Link href="/our-services">
+            <Link href="/services">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Services
             </Link>

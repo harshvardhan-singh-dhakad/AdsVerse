@@ -240,7 +240,7 @@ export function OrbitalGraphic() {
       </div>
 
       {/* Center Core */}
-      <Link href="/our-services" aria-label="Multiverse of Marketing: View our services" className="absolute w-28 h-28 sm:w-36 sm:h-36 md:w-56 md:h-56 rounded-full glass-card flex flex-col items-center justify-center border-primary/50 z-10 text-center px-3 sm:px-4 md:px-6 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-[#0c0f18]/90 backdrop-blur-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer">
+      <Link href="/services" aria-label="Multiverse of Marketing: View our services" className="absolute w-28 h-28 sm:w-36 sm:h-36 md:w-56 md:h-56 rounded-full glass-card flex flex-col items-center justify-center border-primary/50 z-10 text-center px-3 sm:px-4 md:px-6 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-[#0c0f18]/90 backdrop-blur-2xl hover:scale-[1.03] transition-transform duration-300 cursor-pointer">
         <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2.5 md:h-2.5 bg-brand-orange rounded-full mb-1 sm:mb-2 md:mb-4 shadow-[0_0_15px_#f97316]"></div>
         <span className="font-sans text-[10px] sm:text-sm md:text-2xl leading-tight text-white mb-1 md:mb-2 font-extrabold">Multiverse of Marketing</span>
         <div className="w-6 sm:w-8 md:w-12 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent mt-1 md:mt-3"></div>

@@ -149,6 +149,7 @@ const nextConfig = {
       { source: '/locations/vijayawada', destination: '/locations/pan-india-remote', permanent: true },
       { source: '/locations/guntur', destination: '/locations/pan-india-remote', permanent: true },
       { source: '/locations/warangal', destination: '/locations/pan-india-remote', permanent: true },
+      { source: '/our-services', destination: '/services', permanent: true },
     ];
   },
   eslint: {

@@ -111,7 +111,7 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
       // Trigger IndexNow submission in background
       try {
         const serviceUrl = `https://adsverse.in/services/${getServiceSlug(data.name)}`;
-        const ourServicesUrl = `https://adsverse.in/our-services`;
+        const ourServicesUrl = `https://adsverse.in/services`;
         fetch('/api/indexnow', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

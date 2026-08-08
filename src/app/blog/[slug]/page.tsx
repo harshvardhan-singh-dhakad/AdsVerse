@@ -123,7 +123,14 @@ function processBlogContent(html: string): { cleanedHtml: string; headings: Head
   // 2. Convert any remaining H1 tags to H2 tags
   cleaned = cleaned.replace(/<h1([^>]*)>([\s\S]*?)<\/h1>/gi, "<h2$1>$2</h2>");
 
-  // 3. Extract and inject H2 heading IDs
+  // 3. Normalize internal links — replace old /our-services with /services
+  //    Covers: href="/our-services", href="/our-services#anchor",
+  //            href="https://adsverse.in/our-services", href="https://adsverse.in/our-services#anchor"
+  cleaned = cleaned
+    .replace(/href="https:\/\/adsverse\.in\/our-services(["#?])/gi, 'href="https://adsverse.in/services$1')
+    .replace(/href="\/our-services(["#?])/gi, 'href="/services$1');
+
+  // 4. Extract and inject H2 heading IDs
   let count = 0;
   const cleanedHtml = cleaned.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (match, attrs, innerText) => {
     const cleanText = innerText.replace(/<[^>]*>/g, '').trim();
@@ -146,6 +153,7 @@ function processBlogContent(html: string): { cleanedHtml: string; headings: Head
 
   return { cleanedHtml, headings };
 }
+
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getBlogPost(params.slug);

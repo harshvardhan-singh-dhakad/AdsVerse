@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   title: { absolute: "Digital Marketing and AI Automation Services | SEO, Ads, WhatsApp Bots | AdsVerse" },
   description: "AdsVerse offers 75+ digital marketing services in India — SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n workflows and web development. AI-first agency, Indore. Get free strategy call.",
   alternates: {
-    canonical: "https://adsverse.in/our-services",
+    canonical: "https://adsverse.in/services",
   },
   openGraph: {
     title: { absolute: "Digital Marketing and AI Automation Services | AdsVerse" },
     description: "75+ services: SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n automation and web development. AI-first digital marketing agency in Indore serving pan-India.",
-    url: "https://adsverse.in/our-services",
+    url: "https://adsverse.in/services",
     siteName: "AdsVerse",
     locale: "en_IN",
     type: "website",
@@ -205,7 +205,7 @@ export default async function OurServicesPage() {
     "@type": "WebPage",
     "name": "Digital Marketing & AI Automation Services | AdsVerse",
     "description": "75+ digital marketing and AI automation services — SEO, Google Ads, Meta Ads, WhatsApp bots, n8n workflows, web development. AI-first agency in Indore.",
-    "url": "https://adsverse.in/our-services",
+    "url": "https://adsverse.in/services",
     "provider": {
       "@type": "Organization",
       "name": "AdsVerse",
@@ -218,21 +218,21 @@ export default async function OurServicesPage() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "AdsVerse Digital Marketing Services",
-    "url": "https://adsverse.in/our-services",
+    "url": "https://adsverse.in/services",
     "numberOfItems": 12,
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Social Media Marketing", "url": "https://adsverse.in/our-services#social-media" },
-      { "@type": "ListItem", "position": 2, "name": "SEO Services", "url": "https://adsverse.in/our-services#seo" },
-      { "@type": "ListItem", "position": 3, "name": "Content Marketing", "url": "https://adsverse.in/our-services#content" },
-      { "@type": "ListItem", "position": 4, "name": "PPC & Paid Ads", "url": "https://adsverse.in/our-services#paid-ads" },
-      { "@type": "ListItem", "position": 5, "name": "E-Commerce Marketing", "url": "https://adsverse.in/our-services#ecommerce" },
-      { "@type": "ListItem", "position": 6, "name": "Email Marketing", "url": "https://adsverse.in/our-services#email" },
-      { "@type": "ListItem", "position": 7, "name": "Graphic Design", "url": "https://adsverse.in/our-services#design" },
-      { "@type": "ListItem", "position": 8, "name": "Web Development", "url": "https://adsverse.in/our-services#web-dev" },
-      { "@type": "ListItem", "position": 9, "name": "Online Reputation Management", "url": "https://adsverse.in/our-services#orm" },
-      { "@type": "ListItem", "position": 10, "name": "Analytics & Tracking", "url": "https://adsverse.in/our-services#analytics" },
-      { "@type": "ListItem", "position": 11, "name": "Video Production", "url": "https://adsverse.in/our-services#video" },
-      { "@type": "ListItem", "position": 12, "name": "Branding & Strategy", "url": "https://adsverse.in/our-services#branding" }
+      { "@type": "ListItem", "position": 1, "name": "Social Media Marketing", "url": "https://adsverse.in/services#social-media" },
+      { "@type": "ListItem", "position": 2, "name": "SEO Services", "url": "https://adsverse.in/services#seo" },
+      { "@type": "ListItem", "position": 3, "name": "Content Marketing", "url": "https://adsverse.in/services#content" },
+      { "@type": "ListItem", "position": 4, "name": "PPC & Paid Ads", "url": "https://adsverse.in/services#paid-ads" },
+      { "@type": "ListItem", "position": 5, "name": "E-Commerce Marketing", "url": "https://adsverse.in/services#ecommerce" },
+      { "@type": "ListItem", "position": 6, "name": "Email Marketing", "url": "https://adsverse.in/services#email" },
+      { "@type": "ListItem", "position": 7, "name": "Graphic Design", "url": "https://adsverse.in/services#design" },
+      { "@type": "ListItem", "position": 8, "name": "Web Development", "url": "https://adsverse.in/services#web-dev" },
+      { "@type": "ListItem", "position": 9, "name": "Online Reputation Management", "url": "https://adsverse.in/services#orm" },
+      { "@type": "ListItem", "position": 10, "name": "Analytics & Tracking", "url": "https://adsverse.in/services#analytics" },
+      { "@type": "ListItem", "position": 11, "name": "Video Production", "url": "https://adsverse.in/services#video" },
+      { "@type": "ListItem", "position": 12, "name": "Branding & Strategy", "url": "https://adsverse.in/services#branding" }
     ]
   };
 

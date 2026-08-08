@@ -403,7 +403,7 @@ export default function HomePage() {
           {/* More Services CTA */}
           <div className="flex justify-center mt-12 md:mt-16">
             <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-8 md:px-12 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-primary/10 hover:border-primary/50 transition-all text-base md:text-lg border border-border-glass group">
-              <Link href="/our-services" prefetch={false} aria-label="More Services — View all our digital marketing services" className="flex items-center gap-2">
+              <Link href="/services" prefetch={false} aria-label="More Services — View all our digital marketing services" className="flex items-center gap-2">
                 More Services
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
