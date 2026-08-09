@@ -93,34 +93,6 @@ export function SubscriptionsPanel() {
   });
 
   useEffect(() => {
-    if (typeof navigator !== 'undefined' && 'modelContext' in navigator) {
-      try {
-        (navigator as any).modelContext.registerTool({
-          name: 'searchAdminSubscriptions',
-          description: 'Search through client subscriptions by UID, Razorpay ID, or site URL in the admin panel.',
-          annotations: { readOnlyHint: true },
-          inputSchema: {
-            type: 'object',
-            properties: {
-              searchQuery: { type: 'string', description: 'The search term to filter subscriptions.' }
-            },
-            required: ['searchQuery']
-          },
-          execute: async (args: any) => {
-            setSearch(args.searchQuery || '');
-            return {
-              status: 'success',
-              message: `Search query set to "${args.searchQuery}"`
-            };
-          }
-        });
-      } catch (err) {
-        console.error('Failed to register WebMCP tool', err);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     const { firestore } = initializeFirebase();
 
     const subsUnsub = onSnapshot(

@@ -104,7 +104,7 @@ export default function LoginPage() {
   };
 
   const emailPasswordForm = (handler: (e: React.FormEvent) => Promise<void>, buttonText: string, isSignUp = false) => (
-    <form toolname="adminLogin" tooldescription="Login to the AdsVerse admin dashboard" onSubmit={handler} className="space-y-4">
+    <form onSubmit={handler} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor={`email-${isSignUp ? 'signup' : 'login'}`}>Email</Label>
         <Input

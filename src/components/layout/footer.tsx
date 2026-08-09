@@ -37,7 +37,7 @@ export function Footer() {
               <div className="space-y-2 pt-2 border-t border-border/20">
                 <p className="flex items-start gap-2">
                   <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <span>329/11, Meghdoot Nagar, Indore, MP 452011</span>
+                  <span>Vijay Nagar, Indore, Madhya Pradesh - 452010</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-primary shrink-0" />
@@ -101,7 +101,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-foreground">Newsletter</h3>
             <p className="text-sm text-slate-800 dark:text-muted-foreground mb-2">Stay updated with our latest insights.</p>
-            <form toolname="subscribeNewsletter" tooldescription="Subscribe to the AdsVerse newsletter" className="flex space-x-2">
+            <form className="flex space-x-2">
               <Input type="email" placeholder="Enter your email" className="flex-1" aria-label="Email for newsletter subscription" />
               <Button type="submit" size="icon" className="bg-accent hover:bg-accent/90" aria-label="Subscribe to newsletter">
                 <Send className="h-4 w-4" aria-hidden="true" />

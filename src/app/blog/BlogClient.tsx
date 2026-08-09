@@ -59,35 +59,6 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
     setActiveCategory(initialCategory);
   }, [initialCategory]);
 
-  useEffect(() => {
-    if (typeof navigator !== 'undefined' && 'modelContext' in navigator) {
-      try {
-        (navigator as any).modelContext.registerTool({
-          name: 'filterBlogPosts',
-          description: 'Filter blog posts by category.',
-          annotations: { readOnlyHint: true },
-          inputSchema: {
-            type: 'object',
-            properties: {
-              categoryId: { type: 'string', description: 'Category ID to filter by (e.g. all, seo, paid-ads)' }
-            },
-            required: ['categoryId']
-          },
-          execute: async (args: any) => {
-            setActiveCategory(args.categoryId || 'all');
-            setVisibleCount(15);
-            return {
-              status: 'success',
-              message: `Blog posts filtered by ${args.categoryId || 'all'}`
-            };
-          }
-        });
-      } catch (err) {
-        console.error('Failed to register WebMCP tool', err);
-      }
-    }
-  }, []);
-
   // Filter posts in-memory
   const filteredPosts = useMemo(() => {
     if (activeCategory === 'all') {
