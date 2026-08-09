@@ -111,7 +111,7 @@ export function ContactForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(processForm)} className="space-y-6">
+      <form toolname="submitContactForm" tooldescription="Submit a contact form to get in touch with AdsVerse" onSubmit={form.handleSubmit(processForm)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"

@@ -243,7 +243,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="p-6">
-                <form onSubmit={handleAddSite} className="flex gap-3 mb-6">
+                <form toolname="addWebsite" tooldescription="Add a new client website to track in the dashboard" onSubmit={handleAddSite} className="flex gap-3 mb-6">
                   <Input 
                     type="url" 
                     placeholder="https://yourwebsite.com" 

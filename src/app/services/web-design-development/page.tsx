@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 
 const service = {
   id: 'web-design-development',
-  icon: <Code className="w-12 h-12 text-accent" />,
+  icon: <Code className="w-12 h-12 text-primary" />,
   title: 'Web Design & Development',
   description: [
      {
@@ -166,7 +166,7 @@ export default function WebDesignDevelopmentPage() {
       <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-6">{service.icon}</div>
-          <div className="inline-flex items-center justify-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent mb-4 mx-auto">
+          <div className="inline-flex items-center justify-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4 mx-auto">
             website design company in indore · 1,300/mo | web designing company in indore · 1,300/mo
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">Website Design &amp; Development Company in Indore</h1>
@@ -184,7 +184,7 @@ export default function WebDesignDevelopmentPage() {
             </div>
             <Card className="bg-background/50 sticky top-24">
               <CardHeader>
-                <CardTitle className="text-accent text-2xl font-headline">{service.pricing.title}</CardTitle>
+                <CardTitle className="text-primary text-2xl font-headline">{service.pricing.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-4xl font-extrabold mb-4">{service.pricing.price} <span className="text-lg font-normal text-muted-foreground">{service.pricing.frequency}</span></p>
@@ -198,7 +198,7 @@ export default function WebDesignDevelopmentPage() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                <Button asChild className="w-full bg-primary hover:bg-primary/90">
                   <Link href="/contact">Get Started</Link>
                 </Button>
               </CardFooter>
@@ -246,7 +246,7 @@ export default function WebDesignDevelopmentPage() {
               <Card key={i} className="bg-card/30 border border-border/40 p-6 flex flex-col justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-accent shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-primary shrink-0" />
                     {item.title}
                   </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
@@ -269,7 +269,7 @@ export default function WebDesignDevelopmentPage() {
               { step: "Step 6", title: "Handoff & Support", desc: "We configure domain records, deploy live, provide complete backend management training, and cover post-launch updates." }
             ].map((p, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
-                <div className="h-8 w-16 bg-accent/10 border border-accent/20 rounded flex items-center justify-center text-xs font-bold text-accent shrink-0">
+                <div className="h-8 w-16 bg-primary/10 border border-primary/20 rounded flex items-center justify-center text-xs font-bold text-primary shrink-0">
                   {p.step}
                 </div>
                 <div>
@@ -292,7 +292,7 @@ export default function WebDesignDevelopmentPage() {
               { type: "SaaS Product Companies", desc: "Tech firms wanting high-converting landing pages, interactive product showcases, and CMS-backed blogs." }
             ].map((w, i) => (
               <div key={i} className="p-5 rounded-xl border border-border/30 bg-card/20">
-                <h4 className="font-bold text-accent mb-2">{w.type}</h4>
+                <h4 className="font-bold text-primary mb-2">{w.type}</h4>
                 <p className="text-muted-foreground text-sm leading-relaxed">{w.desc}</p>
               </div>
             ))}
@@ -345,11 +345,11 @@ export default function WebDesignDevelopmentPage() {
               },
             ].map((item, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
-                <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-1" />
+                <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-foreground text-base mb-0.5">{item.title}</h3>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-0.5 rounded">{item.tier}</span>
+                    <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded">{item.tier}</span>
                     <span className="text-xs text-muted-foreground">{item.keyword}</span>
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>

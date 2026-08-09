@@ -73,7 +73,7 @@ export default function PhoneModal({ userName, uid, onDone }: PhoneModalProps) {
           </p>
         </div>
 
-        <form onSubmit={handleSave} className="space-y-4">
+        <form toolname="seoAuditPhoneCollection" tooldescription="Submit phone number to complete SEO audit authorization" onSubmit={handleSave} className="space-y-4">
           <div>
             <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
               Mobile Number

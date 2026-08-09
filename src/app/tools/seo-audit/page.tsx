@@ -230,7 +230,7 @@ export default function AdsVerseAuditPage() {
           </h1>
           <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
 
-          <form onSubmit={startAnalysis} className="url-row focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20">
+          <form toolname="runSeoAudit" tooldescription="Run an SEO audit on a specific website URL" onSubmit={startAnalysis} className="url-row focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20">
             <div className="url-input-wrap">
               <span className="text-xl mr-2 opacity-50">🌐</span>
               <input type="url" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://yourwebsite.com" required />

@@ -170,7 +170,7 @@ export default function AuthWall() {
           </div>
 
           {/* Email form */}
-          <form onSubmit={handleEmailAuth} className="space-y-4">
+          <form toolname="seoAuditEmailAuth" tooldescription="Submit email address to access the SEO audit tool" onSubmit={handleEmailAuth} className="space-y-4">
             {/* Email */}
             <div>
               <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">

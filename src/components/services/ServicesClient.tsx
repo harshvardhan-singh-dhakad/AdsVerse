@@ -1,7 +1,7 @@
 "use client";
 
 import { DM_CATEGORIES, AI_CATEGORIES, getServicePrice, getServiceSlug } from "@/lib/services-data";
-import { useState, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { ArrowRight, Zap, TrendingUp, Star, Users, Loader2, ChevronLeft, ChevronRight, CheckCircle, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -260,6 +260,38 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
   const [mainTab, setMainTab] = useState("dm");
   const [dmCat, setDmCat] = useState("all");
   const [aiCat, setAiCat] = useState("all");
+
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && 'modelContext' in navigator) {
+      try {
+        (navigator as any).modelContext.registerTool({
+          name: 'filterServices',
+          description: 'Filter the list of 75+ AdsVerse services by category. Useful for displaying relevant services to the user based on their intent.',
+          annotations: { readOnlyHint: true },
+          inputSchema: {
+            type: 'object',
+            properties: {
+              mainTab: { type: 'string', enum: ['dm', 'ai'], description: 'The main tab to switch to (Digital Marketing or AI & Automation).' },
+              category: { type: 'string', description: 'The sub-category ID (e.g. all, seo, paid-ads, web, auto-whatsapp, etc.). Default is all.' }
+            },
+            required: ['mainTab']
+          },
+          execute: async (args: any) => {
+            const { mainTab: tab, category = 'all' } = args;
+            setMainTab(tab);
+            if (tab === 'dm') setDmCat(category);
+            if (tab === 'ai') setAiCat(category);
+            return {
+              status: 'success',
+              message: `Switched to ${tab} tab with category ${category}`,
+            };
+          }
+        });
+      } catch (err) {
+        console.error('Failed to register WebMCP tool', err);
+      }
+    }
+  }, []);
   
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   const [isBookingOpen, setIsBookingOpen] = useState(false);

@@ -178,9 +178,9 @@ export default function AIAutomationPage() {
         <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 mb-16">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-6">
-              <Bot className="w-12 h-12 text-accent" />
+              <Bot className="w-12 h-12 text-primary" />
             </div>
-            <div className="inline-flex items-center justify-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent mb-4 mx-auto">
+            <div className="inline-flex items-center justify-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4 mx-auto">
               AI Automation Agency · 2,400+ searches/mo · +81% YoY demand
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">
@@ -251,7 +251,7 @@ export default function AIAutomationPage() {
               { title: "Automated Reporting & Scheduling", desc: "Cron-based automation for daily reports, data sync, batch jobs, and scheduled notifications." },
             ].map((item, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
-                <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-1" />
+                <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-foreground text-base mb-1">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
@@ -298,10 +298,10 @@ export default function AIAutomationPage() {
           </p>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: <Building2 className="w-8 h-8 text-accent" />, industry: "Real Estate", use: "Lead capture → WhatsApp qualification → CRM entry → agent assignment. 0 manual steps." },
-              { icon: <ShoppingCart className="w-8 h-8 text-accent" />, industry: "E-Commerce", use: "Order sync, stock alerts, return workflows, Shiprocket status updates on WhatsApp." },
-              { icon: <Headphones className="w-8 h-8 text-accent" />, industry: "BPO & Support", use: "Ticket routing, auto-reply bots, escalation logic, and SLA monitoring dashboards." },
-              { icon: <Users className="w-8 h-8 text-accent" />, industry: "Education & Coaching", use: "Admission inquiry bots, batch notification, fee reminder sequences, and enquiry CRM." },
+              { icon: <Building2 className="w-8 h-8 text-primary" />, industry: "Real Estate", use: "Lead capture → WhatsApp qualification → CRM entry → agent assignment. 0 manual steps." },
+              { icon: <ShoppingCart className="w-8 h-8 text-primary" />, industry: "E-Commerce", use: "Order sync, stock alerts, return workflows, Shiprocket status updates on WhatsApp." },
+              { icon: <Headphones className="w-8 h-8 text-primary" />, industry: "BPO & Support", use: "Ticket routing, auto-reply bots, escalation logic, and SLA monitoring dashboards." },
+              { icon: <Users className="w-8 h-8 text-primary" />, industry: "Education & Coaching", use: "Admission inquiry bots, batch notification, fee reminder sequences, and enquiry CRM." },
             ].map((item, i) => (
               <Card key={i} className="bg-card/30 border border-border/40 p-5">
                 <div className="mb-3">{item.icon}</div>
@@ -351,7 +351,7 @@ export default function AIAutomationPage() {
               { step: "Step 6", title: "Training & Support", desc: "We train your team, provide a monitoring dashboard, and offer ongoing support as your business scales." },
             ].map((p, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
-                <div className="h-8 w-16 bg-accent/10 border border-accent/20 rounded flex items-center justify-center text-xs font-bold text-accent shrink-0">
+                <div className="h-8 w-16 bg-primary/10 border border-primary/20 rounded flex items-center justify-center text-xs font-bold text-primary shrink-0">
                   {p.step}
                 </div>
                 <div>
@@ -376,9 +376,9 @@ export default function AIAutomationPage() {
                 Automated the entire WhatsApp → lead qualification → Zoho CRM pipeline. Result: 4.8x ROAS on ad spend, zero manual data entry, and 100% of leads followed up within 3 minutes.
               </p>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">4.8x ROAS</span>
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">3-min follow-up</span>
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">Zero manual entry</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">4.8x ROAS</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">3-min follow-up</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">Zero manual entry</span>
               </div>
             </Card>
             <Card className="bg-card/50 border border-border/40 p-6">
@@ -390,9 +390,9 @@ export default function AIAutomationPage() {
                 Deployed an AI voice caller that handles initial lead contact, qualification, and appointment scheduling automatically — running 24/7 without human intervention.
               </p>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">24/7 operation</span>
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">60% cost reduction</span>
-                <span className="text-xs bg-accent/10 text-accent border border-accent/20 px-2 py-1 rounded">3x bookings</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">24/7 operation</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">60% cost reduction</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">3x bookings</span>
               </div>
             </Card>
           </div>
@@ -431,7 +431,7 @@ export default function AIAutomationPage() {
             {packages.map((pkg) => (
               <Card key={pkg.title} className="bg-card/50 backdrop-blur-sm flex flex-col">
                 <CardHeader>
-                  <CardTitle className="text-accent text-2xl font-headline">{pkg.title}</CardTitle>
+                  <CardTitle className="text-primary text-2xl font-headline">{pkg.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <p className="text-4xl font-extrabold mb-4">
@@ -447,7 +447,7 @@ export default function AIAutomationPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full bg-accent hover:bg-accent/90">
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
                     <Link href="/contact">Get Started</Link>
                   </Button>
                 </CardFooter>
@@ -457,7 +457,7 @@ export default function AIAutomationPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="rounded-2xl bg-gradient-to-r from-accent/20 to-primary/20 border border-border/40 p-10 text-center mb-16">
+        <section className="rounded-2xl bg-gradient-to-r from-primary/20 to-primary/20 border border-border/40 p-10 text-center mb-16">
           <h2 className="text-3xl font-bold font-headline mb-4">
             Ready to Automate Your Business?
           </h2>

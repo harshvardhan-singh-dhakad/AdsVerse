@@ -134,7 +134,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(processForm)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
+      <form toolname="createPricingPlan" tooldescription="Create a new pricing plan in the admin panel" onSubmit={form.handleSubmit(processForm)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}

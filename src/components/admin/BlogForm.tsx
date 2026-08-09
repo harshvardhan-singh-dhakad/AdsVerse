@@ -509,7 +509,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form toolname="createBlogPost" tooldescription="Create a new blog post in the admin panel" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
           {/* Card 1: Core Content — Hidden in Full HTML Mode */}
           {!isFullHtmlMode && (

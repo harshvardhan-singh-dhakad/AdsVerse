@@ -131,7 +131,7 @@ export default function DigitalMarketingPage() {
         <Card className="bg-card/50 backdrop-blur-sm transition-all duration-300 mb-16">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-6">
-              <Megaphone className="w-12 h-12 text-accent" />
+              <Megaphone className="w-12 h-12 text-primary" />
             </div>
             <div className="inline-flex items-center justify-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4 mx-auto">
               digital marketing agency in indore · 3,600 searches/mo
@@ -185,7 +185,7 @@ export default function DigitalMarketingPage() {
               { title: "Off-Page SEO & Link Building", desc: "High-authority backlinks, digital PR, and guest posting from relevant Indian and international domains.", href: "/services/seo-optimization" },
             ].map((item, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-border/30 bg-card/10">
-                <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-1" />
+                <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-1" />
                 <div>
                   <Link href={item.href} className="font-bold text-foreground text-base mb-1 hover:text-primary transition-colors block">
                     {item.title} →
@@ -298,7 +298,7 @@ export default function DigitalMarketingPage() {
             <Brain className="w-7 h-7 text-primary" />
             <h2 className="text-3xl font-bold text-primary font-headline">GEO & AEO — Our AI Search Advantage</h2>
           </div>
-          <div className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent mb-2">
+          <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-2">
             Differentiator — Few Indore agencies offer this
           </div>
           <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4 max-w-none">
@@ -315,7 +315,7 @@ export default function DigitalMarketingPage() {
               { title: "FAQ & AEO Content", desc: "Question-format content optimised to appear in 'People Also Ask', AI Overviews, and AI chatbot responses." },
               { title: "Brand Citation Building", desc: "Getting your business mentioned across authoritative sources that AI models use as training references." },
             ].map((item, i) => (
-              <Card key={i} className="bg-card/30 border border-accent/20 p-5">
+              <Card key={i} className="bg-card/30 border border-primary/20 p-5">
                 <h3 className="font-bold text-foreground mb-2">{item.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
               </Card>
@@ -381,7 +381,7 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="rounded-2xl bg-gradient-to-r from-primary/20 to-accent/20 border border-border/40 p-10 text-center mb-16">
+        <section className="rounded-2xl bg-gradient-to-r from-primary/20 to-primary/20 border border-border/40 p-10 text-center mb-16">
           <h2 className="text-3xl font-bold font-headline mb-4">
             Best Digital Marketing Agency in Indore — Free Strategy Call
           </h2>
