@@ -1,5 +1,6 @@
 
-export const revalidate = 600; // Cache for 10 minutes
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 import { Metadata } from "next";
 import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
@@ -16,9 +17,36 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const FALLBACK_POSTS = [
+  {
+    id: "seo-trends-2026",
+    slug: "seo-trends-2026",
+    title: "Top SEO & GEO Search Trends for 2026",
+    excerpt: "Discover how AI search engines, answer engine optimization, and semantic search are reshaping Google rankings in 2026.",
+    imageUrl: "/images/og-adsverse-2026.png",
+    category: "seo",
+    publishedDate: "2026-01-10",
+    author: "Deepak Dhakad",
+    isFeatured: true,
+  },
+  {
+    id: "meta-ads-scaling-guide",
+    slug: "meta-ads-scaling-guide",
+    title: "How to Scale Meta Ads to ₹50L+ Revenue",
+    excerpt: "Learn the exact ad creative structure, Advantage+ campaign setups, and custom audience strategies we use to scale D2C brands.",
+    imageUrl: "/images/og-adsverse-2026.png",
+    category: "paid-ads",
+    publishedDate: "2026-01-05",
+    author: "Deepak Dhakad",
+    isFeatured: false,
+  },
+];
+
 async function getBlogPosts() {
+  if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
+    return FALLBACK_POSTS;
+  }
   try {
-    // Use public_blogPosts — publicly readable, contains only published posts
     const now = new Date().toISOString();
     const q = query(
       collection(db, "public_blogPosts"),
@@ -27,30 +55,25 @@ async function getBlogPosts() {
       limit(200)
     );
     const snap = await getDocs(q);
-    const posts = snap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as any[];
-
-    // Sort in-memory: Featured posts first, then by publishedDate (already done by query)
-    return posts.sort((a, b) => {
-      if (a.isFeatured && !b.isFeatured) return -1;
-      if (!a.isFeatured && b.isFeatured) return 1;
-      return 0;
-    });
+    if (snap && snap.docs && snap.docs.length > 0) {
+      const posts = snap.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      return posts.sort((a: any, b: any) => {
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
+        return 0;
+      });
+    }
+    return FALLBACK_POSTS;
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    return [];
+    return FALLBACK_POSTS;
   }
 }
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: { category?: string };
-}) {
+export default async function BlogPage() {
   const posts = await getBlogPosts();
-  const initialCategory = searchParams?.category || 'all';
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -68,10 +91,10 @@ export default async function BlogPage({
     },
     "blogPost": posts.map(post => ({
       "@type": "BlogPosting",
-      "headline": post.title,
-      "description": post.excerpt,
-      "image": post.imageUrl,
-      "datePublished": post.publishedDate,
+      "headline": post.title || "AdsVerse Insight",
+      "description": post.excerpt || "Digital marketing and AI automation strategies.",
+      "image": post.imageUrl || "https://adsverse.in/images/og-adsverse-2026.png",
+      "datePublished": typeof post.publishedDate === 'string' ? post.publishedDate : "2026-01-01",
       "author": {
         "@type": "Person",
         "name": post.author || "Deepak Dhakad",
@@ -96,7 +119,7 @@ export default async function BlogPage({
           </p>
         </section>
 
-        <BlogClient initialPosts={posts} initialCategory={initialCategory} />
+        <BlogClient initialPosts={posts} />
       </div>
     </>
   );

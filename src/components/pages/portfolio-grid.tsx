@@ -8,23 +8,61 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy } from "firebase/firestore";
 import { type PortfolioItem as PortfolioItemType } from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
 
 const filters = ["all", "web", "seo", "branding", "digital launch"];
 
+const FALLBACK_PORTFOLIO_ITEMS: PortfolioItemType[] = [
+  {
+    id: "1",
+    title: "E-Commerce Brand Scaling (Meta & Google Ads)",
+    category: "digital launch",
+    imageUrl: "/images/og-adsverse-2026.png",
+    description: "<p>Scaled a D2C fashion brand from ₹5L to ₹45L monthly revenue with 4.2x ROAS using high-converting Meta Ads and Google Shopping campaigns.</p>",
+    projectDate: "2026-01-15",
+  },
+  {
+    id: "2",
+    title: "Local Healthcare Clinic 10x Lead Growth",
+    category: "seo",
+    imageUrl: "/images/og-adsverse-2026.png",
+    description: "<p>Dominates top 3 local pack rankings across 25 high-intent medical search terms in Indore. Increased monthly appointment inquiries by 340%.</p>",
+    projectDate: "2025-11-20",
+  },
+  {
+    id: "3",
+    title: "B2B SaaS WhatsApp Lead Automation",
+    category: "web",
+    imageUrl: "/images/og-adsverse-2026.png",
+    description: "<p>Built an automated n8n & Gemini AI chatbot workflow connecting Instagram DMs directly to WhatsApp and Zoho CRM for instant lead qualification.</p>",
+    projectDate: "2025-10-10",
+  },
+];
+
 export function PortfolioGrid() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedItem, setSelectedItem] = useState<PortfolioItemType | null>(null);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItemType[]>(FALLBACK_PORTFOLIO_ITEMS);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const firestore = useFirestore();
-  const portfolioQuery = useMemoFirebase(() =>
-    query(collection(firestore, 'portfolioItems'), orderBy('projectDate', 'desc')),
-    [firestore]
-  );
-  const { data: portfolioItems, isLoading } = useCollection<PortfolioItemType>(portfolioQuery);
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const { collection, query, orderBy, getDocs } = await import("firebase/firestore");
+        const { db } = await import("@/lib/firebase-server");
+        const q = query(collection(db, "portfolioItems"), orderBy("projectDate", "desc"));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          const items = snap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as PortfolioItemType[];
+          setPortfolioItems(items);
+        }
+      } catch (e) {
+        // Keep static fallback
+      }
+    }
+    fetchItems();
+  }, []);
   
   useEffect(() => {
     const body = document.body;

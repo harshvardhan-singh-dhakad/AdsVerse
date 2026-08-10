@@ -184,9 +184,12 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | 
  * @returns {UserHookResult} Object with user, isUserLoading, userError.
  */
 export const useUser = (): UserHookResult => {
+  if (typeof FirebaseContext === 'undefined' || !FirebaseContext) {
+    return { user: null, isUserLoading: false, userError: null };
+  }
   const context = useContext(FirebaseContext);
   if (!context) {
-    return { user: null, isUserLoading: true, userError: null };
+    return { user: null, isUserLoading: false, userError: null };
   }
   return {
     user: context.user ?? null,

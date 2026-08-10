@@ -1,12 +1,19 @@
 'use client';
 
 import { FirebaseClientProvider } from "@/firebase";
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 
-// Client layout — wraps the SEO audit page in FirebaseProvider
-// so useUser() / useFirebase() hooks work correctly.
-// This is the same pattern used by /admin/layout.tsx
 export default function SEOAuditClientLayout({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <>{children}</>;
+  }
+
   return (
     <FirebaseClientProvider>
       {children}

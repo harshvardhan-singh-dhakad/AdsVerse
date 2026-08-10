@@ -6,7 +6,6 @@ import {
   Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
-import { useUser } from '@/firebase/provider';
 import { initializeFirebase } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { getApp } from 'firebase/app';
@@ -14,7 +13,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import dynamic from 'next/dynamic';
 import './styles.css';
 
-// Lazy-load tool-internal components
 const AuthWall = dynamic(() => import('./AuthWall'), { ssr: false });
 const PhoneModal = dynamic(() => import('./PhoneModal'), { ssr: false });
 
@@ -26,8 +24,31 @@ const AUDIT_STEPS = [
   { id: 5, label: 'Generating your full report...', duration: 1500 },
 ];
 
+function useAuditUser() {
+  const [user, setUser] = useState<any>(null);
+  const [isUserLoading, setIsUserLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const { getAuth, onAuthStateChanged } = require("firebase/auth");
+      const { getApp } = require("firebase/app");
+      const auth = getAuth(getApp());
+      const unsubscribe = onAuthStateChanged(auth, (u: any) => {
+        setUser(u);
+        setIsUserLoading(false);
+      });
+      return () => unsubscribe();
+    } catch {
+      setIsUserLoading(false);
+    }
+  }, []);
+
+  return { user, isUserLoading };
+}
+
 export default function AdsVerseAuditPage() {
-  const { user, isUserLoading } = useUser();
+  const [isMounted, setIsMounted] = useState(false);
+  const { user, isUserLoading } = useAuditUser();
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -48,6 +69,10 @@ export default function AdsVerseAuditPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const analysisErrorRef = useRef<{ message: string; status?: number; data?: any } | null>(null);
   const analysisResultRef = useRef<AnalysisResult | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Profile Check
   useEffect(() => {
@@ -196,7 +221,20 @@ export default function AdsVerseAuditPage() {
     } catch {}
   };
 
-  if (isUserLoading) return <div className="min-h-screen bg-[#060912]" />;
+  if (!isMounted || isUserLoading) {
+    return (
+      <div className="rankai-app min-h-screen bg-[#060912]">
+        <section className="hero">
+          <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
+          <h1 className="hero-heading">
+            Analyze Your Website for<br/>
+            <span className="grad-seo">SEO</span><span className="dot-sep"> · </span><span className="grad-geo">GEO</span><span className="dot-sep"> · </span><span className="grad-aeo">AEO</span>
+          </h1>
+          <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="rankai-app">
@@ -218,7 +256,7 @@ export default function AdsVerseAuditPage() {
         </div>
       </nav>
 
-      {showAuthModal && (
+      {isMounted && showAuthModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="relative w-full max-w-md my-8">
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">✕</button>
@@ -227,7 +265,7 @@ export default function AdsVerseAuditPage() {
         </div>
       )}
 
-      {showPhoneModal && user && (
+      {isMounted && showPhoneModal && user && (
         <PhoneModal userName={user.displayName ?? user.email ?? 'there'} uid={user.uid} onDone={() => setShowPhoneModal(false)} />
       )}
 

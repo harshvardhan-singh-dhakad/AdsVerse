@@ -307,14 +307,8 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative z-10 min-h-screen flex flex-col">
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all"
-            >
-              Skip to main content
-            </a>
             <BackgroundEffects />
-            <Header navLinks={navLinks} latestPosts={await getLatestPosts()} />
+            <Header navLinks={navLinks} latestPosts={[]} />
             <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
             </main>

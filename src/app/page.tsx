@@ -25,8 +25,8 @@ import {
 } from "lucide-react";
 
 import { AnimatedCounter } from "@/components/pages/animated-counter";
-const FAQAccordion = dynamic(() => import('@/components/pages/faq-accordion').then(mod => mod.FAQAccordion));
-const OrbitalGraphic = dynamic(() => import('@/components/pages/orbital-graphic').then(mod => mod.OrbitalGraphic));
+import { FAQAccordion } from "@/components/pages/faq-accordion";
+import { OrbitalGraphic } from "@/components/pages/orbital-graphic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

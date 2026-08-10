@@ -51,13 +51,17 @@ interface BlogClientProps {
   initialCategory?: string;
 }
 
-export default function BlogClient({ initialPosts, initialCategory = 'all' }: BlogClientProps) {
-  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
+export default function BlogClient({ initialPosts = [] }: BlogClientProps) {
+  const [activeCategory, setActiveCategory] = useState<string>('all');
   const [visibleCount, setVisibleCount] = useState<number>(15);
 
   useEffect(() => {
-    setActiveCategory(initialCategory);
-  }, [initialCategory]);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('category');
+      if (cat) setActiveCategory(cat);
+    } catch {}
+  }, []);
 
   // Filter posts in-memory
   const filteredPosts = useMemo(() => {
@@ -90,15 +94,7 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
 
   return (
     <>
-      <style>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+
 
       {/* Categories Tab Bar */}
       <div className="w-full flex items-center gap-2 overflow-x-auto pb-4 mb-12 no-scrollbar justify-start lg:justify-center flex-nowrap lg:flex-wrap px-2">
@@ -127,8 +123,8 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
                 <Card key={post.id} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
                   <div className="relative h-64 w-full overflow-hidden">
                     <Image 
-                      src={post.imageUrl}
-                      alt={post.title}
+                      src={post.imageUrl || "/images/og-adsverse-2026.png"}
+                      alt={post.title || "Blog post"}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -136,7 +132,7 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
                     />
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
                       <Badge className="bg-accent/90 backdrop-blur-sm text-white border-none px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
-                        {CATEGORIES.find(c => c.id === post.category)?.label || post.category}
+                        {CATEGORIES.find(c => c.id === post.category)?.label || post.category || "General"}
                       </Badge>
                       {post.isFeatured && (
                         <Badge className="bg-primary/90 backdrop-blur-sm text-white border-none px-3 py-1 text-[10px] font-bold uppercase tracking-wider animate-pulse">
@@ -151,15 +147,15 @@ export default function BlogClient({ initialPosts, initialCategory = 'all' }: Bl
                       <span className="flex items-center gap-1"><User className="w-3 h-3 text-accent" /> {post.author || "Deepak Dhakad"}</span>
                     </div>
                     <CardTitle className="font-headline text-2xl leading-tight group-hover:text-primary transition-colors cursor-pointer capitalize">
-                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                      <Link href={`/blog/${post.slug || post.id || ''}`}>{post.title || "Untitled Insight"}</Link>
                     </CardTitle>
                     <CardDescription className="line-clamp-3 text-sm leading-relaxed text-slate-800 dark:text-muted-foreground">
-                      {post.excerpt}
+                      {post.excerpt || "Read full digital marketing insights from AdsVerse."}
                     </CardDescription>
                   </CardHeader>
                   <CardFooter className="mt-auto pt-6 border-t border-primary/5">
                     <Button asChild variant="link" className="p-0 text-accent group-hover:gap-3 transition-all">
-                      <Link href={`/blog/${post.slug}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
+                      <Link href={`/blog/${post.slug || post.id || ''}`} className="flex items-center font-bold uppercase tracking-wider text-xs">
                         Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

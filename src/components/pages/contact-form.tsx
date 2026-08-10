@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useFirestore } from "@/firebase";
+import { db } from "@/lib/firebase-server";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
@@ -52,7 +52,6 @@ type FormData = z.infer<typeof formSchema>;
 
 export function ContactForm() {
   const { toast } = useToast();
-  const firestore = useFirestore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormData>({
@@ -69,7 +68,7 @@ export function ContactForm() {
   const processForm = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      const leadsCollection = collection(firestore, "leads");
+      const leadsCollection = collection(db, "leads");
       const leadData = {
           name: data.name,
           email: data.email,
@@ -91,7 +90,7 @@ export function ContactForm() {
     } catch (e: any) {
       console.error("Lead form submission error:", e);
 
-      const leadsCollection = collection(firestore, "leads");
+      const leadsCollection = collection(db, "leads");
       const permissionError = new FirestorePermissionError({
         path: leadsCollection.path,
         operation: 'create',

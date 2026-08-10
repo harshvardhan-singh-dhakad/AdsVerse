@@ -1,8 +1,8 @@
-// Server component — exports metadata for /tools/seo-audit
-// The actual Firebase wrapping happens inside the client layout nested below.
 import { Metadata } from "next";
 import SEOAuditClientLayout from "./client-layout";
 import { ReactNode } from "react";
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: { absolute: "Free SEO, GEO & AEO Website Audit Tool | AdsVerse" },

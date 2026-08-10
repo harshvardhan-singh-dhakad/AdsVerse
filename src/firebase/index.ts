@@ -55,6 +55,7 @@ export const auth = new Proxy({} as any, {
 
 export const db = new Proxy({} as any, {
   get(_, prop) {
+    if (typeof window === 'undefined') return undefined;
     const instance = getLazySdks().firestore;
     const value = (instance as any)[prop];
     return typeof value === 'function' ? value.bind(instance) : value;
@@ -63,6 +64,7 @@ export const db = new Proxy({} as any, {
 
 export const storage = new Proxy({} as any, {
   get(_, prop) {
+    if (typeof window === 'undefined') return undefined;
     const instance = getLazySdks().storage;
     const value = (instance as any)[prop];
     return typeof value === 'function' ? value.bind(instance) : value;

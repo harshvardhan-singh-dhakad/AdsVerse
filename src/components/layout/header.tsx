@@ -11,8 +11,6 @@ import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
-import { useContext } from "react";
-import { FirebaseContext } from "@/firebase/provider";
 
 const ChevronDown = () => (
   <svg
@@ -44,11 +42,21 @@ type HeaderProps = {
 };
 
 export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
-  // Safely read Firebase context — context may be undefined during static rendering
-  const firebaseCtx = useContext(FirebaseContext);
-  const isLoggedIn = !!(firebaseCtx?.user);
-  const activeNavLinks = isLoggedIn ? [...navLinks, { href: '/dashboard', label: 'Dashboard' }] : navLinks;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    try {
+      const { auth } = require("@/firebase");
+      if (auth && auth.currentUser) {
+        setIsLoggedIn(true);
+      }
+    } catch (e) {
+      // Firebase auth not initialized on public SSR pages
+    }
+  }, []);
+
+  const activeNavLinks = isLoggedIn ? [...navLinks, { href: '/dashboard', label: 'Dashboard' }] : navLinks;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
 

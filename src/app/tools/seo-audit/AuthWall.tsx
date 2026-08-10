@@ -19,8 +19,13 @@ import { Chrome, Mail, Lock, Eye, EyeOff, Loader2, Sparkles, ArrowRight, ShieldC
 type Tab = 'signup' | 'signin';
 
 function getFirebaseAuth() {
-  const { getAuth: ga } = require('firebase/auth');
-  return ga(getApp());
+  try {
+    const { getAuth: ga } = require('firebase/auth');
+    const { getApp } = require('firebase/app');
+    return ga(getApp());
+  } catch (e) {
+    return null as any;
+  }
 }
 
 export default function AuthWall() {
@@ -35,11 +40,15 @@ export default function AuthWall() {
   const [resetSent, setResetSent] = useState(false);
   const [showReset, setShowReset] = useState(false);
 
-  const auth = getFirebaseAuth();
+  const getAuthInstance = () => {
+    return getFirebaseAuth();
+  };
 
-  const withPersistence = async (fn: () => Promise<void>) => {
+  const withPersistence = async (fn: (auth: any) => Promise<void>) => {
+    const auth = getAuthInstance();
+    if (!auth) return;
     await setPersistence(auth, browserLocalPersistence);
-    await fn();
+    await fn(auth);
   };
 
   const friendlyError = (code: string) => {
@@ -68,11 +77,11 @@ export default function AuthWall() {
 
     setLoading(true);
     try {
-      await withPersistence(async () => {
+      await withPersistence(async (authInstance) => {
         if (tab === 'signup') {
-          await createUserWithEmailAndPassword(auth, email.trim(), password);
+          await createUserWithEmailAndPassword(authInstance, email.trim(), password);
         } else {
-          await signInWithEmailAndPassword(auth, email.trim(), password);
+          await signInWithEmailAndPassword(authInstance, email.trim(), password);
         }
       });
     } catch (err: any) {
@@ -87,8 +96,8 @@ export default function AuthWall() {
     setGoogleLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await withPersistence(async () => {
-        await signInWithPopup(auth, provider);
+      await withPersistence(async (authInstance) => {
+        await signInWithPopup(authInstance, provider);
       });
     } catch (err: any) {
       setError(friendlyError(err.code));
@@ -101,7 +110,9 @@ export default function AuthWall() {
     if (!email) { setError('Enter your email address above, then click Forgot Password.'); return; }
     setLoading(true);
     try {
-      await sendPasswordResetEmail(auth, email.trim());
+      const authInstance = getAuthInstance();
+      if (!authInstance) return;
+      await sendPasswordResetEmail(authInstance, email.trim());
       setResetSent(true);
       setShowReset(false);
     } catch (err: any) {
