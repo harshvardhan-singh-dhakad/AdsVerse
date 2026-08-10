@@ -9,6 +9,8 @@ import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import dynamic from "next/dynamic";
+const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"), { ssr: false });
 import Script from "next/script";
 import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
@@ -315,6 +317,7 @@ export default async function RootLayout({
             <Footer />
             <FloatingActionButton />
             <Toaster />
+            <WebMCPProvider />
           </div>
         </ThemeProvider>
       </body>

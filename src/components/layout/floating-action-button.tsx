@@ -8,7 +8,7 @@ import { X, Phone, Mail, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
-const GridDotsIcon = ({ className, "aria-hidden": ariaHidden }: { className?: string, "aria-hidden"?: string | boolean | undefined }) => (
+const GridDotsIcon = ({ className, "aria-hidden": ariaHidden }: { className?: string, "aria-hidden"?: boolean | "true" | "false" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden={ariaHidden}>
     <circle cx="5" cy="5" r="3.2" />
     <circle cx="12" cy="5" r="3.2" />
