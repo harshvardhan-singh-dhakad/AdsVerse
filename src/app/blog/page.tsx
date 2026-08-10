@@ -43,9 +43,6 @@ const FALLBACK_POSTS = [
 ];
 
 async function getBlogPosts() {
-  if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
-    return FALLBACK_POSTS;
-  }
   try {
     const now = new Date().toISOString();
     const q = query(
