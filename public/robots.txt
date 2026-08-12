@@ -71,5 +71,6 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
-# ── SITEMAP REFERENCE ──
+# ── SITEMAP & LLM REFERENCES ──
 Sitemap: https://adsverse.in/sitemap.xml
+LLMs-txt: https://adsverse.in/llms.txt
