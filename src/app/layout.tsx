@@ -115,7 +115,28 @@ const schemaArray = [
           }
         }
       ]
-    }
+    },
+    "potentialAction": [
+      {
+        "@type": "CommunicateAction",
+        "name": "Contact AdsVerse",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://adsverse.in/contact",
+          "inLanguage": "en-IN",
+          "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+        }
+      },
+      {
+        "@type": "ReserveAction",
+        "name": "Book Free AI Strategy Call",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://adsverse.in/contact",
+          "inLanguage": "en-IN"
+        }
+      }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -258,6 +279,33 @@ async function getLatestPosts() {
   }
 }
 
+const webMcpManifest = {
+  name: "AdsVerse WebMCP Agent Protocol",
+  version: "1.0.0",
+  description: "WebMCP Tool & Agent specification for AdsVerse",
+  url: "https://adsverse.in",
+  tools: [
+    {
+      name: "submitContactForm",
+      description: "Submit business inquiry or project request to AdsVerse",
+      endpoint: "/contact",
+      method: "POST"
+    },
+    {
+      name: "seoAuditTool",
+      description: "Perform SEO Audit analysis on target website URL",
+      endpoint: "/tools/seo-audit",
+      method: "POST"
+    },
+    {
+      name: "getServiceCatalog",
+      description: "Get listing of all agency services (SEO, Meta Ads, Google Ads, n8n automation, WhatsApp AI bots)",
+      endpoint: "/our-services",
+      method: "GET"
+    }
+  ]
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -268,17 +316,25 @@ export default async function RootLayout({
       <head>
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="theme-color" content="#0a0d14" />
+        {/* LLMs & AI Documentation References for AI Maturity & Crawlers */}
+        <link rel="alternate" type="text/markdown" title="LLMs.txt Documentation" href="https://adsverse.in/llms.txt" />
+        <link rel="alternate" type="text/markdown" title="Full LLMs Documentation" href="https://adsverse.in/llms-full.txt" />
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         {/* DNS prefetch for third-party image CDNs */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Material Symbols has been removed to resolve render-blocking FCP/LCP speed issues */}
         {/* Organization & LocalBusiness Schema */}
         <script
           id="adsverse-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
+        />
+        {/* WebMCP Tool Manifest Declaration */}
+        <script
+          id="webmcp-manifest"
+          type="application/json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webMcpManifest) }}
         />
       </head>
       <body className={cn(

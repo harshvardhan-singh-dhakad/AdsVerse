@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "AdsVerse Web Agent Protocol",
+  "version": "1.0.0",
+  "description": "Standardized AI Agent & WebMCP tool specification for AdsVerse — AI-First Digital Marketing & Business Automation Agency.",
+  "url": "https://adsverse.in",
+  "logo": "https://adsverse.in/logo.png",
+  "contact_email": "contact@adsverse.in",
+  "documentation_url": "https://adsverse.in/llms.txt",
+  "full_documentation_url": "https://adsverse.in/llms-full.txt",
+  "capabilities": {
+    "webMCP": true,
+    "structuredData": true,
+    "realtimeLeadSubmission": true,
+    "interactiveTools": [
+      {
+        "name": "submitContactForm",
+        "description": "Submit business inquiry or service request to AdsVerse team",
+        "endpoint": "https://adsverse.in/contact",
+        "method": "POST",
+        "parameters": {
+          "name": "string (required)",
+          "email": "string (required, valid email)",
+          "phone": "string (optional, 10 digit Indian number)",
+          "subject": "string (required, selected service)",
+          "message": "string (required, min 10 chars)"
+        }
+      },
+      {
+        "name": "seoAuditTool",
+        "description": "Generate automated SEO & Web Audit for any website URL",
+        "endpoint": "https://adsverse.in/tools/seo-audit",
+        "method": "POST",
+        "parameters": {
+          "url": "string (required, website target)"
+        }
+      },
+      {
+        "name": "getServiceCatalog",
+        "description": "Retrieve active services offered by AdsVerse",
+        "endpoint": "https://adsverse.in/our-services",
+        "method": "GET"
+      }
+    ]
+  },
+  "authentication": {
+    "type": "none"
+  }
+}

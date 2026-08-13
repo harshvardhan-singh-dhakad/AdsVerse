@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AdsVerse Digital Marketing & AI Agent API",
+    "description": "Public API & WebMCP tool specification for AI Assistants (ChatGPT, Perplexity, Gemini, Claude) interacting with AdsVerse.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "AdsVerse Engineering",
+      "url": "https://adsverse.in/contact",
+      "email": "contact@adsverse.in"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://adsverse.in",
+      "description": "Production Server"
+    }
+  ],
+  "paths": {
+    "/contact": {
+      "post": {
+        "summary": "Submit Contact / Lead Form",
+        "description": "Submits a business query or project requirement to AdsVerse lead pipeline.",
+        "operationId": "submitContactForm",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "subject", "message"],
+                "properties": {
+                  "name": { "type": "string", "example": "Rahul Sharma" },
+                  "email": { "type": "string", "format": "email", "example": "rahul@example.com" },
+                  "phone": { "type": "string", "example": "+919685123339" },
+                  "subject": { "type": "string", "example": "n8n Workflow Automation" },
+                  "message": { "type": "string", "example": "We need custom n8n automation for our CRM." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead submitted successfully."
+          }
+        }
+      }
+    },
+    "/our-services": {
+      "get": {
+        "summary": "List Core Agency Services",
+        "description": "Returns list of core services: SEO, GEO, Meta Ads, Google PPC, n8n Automation, WhatsApp AI Bots.",
+        "operationId": "getServiceCatalog",
+        "responses": {
+          "200": {
+            "description": "Successful service listing."
+          }
+        }
+      }
+    }
+  }
+}
