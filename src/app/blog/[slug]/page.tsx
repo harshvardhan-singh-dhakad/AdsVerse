@@ -4,7 +4,7 @@ export const revalidate = 3600; // Cache for 1 hour
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Calendar, User, Share2 } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, User, Share2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
@@ -196,7 +196,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     "speakable": {
       "@type": "SpeakableSpecification",
       "cssSelector": ["h1", "h2", ".prose"]
-    }
+    },
+    "about": {
+      "@type": "Thing",
+      "name": "Digital Marketing",
+      "sameAs": "https://www.wikidata.org/wiki/Q13276"
+    },
+    "mentions": [
+      {
+        "@type": "Thing",
+        "name": "AdsVerse",
+        "sameAs": "https://adsverse.in"
+      }
+    ]
   };
 
   const breadcrumbJsonLd = {
@@ -293,7 +305,41 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             headings.length > 0 ? "grid grid-cols-1 lg:grid-cols-4 gap-12" : "block"
           )}>
             {headings.length > 0 && (
-              <aside className="hidden lg:block lg:col-span-1 sticky top-[100px] self-start">
+              <aside className="hidden lg:block lg:col-span-1 sticky top-[100px] self-start space-y-8">
+                <Card className="border-accent/40 bg-accent/5 shadow-lg shadow-accent/5">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 text-sm font-headline text-accent uppercase tracking-wider">
+                      <Sparkles className="h-4 w-4" />
+                      AI Summary
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-foreground/80 leading-relaxed font-medium">
+                    {post.excerpt}
+                  </CardContent>
+                </Card>
+
+                <Card className="border-border/50 bg-background/50 backdrop-blur shadow-sm">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm font-headline uppercase tracking-wider">
+                      Related FAQs
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">How can AdsVerse help with this?</h4>
+                      <p className="text-muted-foreground">We provide end-to-end strategy and implementation. Book a free consultation to discuss your specific needs.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">Do you provide custom solutions?</h4>
+                      <p className="text-muted-foreground">Yes, every digital strategy and AI automation is custom-built for your business scale and goals.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">What is the typical ROI?</h4>
+                      <p className="text-muted-foreground">Our data-driven marketing and automation systems typically yield a 3x-5x ROI within the first 6 months.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <TableOfContents headings={headings} />
               </aside>
             )}
