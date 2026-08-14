@@ -72,5 +72,6 @@ User-agent: MJ12bot
 Disallow: /
 
 # ── SITEMAP & LLM REFERENCES ──
+Agent-json: https://adsverse.in/.well-known/agent.json
 Sitemap: https://adsverse.in/sitemap.xml
 LLMs-txt: https://adsverse.in/llms.txt

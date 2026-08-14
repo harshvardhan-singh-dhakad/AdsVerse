@@ -177,16 +177,27 @@ export default function DynamicServicePage({ params }: PageProps) {
         ],
       },
       {
-        "@type": "FAQPage",
-        "mainEntity": faqs.map((faq) => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer,
+        "@type": "HowTo",
+        "name": `How to get started with ${service.name} at AdsVerse`,
+        "description": `The step-by-step process of implementing our ${service.name} solution for your business.`,
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Initial Strategy Call",
+            "text": "We begin by analyzing your existing digital assets and business goals to outline a custom strategy."
           },
-        })),
-      },
+          {
+            "@type": "HowToStep",
+            "name": "Custom Implementation",
+            "text": "Our in-house experts configure the setup, including necessary integrations and creative assets."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Tracking & Optimization",
+            "text": "We launch the campaign or system with full analytics tracking and provide continuous performance improvements."
+          }
+        ]
+      }
     ],
   };
 

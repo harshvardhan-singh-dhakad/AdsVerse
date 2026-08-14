@@ -8,6 +8,8 @@
   "contact_email": "contact@adsverse.in",
   "documentation_url": "https://adsverse.in/llms.txt",
   "full_documentation_url": "https://adsverse.in/llms-full.txt",
+  "api_spec_url": "https://adsverse.in/openapi.json",
+  "ai_plugin_url": "https://adsverse.in/.well-known/ai-plugin.json",
   "capabilities": {
     "webMCP": true,
     "structuredData": true,

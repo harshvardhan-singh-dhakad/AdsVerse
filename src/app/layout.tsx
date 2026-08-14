@@ -46,6 +46,9 @@ const schemaArray = [
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
     "email": "contact@adsverse.in",
+    "foundingDate": "2023",
+    "numberOfEmployees": { "@type": "QuantitativeValue", "value": "10" },
+    "slogan": "Automate. Elevate. Dominate.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "329/11, Meghdoot Nagar",
@@ -64,6 +67,19 @@ const schemaArray = [
     ],
     "priceRange": "₹3000",
     "openingHours": "Mo-Sa 10:00-19:00",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "+91-9685123339",
+      "email": "contact@adsverse.in",
+      "url": "https://adsverse.in/contact",
+      "availableLanguage": ["English", "Hindi"]
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".hero-description", ".service-card-title"]
+    },
+    "knowsAbout": ["Search Engine Optimization", "Generative Engine Optimization", "Google Ads", "Meta Ads", "n8n Workflow Automation", "WhatsApp Business API", "CRM Automation"],
     "sameAs": [
       "https://www.instagram.com/adsverse.ai",
       "https://www.facebook.com/adsverse.in",
@@ -157,40 +173,23 @@ const schemaArray = [
   },
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "WebSite",
+    "@id": "https://adsverse.in/#website",
     "name": "AdsVerse",
     "url": "https://adsverse.in",
-    "numberOfEmployees": { "@type": "QuantitativeValue", "value": "10" },
-    "knowsAbout": ["Search Engine Optimization","Generative Engine Optimization","Google Ads","Meta Ads","n8n Workflow Automation","WhatsApp Business API","CRM Automation"],
-    "slogan": "Automate. Elevate. Dominate."
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "AdsVerse",
-    "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/logo.png",
-    "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp bots, Gemini AI workflows, Google & Meta Ads for Indian SMBs.",
-    "foundingDate": "2023",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "329/11, Meghdoot Nagar",
-      "addressLocality": "Indore",
-      "addressRegion": "Madhya Pradesh",
-      "postalCode": "452011",
-      "addressCountry": "IN"
+    "description": "AI-first digital marketing agency in Indore — SEO, GEO, n8n automation, WhatsApp AI bots, Google & Meta Ads.",
+    "publisher": {
+      "@id": "https://adsverse.in/#organization"
     },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer service",
-      "url": "https://adsverse.in/contact"
-    },
-    "sameAs": [
-      "https://www.instagram.com/adsverse.ai",
-      "https://www.facebook.com/adsverse.in",
-      "https://x.com/Adsverse",
-      "https://www.linkedin.com/company/adsverse"
-    ]
+    "inLanguage": "en-IN",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://adsverse.in/blog?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
   }
 ];
 
@@ -319,6 +318,10 @@ export default async function RootLayout({
         {/* LLMs & AI Documentation References for AI Maturity & Crawlers */}
         <link rel="alternate" type="text/markdown" title="LLMs.txt Documentation" href="https://adsverse.in/llms.txt" />
         <link rel="alternate" type="text/markdown" title="Full LLMs Documentation" href="https://adsverse.in/llms-full.txt" />
+        {/* AI Agent Discovery — enables Agent Readiness signals */}
+        <link rel="agent" type="application/json" href="https://adsverse.in/.well-known/agent.json" />
+        <link rel="api" type="application/json" title="AdsVerse OpenAPI Spec" href="https://adsverse.in/openapi.json" />
+        <link rel="ai-plugin" type="application/json" href="https://adsverse.in/.well-known/ai-plugin.json" />
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />

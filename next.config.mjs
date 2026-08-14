@@ -23,6 +23,14 @@ const nextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
+          {
+            key: 'X-Robots-Tag',
+            value: 'all',
+          },
+          {
+            key: 'Link',
+            value: '</.well-known/agent.json>; rel="agent", </llms.txt>; rel="alternate"; type="text/markdown"',
+          },
         ],
       },
       {

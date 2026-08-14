@@ -192,6 +192,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://adsverse.in/blog/${post.slug}`
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", "h2", ".prose"]
     }
   };
 

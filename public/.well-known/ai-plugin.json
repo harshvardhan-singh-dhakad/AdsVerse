@@ -7,6 +7,10 @@
   "auth": {
     "type": "none"
   },
+  "api": {
+    "type": "openapi",
+    "url": "https://adsverse.in/openapi.json"
+  },
   "logo_url": "https://adsverse.in/logo.png",
   "contact_email": "contact@adsverse.in",
   "legal_info_url": "https://adsverse.in/privacy-policy",
