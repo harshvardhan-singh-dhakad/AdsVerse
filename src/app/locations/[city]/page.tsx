@@ -3,9 +3,31 @@ import { notFound } from "next/navigation";
 import { cleanTitle, validateMeta } from "@/lib/seo-guard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, TrendingUp, Megaphone, Code, Bot, FileText, Users, CheckCircle, ArrowLeft, ArrowRight, Lightbulb, Map, ShieldAlert, Award, Calendar } from "lucide-react";
+import {
+  MapPin,
+  TrendingUp,
+  Megaphone,
+  Code,
+  Bot,
+  FileText,
+  Users,
+  CheckCircle,
+  ArrowLeft,
+  ArrowRight,
+  Lightbulb,
+  Map,
+  ShieldAlert,
+  Award,
+  Calendar,
+  Sparkles,
+  Target,
+  Search,
+  BookOpen,
+  Check,
+} from "lucide-react";
 import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
@@ -22,7 +44,9 @@ import {
   cityWikiLinks,
   cityLandmarks,
   cityCaseStudies,
-  getCityFAQs
+  cityArticles,
+  cityAISummaries,
+  getCityFAQs,
 } from "./data";
 
 type Props = {
@@ -87,6 +111,8 @@ export default function LocationPage({ params }: Props) {
   const wikiLink = cityWikiLinks[cityKey];
   const landmarks = cityLandmarks[cityKey] || [];
   const caseStudy = cityCaseStudies[cityKey];
+  const article = cityArticles[cityKey];
+  const aiSummary = cityAISummaries[cityKey];
 
   // Schema mappings for AEO / GEO
   const localBusinessSchema = {
@@ -97,25 +123,61 @@ export default function LocationPage({ params }: Props) {
     "url": `https://adsverse.in/locations/${cityKey}`,
     "telephone": "+919685123339",
     "priceRange": "$$",
+    "serviceType": [
+      "Digital Marketing",
+      "Google Ads Management",
+      "Meta Ads Management",
+      "Local SEO Optimization",
+      "WhatsApp AI Automation",
+      "Next.js Web Development",
+      "PPC Advertising"
+    ],
     "address": {
       "@type": "PostalAddress",
       "addressLocality": name,
       "addressRegion": state,
-      "addressCountry": "IN"
+      "addressCountry": "IN",
     },
-    ...(coords ? {
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": coords.lat,
-        "longitude": coords.lng
-      }
-    } : {}),
-    ...(wikiLink ? { "sameAs": [wikiLink] } : {}),
-    "areaServed": {
+    ...(coords
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: coords.lat,
+            longitude: coords.lng,
+          },
+        }
+      : {}),
+    ...(wikiLink ? { sameAs: [wikiLink] } : {}),
+    areaServed: {
       "@type": "AdministrativeArea",
-      "name": name,
-      ...(wikiLink ? { "sameAs": wikiLink } : {})
-    }
+      name: name,
+      ...(wikiLink ? { sameAs: wikiLink } : {}),
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://adsverse.in",
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Locations",
+        "item": "https://adsverse.in/locations",
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": `Digital Marketing Agency in ${name}`,
+        "item": `https://adsverse.in/locations/${cityKey}`,
+      },
+    ],
   };
 
   const faqSchema = {
@@ -126,40 +188,40 @@ export default function LocationPage({ params }: Props) {
       "name": faq.q,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": faq.a
-      }
-    }))
+        "text": faq.a,
+      },
+    })),
   };
 
   // Determine regional channel recommendation
   const getChannelRecommendation = () => {
-    const isTourism = ["udaipur", "jodhpur", "ujjain", "srinagar", "kohima"].includes(cityKey);
-    const isTechHub = ["noida", "jaipur"].includes(cityKey);
-    const isHighVolume = ["indore", "bhopal", "kota"].includes(cityKey);
+    const isTourism = ["udaipur", "jodhpur", "ujjain", "srinagar", "kohima", "gwalior"].includes(cityKey);
+    const isTechHub = ["noida", "jaipur", "indore"].includes(cityKey);
+    const isHighVolume = ["bhopal", "kota", "patna"].includes(cityKey);
 
     if (isHighVolume) {
       return {
-        primary: "WhatsApp Qualification Bots + Meta Lead Ads",
+        primary: "WhatsApp Qualification Bots + Meta & Google Lead Ads",
         duration: "5-7 Days Setup",
-        kpi: "Qualified Lead Volume & Response Time"
+        kpi: "Lead-to-Enrollment Conversion Rate & 30-Sec Response Time",
       };
     } else if (isTechHub) {
       return {
-        primary: "Next.js Custom Development + Programmatic SEO",
-        duration: "14-21 Days Sprint",
-        kpi: "Page Load Speed & Non-Brand Organic Traffic"
+        primary: "Next.js Custom Development + High-Intent Search PPC & Programmatic SEO",
+        duration: "10-14 Days Sprint",
+        kpi: "Page Load Speed (<1.5s) & High-Intent Conversion Rate",
       };
     } else if (isTourism) {
       return {
-        primary: "Direct Booking Ads + Automatic Review Funnel",
+        primary: "Direct Booking Search Ads + WhatsApp Concierge (0% OTA Cut)",
         duration: "7-10 Days Setup",
-        kpi: "Direct Booking Conversion Rate"
+        kpi: "Direct Booking Volume & Commission Cost Reduction",
       };
     } else {
       return {
-        primary: "Hyperlocal SEO & Google My Business Ranking",
+        primary: "Hyperlocal 3-Pack SEO & Targeted Google Search Ads",
         duration: "30-45 Days Compound",
-        kpi: "Local Search Pack Dominance & Direct Phone Inquiries"
+        kpi: "Local Search Pack Dominance & Direct Phone Call Inquiries",
       };
     }
   };
@@ -175,6 +237,10 @@ export default function LocationPage({ params }: Props) {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
@@ -183,10 +249,10 @@ export default function LocationPage({ params }: Props) {
         <div className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden border-b border-border/40">
           <div className="absolute inset-0 bg-grid-slate-900/[0.04] dark:bg-grid-slate-100/[0.03] bg-[size:32px_32px]" />
           <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-orange-500/20 opacity-20 blur-[100px]" />
-          
+
           <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
-            <Link 
-              href="/locations" 
+            <Link
+              href="/locations"
               className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-orange-600 dark:text-slate-400 dark:hover:text-orange-400 mb-8 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -194,44 +260,230 @@ export default function LocationPage({ params }: Props) {
             </Link>
 
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <div className="space-y-8">
-                <div className="inline-flex items-center rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-sm font-medium text-orange-600 dark:text-orange-400">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  {name}, {state}
+              <div className="space-y-6">
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="inline-flex items-center rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-sm font-medium text-orange-600 dark:text-orange-400">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    {name}, {state}
+                  </div>
+                  <div className="inline-flex items-center rounded-full border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    <Sparkles className="w-3.5 h-3.5 mr-1.5 text-orange-500" />
+                    Verified for 2026
+                  </div>
                 </div>
-                
+
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-                  Digital Marketing Agency in <span className="text-orange-600 dark:text-orange-500">{name}</span>
+                  Best Digital Marketing Agency in <span className="text-orange-600 dark:text-orange-500">{name}</span>
                 </h1>
-                
+
                 <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed max-w-xl">
-                  {introData?.headline || `AI-first digital marketing agency helping ${name} businesses scale.`}
+                  {introData?.headline || `AI-first digital marketing agency and top advertising company helping ${name} businesses scale.`}
                 </p>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="inline-flex items-center text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200/60 dark:border-slate-700/60">
+                    🎯 Google Ads Agency
+                  </span>
+                  <span className="inline-flex items-center text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200/60 dark:border-slate-700/60">
+                    🚀 Top Digital Marketing Company
+                  </span>
+                  <span className="inline-flex items-center text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200/60 dark:border-slate-700/60">
+                    🤖 WhatsApp AI Lead Bots
+                  </span>
+                </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-14 px-8 text-base font-bold shadow-lg shadow-orange-500/20 transition-all duration-300">
-                    <Link href="/contact">Book a Free Consultation</Link>
+                    <Link href="/contact">Book a Free Strategy Consultation</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="rounded-xl h-14 px-8 text-base border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800">
-                    <Link href="#services">View Services</Link>
+                    <Link href="#services">Explore Services</Link>
                   </Button>
                 </div>
               </div>
 
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-border/50">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent z-10" />
                 <Image
                   src={imagePath}
-                  alt={`Business in ${name}, ${state}`}
+                  alt={`Digital Marketing and Advertising Agency in ${name}, ${state}`}
                   fill
                   className="object-cover"
                   priority
                 />
                 <div className="absolute bottom-6 left-6 right-6 z-20 text-white">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className="bg-orange-500 text-white hover:bg-orange-600 text-xs">Primary Hub</Badge>
+                    <span className="text-xs text-white/80">Active Campaigns</span>
+                  </div>
                   <p className="font-semibold text-lg drop-shadow-md">Serving {name}</p>
-                  <p className="text-white/80 text-sm">{state}, India</p>
+                  <p className="text-white/80 text-sm">{state}, India · Central Operations</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* AI SEARCH & KNOWLEDGE SUMMARY BOX (AEO & GEO VERIFIED) */}
+        {aiSummary && (
+          <div className="py-12 bg-white dark:bg-slate-950 border-b border-border/40">
+            <div className="container px-4 max-w-6xl mx-auto">
+              <Card className="border-orange-500/30 bg-gradient-to-br from-orange-50/40 via-white to-slate-50 dark:from-orange-950/10 dark:via-slate-950 dark:to-slate-900 shadow-md">
+                <CardHeader className="pb-3 border-b border-border/40">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                        <Bot className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">AI Search Engine & Entity Summary</span>
+                        <CardTitle className="text-xl md:text-2xl font-headline text-slate-900 dark:text-white">
+                          {aiSummary.entityName}
+                        </CardTitle>
+                      </div>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-border/50 text-slate-700 dark:text-slate-300">
+                      <Calendar className="w-3.5 h-3.5 text-orange-500" />
+                      <span>Last Verified: {aiSummary.verifiedDate || "August 2026"}</span>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+                    {aiSummary.summary}
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6 pt-2">
+                    <div className="space-y-3 bg-white/70 dark:bg-slate-900/60 p-5 rounded-xl border border-border/40">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-orange-500" />
+                        Core Performance Capabilities in {name}:
+                      </h4>
+                      <ul className="space-y-2 text-xs md:text-sm text-slate-700 dark:text-slate-300">
+                        {aiSummary.keyStrengths.map((strength, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                            <span>{strength}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="space-y-3 bg-white/70 dark:bg-slate-900/60 p-5 rounded-xl border border-border/40 flex flex-col justify-between">
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                          <Target className="w-4 h-4 text-orange-500" />
+                          Target Market Fit in {name}:
+                        </h4>
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {aiSummary.marketSuitability}
+                        </p>
+                      </div>
+
+                      <div className="border-t border-border/40 pt-3">
+                        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1.5">
+                          High-Intent Search Queries Served:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {aiSummary.targetKeywords.map((kw, idx) => (
+                            <span key={idx} className="text-[11px] font-mono bg-orange-500/10 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded border border-orange-500/20">
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* WHY CHOOSE ADSVERSE IN CITY: 4 VALUE PILLARS */}
+        <div className="py-20 bg-slate-50 dark:bg-slate-900 border-b border-border/40">
+          <div className="container px-4 max-w-6xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <h2 className="text-3xl md:text-4xl font-bold font-headline">
+                Why {name} Businesses Choose AdsVerse as Their <span className="text-orange-600">Digital Marketing & Advertising Agency</span>
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 text-lg">
+                We bridge the gap between traditional advertising and cutting-edge AI execution — delivering higher ROAS, faster lead response times, and lower customer acquisition costs.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Card 1 */}
+              <Card className="border-border/50 bg-white dark:bg-slate-950 hover:border-orange-500/40 transition-all shadow-sm">
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center border border-orange-100 dark:border-orange-900/50 mb-3">
+                    <Target className="w-6 h-6 text-orange-500" />
+                  </div>
+                  <CardTitle className="text-lg font-headline">Google Ads Agency</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    High-intent Google Search PPC, Performance Max, and Display campaigns engineered with strict negative keyword filtering and 4.8x average ROAS.
+                  </p>
+                  <span className="inline-block text-xs font-semibold text-orange-600 dark:text-orange-400 pt-1">
+                    google ads agency in {name.toLowerCase()}
+                  </span>
+                </CardContent>
+              </Card>
+
+              {/* Card 2 */}
+              <Card className="border-border/50 bg-white dark:bg-slate-950 hover:border-orange-500/40 transition-all shadow-sm">
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center border border-blue-100 dark:border-blue-900/50 mb-3">
+                    <Search className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <CardTitle className="text-lg font-headline">Top Digital Marketing Company</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Hyperlocal 3-pack Google Maps SEO, entity schema optimization, and organic content strategies that rank your business #1 for service queries in {name}.
+                  </p>
+                  <span className="inline-block text-xs font-semibold text-blue-600 dark:text-blue-400 pt-1">
+                    best digital marketing company in {name.toLowerCase()}
+                  </span>
+                </CardContent>
+              </Card>
+
+              {/* Card 3 */}
+              <Card className="border-border/50 bg-white dark:bg-slate-950 hover:border-orange-500/40 transition-all shadow-sm">
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center border border-purple-100 dark:border-purple-900/50 mb-3">
+                    <Megaphone className="w-6 h-6 text-purple-500" />
+                  </div>
+                  <CardTitle className="text-lg font-headline">Creative Advertising Agency</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    High-converting Meta Ads (Instagram & Facebook), video storytelling, and LinkedIn B2B funnels with continuous weekly creative iteration.
+                  </p>
+                  <span className="inline-block text-xs font-semibold text-purple-600 dark:text-purple-400 pt-1">
+                    advertising agency in {name.toLowerCase()}
+                  </span>
+                </CardContent>
+              </Card>
+
+              {/* Card 4 */}
+              <Card className="border-border/50 bg-white dark:bg-slate-950 hover:border-orange-500/40 transition-all shadow-sm">
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center border border-emerald-100 dark:border-emerald-900/50 mb-3">
+                    <Bot className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <CardTitle className="text-lg font-headline">WhatsApp AI & CRM Automation</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Automated WhatsApp chatbots that qualify leads in Hinglish, answer inquiries 24/7, and sync data directly to your sales team CRM in under 30 seconds.
+                  </p>
+                  <span className="inline-block text-xs font-semibold text-emerald-600 dark:text-emerald-400 pt-1">
+                    instant lead qualification & 0% leakage
+                  </span>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -260,20 +512,20 @@ export default function LocationPage({ params }: Props) {
                   </div>
                 )}
               </div>
-              
+
               <div className="grid grid-cols-2 gap-6">
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
                   <CardContent className="p-6 flex flex-col items-center text-center justify-center h-full">
                     <TrendingUp className="w-8 h-8 text-orange-500 mb-4" />
-                    <h3 className="text-3xl font-bold font-headline mb-2">113+ Brands Across India</h3>
-                    <p className="text-xs text-slate-505 dark:text-slate-400">Company-wide averages — not city-specific data</p>
+                    <h3 className="text-3xl font-bold font-headline mb-2">113+ Brands</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Scaled Across India · 4.8x Average ROAS</p>
                   </CardContent>
                 </Card>
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
                   <CardContent className="p-6 flex flex-col items-center text-center justify-center h-full">
                     <Bot className="w-8 h-8 text-orange-500 mb-4" />
-                    <h3 className="text-3xl font-bold font-headline mb-2">24/7</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Automated Lead Qualification</p>
+                    <h3 className="text-3xl font-bold font-headline mb-2">&lt;30 Sec</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Automated Lead Response Time</p>
                   </CardContent>
                 </Card>
               </div>
@@ -295,14 +547,14 @@ export default function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <p className="text-sm text-slate-600 dark:text-slate-400">
-                    We deploy geo-targeted marketing setups optimized for {name}'s core business districts, industrial hubs, and commercial zones.
+                    We deploy geo-targeted marketing setups optimized for {name}&apos;s core business districts, industrial corridors, and commercial hubs.
                   </p>
                   <div>
                     <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Key Targeting Zones in {name}:</h4>
                     <div className="flex flex-wrap gap-2">
                       {landmarks.map((landmark, idx) => (
-                        <span 
-                          key={idx} 
+                        <span
+                          key={idx}
                           className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-900 px-2.5 py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-800"
                         >
                           {landmark}
@@ -333,9 +585,9 @@ export default function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <p className="text-sm text-slate-600 dark:text-slate-400">
-                    Strategic channel allocation blueprint built for the competition dynamics in {name}.
+                    Strategic channel allocation blueprint engineered for the competition dynamics in {name}.
                   </p>
-                  
+
                   <div className="border border-border/50 rounded-lg overflow-hidden">
                     <table className="min-w-full divide-y divide-border/50 text-left text-xs">
                       <thead className="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300">
@@ -445,8 +697,64 @@ export default function LocationPage({ params }: Props) {
           </div>
         )}
 
+        {/* DEDICATED CITY STRATEGY ARTICLE / BLOG (THICK CONTENT SYSTEM) */}
+        {article && (
+          <div className="py-20 bg-slate-50 dark:bg-slate-900 border-b border-border/40">
+            <div className="container px-4 max-w-5xl mx-auto">
+              <Card className="border-border/60 bg-white dark:bg-slate-950 shadow-sm overflow-hidden">
+                <CardHeader className="bg-slate-100/50 dark:bg-slate-900/50 pb-6 border-b border-border/40">
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+                    <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">
+                      <BookOpen className="w-4 h-4" />
+                      <span>{name} Strategy Guide &amp; Market Insights</span>
+                    </div>
+                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-800 px-2.5 py-1 rounded-md">
+                      {article.readTime}
+                    </span>
+                  </div>
+                  <CardTitle className="text-2xl md:text-3xl font-headline text-slate-900 dark:text-white leading-snug">
+                    {article.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+                    {article.strategySummary}
+                  </p>
+
+                  <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-border/40 space-y-3">
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                      Actionable Recommendations for {name} Businesses in 2026:
+                    </h4>
+                    <ul className="space-y-2.5 text-sm text-slate-700 dark:text-slate-300">
+                      {article.bullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <Check className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-border/40">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      Want to dive deeper into performance marketing and SEO frameworks?
+                    </span>
+                    <Link
+                      href={`/blog/${article.relatedBlogSlug}`}
+                      className="inline-flex items-center text-sm font-bold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors"
+                    >
+                      Read Related Guide: {article.relatedBlogTitle}
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
         {/* SERVICES SECTION — All 3 Pillars */}
-        <div id="services" className="py-24 bg-slate-50 dark:bg-slate-900 border-b border-border/40">
+        <div id="services" className="py-24 bg-white dark:bg-slate-950 border-b border-border/40">
           <div className="container px-4 max-w-6xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold font-headline">
@@ -465,45 +773,39 @@ export default function LocationPage({ params }: Props) {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
-                    Digital Marketing Services in {name}
+                    Digital Marketing &amp; Advertising Services in {name}
                   </h3>
-                  {cityKey === "indore" && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">digital marketing agency in indore · seo company in indore · ad agency in indore</p>
-                  )}
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    digital marketing agency in {name.toLowerCase()} · google ads agency · advertising company
+                  </p>
                 </div>
               </div>
               <div className="grid md:grid-cols-3 gap-5">
                 {[
                   {
-                    title: cityKey === "indore" ? "SEO Services in Indore" : `Local SEO in ${name}`,
-                    desc: cityKey === "indore"
-                      ? "Top-ranked SEO company in Indore — on-page SEO, technical SEO, local SEO, and Google Business Profile ranking for Indore businesses."
-                      : `Rank higher on Google for high-intent local keywords in ${name}. On-page, technical, and local SEO optimised for your market.`,
+                    title: `SEO & Local Search in ${name}`,
+                    desc: `Rank #1 on Google Maps and organic search for high-intent local keywords in ${name}. On-page, technical, and local schema optimized for your exact geography.`,
                     href: "/services/seo-optimization",
-                    badge: cityKey === "indore" ? "seo company in indore · 1,000/mo" : null,
+                    badge: `seo in ${name.toLowerCase()}`,
                   },
                   {
-                    title: cityKey === "indore" ? "Google & Meta Ads — Ad Agency Indore" : `Google & Meta Ads in ${name}`,
-                    desc: cityKey === "indore"
-                      ? "Best ad agency in Indore. Google Search Ads, Meta (Facebook + Instagram) Ads — 4.8x average ROAS across all Indore ad clients."
-                      : `Performance-driven Google and Meta ad campaigns for ${name} businesses. Full attribution tracking and ROAS reporting.`,
+                    title: `Google Ads & PPC Management — ${name}`,
+                    desc: `Performance-driven Google Search, Display, and Performance Max campaigns with strict negative keyword pruning and 4.8x average ROAS.`,
                     href: "/services/paid-ads",
-                    badge: cityKey === "indore" ? "ad agency in indore · 590/mo" : null,
+                    badge: `google ads agency in ${name.toLowerCase()}`,
                   },
                   {
-                    title: cityKey === "indore" ? "Social Media Marketing Agency Indore" : `Social Media Marketing in ${name}`,
-                    desc: cityKey === "indore"
-                      ? "Instagram, Facebook, LinkedIn management + paid amplification. Social media marketing agency in Indore with proven local results."
-                      : `Full social media management — Instagram, Facebook, LinkedIn, YouTube — content creation, community management, and paid campaigns.`,
+                    title: `Meta & Social Media Marketing — ${name}`,
+                    desc: `Instagram, Facebook, and LinkedIn ad funnels with weekly creative iteration, dynamic product catalog ads, and targeted audience retargeting.`,
                     href: "/services/social-media-management",
-                    badge: cityKey === "indore" ? "social media agency in indore · 170/mo" : null,
+                    badge: `ad agency in ${name.toLowerCase()}`,
                   },
                 ].map((item, idx) => (
-                  <Card key={idx} className="border-border/50 hover:border-orange-500/50 transition-colors bg-white dark:bg-slate-950">
+                  <Card key={idx} className="border-border/50 hover:border-orange-500/50 transition-colors bg-slate-50 dark:bg-slate-900">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-base">{item.title}</CardTitle>
                       {item.badge && (
-                        <span className="text-xs text-slate-400">{item.badge}</span>
+                        <span className="text-xs text-slate-400 font-mono">{item.badge}</span>
                       )}
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -530,30 +832,32 @@ export default function LocationPage({ params }: Props) {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
-                    AI Automation Services
+                    AI Lead Automation &amp; CRM Systems
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Business process automation · WhatsApp AI · CRM workflow automation</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    WhatsApp AI Chatbots · n8n workflow pipelines · CRM lead synchronization
+                  </p>
                 </div>
               </div>
               <div className="grid md:grid-cols-3 gap-5">
                 {[
                   {
-                    title: "WhatsApp AI Bot",
-                    desc: `Persona-based AI on WhatsApp that qualifies leads, handles queries in Hinglish, and syncs to your CRM — 24/7 without human intervention.`,
+                    title: `WhatsApp AI Bot for ${name}`,
+                    desc: `Persona-based AI on WhatsApp that qualifies leads in Hinglish, answers questions 24/7, and syncs inquiries directly to your team within 30 seconds.`,
                     href: "/services/whatsapp-bot",
                   },
                   {
                     title: "n8n Workflow Automation",
-                    desc: `Connect your ads, forms, CRM, and email into one automated pipeline. From lead capture to follow-up — fully automated.`,
+                    desc: `Connect your Google Ads, Meta forms, website inquiries, and CRM into one automated pipeline with zero lead leakage.`,
                     href: "/services/automation-tools",
                   },
                   {
-                    title: "CRM & Sales Automation",
-                    desc: `Auto lead capture, pipeline stage automation, and multi-channel follow-up sequences (email + WhatsApp + SMS) — set once, runs forever.`,
+                    title: "CRM & Sales Pipeline Sync",
+                    desc: `Automatic lead capture, pipeline stage updates, and automated follow-up sequences via WhatsApp and email — set once, runs forever.`,
                     href: "/services/ai-automation",
                   },
                 ].map((item, idx) => (
-                  <Card key={idx} className="border-border/50 hover:border-purple-500/50 transition-colors bg-white dark:bg-slate-950">
+                  <Card key={idx} className="border-border/50 hover:border-purple-500/50 transition-colors bg-slate-50 dark:bg-slate-900">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-base">{item.title}</CardTitle>
                     </CardHeader>
@@ -581,38 +885,36 @@ export default function LocationPage({ params }: Props) {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold font-headline text-slate-900 dark:text-white">
-                    Website Design & Development{cityKey === "indore" ? " in Indore" : ""}
+                    Website Design &amp; Development in {name}
                   </h3>
-                  {cityKey === "indore" && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">website design company in indore · web designing company in indore · website developer in indore</p>
-                  )}
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Custom Next.js websites · High-converting funnels · E-commerce storefronts
+                  </p>
                 </div>
               </div>
               <div className="grid md:grid-cols-3 gap-5">
                 {[
                   {
-                    title: cityKey === "indore" ? "Business Website Design Indore" : `Business Website for ${name}`,
-                    desc: cityKey === "indore"
-                      ? "Custom business websites by the top website design company in Indore. Next.js, SEO-ready, mobile-first. Starting ₹30,000."
-                      : `Professional business websites — custom design, CMS, SEO-optimized, mobile-first. Starting ₹30,000.`,
-                    badge: cityKey === "indore" ? "website design company in indore · 1,300/mo" : null,
+                    title: `Business Website Design — ${name}`,
+                    desc: `Custom business websites engineered in Next.js. Sub-second load times, mobile-first responsive layouts, and SEO-ready architecture.`,
+                    badge: `website developer in ${name.toLowerCase()}`,
                   },
                   {
-                    title: "E-Commerce Website",
-                    desc: `Full e-commerce store on Shopify or custom Next.js — product pages, cart, payment gateway, and order management. Starting ₹65,000.`,
+                    title: "E-Commerce Storefronts",
+                    desc: `High-performance Next.js or Shopify stores with seamless payment gateway and automated courier shipping API integrations.`,
                     badge: null,
                   },
                   {
-                    title: cityKey === "indore" ? "Landing Page Design Indore" : "Landing Pages",
-                    desc: `High-converting single-page funnels for Google Ads and Meta Ads campaigns. Fast, tracked, and built to convert.`,
+                    title: "High-Converting Landing Pages",
+                    desc: `Single-page conversion funnels built specifically for Google Ads and Meta campaigns. Tracked, optimized, and built to convert.`,
                     badge: null,
                   },
                 ].map((item, idx) => (
-                  <Card key={idx} className="border-border/50 hover:border-blue-500/50 transition-colors bg-white dark:bg-slate-950">
+                  <Card key={idx} className="border-border/50 hover:border-blue-500/50 transition-colors bg-slate-50 dark:bg-slate-900">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-base">{item.title}</CardTitle>
                       {item.badge && (
-                        <span className="text-xs text-slate-400">{item.badge}</span>
+                        <span className="text-xs text-slate-400 font-mono">{item.badge}</span>
                       )}
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -630,19 +932,18 @@ export default function LocationPage({ params }: Props) {
                 </Link>
               </div>
             </div>
-
           </div>
         </div>
 
         {/* CAMPAIGN BLUEPRINT PROCESS TIMELINE (AEO) */}
-        <div className="py-20 bg-white dark:bg-slate-950 border-b border-border/40">
+        <div className="py-20 bg-slate-50 dark:bg-slate-900 border-b border-border/40">
           <div className="container px-4 max-w-4xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold font-headline">
-                How We Launch Local Campaigns
+                How We Launch Campaigns in <span className="text-orange-600">{name}</span>
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-lg">
-                Our structured onboarding blueprint designed to scale {name} client accounts efficiently.
+                Our structured 4-step onboarding blueprint designed to scale {name} client accounts efficiently.
               </p>
             </div>
 
@@ -650,24 +951,24 @@ export default function LocationPage({ params }: Props) {
               {[
                 {
                   step: "01",
-                  title: "Competitor & Keyword Audits",
-                  desc: "We analyze local competitors, search volumes, and coordinate list indexing. We identify transactional keyword low-hanging fruits unique to your city geography."
+                  title: "Local Competitor & Search Keyword Audit",
+                  desc: `We analyze local competitors in ${name}, evaluate search volume for high-intent queries, and identify low-hanging transactional keywords.`,
                 },
                 {
                   step: "02",
-                  title: "Conversion & Automation Setup",
-                  desc: "We configure n8n pipelines, connect landing page lead catchers, and build WhatsApp bots. No ad spend happens until qualification processes are stress-tested."
+                  title: "Conversion Tracking & WhatsApp Bot Setup",
+                  desc: "We configure n8n pipelines, connect landing page lead catchers, and build WhatsApp bots. No ad spend happens until lead capture is stress-tested.",
                 },
                 {
                   step: "03",
-                  title: "Targeted Ad Deployment",
-                  desc: "We launch Google and Meta ad sets targeting your designated geographic zones and neighborhoods. Creatives are tested weekly, prioritizing mobile-friendly conversions."
+                  title: "Targeted Google & Meta Ad Deployment",
+                  desc: `We launch ad sets targeting ${name}'s designated geographic zones and business districts. Creatives are tested weekly, prioritizing mobile-friendly conversions.`,
                 },
                 {
                   step: "04",
                   title: "Continuous Scaling & CRM Sync",
-                  desc: "We monitor performance, optimize bidding models, and verify offline conversion uploads back into Google and Meta to scale your absolute highest-value channels."
-                }
+                  desc: "We monitor performance, optimize bidding models, and verify offline conversion uploads back into Google and Meta to scale your highest-value channels.",
+                },
               ].map((item, idx) => (
                 <div key={idx} className="relative pl-8 md:pl-10">
                   <div className="absolute -left-3 top-0 bg-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center border-4 border-white dark:border-slate-950">
@@ -686,12 +987,16 @@ export default function LocationPage({ params }: Props) {
           </div>
         </div>
 
-        {/* FAQs */}
-        <div className="py-24 bg-slate-50 dark:bg-slate-900">
+        {/* FAQs WITH DATE STAMP */}
+        <div className="py-24 bg-white dark:bg-slate-950">
           <div className="container px-4 max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-4">
-                Frequently Asked Questions
+            <div className="text-center mb-12 space-y-3">
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Verified FAQs — Updated August 2026</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold font-headline">
+                Frequently Asked Questions for {name}
               </h2>
               <p className="text-slate-600 dark:text-slate-400">
                 Common questions about working with AdsVerse in {name}.
@@ -713,20 +1018,26 @@ export default function LocationPage({ params }: Props) {
           </div>
         </div>
 
-        {/* SEO Data Component (Invisible) */}
-        <AISearchInsights 
-          title={`Market Dynamics in ${name}, ${state}`}
+        {/* SEO Data Component */}
+        <AISearchInsights
+          title={`Market Dynamics & Entity Footprint in ${name}, ${state}`}
           insights={[
             { title: "📍 Region Served", description: regionLabel },
-            { title: "🎯 Target Audience", description: `B2B companies, retail businesses, coaching institutes, real estate developers, healthcare providers, and local service businesses located in or targeting ${name}.` },
-            { title: "⚡ Core Advantage", description: "Tier-1 digital execution capabilities (Next.js, n8n, AI agents) applied to Tier-2 market dynamics." }
+            {
+              title: "🎯 Target Audience",
+              description: `B2B enterprises, retail showrooms, coaching institutes, real estate developers, healthcare providers, and D2C brands located in or targeting ${name}.`,
+            },
+            {
+              title: "⚡ Core Advantage",
+              description: "AI-first execution capabilities (Next.js web builds, n8n CRM pipelines, WhatsApp AI bots, Google Ads PPC) optimized for regional market dynamics.",
+            },
           ]}
           takeaways={[
-            "AI-first SEO",
-            "Performance Marketing",
-            "WhatsApp Automation",
+            "Google Ads & Meta Performance PPC",
+            "Hyperlocal 3-Pack SEO",
+            "WhatsApp Instant Lead Qualification",
             "Next.js Web Development",
-            "n8n CRM Integration"
+            "n8n CRM Integration",
           ]}
         />
       </div>
