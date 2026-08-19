@@ -15,6 +15,7 @@ import './styles.css';
 
 const AuthWall = dynamic(() => import('./AuthWall'), { ssr: false });
 const PhoneModal = dynamic(() => import('./PhoneModal'), { ssr: false });
+const AuditPricingModal = dynamic(() => import('./AuditPricingModal'), { ssr: false });
 
 const AUDIT_STEPS = [
   { id: 1, label: 'Crawling website structure...', duration: 2500 },
@@ -56,11 +57,13 @@ export default function AdsVerseAuditPage() {
   const [report, setReport] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   
-  // Auth state
+  // Auth & Pricing state
   const [userPlan, setUserPlan] = useState<'free' | 'paid' | 'subscriber'>('free');
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalReason, setAuthModalReason] = useState<string | null>(null);
+  const [showAuditPricingModal, setShowAuditPricingModal] = useState(false);
+  const [pricingDomain, setPricingDomain] = useState('');
   
   // Tabs & UI state
   const [activeTab, setActiveTab] = useState('full');
@@ -145,7 +148,11 @@ export default function AdsVerseAuditPage() {
           setLoading(false);
           const err = analysisErrorRef.current;
           if (err) {
-            if (err.message === 'auth_required') {
+            if (err.data?.requiresPayment || err.message === 'domain_limit_reached' || err.status === 402) {
+              const rawDomain = err.data?.domain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com');
+              setPricingDomain(rawDomain);
+              setShowAuditPricingModal(true);
+            } else if (err.message === 'auth_required') {
               setAuthModalReason('Please log in to run repeat audits and save your reports.');
               setShowAuthModal(true);
             } else {
@@ -213,6 +220,11 @@ export default function AdsVerseAuditPage() {
     setLoading(true);
   };
 
+  const handleAuditPaymentSuccess = () => {
+    setShowAuditPricingModal(false);
+    startAnalysis();
+  };
+
   const handleSignOut = async () => {
     try {
       const { getAuth } = require('firebase/auth');
@@ -244,7 +256,18 @@ export default function AdsVerseAuditPage() {
       <nav className="navbar-custom">
         <Link href="/" className="nav-logo">AdsVerse.Ai</Link>
         <div className="flex items-center gap-4">
-          <Link href="/pricing" className="text-sm font-semibold text-slate-400 hover:text-white transition">Pricing</Link>
+          <button 
+            type="button"
+            onClick={() => {
+              const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
+              setPricingDomain(cleanD);
+              setShowAuditPricingModal(true);
+            }} 
+            className="text-xs md:text-sm font-semibold text-orange-400 hover:text-orange-300 transition flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Audit Pass (₹10)
+          </button>
           {user ? (
             <div className="flex items-center gap-4">
               <span className="text-xs text-slate-400">{user.email}</span>
@@ -267,6 +290,15 @@ export default function AdsVerseAuditPage() {
 
       {isMounted && showPhoneModal && user && (
         <PhoneModal userName={user.displayName ?? user.email ?? 'there'} uid={user.uid} onDone={() => setShowPhoneModal(false)} />
+      )}
+
+      {isMounted && showAuditPricingModal && (
+        <AuditPricingModal
+          isOpen={showAuditPricingModal}
+          onClose={() => setShowAuditPricingModal(false)}
+          domain={pricingDomain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com')}
+          onPaymentSuccess={handleAuditPaymentSuccess}
+        />
       )}
 
       {/* STATE 1: Hero */}
@@ -350,8 +382,18 @@ export default function AdsVerseAuditPage() {
             <div className="glass pro-paywall">
               <span className="pro-paywall-icon">👑</span>
               <h2 className="pro-paywall-title">Unlock Advanced {activeTab === 'competitors' ? 'Competitor Analysis' : activeTab === 'content' ? 'Content Strategy' : 'Technical Deep Dive'}</h2>
-              <p className="pro-paywall-desc">This feature requires a massive amount of real-time data processing and backend resources. Upgrade to a Pro plan to instantly compare your site against top competitors and uncover advanced architectural gaps.</p>
-              <Link href="/pricing" className="btn-pro">Upgrade to PRO <ArrowRight className="w-4 h-4"/></Link>
+              <p className="pro-paywall-desc">Get instant access to advanced competitor intelligence, deep content gaps, and technical architecture diagnostics with the ₹10 Audit Pass.</p>
+              <button 
+                type="button"
+                onClick={() => {
+                  const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
+                  setPricingDomain(cleanD);
+                  setShowAuditPricingModal(true);
+                }} 
+                className="btn-pro cursor-pointer"
+              >
+                Unlock with ₹10 Pass <ArrowRight className="w-4 h-4"/>
+              </button>
             </div>
           ) : (
             <div className="tab-content">

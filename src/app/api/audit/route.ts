@@ -2,8 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import { analyzeUrl } from '@/app/tools/seo-audit/actions';
 import { runLlmGeoAeo, blendGeoScore, blendAeoScore } from '@/lib/gemini-geo-aeo';
-import { FieldValue, Timestamp } from 'firebase-admin/firestore';
-import crypto from 'crypto';
+import { FieldValue } from 'firebase-admin/firestore';
+
+export function extractDomain(inputUrl: string): string {
+  let clean = inputUrl.trim();
+  if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+    clean = `https://${clean}`;
+  }
+  try {
+    const u = new URL(clean);
+    return u.hostname.toLowerCase().replace(/^www\./, '');
+  } catch {
+    return clean.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].replace(/^www\./, '');
+  }
+}
 
 function normalizeUrl(url: string): string {
   if (!url.startsWith('http')) url = `https://${url}`;
@@ -13,10 +25,6 @@ function normalizeUrl(url: string): string {
   } catch {
     return url;
   }
-}
-
-function hashKey(userId: string, url: string): string {
-  return crypto.createHash('sha256').update(`${userId}::${url}`).digest('hex');
 }
 
 export async function POST(req: NextRequest) {
@@ -30,119 +38,45 @@ export async function POST(req: NextRequest) {
     }
 
     const normalizedUrl = normalizeUrl(url);
+    const domain = extractDomain(url);
 
-    // ── 2. Handle Guest Audits (No idToken) ────────────────────────────────
-    if (!idToken) {
-      const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                       req.headers.get('x-real-ip') || 
-                       'guest_ip';
-      
-      let isGuestRateLimited = false;
-      try {
-        const guestRateId = hashKey(`guest_${clientIp}`, normalizedUrl);
-        const guestRateRef = adminDb.collection('rate_limit').doc(guestRateId);
-        const guestRateSnap = await guestRateRef.get();
-        if (guestRateSnap.exists) {
-          isGuestRateLimited = true;
-        }
-      } catch (e) {
-        console.warn('[api/audit] Guest rate limit check bypassed:', e);
-      }
+    if (!domain || domain.length < 3) {
+      return NextResponse.json({ error: 'Please enter a valid website domain.' }, { status: 400 });
+    }
 
-      if (isGuestRateLimited) {
+    // ── 2. Enforce Strict 1-Audit Per Website Domain Limit ─────────────────
+    const domainDocRef = adminDb.collection('audited_domains').doc(domain);
+    let domainSnap;
+    try {
+      domainSnap = await domainDocRef.get();
+    } catch (e) {
+      console.warn('[api/audit] Firestore domain fetch warning:', e);
+    }
+
+    let isDomainPreAudited = false;
+    let availableCredits = 0;
+
+    if (domainSnap && domainSnap.exists) {
+      const dData = domainSnap.data();
+      isDomainPreAudited = true;
+      availableCredits = Number(dData?.paidCredits || 0);
+
+      // If domain already audited and 0 paid credits remain -> Block and require ₹10 payment
+      if (availableCredits <= 0) {
         return NextResponse.json(
           {
-            error: 'auth_required',
-            message: 'You have completed your 1st free audit for this website. Please sign up or log in to run repeat audits and save your report history!',
+            error: 'domain_limit_reached',
+            message: `Website "${domain}" has already used its 1 free audit report. Repeat in-depth audits require an instant ₹10 unlock pass.`,
+            domain: domain,
+            requiresPayment: true,
+            price: 10,
           },
-          { status: 401 }
+          { status: 402 }
         );
       }
-
-      // Run analysis for guest
-      let analysisResult;
-      try {
-        analysisResult = await analyzeUrl(normalizedUrl);
-        const llmResult = await runLlmGeoAeo({
-          domain: normalizedUrl,
-          title: analysisResult.title,
-          h1: analysisResult.h1s[0] ?? '',
-          h2s: analysisResult.h2s,
-          h3s: analysisResult.h3s,
-          bodyExcerpt: analysisResult.bodyTextExcerpt,
-          staticAeoScore: analysisResult.geoAeoScores.aeo.score,
-        });
-
-        const blendedGeo = blendGeoScore(analysisResult.geoAeoScores.geo.score, llmResult);
-        const blendedAeo = blendAeoScore(analysisResult.geoAeoScores.aeo.score, llmResult);
-        analysisResult.geoAeoScores.geo.score = blendedGeo;
-        analysisResult.geoAeoScores.aeo.score = blendedAeo;
-        analysisResult.llmGeoAeo = llmResult;
-      } catch (err: any) {
-        return NextResponse.json(
-          { error: err.message ?? 'Analysis failed' },
-          { status: 500 }
-        );
-      }
-
-      // Record rate limit & leads in background (non-blocking)
-      try {
-        const guestRateId = hashKey(`guest_${clientIp}`, normalizedUrl);
-        await adminDb.collection('rate_limit').doc(guestRateId).set({
-          ip: clientIp,
-          url: normalizedUrl,
-          lastAuditAt: FieldValue.serverTimestamp(),
-        });
-      } catch (e) {
-        console.warn('[api/audit] Failed to write guest rate limit:', e);
-      }
-
-      try {
-        const hostname = new URL(normalizedUrl).hostname;
-        const leadRef = adminDb.collection('audit_leads').doc();
-        await leadRef.set({
-          id: leadRef.id,
-          name: 'Guest User',
-          email: `guest@${hostname}`,
-          website: normalizedUrl,
-          submittedAt: FieldValue.serverTimestamp(),
-          source: 'guest-seo-audit',
-          ip: clientIp,
-        });
-      } catch (e) {
-        console.warn('[api/audit] Failed to write guest audit lead:', e);
-      }
-
-      return NextResponse.json({
-        report: analysisResult,
-        reportId: `guest_${Date.now()}`,
-        isGuest: true,
-      });
     }
 
-    // ── 3. Authenticated User flow ──────────────────────────────────────────
-    let uid = 'guest';
-    let userEmail = '';
-    try {
-      const decoded = await adminAuth.verifyIdToken(idToken);
-      uid = decoded.uid;
-      userEmail = decoded.email ?? '';
-    } catch {
-      console.warn('[api/audit] Invalid idToken, proceeding as guest');
-    }
-
-    let plan: 'free' | 'paid' | 'subscriber' = 'free';
-    try {
-      const userDocRef = adminDb.collection('audit_users').doc(uid);
-      const userSnap = await userDocRef.get();
-      if (userSnap.exists) {
-        plan = userSnap.data()?.plan ?? 'free';
-      }
-    } catch (e) {
-      console.warn('[api/audit] Failed to fetch user plan from Firestore:', e);
-    }
-
-    // Run analysis
+    // ── 3. Run SEO / GEO / AEO Analysis ────────────────────────────────────
     let analysisResult;
     try {
       analysisResult = await analyzeUrl(normalizedUrl);
@@ -178,15 +112,49 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save report in background
+    // ── 4. Record Domain Tracking & Decrement Credit ─────────────────────────
+    try {
+      if (isDomainPreAudited && availableCredits > 0) {
+        await domainDocRef.update({
+          paidCredits: FieldValue.increment(-1),
+          lastAuditAt: FieldValue.serverTimestamp(),
+          auditCount: FieldValue.increment(1),
+          lastScore: analysisResult.overallScore.score,
+        });
+      } else {
+        // First free audit for this website domain
+        await domainDocRef.set({
+          domain: domain,
+          firstUrl: normalizedUrl,
+          firstAuditAt: FieldValue.serverTimestamp(),
+          lastAuditAt: FieldValue.serverTimestamp(),
+          auditCount: 1,
+          paidCredits: 0,
+          lastScore: analysisResult.overallScore.score,
+        });
+      }
+    } catch (e) {
+      console.warn('[api/audit] Failed to update audited_domains in Firestore:', e);
+    }
+
+    // ── 5. Save Report to Firestore ─────────────────────────────────────────
+    let uid = 'guest';
+    if (idToken) {
+      try {
+        const decoded = await adminAuth.verifyIdToken(idToken);
+        uid = decoded.uid;
+      } catch {}
+    }
+
     try {
       const reportRef = adminDb.collection('audit_reports').doc();
       await reportRef.set({
         id: reportRef.id,
         userId: uid,
+        domain: domain,
         url: normalizedUrl,
         createdAt: FieldValue.serverTimestamp(),
-        tier: plan === 'free' ? 'free' : 'paid',
+        tier: availableCredits > 0 ? 'paid_10' : 'free_initial',
         status: 'complete',
         scores: {
           seo: analysisResult.overallScore.score,
@@ -204,6 +172,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       report: analysisResult,
       reportId: `audit_${Date.now()}`,
+      domain: domain,
+      creditsRemaining: Math.max(0, availableCredits - 1),
     });
   } catch (err: any) {
     console.error('[/api/audit] Unhandled error:', err);

@@ -154,7 +154,7 @@ export default function DigitalMarketingPage() {
                 <Link href="/contact">Get Free Strategy Call</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/pricing">View Packages</Link>
+                <Link href="/services">View All Services</Link>
               </Button>
             </div>
           </CardHeader>

@@ -85,7 +85,6 @@ export function Footer() {
               <li><Link href="/portfolio" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Portfolio</Link></li>
               <li><Link href="/blog" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Blog</Link></li>
               <li><Link href="/faq" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">FAQ</Link></li>
-              <li><Link href="/pricing" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Pricing</Link></li>
               <li><Link href="/locations" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Locations</Link></li>
               <li><Link href="/contact" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Contact</Link></li>
             </ul>

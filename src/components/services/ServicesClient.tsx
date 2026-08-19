@@ -404,10 +404,10 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               Get Free Strategy Call →
             </Link>
             <Link
-              href="/pricing"
+              href="/tools/seo-audit"
               className="px-8 py-3.5 border-2 border-white/20 dark:border-white/10 text-slate-700 dark:text-slate-200 bg-white/60 dark:bg-white/5 backdrop-blur-sm rounded-xl font-bold hover:border-orange-500 hover:text-orange-500 transition-all"
             >
-              View Pricing
+              Free SEO Audit
             </Link>
           </div>
         </div>

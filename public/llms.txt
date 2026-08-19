@@ -46,7 +46,6 @@ Static SSG pages generated for 18 specific Indian business hubs:
 - [Locations Served](https://adsverse.in/locations)
 - [Contact Team](https://adsverse.in/contact)
 - [Portfolio & Case Studies](https://adsverse.in/portfolio)
-- [Pricing & Retainers](https://adsverse.in/pricing)
 
 ## Core Contacts
 - **Primary Domain:** [adsverse.in](https://adsverse.in)
