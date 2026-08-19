@@ -305,37 +305,184 @@ export default function AdsVerseAuditPage() {
         />
       )}
 
-      {/* STATE 1: Hero */}
+      {/* STATE 1: Hero & Comprehensive SEO/GEO/AEO Hub */}
       {!loading && !report && (
-        <section className="hero">
-          <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
-          <h1 className="hero-heading">
-            Analyze Your Website for<br/>
-            <span className="grad-seo">SEO</span><span className="dot-sep"> · </span><span className="grad-geo">GEO</span><span className="dot-sep"> · </span><span className="grad-aeo">AEO</span>
-          </h1>
-          <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
+        <div className="space-y-16 pb-24">
+          <section className="hero pt-28 pb-12">
+            <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
+            <h1 className="hero-heading">
+              Analyze Your Website for<br/>
+              <span className="grad-seo">SEO</span><span className="dot-sep"> · </span><span className="grad-geo">GEO</span><span className="dot-sep"> · </span><span className="grad-aeo">AEO</span>
+            </h1>
+            <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
 
-          <form className="search-box" onSubmit={startAnalysis}>
-            <input 
-              type="text" 
-              className="search-input" 
-              placeholder="Enter your website URL (e.g. yourbrand.com)"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              disabled={loading}
-            />
-            <button type="submit" className="search-btn" disabled={loading}>
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Run Free Audit →'}
-            </button>
-          </form>
+            {/* Modern Wide Search Box */}
+            <form className="w-full max-w-2xl mx-auto shadow-2xl px-4" onSubmit={startAnalysis}>
+              <div className="flex flex-col sm:flex-row items-stretch rounded-2xl overflow-hidden border border-violet-500/30 bg-slate-900/90 backdrop-blur-xl p-1.5 shadow-[0_0_40px_rgba(124,58,237,0.15)] focus-within:border-violet-500 transition-all duration-300">
+                <div className="flex items-center flex-1 px-4 py-3 gap-3">
+                  <span className="text-xl">🌐</span>
+                  <input 
+                    type="text" 
+                    className="w-full bg-transparent text-white placeholder-slate-500 text-sm md:text-base outline-none font-medium" 
+                    placeholder="Enter website URL (e.g. https://yourbrand.com)"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+                <button 
+                  type="submit" 
+                  className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-white font-bold text-sm md:text-base px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-violet-600/30 flex items-center justify-center gap-2 cursor-pointer shrink-0 disabled:opacity-50"
+                  disabled={loading}
+                >
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Run Free Audit</span> <ArrowRight className="w-4 h-4" /></>}
+                </button>
+              </div>
+            </form>
 
-          {error && (
-            <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm max-w-md mx-auto text-center flex items-center justify-center gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
+            <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> 100% Free Initial Audit</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Google PageSpeed Lab Data</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> Gemini 3.7 Flash AI Citations</span>
             </div>
-          )}
-        </section>
+
+            {error && (
+              <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm max-w-md mx-auto text-center flex items-center justify-center gap-2">
+                <AlertTriangle className="w-5 h-5 shrink-0 text-red-400" />
+                <span>{error}</span>
+              </div>
+            )}
+          </section>
+
+          {/* Deep Content Section 1: The 3 Search Pillars */}
+          <section className="max-w-6xl mx-auto px-5">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
+                The 3 Pillars of Modern Search Visibility in 2026
+              </h2>
+              <p className="text-slate-400 text-sm md:text-base mt-3">
+                Ranking on Google alone is no longer enough. Modern searchers use AI Overviews, ChatGPT, and Voice Assistants.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="glass p-6 md:p-8 rounded-2xl border border-violet-500/20 bg-gradient-to-b from-violet-500/5 to-transparent space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-violet-600/20 text-violet-400 flex items-center justify-center text-2xl font-bold">
+                  🔍
+                </div>
+                <h3 className="text-xl font-bold text-white">Traditional SEO</h3>
+                <p className="text-slate-400 text-xs md:text-sm leading-relaxed">
+                  Traditional Search Engine Optimization focuses on Google, Bing, and Yahoo algorithmic crawlers. It evaluates meta tags, crawlability, canonical architecture, robots.txt, sitemaps, internal linking, and Core Web Vitals lab metrics.
+                </p>
+                <div className="pt-2 text-xs font-semibold text-violet-400 uppercase tracking-wider">
+                  Target: Google Organic &amp; Bing
+                </div>
+              </div>
+
+              <div className="glass p-6 md:p-8 rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-emerald-500/5 to-transparent space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-2xl font-bold">
+                  🤖
+                </div>
+                <h3 className="text-xl font-bold text-white">GEO (AI Engine Optimization)</h3>
+                <p className="text-slate-400 text-xs md:text-sm leading-relaxed">
+                  Generative Engine Optimization optimizes content so Large Language Models (ChatGPT, Gemini, Perplexity AI, Claude) cite your brand as an authoritative source in AI Overviews and chat answers.
+                </p>
+                <div className="pt-2 text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+                  Target: ChatGPT, Gemini, Perplexity
+                </div>
+              </div>
+
+              <div className="glass p-6 md:p-8 rounded-2xl border border-amber-500/20 bg-gradient-to-b from-amber-500/5 to-transparent space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center text-2xl font-bold">
+                  🎙️
+                </div>
+                <h3 className="text-xl font-bold text-white">AEO (Answer Engine Optimization)</h3>
+                <p className="text-slate-400 text-xs md:text-sm leading-relaxed">
+                  Answer Engine Optimization formats technical Q&amp;A pairs, FAQ structured data schemas, and conversational semantic triggers that voice search assistants (Siri, Alexa, Google Voice) read aloud to users.
+                </p>
+                <div className="pt-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
+                  Target: Featured Snippets &amp; Voice Search
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Deep Content Section 2: What This Audit Checks */}
+          <section className="max-w-6xl mx-auto px-5">
+            <div className="glass p-8 md:p-12 rounded-3xl border border-white/10 space-y-8">
+              <div className="text-center max-w-xl mx-auto">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+                  21+ In-Depth Technical &amp; AI Diagnostics
+                </h2>
+                <p className="text-slate-400 text-xs md:text-sm mt-2">
+                  Everything you need to audit, fix, and dominate organic search in one unified report.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-orange-400 flex items-center gap-2"><span>📄</span> On-Page &amp; Content</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Title &amp; Meta length verification, H1-H4 semantic heading hierarchy, image ALT attributes, and word count depth.</p>
+                </div>
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-emerald-400 flex items-center gap-2"><span>⚡</span> Core Web Vitals</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Largest Contentful Paint (LCP), First Contentful Paint (FCP), Cumulative Layout Shift (CLS), and Speed Index powered by PageSpeed API.</p>
+                </div>
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-violet-400 flex items-center gap-2"><span>🧠</span> AI Brand Citations</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Real-time Gemini 3.7 Flash analysis of brand prominence across generative engines, citation density, and AI visibility rank.</p>
+                </div>
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-blue-400 flex items-center gap-2"><span>⚙️</span> Technical &amp; Crawling</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Robots.txt syntax validation, XML Sitemap linking, Canonical tags, OpenGraph previews, and HTTP language declarations.</p>
+                </div>
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-amber-400 flex items-center gap-2"><span>🔒</span> Security &amp; Trust</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">SSL/HTTPS certificate validation, mixed content checks, broken link crawler, and safe iframe headers.</p>
+                </div>
+                <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-sm font-bold text-cyan-400 flex items-center gap-2"><span>📊</span> Competitor Gap Radar</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Side-by-side performance benchmarking against industry leaders with 1-click whitepaper PDF generation.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Deep Content Section 3: FAQ Section for High SEO Authority */}
+          <section className="max-w-4xl mx-auto px-5">
+            <div className="text-center max-w-xl mx-auto mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-slate-400 text-xs md:text-sm mt-2">
+                Common questions about website audits, AI search optimization, and report unlocking.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">How is this different from generic SEO checkers like Semrush or Ahrefs?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  Traditional tools only analyze 10-year-old Google ranking factors. The AdsVerse.Ai audit combines classical Technical SEO with next-generation Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) to tell you how AI platforms like ChatGPT and Gemini cite your brand.
+                </p>
+              </div>
+
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">What is included in the ₹10 Paid Full Audit Pass?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  The ₹10 Single Pass unlocks all 21+ technical error diagnostics, complete step-by-step code fixes (&quot;💡 Fix&quot;), live Gemini 3.7 Flash AI citation analysis, competitor benchmarking radar, content depth breakdown, and instant 1-click branded PDF export.
+                </p>
+              </div>
+
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">Can agencies use this tool to audit client websites in bulk?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  Yes! We offer a Starter Wallet Pack (₹50 for 5 credits) and an Agency Pro Pack (₹100 for 12 credits). Credits never expire and are automatically deducted whenever you audit a new client domain.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
       )}
 
       {/* STATE 2: Loading */}

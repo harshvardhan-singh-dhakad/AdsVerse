@@ -46,13 +46,24 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    try {
-      const { auth } = require("@/firebase");
-      if (auth && auth.currentUser) {
-        setIsLoggedIn(true);
+    const checkAuth = () => {
+      try {
+        const { auth } = require("@/firebase");
+        if (auth && auth.currentUser) {
+          setIsLoggedIn(true);
+        }
+      } catch (e) {
+        // Firebase auth not initialized on public SSR pages
       }
-    } catch (e) {
-      // Firebase auth not initialized on public SSR pages
+    };
+
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(checkAuth, { timeout: 3500 });
+      } else {
+        const t = setTimeout(checkAuth, 3000);
+        return () => clearTimeout(t);
+      }
     }
   }, []);
 

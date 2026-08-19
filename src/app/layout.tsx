@@ -19,12 +19,16 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-plus-jakarta',
   display: 'swap',
+  preload: true,
+  weight: ['400', '600', '700', '800'],
 });
 
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-instrument',
   display: 'swap',
+  preload: true,
+  weight: ['400', '600', '700'],
 });
 
 const siteUrl = "https://adsverse.in";
@@ -323,6 +327,8 @@ export default async function RootLayout({
         <link rel="api" type="application/json" title="AdsVerse OpenAPI Spec" href="https://adsverse.in/openapi.json" />
         <link rel="ai-plugin" type="application/json" href="https://adsverse.in/.well-known/ai-plugin.json" />
         {/* Preconnect for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         {/* DNS prefetch for third-party image CDNs */}
