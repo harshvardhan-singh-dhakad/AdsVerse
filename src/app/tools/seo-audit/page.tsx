@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { 
-  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown
+  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown, Sparkles
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
 import { initializeFirebase } from '@/firebase';
