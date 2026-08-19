@@ -105,8 +105,8 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
-# ── SITEMAP & LLM REFERENCES ──
-Agent-json: https://adsverse.in/.well-known/agent.json
+# ── SITEMAP & AI AGENT DISCOVERY ──
 Sitemap: https://adsverse.in/sitemap.xml
-LLMs-txt: https://adsverse.in/llms.txt
-LLMs-full-txt: https://adsverse.in/llms-full.txt
+# Agent-json: https://adsverse.in/.well-known/agent.json
+# LLMs-txt: https://adsverse.in/llms.txt
+# LLMs-full-txt: https://adsverse.in/llms-full.txt
