@@ -53,6 +53,12 @@ type Props = {
   params: { city: string };
 };
 
+export async function generateStaticParams() {
+  return Object.keys(citiesDb).map((city) => ({
+    city,
+  }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cityKey = params.city.toLowerCase();
   const meta = cityMeta[cityKey];

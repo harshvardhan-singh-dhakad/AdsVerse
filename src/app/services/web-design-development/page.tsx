@@ -7,7 +7,7 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Website Design & Development Company in Indore | AdsVerse",
+  title: { absolute: "Website Design & Development Company in Indore | AdsVerse" },
   description: "AdsVerse is the top website design company in Indore. Custom business websites, e-commerce development, landing pages & website redesigning — built on Next.js for speed, SEO & conversions. Serving Indore and pan-India.",
   keywords: [
     "website design company in indore",

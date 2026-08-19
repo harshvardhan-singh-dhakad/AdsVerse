@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   return {
-    title: finalTitle,
+    title: { absolute: finalTitle },
     description: cleanExcerpt,
     alternates: {
       canonical: fullUrl,

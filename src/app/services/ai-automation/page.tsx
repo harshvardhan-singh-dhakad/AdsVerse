@@ -7,7 +7,7 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "AI Automation Agency — Business Process Automation Services | AdsVerse",
+  title: { absolute: "AI Automation Agency — Business Process Automation Services | AdsVerse" },
   description: "AdsVerse is an AI automation agency specialising in business process automation, BPM workflows, and RPA solutions for Indian SMBs. Automate your entire business — from lead gen to CRM — with AI agents built in Indore.",
   keywords: [
     "ai automation agency",

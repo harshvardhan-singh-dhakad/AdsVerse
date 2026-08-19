@@ -7,7 +7,7 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Digital Marketing Agency in Indore — SEO, Google Ads & Social Media | AdsVerse",
+  title: { absolute: "Digital Marketing Agency in Indore — SEO, Google Ads & Social Media | AdsVerse" },
   description: "AdsVerse is the best digital marketing agency in Indore — AI-first SEO, Google Ads, Meta Ads & social media marketing. Serving 113+ brands with 4.8x avg ROAS. Digital marketing company in Indore, Vijay Nagar.",
   keywords: [
     "digital marketing agency in indore",

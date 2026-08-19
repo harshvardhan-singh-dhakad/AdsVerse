@@ -4,10 +4,12 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { getServiceBySlug, getServiceSlug, DM_CATEGORIES, AI_CATEGORIES, getServicePrice } from "@/lib/services-data";
-import { ArrowLeft, CheckCircle, Sparkles } from "lucide-react";
+import { getCategoryDetails } from "@/lib/service-details";
+import { ArrowLeft, CheckCircle, Sparkles, Wrench, Package, Calendar } from "lucide-react";
 
 // Force static pre-rendering of all service slugs during build
 export async function generateStaticParams() {
@@ -66,6 +68,7 @@ export default function DynamicServicePage({ params }: PageProps) {
 
   const { service, category } = result;
   const basePrice = getServicePrice(service.name);
+  const details = getCategoryDetails(category.id, service.name, service.tags);
 
   // Dynamic content block calculations
   const displayIcon = category.icon || "✨";
@@ -114,31 +117,6 @@ export default function DynamicServicePage({ params }: PageProps) {
     },
   ];
 
-  // Tailor descriptions
-  const overviewText = service.fullDesc;
-  const approachText = `At AdsVerse, our approach to ${service.name} is centered on driving measurable business outcomes. We begin by analyzing your existing digital assets, target audience, and competitors. From there, we design a customized implementation strategy. We combine high-quality creative work, data-driven optimization, and robust tracking systems to ensure you capture every potential lead and maximize your conversion rates.`;
-  const essentialText = `In 2026, digital platforms are hyper-competitive. Standard templates and generic marketing campaigns no longer make an impact. Investing in specialized ${service.name} allows your business to command authority, outrank competitors, and capture high-intent buyers. AdsVerse builds advanced solutions using AI capabilities and custom integrations that keep your brand ahead of the curve.`;
-
-  // Custom FAQ dataset
-  const faqs = [
-    {
-      question: `What is the delivery timeline for ${service.name}?`,
-      answer: `Standard setup and initial deployment for ${service.name} typically take between 2 to 3 weeks. Complex integrations or custom development projects may take 4 to 6 weeks, which includes extensive testing and quality assurance checks.`,
-    },
-    {
-      question: `How does AdsVerse measure and track success for ${service.name}?`,
-      answer: `We configure detailed tracking dashboards (e.g., Google Analytics 4, Meta Pixel, Looker Studio) to attribute every click and conversion back to its source. We focus on business metrics—such as lead volume, cost per lead (CPL), and return on ad spend (ROAS)—rather than just vanity metrics.`,
-    },
-    {
-      question: `Can this service connect to our existing CRMs and business databases?`,
-      answer: `Yes, absolutely. One of our core strengths is workflow automation. We can connect your ${service.name} funnel directly to CRMs like Zoho, HubSpot, Tally, or Google Sheets using custom API connections and n8n/Zapier integrations.`,
-    },
-    {
-      question: `Why should we choose AdsVerse over other agencies in Indore?`,
-      answer: `AdsVerse is an AI-first agency headquartered in Vijay Nagar, Indore. We do not outsource our work to freelancers. Our in-house team of certified specialists manages every aspect of your project with full transparency, performance guarantees, and detailed weekly updates.`,
-    },
-  ];
-
   // Dynamic JSON-LD for SEO Schema markup
   const jsonLd = {
     "@context": "https://schema.org",
@@ -147,7 +125,7 @@ export default function DynamicServicePage({ params }: PageProps) {
         "@type": "Service",
         "serviceType": service.name,
         "name": `${service.name} Services | AdsVerse`,
-        "description": service.desc,
+        "description": service.fullDesc || service.desc,
         "provider": {
           "@type": "Organization",
           "name": "AdsVerse",
@@ -178,26 +156,26 @@ export default function DynamicServicePage({ params }: PageProps) {
       },
       {
         "@type": "HowTo",
-        "name": `How to get started with ${service.name} at AdsVerse`,
-        "description": `The step-by-step process of implementing our ${service.name} solution for your business.`,
-        "step": [
-          {
-            "@type": "HowToStep",
-            "name": "Initial Strategy Call",
-            "text": "We begin by analyzing your existing digital assets and business goals to outline a custom strategy."
+        "name": `How to implement ${service.name} with AdsVerse`,
+        "description": `Our step-by-step 4-stage execution roadmap for ${service.name}.`,
+        "step": details.workflows.map((wf, idx) => ({
+          "@type": "HowToStep",
+          "position": idx + 1,
+          "name": wf.title,
+          "text": wf.description,
+        })),
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": details.faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
           },
-          {
-            "@type": "HowToStep",
-            "name": "Custom Implementation",
-            "text": "Our in-house experts configure the setup, including necessary integrations and creative assets."
-          },
-          {
-            "@type": "HowToStep",
-            "name": "Tracking & Optimization",
-            "text": "We launch the campaign or system with full analytics tracking and provide continuous performance improvements."
-          }
-        ]
-      }
+        })),
+      },
     ],
   };
 
@@ -236,26 +214,108 @@ export default function DynamicServicePage({ params }: PageProps) {
             <p className="text-muted-foreground text-sm uppercase font-bold tracking-wider mt-2" style={{ color: catColor }}>
               {category.label}
             </p>
+            {service.tags && service.tags.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 mt-4">
+                {service.tags.map((t) => (
+                  <Badge key={t} variant="secondary" className="text-xs px-2.5 py-0.5">
+                    #{t}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </CardHeader>
           <CardContent className="px-6 md:px-12 py-8 space-y-8">
             <div className="prose prose-lg dark:prose-invert max-w-none mx-auto text-foreground/90 space-y-8">
               <div>
                 <h2 className="text-2xl font-semibold text-primary font-headline mb-3">Overview</h2>
-                <p className="text-muted-foreground leading-relaxed">{overviewText}</p>
+                <p className="text-muted-foreground leading-relaxed text-base md:text-lg">{service.fullDesc || service.desc}</p>
               </div>
               
               <div className="border-t border-border/40 pt-8">
-                <h2 className="text-2xl font-semibold text-primary font-headline mb-3">Our Approach</h2>
-                <p className="text-muted-foreground leading-relaxed">{approachText}</p>
+                <h2 className="text-2xl font-semibold text-primary font-headline mb-3">{details.deepDive.strategyHeading}</h2>
+                <p className="text-muted-foreground leading-relaxed text-base">{details.deepDive.strategyBody}</p>
               </div>
 
               <div className="border-t border-border/40 pt-8">
-                <h2 className="text-2xl font-semibold text-primary font-headline mb-3">Why It Matters</h2>
-                <p className="text-muted-foreground leading-relaxed">{essentialText}</p>
+                <h2 className="text-2xl font-semibold text-primary font-headline mb-3">{details.deepDive.techHeading}</h2>
+                <p className="text-muted-foreground leading-relaxed text-base">{details.deepDive.techBody}</p>
+              </div>
+
+              <div className="border-t border-border/40 pt-8">
+                <h2 className="text-2xl font-semibold text-primary font-headline mb-3">{details.deepDive.roiHeading}</h2>
+                <p className="text-muted-foreground leading-relaxed text-base">{details.deepDive.roiBody}</p>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* 4-Step Execution Workflow */}
+        <section className="mb-16">
+          <div className="text-center mb-10 space-y-2">
+            <h2 className="text-3xl md:text-4xl font-bold font-headline">
+              How We Execute <span style={{ color: catColor }}>{service.name}</span>
+            </h2>
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
+              Our structured 4-phase delivery framework engineered for consistent ROI and measurable business performance.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {details.workflows.map((wf, idx) => (
+              <Card key={idx} className="bg-card/40 border-border/60 hover:border-primary/40 transition-colors">
+                <CardHeader className="pb-2 flex flex-row items-center gap-4 space-y-0">
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 font-extrabold flex items-center justify-center text-sm shrink-0 border border-orange-500/20">
+                    {wf.step}
+                  </div>
+                  <CardTitle className="text-lg font-bold font-headline">{wf.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{wf.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Deliverables & Technology Stack Grid */}
+        <section className="mb-16 grid md:grid-cols-2 gap-8">
+          <Card className="bg-card/40 border-border/60">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold font-headline flex items-center gap-2">
+                <Package className="w-5 h-5 text-orange-500 shrink-0" />
+                Key Deliverables You Receive
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {details.deliverables.map((del, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-500 mt-1 shrink-0" />
+                  <span className="text-foreground text-sm font-medium leading-relaxed">{del}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card/40 border-border/60">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold font-headline flex items-center gap-2">
+                <Wrench className="w-5 h-5 text-blue-500 shrink-0" />
+                Tools & Technology Ecosystem
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground text-xs leading-relaxed">
+                We deploy industry-standard enterprise software and AI frameworks to ensure 100% data reliability:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {details.tools.map((tool) => (
+                  <Badge key={tool} variant="outline" className="text-xs px-3 py-1.5 font-medium border-border/80 bg-background/50">
+                    ⚙️ {tool}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Pricing/Packages Grid */}
         <section className="mb-16">
@@ -348,9 +408,15 @@ export default function DynamicServicePage({ params }: PageProps) {
 
         {/* FAQs Accordion */}
         <section className="mb-16 space-y-6">
-          <h2 className="text-3xl font-bold text-center font-headline">Frequently Asked Questions</h2>
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Verified Service FAQs</span>
+            </div>
+            <h2 className="text-3xl font-bold font-headline">Frequently Asked Questions</h2>
+          </div>
           <Accordion type="single" collapsible className="w-full space-y-2">
-            {faqs.map((faq, i) => (
+            {details.faqs.map((faq, i) => (
               <AccordionItem 
                 key={i} 
                 value={`faq-${i}`} 
