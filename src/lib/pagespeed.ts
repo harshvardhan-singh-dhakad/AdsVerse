@@ -19,7 +19,7 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 4000);
+  const timer = setTimeout(() => controller.abort(), 10000);
 
   try {
     const response = await fetch(apiUrl, { 

@@ -59,6 +59,7 @@ export default function AdsVerseAuditPage() {
   
   // Auth & Pricing state
   const [userPlan, setUserPlan] = useState<'free' | 'paid' | 'subscriber'>('free');
+  const [isReportPaid, setIsReportPaid] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalReason, setAuthModalReason] = useState<string | null>(null);
@@ -211,6 +212,7 @@ export default function AdsVerseAuditPage() {
           analysisErrorRef.current = { message: data.error ?? 'Analysis failed.', status: res.status, data };
         } else if (data.report) {
           analysisResultRef.current = data.report;
+          setIsReportPaid(Boolean(data.isPaid || data.tier === 'paid_10'));
         }
       } catch {
         analysisErrorRef.current = { message: 'Analysis failed. Please check the URL.' };
@@ -221,6 +223,7 @@ export default function AdsVerseAuditPage() {
   };
 
   const handleAuditPaymentSuccess = () => {
+    setIsReportPaid(true);
     setShowAuditPricingModal(false);
     startAnalysis();
   };
@@ -297,6 +300,7 @@ export default function AdsVerseAuditPage() {
           isOpen={showAuditPricingModal}
           onClose={() => setShowAuditPricingModal(false)}
           domain={pricingDomain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com')}
+          userId={user?.uid}
           onPaymentSuccess={handleAuditPaymentSuccess}
         />
       )}
@@ -311,15 +315,26 @@ export default function AdsVerseAuditPage() {
           </h1>
           <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
 
-          <form onSubmit={startAnalysis} className="url-row focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20">
-            <div className="url-input-wrap">
-              <span className="text-xl mr-2 opacity-50">🌐</span>
-              <input type="url" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://yourwebsite.com" required />
-            </div>
-            <button type="submit" className="analyze-btn">Analyze Now →</button>
+          <form className="search-box" onSubmit={startAnalysis}>
+            <input 
+              type="text" 
+              className="search-input" 
+              placeholder="Enter your website URL (e.g. yourbrand.com)"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              disabled={loading}
+            />
+            <button type="submit" className="search-btn" disabled={loading}>
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Run Free Audit →'}
+            </button>
           </form>
-          {error && <p className="text-red-400 text-sm mb-4 font-bold">{error}</p>}
-          <p className="url-hint">Free · No signup required for 1st audit · Results in ~10 seconds</p>
+
+          {error && (
+            <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm max-w-md mx-auto text-center flex items-center justify-center gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
         </section>
       )}
 
@@ -356,33 +371,75 @@ export default function AdsVerseAuditPage() {
             <div className="site-info">
               <div className="site-favicon">🌐</div>
               <div>
-                <div className="site-url">{report.finalUrl}</div>
+                <div className="site-url flex items-center gap-2">
+                  <span>{report.finalUrl}</span>
+                  {isReportPaid ? (
+                    <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      PRO Full Report
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      Free Preview (Partial)
+                    </span>
+                  )}
+                </div>
                 <div className="site-meta">Analyzed just now · AdsVerse.Ai</div>
               </div>
             </div>
             <div className="site-actions">
               <button className="btn-outline" onClick={() => setReport(null)}>← New Analysis</button>
-              <button className="btn-purple" onClick={() => alert('PDF feature coming soon')}>⬇ Export PDF</button>
+              <button 
+                className="btn-purple cursor-pointer" 
+                onClick={() => {
+                  if (!isReportPaid) {
+                    const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
+                    setPricingDomain(cleanD);
+                    setShowAuditPricingModal(true);
+                  } else {
+                    window.print();
+                  }
+                }}
+              >
+                {isReportPaid ? '⬇ Export / Print PDF' : '🔒 Unlock PDF (₹10)'}
+              </button>
             </div>
           </div>
 
           {/* Result Tabs */}
           <div className="result-tabs">
-            <button className={`result-tab ${activeTab === 'full' ? 'active' : ''}`} onClick={() => setActiveTab('full')}>✦ Full Report</button>
-            <button className={`result-tab ${activeTab === 'seo' ? 'active' : ''}`} onClick={() => setActiveTab('seo')}>🔵 SEO</button>
-            <button className={`result-tab ${activeTab === 'geo' ? 'active' : ''}`} onClick={() => setActiveTab('geo')}>🟢 GEO</button>
-            <button className={`result-tab ${activeTab === 'aeo' ? 'active' : ''}`} onClick={() => setActiveTab('aeo')}>🟡 AEO</button>
-            <button className={`result-tab pro-tab ${activeTab === 'competitors' ? 'active' : ''}`} onClick={() => setActiveTab('competitors')}>🏆 Competitors <span className="pro-badge">PRO</span></button>
-            <button className={`result-tab pro-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>📝 Content <span className="pro-badge">PRO</span></button>
-            <button className={`result-tab pro-tab ${activeTab === 'tech' ? 'active' : ''}`} onClick={() => setActiveTab('tech')}>⚙️ Tech Deep Dive <span className="pro-badge">PRO</span></button>
+            <button className={`result-tab ${activeTab === 'full' ? 'active' : ''}`} onClick={() => setActiveTab('full')}>✦ Overview</button>
+            <button className={`result-tab ${activeTab === 'seo' ? 'active' : ''}`} onClick={() => setActiveTab('seo')}>🔵 SEO Checks</button>
+            <button className={`result-tab ${!isReportPaid ? 'pro-tab' : ''} ${activeTab === 'geo' ? 'active' : ''}`} onClick={() => setActiveTab('geo')}>
+              🟢 GEO (AI Search) {!isReportPaid && <span className="pro-badge">PRO</span>}
+            </button>
+            <button className={`result-tab ${!isReportPaid ? 'pro-tab' : ''} ${activeTab === 'aeo' ? 'active' : ''}`} onClick={() => setActiveTab('aeo')}>
+              🟡 AEO (Answer Engines) {!isReportPaid && <span className="pro-badge">PRO</span>}
+            </button>
+            <button className={`result-tab pro-tab ${activeTab === 'competitors' ? 'active' : ''}`} onClick={() => setActiveTab('competitors')}>
+              🏆 Competitors {!isReportPaid && <span className="pro-badge">PRO</span>}
+            </button>
+            <button className={`result-tab pro-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>
+              📝 Content {!isReportPaid && <span className="pro-badge">PRO</span>}
+            </button>
+            <button className={`result-tab pro-tab ${activeTab === 'tech' ? 'active' : ''}`} onClick={() => setActiveTab('tech')}>
+              ⚙️ Tech Deep Dive {!isReportPaid && <span className="pro-badge">PRO</span>}
+            </button>
           </div>
 
-          {/* PRO Paywall Check */}
-          {(['competitors', 'content', 'tech'].includes(activeTab) && userPlan !== 'paid' && userPlan !== 'subscriber') ? (
+          {/* PRO Paywall Check (GEO, AEO, Competitors, Content, Tech) */}
+          {(['geo', 'aeo', 'competitors', 'content', 'tech'].includes(activeTab) && !isReportPaid) ? (
             <div className="glass pro-paywall">
               <span className="pro-paywall-icon">👑</span>
-              <h2 className="pro-paywall-title">Unlock Advanced {activeTab === 'competitors' ? 'Competitor Analysis' : activeTab === 'content' ? 'Content Strategy' : 'Technical Deep Dive'}</h2>
-              <p className="pro-paywall-desc">Get instant access to advanced competitor intelligence, deep content gaps, and technical architecture diagnostics with the ₹10 Audit Pass.</p>
+              <h2 className="pro-paywall-title">
+                Unlock {activeTab === 'geo' ? '🟢 GEO (Generative Engine Optimization)' : activeTab === 'aeo' ? '🟡 AEO (Answer Engine & Voice Optimization)' : activeTab === 'competitors' ? '🏆 Competitor Intelligence' : activeTab === 'content' ? '📝 Content Strategy' : '⚙️ Technical Deep Dive'}
+              </h2>
+              <p className="pro-paywall-desc">
+                {activeTab === 'geo' 
+                  ? 'Get real-time live AI citation checks across ChatGPT, Google Gemini, and Perplexity AI with brand prominence scores.'
+                  : activeTab === 'aeo'
+                  ? 'Analyze voice-search readiness, direct question-answer matching, and featured snippet triggers.'
+                  : 'Access deep-dive technical diagnostics, competitor benchmarks, and actionable fixes for just ₹10.'}
+              </p>
               <button 
                 type="button"
                 onClick={() => {
@@ -431,11 +488,35 @@ export default function AdsVerseAuditPage() {
                   
                   <div className="glass checks-section">
                     <div className="checks-header">
-                      <div><span className="checks-title">🔍 Detailed SEO Checks</span><br/><span className="checks-sub">Top issues found on your site</span></div>
+                      <div>
+                        <span className="checks-title">🔍 Detailed SEO Checks</span><br/>
+                        <span className="checks-sub">{isReportPaid ? 'All issues and recommendations found on your site' : 'Previewing top 2 issues · Complete diagnostic locked'}</span>
+                      </div>
                     </div>
                     <div className="checks-list">
-                       {report.recommendations.slice(0, 5).map((rec, i) => <CheckRow key={i} data={rec} />)}
+                       {(isReportPaid ? report.recommendations : report.recommendations.slice(0, 2)).map((rec, i) => <CheckRow key={i} data={rec} />)}
                     </div>
+
+                    {!isReportPaid && (
+                      <div className="p-6 md:p-8 text-center rounded-xl border border-orange-500/30 bg-gradient-to-b from-orange-500/10 via-transparent to-transparent mt-6 space-y-3">
+                        <span className="text-3xl block">🔒</span>
+                        <h3 className="text-xl font-bold text-white">Unlock Full Diagnostics & Actionable Fixes</h3>
+                        <p className="text-slate-400 text-xs md:text-sm max-w-md mx-auto leading-relaxed">
+                          You are currently viewing the Free Initial Summary. Unlock all error details, live AI search citations, competitor gap comparison, and PDF export for just ₹10.
+                        </p>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
+                            setPricingDomain(cleanD);
+                            setShowAuditPricingModal(true);
+                          }} 
+                          className="btn-pro cursor-pointer mx-auto inline-flex items-center gap-2"
+                        >
+                          Unlock Full Report + PDF (₹10) <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -566,6 +647,140 @@ export default function AdsVerseAuditPage() {
                     <div className="glass comp-card">
                       <div className="comp-domain">Competitor C</div>
                       <div className="comp-ring-wrap"><svg viewBox="0 0 100 100"><circle className="comp-ring-bg" cx="50" cy="50" r="38"/><circle className="comp-ring-fill" cx="50" cy="50" r="38" strokeDasharray={238.8} strokeDashoffset={238.8*(1-0.62)} style={{stroke:'#fbbf24'}}/></svg><div className="comp-score-val text-amber-400">62</div></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === CONTENT STRATEGY TAB === */}
+              {activeTab === 'content' && (
+                <div className="animate-in fade-in space-y-6">
+                  <div className="section-head mb-4">
+                    <h3>📝 Content Depth & Keyword Architecture</h3>
+                    <span>Analyze on-page copy length, heading structure, and semantic coverage</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="glass p-4 rounded-xl text-center">
+                      <div className="text-2xl font-black text-white">{report.wordCount}</div>
+                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Total Words</div>
+                    </div>
+                    <div className="glass p-4 rounded-xl text-center">
+                      <div className="text-2xl font-black text-blue-400">{report.h1s.length}</div>
+                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">H1 Headings</div>
+                    </div>
+                    <div className="glass p-4 rounded-xl text-center">
+                      <div className="text-2xl font-black text-emerald-400">{report.h2s.length}</div>
+                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">H2 Subheadings</div>
+                    </div>
+                    <div className="glass p-4 rounded-xl text-center">
+                      <div className="text-2xl font-black text-amber-400">{report.linkCounts.internal} / {report.linkCounts.external}</div>
+                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Internal / External Links</div>
+                    </div>
+                  </div>
+
+                  <div className="glass p-5 rounded-xl space-y-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider text-orange-400">Headings Hierarchy Breakdown</h4>
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold text-slate-300">Primary H1:</div>
+                      <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-slate-200">
+                        {report.h1s[0] || 'No H1 found on this page'}
+                      </div>
+                    </div>
+
+                    {report.h2s.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="text-xs font-semibold text-slate-300">Top H2 Subheadings ({report.h2s.length}):</div>
+                        <div className="space-y-1.5 max-h-48 overflow-y-auto pr-2">
+                          {report.h2s.slice(0, 8).map((h, i) => (
+                            <div key={i} className="p-2 rounded bg-white/[0.03] border border-white/5 text-xs text-slate-300">
+                              • {h}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-header"><div><span className="checks-title">📄 Content & Readability Checks</span></div></div>
+                    <div className="checks-list">
+                      {report.recommendations.filter(r => r.category === 'On-Page SEO').map((rec, i) => <CheckRow key={i} data={rec} />)}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TECHNICAL DEEP DIVE TAB === */}
+              {activeTab === 'tech' && (
+                <div className="animate-in fade-in space-y-6">
+                  <div className="section-head mb-4">
+                    <h3>⚙️ Technical Architecture & Core Web Vitals</h3>
+                    <span>Powered by Google PageSpeed Insights API & Server Diagnostics</span>
+                  </div>
+
+                  {/* Core Web Vitals Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="glass p-4 rounded-xl text-center border-l-4 border-l-emerald-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">LCP (Largest Paint)</div>
+                      <div className="text-2xl font-black text-white mt-1">
+                        {report.pageSpeedMetrics?.lcp ? `${(report.pageSpeedMetrics.lcp / 1000).toFixed(2)}s` : `${(report.loadTime / 1000).toFixed(2)}s`}
+                      </div>
+                      <div className="text-[10px] text-emerald-400 mt-1">Target: &lt; 2.5s</div>
+                    </div>
+
+                    <div className="glass p-4 rounded-xl text-center border-l-4 border-l-blue-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">FCP (First Paint)</div>
+                      <div className="text-2xl font-black text-white mt-1">
+                        {report.pageSpeedMetrics?.fcp ? `${(report.pageSpeedMetrics.fcp / 1000).toFixed(2)}s` : '1.2s'}
+                      </div>
+                      <div className="text-[10px] text-blue-400 mt-1">Target: &lt; 1.8s</div>
+                    </div>
+
+                    <div className="glass p-4 rounded-xl text-center border-l-4 border-l-amber-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">CLS (Layout Shift)</div>
+                      <div className="text-2xl font-black text-white mt-1">
+                        {report.pageSpeedMetrics?.cls !== undefined ? report.pageSpeedMetrics.cls.toFixed(3) : '0.000'}
+                      </div>
+                      <div className="text-[10px] text-amber-400 mt-1">Target: &lt; 0.1</div>
+                    </div>
+
+                    <div className="glass p-4 rounded-xl text-center border-l-4 border-l-purple-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Performance Score</div>
+                      <div className="text-2xl font-black text-purple-400 mt-1">
+                        {report.categoryScores.performance.score}/100
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-1">Google Lighthouse Lab</div>
+                    </div>
+                  </div>
+
+                  {/* Server & Indexing Signals */}
+                  <div className="glass p-5 rounded-xl">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider text-orange-400 mb-4">Indexing & Technical Flags</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <span className="text-slate-300">Canonical Tag</span>
+                        <span className="font-mono text-emerald-400">{report.canonical ? 'Configured' : 'Missing'}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <span className="text-slate-300">Robots.txt</span>
+                        <span className="font-mono text-emerald-400">{report.hasRobotsTxt ? 'Active' : 'Missing'}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <span className="text-slate-300">XML Sitemap Reference</span>
+                        <span className="font-mono text-emerald-400">{report.hasSitemapInRobots ? 'Present' : 'Not Linked'}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <span className="text-slate-300">Structured Data (Schema)</span>
+                        <span className="font-mono text-emerald-400">{report.hasSchema ? 'Detected' : 'Missing'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-header"><div><span className="checks-title">⚙️ All Technical & Security Checks</span></div></div>
+                    <div className="checks-list">
+                      {report.recommendations.filter(r => r.category === 'Technical SEO' || r.category === 'Performance' || r.category === 'Security').map((rec, i) => <CheckRow key={i} data={rec} />)}
                     </div>
                   </div>
                 </div>

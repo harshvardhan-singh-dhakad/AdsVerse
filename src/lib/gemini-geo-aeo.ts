@@ -53,13 +53,13 @@ const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 async function callGemini(
   prompt: string,
   jsonMode = false,
-  timeoutMs = 6000,
-  targetModel = 'gemini-3.6-flash',
+  timeoutMs = 8000,
+  targetModel = 'gemini-3.7-flash',
 ): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY is not configured');
 
-  const modelsToTry = [targetModel, 'gemini-1.5-flash', 'gemini-1.5-pro'].filter(
+  const modelsToTry = [targetModel, 'gemini-3.7-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter(
     (m, i, arr) => arr.indexOf(m) === i
   );
 

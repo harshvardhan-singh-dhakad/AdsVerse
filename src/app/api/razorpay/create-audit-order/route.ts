@@ -1,15 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 
+export const AUDIT_PACKS: Record<string, { name: string; priceInr: number; paise: number; credits: number; usdEquiv: string }> = {
+  single: {
+    name: '1 Website Detailed Audit Pass',
+    priceInr: 10,
+    paise: 1000,
+    credits: 1,
+    usdEquiv: '$0.12',
+  },
+  wallet_5: {
+    name: 'Starter Wallet Pack (5 Audits)',
+    priceInr: 50,
+    paise: 5000,
+    credits: 5,
+    usdEquiv: '$0.60',
+  },
+  wallet_12: {
+    name: 'Agency Pro Wallet Pack (12 Audits)',
+    priceInr: 100,
+    paise: 10000,
+    credits: 12,
+    usdEquiv: '$1.20',
+  },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { domain } = body;
+    const { domain, packType = 'single', userId } = body;
 
-    if (!domain) {
-      return NextResponse.json({ error: 'Domain is required.' }, { status: 400 });
+    if (!domain && !userId) {
+      return NextResponse.json({ error: 'Domain or User ID is required.' }, { status: 400 });
     }
 
+    const selectedPack = AUDIT_PACKS[packType] || AUDIT_PACKS.single;
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
@@ -17,10 +42,12 @@ export async function POST(req: NextRequest) {
       // Fallback for simulation / test mode if Razorpay credentials are not yet configured in env
       return NextResponse.json({
         order_id: `order_sim_${Date.now()}`,
-        amount: 1000, // 1000 paise = 10 INR
+        amount: selectedPack.paise,
         currency: 'INR',
         key_id: keyId || 'rzp_test_simulated',
-        domain,
+        domain: domain || 'wallet',
+        packType,
+        credits: selectedPack.credits,
         isSimulated: true,
       });
     }
@@ -31,13 +58,15 @@ export async function POST(req: NextRequest) {
     });
 
     const order = await razorpay.orders.create({
-      amount: 1000, // ₹10 = 1000 paise
+      amount: selectedPack.paise,
       currency: 'INR',
-      receipt: `audit_${Date.now().toString().slice(-8)}`,
+      receipt: `aud_${Date.now().toString().slice(-8)}`,
       notes: {
-        domain: domain.toLowerCase(),
-        type: 'seo_audit_single',
-        price_inr: '10',
+        domain: (domain || 'wallet').toLowerCase(),
+        packType,
+        credits: selectedPack.credits.toString(),
+        price_inr: selectedPack.priceInr.toString(),
+        userId: userId || 'guest',
       },
     });
 
@@ -46,7 +75,9 @@ export async function POST(req: NextRequest) {
       amount: order.amount,
       currency: order.currency,
       key_id: keyId,
-      domain,
+      domain: domain || 'wallet',
+      packType,
+      credits: selectedPack.credits,
     });
   } catch (error: any) {
     console.error('Error creating audit order:', error);
