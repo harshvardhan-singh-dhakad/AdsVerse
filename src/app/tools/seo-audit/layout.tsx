@@ -5,14 +5,14 @@ import { ReactNode } from "react";
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: { absolute: "Free SEO, GEO & AEO Website Audit Tool | AdsVerse" },
-  description: "Get a FREE instant SEO, GEO (Generative Engine Optimization) and AEO (Answer Engine Optimization) audit for your website. Check your AI search readiness score, technical SEO, performance, and more.",
+  title: { absolute: "Free SEO, AEO & GEO Audit Tool — AI Search Visibility Checker | AdsVerse" },
+  description: "Run a free audit to see your Google SEO score plus AI visibility on ChatGPT, Perplexity & Google AI Overviews. Instant 21+ check report.",
   alternates: {
     canonical: 'https://adsverse.in/tools/seo-audit',
   },
   openGraph: {
-    title: { absolute: "Free SEO, GEO & AEO Website Audit Tool | AdsVerse" },
-    description: "Get a FREE instant SEO, GEO & AEO audit for your website. Check your AI search readiness score, on-page SEO, technical health, and more — in seconds.",
+    title: { absolute: "Free SEO, AEO & GEO Audit Tool — AI Search Visibility Checker | AdsVerse" },
+    description: "Run a free audit to see your Google SEO score plus AI visibility on ChatGPT, Perplexity & Google AI Overviews. Instant 21+ check report.",
     url: "https://adsverse.in/tools/seo-audit",
     siteName: "AdsVerse",
     images: [
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         url: "https://adsverse.in/images/og-adsverse-2026.png",
         width: 1200,
         height: 630,
-        alt: "AdsVerse SEO, GEO & AEO Audit Tool",
+        alt: "AdsVerse SEO, AEO & GEO Audit Tool",
       },
     ],
     locale: 'en_IN',
@@ -28,8 +28,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: { absolute: "Free SEO, GEO & AEO Website Audit Tool | AdsVerse" },
-    description: "Get a FREE instant SEO, GEO & AEO audit for your website. Check your AI search readiness score in seconds.",
+    title: { absolute: "Free SEO, AEO & GEO Audit Tool — AI Search Visibility Checker | AdsVerse" },
+    description: "Run a free audit to see your Google SEO score plus AI visibility on ChatGPT, Perplexity & Google AI Overviews. Instant 21+ check report.",
     images: ["https://adsverse.in/images/og-adsverse-2026.png"],
   },
 };

@@ -310,11 +310,10 @@ export default function AdsVerseAuditPage() {
         <div className="space-y-16 pb-24">
           <section className="hero pt-28 pb-12">
             <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
-            <h1 className="hero-heading">
-              Analyze Your Website for<br/>
-              <span className="grad-seo">SEO</span><span className="dot-sep"> · </span><span className="grad-geo">GEO</span><span className="dot-sep"> · </span><span className="grad-aeo">AEO</span>
+            <h1 className="hero-heading max-w-4xl mx-auto">
+              Free <span className="grad-seo">SEO</span>, <span className="grad-aeo">AEO</span> &amp; <span className="grad-geo">GEO</span> Audit Tool — Check If ChatGPT &amp; Google AI Cite Your Website
             </h1>
-            <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
+            <p className="hero-sub max-w-2xl">See if you rank on Google AND get cited by ChatGPT, Perplexity, and Gemini — all in one report.</p>
 
             {/* Modern Wide Search Box */}
             <form className="w-full max-w-2xl mx-auto shadow-2xl px-4" onSubmit={startAnalysis}>
@@ -339,6 +338,11 @@ export default function AdsVerseAuditPage() {
                 </button>
               </div>
             </form>
+
+            {/* Trust Line */}
+            <div className="text-center mt-3 text-xs md:text-sm font-medium text-slate-400">
+              No signup · No credit card · Results in 60 seconds
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
               <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> 100% Free Initial Audit</span>
