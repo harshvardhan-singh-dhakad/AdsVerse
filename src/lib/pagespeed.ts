@@ -41,18 +41,21 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 12000);
+  // Allow up to 25s for Google's headless Chrome emulation to finish
+  const timer = setTimeout(() => controller.abort(), 25000);
 
   try {
     const response = await fetch(apiUrl, { 
       signal: controller.signal,
-      next: { revalidate: 3600 } 
+      cache: 'no-store',
     });
     clearTimeout(timer);
+
     if (!response.ok) {
       console.warn(`[PageSpeed] API returned ${response.status} for ${url}`);
       return null;
     }
+
     const data = await response.json();
     const lighthouse = data.lighthouseResult;
 

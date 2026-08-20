@@ -95,40 +95,34 @@ export async function POST(req: NextRequest) {
     try {
       analysisResult = await analyzeUrl(normalizedUrl);
 
-      // Only run expensive Gemini LLM AI GEO/AEO citations on Paid Audits
-      if (isPaidAudit) {
-        try {
-          const llmResult = await runLlmGeoAeo({
-            domain: normalizedUrl,
-            title: analysisResult.title,
-            h1: analysisResult.h1s[0] ?? '',
-            h2s: analysisResult.h2s,
-            h3s: analysisResult.h3s,
-            bodyExcerpt: analysisResult.bodyTextExcerpt,
-            staticAeoScore: analysisResult.geoAeoScores.aeo.score,
-          });
+      // Run live Gemini LLM AI GEO/AEO citations dynamically
+      try {
+        const llmResult = await runLlmGeoAeo({
+          domain: normalizedUrl,
+          title: analysisResult.title,
+          h1: analysisResult.h1s[0] ?? '',
+          h2s: analysisResult.h2s,
+          h3s: analysisResult.h3s,
+          bodyExcerpt: analysisResult.bodyTextExcerpt,
+          staticAeoScore: analysisResult.geoAeoScores.aeo.score,
+        });
 
-          const blendedGeo = blendGeoScore(analysisResult.geoAeoScores.geo.score, llmResult);
-          const blendedAeo = blendAeoScore(analysisResult.geoAeoScores.aeo.score, llmResult);
+        const blendedGeo = blendGeoScore(analysisResult.geoAeoScores.geo.score, llmResult);
+        const blendedAeo = blendAeoScore(analysisResult.geoAeoScores.aeo.score, llmResult);
 
-          analysisResult.geoAeoScores.geo.score = blendedGeo;
-          analysisResult.geoAeoScores.aeo.score = blendedAeo;
-          analysisResult.llmGeoAeo = llmResult;
-        } catch (llmErr) {
-          console.warn('[api/audit] Gemini GEO/AEO warning:', llmErr);
-        }
-      } else {
-        // Free Audit: Basic SEO & Lighthouse scores active; GEO & AEO locked behind preview
-        analysisResult.geoAeoScores.geo.score = 50;
-        analysisResult.geoAeoScores.aeo.score = 50;
+        analysisResult.geoAeoScores.geo.score = blendedGeo;
+        analysisResult.geoAeoScores.aeo.score = blendedAeo;
+        analysisResult.llmGeoAeo = llmResult;
+      } catch (llmErr) {
+        console.warn('[api/audit] Gemini GEO/AEO warning:', llmErr);
       }
 
       analysisResult.overallScore.score = Math.round(
         (analysisResult.lighthouseScores.performance * 0.25) +
         (analysisResult.categoryScores.onPage.score * 0.25) +
         (analysisResult.categoryScores.technical.score * 0.20) +
-        ((isPaidAudit ? analysisResult.geoAeoScores.geo.score : 50) * 0.15) +
-        ((isPaidAudit ? analysisResult.geoAeoScores.aeo.score : 50) * 0.15)
+        (analysisResult.geoAeoScores.geo.score * 0.15) +
+        (analysisResult.geoAeoScores.aeo.score * 0.15)
       );
     } catch (err: any) {
       console.error('[api/audit] Analysis failed:', err);
