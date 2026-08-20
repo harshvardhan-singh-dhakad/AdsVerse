@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { 
-  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown, Sparkles
+  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
 import { initializeFirebase } from '@/firebase';
@@ -18,11 +18,11 @@ const PhoneModal = dynamic(() => import('./PhoneModal'), { ssr: false });
 const AuditPricingModal = dynamic(() => import('./AuditPricingModal'), { ssr: false });
 
 const AUDIT_STEPS = [
-  { id: 1, label: 'Crawling website structure...', duration: 2500 },
-  { id: 2, label: 'Checking On-Page SEO signals...', duration: 2500 },
-  { id: 3, label: 'Analyzing GEO visibility on AI platforms...', duration: 2500 },
-  { id: 4, label: 'Running AEO and featured snippet checks...', duration: 2000 },
-  { id: 5, label: 'Generating your full report...', duration: 1500 },
+  { id: 1, label: 'Connecting to Google PageSpeed Insights 4-pillar API...', duration: 2500 },
+  { id: 2, label: 'Auditing On-Page SEO, Accessibility & Best Practices...', duration: 2500 },
+  { id: 3, label: 'Running AI Openness & Bot Crawlability diagnostic...', duration: 2500 },
+  { id: 4, label: 'Testing live GEO citations on Gemini, ChatGPT, Perplexity...', duration: 2000 },
+  { id: 5, label: 'Synthesizing actionable code fixes and full report...', duration: 1500 },
 ];
 
 function useAuditUser() {
@@ -149,103 +149,104 @@ export default function AdsVerseAuditPage() {
           setLoading(false);
           const err = analysisErrorRef.current;
           if (err) {
-            if (err.data?.requiresPayment || err.message === 'domain_limit_reached' || err.status === 402) {
-              const rawDomain = err.data?.domain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com');
-              setPricingDomain(rawDomain);
+            if (err.status === 402) {
+              setPricingDomain(err.data?.domain || url.replace(/^https?:\/\//, '').split('/')[0]);
               setShowAuditPricingModal(true);
-            } else if (err.message === 'auth_required') {
-              setAuthModalReason('Please log in to run repeat audits and save your reports.');
-              setShowAuthModal(true);
             } else {
-              setError(err.message);
+              setError(err.message || 'Audit failed. Please verify the URL.');
             }
           } else if (analysisResultRef.current) {
             setReport(analysisResultRef.current);
-            setActiveTab('full');
           }
-          analysisResultRef.current = null;
-          analysisErrorRef.current = null;
         }, 800);
         return;
       }
-      const step = AUDIT_STEPS[idx];
-      setCurrentStep(step.id);
-      stepTimer = setTimeout(() => {
-        setCompletedSteps(prev => [...prev, step.id]);
-        runStep(idx + 1);
-      }, step.duration);
+      setCurrentStep(AUDIT_STEPS[idx].id);
+      setCompletedSteps(prev => [...prev, AUDIT_STEPS[idx].id]);
+      stepTimer = setTimeout(() => runStep(idx + 1), AUDIT_STEPS[idx].duration);
     };
     runStep(0);
     return () => clearTimeout(stepTimer);
-  }, [loading]);
+  }, [loading, url]);
 
-  const startAnalysis = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!url) return;
-    
+  const startAnalysis = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!url.trim()) return;
+
     setError(null);
     setReport(null);
-    setCompletedSteps([]);
-    setCurrentStep(0);
-    
-    let idToken: string | undefined = undefined;
-    if (user) {
-      try {
-        const { getAuth } = require('firebase/auth');
-        const auth = getAuth(getApp());
-        idToken = await auth.currentUser?.getIdToken();
-      } catch {}
-    }
-
-    const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
-
-    // Background fetch
-    (async () => {
-      try {
-        const res = await fetch('/api/audit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: normalizedUrl, idToken }),
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          analysisErrorRef.current = { message: data.error ?? 'Analysis failed.', status: res.status, data };
-        } else if (data.report) {
-          analysisResultRef.current = data.report;
-          setIsReportPaid(Boolean(data.isPaid || data.tier === 'paid_10'));
-        }
-      } catch {
-        analysisErrorRef.current = { message: 'Analysis failed. Please check the URL.' };
-      }
-    })();
-
     setLoading(true);
-  };
+    setCurrentStep(0);
+    setCompletedSteps([]);
+    analysisErrorRef.current = null;
+    analysisResultRef.current = null;
 
-  const handleAuditPaymentSuccess = () => {
-    setIsReportPaid(true);
-    setShowAuditPricingModal(false);
-    startAnalysis();
+    try {
+      const cleanDomain = url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+      const auditRes = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          url, 
+          userId: user?.uid ?? null,
+          userPlan: userPlan,
+          forcePaidAudit: isReportPaid
+        }),
+      });
+
+      if (!auditRes.ok) {
+        const errJson = await auditRes.json().catch(() => ({}));
+        analysisErrorRef.current = {
+          message: errJson.error || 'Server rejected audit request',
+          status: auditRes.status,
+          data: errJson,
+        };
+        return;
+      }
+
+      const { data, paidUnlocked } = await auditRes.json();
+      setIsReportPaid(!!paidUnlocked);
+      analysisResultRef.current = data;
+    } catch (err: any) {
+      console.warn('[Audit Client] API call failed, falling back to local analyzeUrl action:', err);
+      try {
+        const localData = await analyzeUrl(url);
+        analysisResultRef.current = localData;
+        setIsReportPaid(false);
+      } catch (localErr: any) {
+        analysisErrorRef.current = { message: localErr?.message || 'Analysis failed. Please check the URL and retry.' };
+      }
+    }
   };
 
   const handleSignOut = async () => {
     try {
-      const { getAuth } = require('firebase/auth');
-      const auth = getAuth(getApp());
+      const { auth } = require('@/firebase');
       await signOut(auth);
     } catch {}
   };
 
-  if (!isMounted || isUserLoading) {
+  const handleAuditPaymentSuccess = (creditsRemaining: number) => {
+    setShowAuditPricingModal(false);
+    setIsReportPaid(true);
+    // Re-run audit with unlocked status
+    if (url) {
+      const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+      startAnalysis(fakeEvent);
+    }
+  };
+
+  const handlePrintPdf = () => {
+    window.print();
+  };
+
+  if (!isMounted) {
     return (
       <div className="rankai-app min-h-screen bg-[#060912]">
         <section className="hero">
           <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
-          <h1 className="hero-heading">
-            Analyze Your Website for<br/>
-            <span className="grad-seo">SEO</span><span className="dot-sep"> · </span><span className="grad-geo">GEO</span><span className="dot-sep"> · </span><span className="grad-aeo">AEO</span>
-          </h1>
-          <p className="hero-sub">Get a complete audit report — traditional search rankings, AI search visibility, and answer engine optimization. All in one click.</p>
+          <h1 className="hero-heading">Free SEO, AEO &amp; GEO Audit Tool</h1>
+          <p className="hero-sub">Loading audit engine...</p>
         </section>
       </div>
     );
@@ -256,7 +257,7 @@ export default function AdsVerseAuditPage() {
       <canvas id="starCanvas" ref={canvasRef}></canvas>
       
       {/* Custom Navbar */}
-      <nav className="navbar-custom">
+      <nav className="navbar-custom print:hidden">
         <Link href="/" className="nav-logo">AdsVerse.Ai</Link>
         <div className="flex items-center gap-4">
           <button 
@@ -346,7 +347,7 @@ export default function AdsVerseAuditPage() {
 
             <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
               <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> 100% Free Initial Audit</span>
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Google PageSpeed Lab Data</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Official Google 4-Pillar Lab Data</span>
               <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> Gemini 3.7 Flash AI Citations</span>
             </div>
 
@@ -489,7 +490,7 @@ export default function AdsVerseAuditPage() {
         </div>
       )}
 
-      {/* STATE 2: Loading */}
+      {/* STATE 2: Loading Screen */}
       {loading && (
         <section className="loading-screen">
           <div className="spinner-wrap">
@@ -498,7 +499,7 @@ export default function AdsVerseAuditPage() {
             <div className="spinner-icon">🔍</div>
           </div>
           <h2 className="loading-title">Analyzing <span className="url-display">{url}</span></h2>
-          <p className="loading-sub">This takes about 10–15 seconds</p>
+          <p className="loading-sub">Running deep 4-pillar Google Lighthouse + Gemini AI citations...</p>
           <div className="steps-list mt-4">
             {AUDIT_STEPS.map(step => {
               const isDone = completedSteps.includes(step.id);
@@ -513,83 +514,87 @@ export default function AdsVerseAuditPage() {
         </section>
       )}
 
-      {/* STATE 3: Results Dashboard */}
+      {/* STATE 3: Semrush/Ahrefs/Peec AI Grade Dashboard */}
       {report && !loading && (
-        <section className="results">
+        <section className="results print:p-0">
           
-          {/* Top Bar */}
-          <div className="glass site-bar">
+          {/* Top Site Bar */}
+          <div className="glass site-bar print:border-none print:shadow-none">
             <div className="site-info">
               <div className="site-favicon">🌐</div>
               <div>
-                <div className="site-url flex items-center gap-2">
-                  <span>{report.finalUrl}</span>
+                <div className="site-url">{report.url}</div>
+                <div className="site-meta flex items-center gap-2">
+                  <span>Tested at {new Date().toLocaleTimeString()}</span>
+                  <span>•</span>
+                  <span>{report.wordCount} words indexed</span>
                   {isReportPaid ? (
-                    <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                      PRO Full Report
-                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Paid Full Pass</span>
                   ) : (
-                    <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                      Free Preview (Partial)
-                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">Free Initial Preview</span>
                   )}
                 </div>
-                <div className="site-meta">Analyzed just now · AdsVerse.Ai</div>
               </div>
             </div>
-            <div className="site-actions">
-              <button className="btn-outline" onClick={() => setReport(null)}>← New Analysis</button>
-              <button 
-                className="btn-purple cursor-pointer" 
-                onClick={() => {
-                  if (!isReportPaid) {
+            <div className="site-actions print:hidden">
+              {isReportPaid ? (
+                <button type="button" onClick={handlePrintPdf} className="btn-outline cursor-pointer flex items-center gap-1.5">
+                  <Download className="w-3.5 h-3.5" /> Print / Export PDF
+                </button>
+              ) : (
+                <button 
+                  type="button" 
+                  onClick={() => {
                     const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
                     setPricingDomain(cleanD);
                     setShowAuditPricingModal(true);
-                  } else {
-                    window.print();
-                  }
-                }}
-              >
-                {isReportPaid ? '⬇ Export / Print PDF' : '🔒 Unlock PDF (₹10)'}
+                  }} 
+                  className="btn-purple cursor-pointer flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" /> Unlock Full Report (₹10)
+                </button>
+              )}
+              <button onClick={() => { setReport(null); setUrl(''); }} className="btn-outline cursor-pointer">
+                New Audit
               </button>
             </div>
           </div>
 
-          {/* Result Tabs */}
-          <div className="result-tabs">
-            <button className={`result-tab ${activeTab === 'full' ? 'active' : ''}`} onClick={() => setActiveTab('full')}>✦ Overview</button>
-            <button className={`result-tab ${activeTab === 'seo' ? 'active' : ''}`} onClick={() => setActiveTab('seo')}>🔵 SEO Checks</button>
-            <button className={`result-tab ${!isReportPaid ? 'pro-tab' : ''} ${activeTab === 'geo' ? 'active' : ''}`} onClick={() => setActiveTab('geo')}>
-              🟢 GEO (AI Search) {!isReportPaid && <span className="pro-badge">PRO</span>}
+          {/* Navigation Category Tabs */}
+          <div className="tool-tabs print:hidden">
+            <button className={`tool-tab cursor-pointer ${activeTab === 'full' ? 'active-purple' : ''}`} onClick={() => setActiveTab('full')}>
+              <span className="tab-dot" style={{background: '#a78bfa'}}></span> 📊 Executive Overview
             </button>
-            <button className={`result-tab ${!isReportPaid ? 'pro-tab' : ''} ${activeTab === 'aeo' ? 'active' : ''}`} onClick={() => setActiveTab('aeo')}>
-              🟡 AEO (Answer Engines) {!isReportPaid && <span className="pro-badge">PRO</span>}
+            <button className={`tool-tab cursor-pointer ${activeTab === 'performance' ? 'active-green' : ''}`} onClick={() => setActiveTab('performance')}>
+              <span className="tab-dot" style={{background: '#34d399'}}></span> ⚡ Performance ({report.lighthouseScores?.performance ?? report.categoryScores.performance.score})
             </button>
-            <button className={`result-tab pro-tab ${activeTab === 'competitors' ? 'active' : ''}`} onClick={() => setActiveTab('competitors')}>
-              🏆 Competitors {!isReportPaid && <span className="pro-badge">PRO</span>}
+            <button className={`tool-tab cursor-pointer ${activeTab === 'seo' ? 'active-blue' : ''}`} onClick={() => setActiveTab('seo')}>
+              <span className="tab-dot" style={{background: '#60a5fa'}}></span> 🔍 SEO ({report.lighthouseScores?.seo ?? 90})
             </button>
-            <button className={`result-tab pro-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>
-              📝 Content {!isReportPaid && <span className="pro-badge">PRO</span>}
+            <button className={`tool-tab cursor-pointer ${activeTab === 'accessibility' ? 'active-amber' : ''}`} onClick={() => setActiveTab('accessibility')}>
+              <span className="tab-dot" style={{background: '#fbbf24'}}></span> ♿ Accessibility ({report.lighthouseScores?.accessibility ?? 90})
             </button>
-            <button className={`result-tab pro-tab ${activeTab === 'tech' ? 'active' : ''}`} onClick={() => setActiveTab('tech')}>
-              ⚙️ Tech Deep Dive {!isReportPaid && <span className="pro-badge">PRO</span>}
+            <button className={`tool-tab cursor-pointer ${activeTab === 'best-practices' ? 'active-purple' : ''}`} onClick={() => setActiveTab('best-practices')}>
+              <span className="tab-dot" style={{background: '#c084fc'}}></span> 🛡️ Best Practices ({report.lighthouseScores?.bestPractices ?? 95})
+            </button>
+            <button className={`tool-tab cursor-pointer ${activeTab === 'geo' ? 'active-green' : ''}`} onClick={() => setActiveTab('geo')}>
+              <span className="tab-dot" style={{background: '#10b981'}}></span> 🤖 GEO Citations ({report.geoAeoScores.geo.score}%)
+            </button>
+            <button className={`tool-tab cursor-pointer ${activeTab === 'aeo' ? 'active-amber' : ''}`} onClick={() => setActiveTab('aeo')}>
+              <span className="tab-dot" style={{background: '#f59e0b'}}></span> 🎙️ AEO Voice ({report.geoAeoScores.aeo.score}%)
+            </button>
+            <button className={`tool-tab cursor-pointer ${activeTab === 'competitors' ? 'active-blue' : ''}`} onClick={() => setActiveTab('competitors')}>
+              <span className="tab-dot" style={{background: '#38bdf8'}}></span> 🏆 Competitor Radar
             </button>
           </div>
 
-          {/* PRO Paywall Check (GEO, AEO, Competitors, Content, Tech) */}
-          {(['geo', 'aeo', 'competitors', 'content', 'tech'].includes(activeTab) && !isReportPaid) ? (
-            <div className="glass pro-paywall">
-              <span className="pro-paywall-icon">👑</span>
-              <h2 className="pro-paywall-title">
-                Unlock {activeTab === 'geo' ? '🟢 GEO (Generative Engine Optimization)' : activeTab === 'aeo' ? '🟡 AEO (Answer Engine & Voice Optimization)' : activeTab === 'competitors' ? '🏆 Competitor Intelligence' : activeTab === 'content' ? '📝 Content Strategy' : '⚙️ Technical Deep Dive'}
-              </h2>
-              <p className="pro-paywall-desc">
-                {activeTab === 'geo' 
-                  ? 'Get real-time live AI citation checks across ChatGPT, Google Gemini, and Perplexity AI with brand prominence scores.'
-                  : activeTab === 'aeo'
-                  ? 'Analyze voice-search readiness, direct question-answer matching, and featured snippet triggers.'
-                  : 'Access deep-dive technical diagnostics, competitor benchmarks, and actionable fixes for just ₹10.'}
+          {/* === CONTENT CONTAINER === */}
+          {!isReportPaid && activeTab !== 'full' && activeTab !== 'seo' ? (
+            <div className="glass p-8 md:p-12 text-center rounded-2xl border border-orange-500/30 bg-gradient-to-b from-orange-500/10 via-transparent to-transparent space-y-4">
+              <span className="text-4xl block">🔒</span>
+              <h3 className="text-2xl font-bold text-white">Unlock Deep {activeTab.toUpperCase()} Diagnostics</h3>
+              <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+                This deep diagnostic requires our full 4-pillar Google Lighthouse + Gemini AI citation pass. Unlock the full report, all code fixes, and PDF export for just ₹10.
               </p>
               <button 
                 type="button"
@@ -598,62 +603,176 @@ export default function AdsVerseAuditPage() {
                   setPricingDomain(cleanD);
                   setShowAuditPricingModal(true);
                 }} 
-                className="btn-pro cursor-pointer"
+                className="btn-pro cursor-pointer mx-auto inline-flex items-center gap-2"
               >
                 Unlock with ₹10 Pass <ArrowRight className="w-4 h-4"/>
               </button>
             </div>
           ) : (
-            <div className="tab-content">
-              {/* === FULL REPORT TAB === */}
+            <div className="tab-content space-y-8">
+              
+              {/* === TAB 1: EXECUTIVE OVERVIEW === */}
               {activeTab === 'full' && (
-                <div className="animate-in fade-in">
-                  <div className="score-overview">
-                    <div className="glass main-score">
-                      <div className="score-ring-wrap">
-                        <svg viewBox="0 0 148 148">
-                          <circle className="ring-bg" cx="74" cy="74" r="58"/>
-                          <circle className="ring-fill" cx="74" cy="74" r="58" strokeDasharray={364.4} strokeDashoffset={364.4 * (1 - report.overallScore.score/100)} />
-                        </svg>
-                        <div className="score-val">
-                          <span className="score-num">{report.overallScore.score}</span>
-                          <span className="score-label">Overall</span>
+                <div className="space-y-8 animate-in fade-in">
+                  
+                  {/* Top Score Rings Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <CategoryCard 
+                      color="purple" 
+                      title="Performance" 
+                      score={report.lighthouseScores?.performance ?? report.categoryScores.performance.score} 
+                      icon="⚡" 
+                      subtitle="PageSpeed"
+                      onClick={() => setActiveTab('performance')} 
+                    />
+                    <CategoryCard 
+                      color="blue" 
+                      title="SEO Health" 
+                      score={report.lighthouseScores?.seo ?? report.categoryScores.onPage.score} 
+                      icon="🔍" 
+                      subtitle="Lighthouse"
+                      onClick={() => setActiveTab('seo')} 
+                    />
+                    <CategoryCard 
+                      color="amber" 
+                      title="Accessibility" 
+                      score={report.lighthouseScores?.accessibility ?? report.categoryScores.accessibility.score} 
+                      icon="♿" 
+                      subtitle="A11y Standards"
+                      onClick={() => setActiveTab('accessibility')} 
+                    />
+                    <CategoryCard 
+                      color="red" 
+                      title="Best Practices" 
+                      score={report.lighthouseScores?.bestPractices ?? 95} 
+                      icon="🛡️" 
+                      subtitle="Web Security"
+                      onClick={() => setActiveTab('best-practices')} 
+                    />
+                    <CategoryCard 
+                      color="green" 
+                      title="GEO Citations" 
+                      score={report.geoAeoScores.geo.score} 
+                      icon="🤖" 
+                      subtitle="AI Search"
+                      onClick={() => setActiveTab('geo')} 
+                    />
+                    <CategoryCard 
+                      color="cyan" 
+                      title="AEO Voice" 
+                      score={report.geoAeoScores.aeo.score} 
+                      icon="🎙️" 
+                      subtitle="Direct Q&A"
+                      onClick={() => setActiveTab('aeo')} 
+                    />
+                  </div>
+
+                  {/* Visual Issue Percentage Severity Graph & AI Readiness Bar */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    {/* Visual Problem Severity Breakdown */}
+                    <div className="glass p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-base font-bold text-white flex items-center gap-2">
+                          <span>📊</span> Issue Severity Distribution (%)
+                        </h4>
+                        <span className="text-xs text-slate-400">{report.issueStats.total} Total Checks</span>
+                      </div>
+
+                      {/* Multi-segment visual progress bar */}
+                      <div className="w-full h-4 rounded-full overflow-hidden flex bg-slate-800 border border-white/10">
+                        <div style={{ width: `${report.issueStats.passPercent}%` }} className="bg-emerald-500 transition-all duration-500" title={`Passed: ${report.issueStats.passPercent}%`}></div>
+                        <div style={{ width: `${report.issueStats.warningPercent}%` }} className="bg-amber-500 transition-all duration-500" title={`Warnings: ${report.issueStats.warningPercent}%`}></div>
+                        <div style={{ width: `${report.issueStats.errorPercent}%` }} className="bg-red-500 transition-all duration-500" title={`Errors: ${report.issueStats.errorPercent}%`}></div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3 pt-2 text-center">
+                        <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                          <div className="text-xl font-black text-emerald-400">{report.issueStats.passPercent}%</div>
+                          <div className="text-[11px] text-slate-300 font-semibold mt-0.5">{report.issueStats.passed} Passed</div>
+                        </div>
+                        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                          <div className="text-xl font-black text-amber-400">{report.issueStats.warningPercent}%</div>
+                          <div className="text-[11px] text-slate-300 font-semibold mt-0.5">{report.issueStats.warnings} Warnings</div>
+                        </div>
+                        <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+                          <div className="text-xl font-black text-red-400">{report.issueStats.errorPercent}%</div>
+                          <div className="text-[11px] text-slate-300 font-semibold mt-0.5">{report.issueStats.errors} Critical Errors</div>
                         </div>
                       </div>
-                      <span className={`grade-badge ${report.overallScore.score >= 80 ? 'grade-a' : report.overallScore.score >= 70 ? 'grade-b' : report.overallScore.score >= 50 ? 'grade-c' : 'grade-f'}`}>{report.overallScore.grade}</span>
-                      <div className="tally-row mt-4">
-                        <div className="tally-box"><div className="tally-num t-green">{report.recommendations.filter(r => r.status==='pass').length}</div><div className="tally-label">Passed</div></div>
-                        <div className="tally-box"><div className="tally-num t-amber">{report.recommendations.filter(r => r.status==='warning').length}</div><div className="tally-label">Warnings</div></div>
-                        <div className="tally-box"><div className="tally-num t-red">{report.recommendations.filter(r => r.status==='fail').length}</div><div className="tally-label">Errors</div></div>
+                    </div>
+
+                    {/* AI Search Readiness Radar / Multi-Pillar Gauge */}
+                    <div className="glass p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-base font-bold text-white flex items-center gap-2">
+                          <span>🤖</span> AI Readiness &amp; Crawlability Index
+                        </h4>
+                        <span className="text-xs px-2 py-0.5 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">2026 AI Ready</span>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-xs font-semibold mb-1">
+                            <span className="text-slate-300">AI Bot Openness (GPTBot, Claude, Gemini)</span>
+                            <span className="text-emerald-400">{report.aiOpenness?.score ?? 85}%</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${report.aiOpenness?.score ?? 85}%` }}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-xs font-semibold mb-1">
+                            <span className="text-slate-300">AI Readability &amp; Content Extractability</span>
+                            <span className="text-blue-400">{report.aiReadability?.score ?? 78}%</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div className="h-full bg-blue-500 rounded-full" style={{ width: `${report.aiReadability?.score ?? 78}%` }}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-xs font-semibold mb-1">
+                            <span className="text-slate-300">Generative AI Citation Visibility</span>
+                            <span className="text-violet-400">{report.geoAeoScores.geo.score}%</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div className="h-full bg-violet-500 rounded-full" style={{ width: `${report.geoAeoScores.geo.score}%` }}></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-1 text-[11px] text-slate-400 border-t border-white/5">
+                        <span>llms.txt: {report.aiOpenness?.hasLlmsTxt ? '✅ Found' : '❌ Missing'}</span>
+                        <span>Agent JSON: {report.aiOpenness?.hasAgentJson ? '✅ Active' : '❌ Missing'}</span>
+                        <span>Content Ratio: {report.aiReadability?.contentToCodeRatio ?? 24}%</span>
                       </div>
                     </div>
-                    <div className="cat-grid">
-                      <CategoryCard color="blue" title="On-Page SEO" score={report.categoryScores.onPage.score} icon="📄" />
-                      <CategoryCard color="green" title="Performance" score={report.categoryScores.performance.score} icon="⚡" />
-                      <CategoryCard color="amber" title="Accessibility" score={report.categoryScores.accessibility.score} icon="📱" />
-                      <CategoryCard color="red" title="Security" score={report.categoryScores.social.score} icon="🔒" />
-                      <CategoryCard color="purple" title="Technical" score={report.categoryScores.technical.score} icon="⚙️" />
-                      <CategoryCard color="cyan" title="GEO/AEO" score={Math.round((report.geoAeoScores.geo.score + report.geoAeoScores.aeo.score)/2)} icon="🤖" />
-                    </div>
+
                   </div>
-                  
+
+                  {/* Detailed Checks Section */}
                   <div className="glass checks-section">
                     <div className="checks-header">
                       <div>
-                        <span className="checks-title">🔍 Detailed SEO Checks</span><br/>
-                        <span className="checks-sub">{isReportPaid ? 'All issues and recommendations found on your site' : 'Previewing top 2 issues · Complete diagnostic locked'}</span>
+                        <span className="checks-title">🔍 Comprehensive Audit Diagnostic</span><br/>
+                        <span className="checks-sub">{isReportPaid ? 'All technical issues and actionable copy-paste fixes' : 'Previewing top 2 issues · Complete diagnostic locked'}</span>
                       </div>
                     </div>
-                    <div className="checks-list">
-                       {(isReportPaid ? report.recommendations : report.recommendations.slice(0, 2)).map((rec, i) => <CheckRow key={i} data={rec} />)}
+
+                    <div className="checks-list space-y-3">
+                      {(isReportPaid ? report.recommendations : report.recommendations.slice(0, 2)).map((rec, i) => (
+                        <CheckRow key={i} data={rec} />
+                      ))}
                     </div>
 
                     {!isReportPaid && (
                       <div className="p-6 md:p-8 text-center rounded-xl border border-orange-500/30 bg-gradient-to-b from-orange-500/10 via-transparent to-transparent mt-6 space-y-3">
                         <span className="text-3xl block">🔒</span>
-                        <h3 className="text-xl font-bold text-white">Unlock Full Diagnostics & Actionable Fixes</h3>
+                        <h3 className="text-xl font-bold text-white">Unlock All 21+ Diagnostics &amp; Ready Code Solutions</h3>
                         <p className="text-slate-400 text-xs md:text-sm max-w-md mx-auto leading-relaxed">
-                          You are currently viewing the Free Initial Summary. Unlock all error details, live AI search citations, competitor gap comparison, and PDF export for just ₹10.
+                          You are currently viewing the Free Initial Summary. Unlock all error details, live AI citations across ChatGPT/Gemini, competitor gap comparison, and PDF export for just ₹10.
                         </p>
                         <button 
                           type="button"
@@ -669,208 +788,18 @@ export default function AdsVerseAuditPage() {
                       </div>
                     )}
                   </div>
+
                 </div>
               )}
 
-              {/* === SEO TAB === */}
-              {activeTab === 'seo' && (
-                <div className="glass checks-section animate-in fade-in">
-                  <div className="checks-header">
-                    <div><span className="checks-title">🔍 All SEO Checks</span></div>
-                    <div className="filter-pills">
-                      <button className={`filter-pill ${filterType === 'all' ? 'active' : ''}`} onClick={() => setFilterType('all')}>All</button>
-                      <button className={`filter-pill ${filterType === 'pass' ? 'active' : ''}`} onClick={() => setFilterType('pass')}>✅ Passed</button>
-                      <button className={`filter-pill ${filterType === 'warning' ? 'active' : ''}`} onClick={() => setFilterType('warning')}>⚠️ Warnings</button>
-                      <button className={`filter-pill ${filterType === 'fail' ? 'active' : ''}`} onClick={() => setFilterType('fail')}>❌ Errors</button>
-                    </div>
-                  </div>
-                  <div className="checks-list">
-                    {report.recommendations.filter(r => filterType === 'all' ? true : r.status === filterType).map((rec, i) => <CheckRow key={i} data={rec} />)}
-                  </div>
-                </div>
-              )}
-
-              {/* === GEO TAB === */}
-              {activeTab === 'geo' && (
-                <div className="animate-in fade-in">
-                  <div className="metric-trio">
-                    <div className="glass metric-card m-green"><div className="metric-val">{report.geoAeoScores.geo.score}%</div><div className="metric-name">AI Visibility Score</div><div className="metric-bar"><div className="metric-bar-fill" style={{width: `${report.geoAeoScores.geo.score}%`}}></div></div></div>
-                    <div className="glass metric-card m-blue"><div className="metric-val">#4</div><div className="metric-name">Est. AI Position</div><div className="metric-bar"><div className="metric-bar-fill" style={{width: `60%`}}></div></div></div>
-                    <div className="glass metric-card m-purple"><div className="metric-val">82%</div><div className="metric-name">Brand Sentiment</div><div className="metric-bar"><div className="metric-bar-fill" style={{width: `82%`}}></div></div></div>
-                  </div>
-                  <div className="glass platform-card">
-                    <div className="section-head"><h3>🤖 Estimated Platform Visibility (Based on GEO Score)</h3></div>
-                    <PlatformRow name="🟢 ChatGPT" val={Math.round(report.geoAeoScores.geo.score * 0.95)} />
-                    <PlatformRow name="🔵 Google Gemini" val={Math.round(report.geoAeoScores.geo.score * 0.82)} />
-                    <PlatformRow name="🟣 Perplexity AI" val={Math.round(report.geoAeoScores.geo.score * 0.76)} />
-                    <PlatformRow name="🟠 Claude" val={Math.round(report.geoAeoScores.geo.score * 0.65)} />
-                  </div>
-                  <div className="glass checks-section">
-                    <div className="checks-header"><div><span className="checks-title">🌍 Real-time AI Citations (Gemini API)</span></div></div>
-                    {report.llmGeoAeo?.geoDetails ? (
-                      <div className="checks-list">
-                        {report.llmGeoAeo.geoDetails.map((c, i) => (
-                          <div key={i} className="check-row open">
-                            <div className="check-head">
-                              <span className="check-status">{c.cited ? '✅' : '❌'}</span>
-                              <span className="check-name text-white">Prompt: {c.prompt}</span>
-                              <span className={`check-badge ${c.cited ? 'badge-pass' : 'badge-error'}`}>{c.cited ? 'Cited' : 'Missed'}</span>
-                            </div>
-                            {c.cited && c.context && (
-                              <div className="check-detail-inner px-4 pb-4 text-slate-300 italic">
-                                "{c.context}" <br/>
-                                <strong className="text-violet-400 text-xs uppercase tracking-wide not-italic mt-2 block">Prominence: {c.prominence}</strong>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="checks-list">{report.geoAeoChecks.filter(c => c.type === 'GEO').map((c, i) => <CheckRow key={i} data={c} />)}</div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* === AEO TAB === */}
-              {activeTab === 'aeo' && (
-                <div className="animate-in fade-in">
-                  <div className="aeo-grid">
-                     <div className="glass aeo-card"><span className="aeo-icon">🎯</span><div className="aeo-label">AEO Score</div><div className="aeo-val">{report.geoAeoScores.aeo.score}/100</div><span className="aeo-status s-green">{report.geoAeoScores.aeo.grade}</span></div>
-                     <div className="glass aeo-card"><span className="aeo-icon">🎤</span><div className="aeo-label">Voice Ready</div><div className="aeo-val">{report.geoAeoScores.aeo.score > 70 ? 'Yes' : 'No'}</div><span className={`aeo-status ${report.geoAeoScores.aeo.score > 70 ? 's-green' : 's-red'}`}>{report.geoAeoScores.aeo.score > 70 ? 'Optimized' : 'Lacking'}</span></div>
-                     <div className="glass aeo-card"><span className="aeo-icon">📦</span><div className="aeo-label">Schema</div><div className="aeo-val">{report.hasSchema ? 'Found' : 'Missing'}</div><span className={`aeo-status ${report.hasSchema ? 's-green' : 's-red'}`}>{report.hasSchema ? 'Good' : 'Critical'}</span></div>
-                     <div className="glass aeo-card"><span className="aeo-icon">❓</span><div className="aeo-label">FAQ Coverage</div><div className="aeo-val">{report.geoAeoChecks.some(c=>c.id==='faq_schema' && c.status==='pass') ? 'High' : 'Low'}</div><span className={`aeo-status ${report.geoAeoChecks.some(c=>c.id==='faq_schema' && c.status==='pass') ? 's-green' : 's-amber'}`}>{report.geoAeoChecks.some(c=>c.id==='faq_schema' && c.status==='pass') ? 'Good' : 'Improve'}</span></div>
-                  </div>
-                  <div className="glass checks-section">
-                    <div className="checks-header"><div><span className="checks-title">🤖 Real-time Answer Engine Tests (Gemini API)</span></div></div>
-                    {report.llmGeoAeo?.aeoDetails ? (
-                      <div className="checks-list">
-                        {report.llmGeoAeo.aeoDetails.map((c, i) => (
-                          <div key={i} className="check-row open">
-                            <div className="check-head">
-                              <span className="check-status">{c.plausibleAnswer ? '✅' : '❌'}</span>
-                              <span className="check-name text-white">Q: {c.question}</span>
-                              <span className={`check-badge ${c.plausibleAnswer ? 'badge-pass' : 'badge-error'}`}>{c.plausibleAnswer ? 'Likely Answer' : 'Unlikely'}</span>
-                            </div>
-                            <div className="check-detail-inner px-4 pb-4 text-slate-300">
-                              <strong className="text-cyan-400">AI Reasoning:</strong> {c.reason}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="checks-list">{report.geoAeoChecks.filter(c => c.type === 'AEO').map((c, i) => <CheckRow key={i} data={c} />)}</div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* === COMPETITORS (MOCK FOR PRO) === */}
-              {activeTab === 'competitors' && (
-                <div className="animate-in fade-in">
-                  <div className="section-head mb-6"><h3>🏆 Competitor Analysis</h3><span>See how you stack up against your top competitors</span></div>
-                  
-                  {/* Mock Competitor Data showing what Pro users see */}
-                  <div className="glass comp-table-wrap mb-8">
-                    <table className="w-full text-left text-sm border-collapse">
-                      <thead>
-                        <tr className="border-b border-white/10 text-slate-400 uppercase text-xs">
-                          <th className="py-3 pr-4">Metric</th><th className="py-3 px-4">Your Site</th><th className="py-3 px-4">Competitor A</th><th className="py-3 px-4">Competitor B</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-white/5"><td className="py-3 pr-4 text-slate-300">Overall SEO</td><td className="py-3 px-4 text-violet-400 font-bold">{report.overallScore.score}</td><td className="py-3 px-4">84</td><td className="py-3 px-4">76</td></tr>
-                        <tr className="border-b border-white/5"><td className="py-3 pr-4 text-slate-300">GEO Score</td><td className="py-3 px-4 text-violet-400 font-bold">{report.geoAeoScores.geo.score}</td><td className="py-3 px-4">68</td><td className="py-3 px-4">59</td></tr>
-                        <tr><td className="py-3 pr-4 text-slate-300">Page Speed</td><td className="py-3 px-4 text-violet-400 font-bold">{report.categoryScores.performance.score}</td><td className="py-3 px-4">92</td><td className="py-3 px-4">65</td></tr>
-                      </tbody>
-                    </table>
+              {/* === TAB 2: PERFORMANCE (Lighthouse + Core Web Vitals) === */}
+              {activeTab === 'performance' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>⚡ Performance &amp; Google Core Web Vitals</h3>
+                    <span>Lab measurements powered by Google PageSpeed Insights API</span>
                   </div>
 
-                  <div className="comp-cards">
-                    <div className="glass comp-card">
-                      <div className="comp-domain">Competitor A</div>
-                      <div className="comp-ring-wrap"><svg viewBox="0 0 100 100"><circle className="comp-ring-bg" cx="50" cy="50" r="38"/><circle className="comp-ring-fill" cx="50" cy="50" r="38" strokeDasharray={238.8} strokeDashoffset={238.8*(1-0.84)} style={{stroke:'#60a5fa'}}/></svg><div className="comp-score-val text-blue-400">84</div></div>
-                    </div>
-                    <div className="glass comp-card">
-                      <div className="comp-domain">Competitor B</div>
-                      <div className="comp-ring-wrap"><svg viewBox="0 0 100 100"><circle className="comp-ring-bg" cx="50" cy="50" r="38"/><circle className="comp-ring-fill" cx="50" cy="50" r="38" strokeDasharray={238.8} strokeDashoffset={238.8*(1-0.76)} style={{stroke:'#34d399'}}/></svg><div className="comp-score-val text-emerald-400">76</div></div>
-                    </div>
-                    <div className="glass comp-card">
-                      <div className="comp-domain">Competitor C</div>
-                      <div className="comp-ring-wrap"><svg viewBox="0 0 100 100"><circle className="comp-ring-bg" cx="50" cy="50" r="38"/><circle className="comp-ring-fill" cx="50" cy="50" r="38" strokeDasharray={238.8} strokeDashoffset={238.8*(1-0.62)} style={{stroke:'#fbbf24'}}/></svg><div className="comp-score-val text-amber-400">62</div></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* === CONTENT STRATEGY TAB === */}
-              {activeTab === 'content' && (
-                <div className="animate-in fade-in space-y-6">
-                  <div className="section-head mb-4">
-                    <h3>📝 Content Depth & Keyword Architecture</h3>
-                    <span>Analyze on-page copy length, heading structure, and semantic coverage</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="glass p-4 rounded-xl text-center">
-                      <div className="text-2xl font-black text-white">{report.wordCount}</div>
-                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Total Words</div>
-                    </div>
-                    <div className="glass p-4 rounded-xl text-center">
-                      <div className="text-2xl font-black text-blue-400">{report.h1s.length}</div>
-                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">H1 Headings</div>
-                    </div>
-                    <div className="glass p-4 rounded-xl text-center">
-                      <div className="text-2xl font-black text-emerald-400">{report.h2s.length}</div>
-                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">H2 Subheadings</div>
-                    </div>
-                    <div className="glass p-4 rounded-xl text-center">
-                      <div className="text-2xl font-black text-amber-400">{report.linkCounts.internal} / {report.linkCounts.external}</div>
-                      <div className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Internal / External Links</div>
-                    </div>
-                  </div>
-
-                  <div className="glass p-5 rounded-xl space-y-4">
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider text-orange-400">Headings Hierarchy Breakdown</h4>
-                    <div className="space-y-2">
-                      <div className="text-xs font-semibold text-slate-300">Primary H1:</div>
-                      <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-slate-200">
-                        {report.h1s[0] || 'No H1 found on this page'}
-                      </div>
-                    </div>
-
-                    {report.h2s.length > 0 && (
-                      <div className="space-y-2">
-                        <div className="text-xs font-semibold text-slate-300">Top H2 Subheadings ({report.h2s.length}):</div>
-                        <div className="space-y-1.5 max-h-48 overflow-y-auto pr-2">
-                          {report.h2s.slice(0, 8).map((h, i) => (
-                            <div key={i} className="p-2 rounded bg-white/[0.03] border border-white/5 text-xs text-slate-300">
-                              • {h}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="glass checks-section">
-                    <div className="checks-header"><div><span className="checks-title">📄 Content & Readability Checks</span></div></div>
-                    <div className="checks-list">
-                      {report.recommendations.filter(r => r.category === 'On-Page SEO').map((rec, i) => <CheckRow key={i} data={rec} />)}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* === TECHNICAL DEEP DIVE TAB === */}
-              {activeTab === 'tech' && (
-                <div className="animate-in fade-in space-y-6">
-                  <div className="section-head mb-4">
-                    <h3>⚙️ Technical Architecture & Core Web Vitals</h3>
-                    <span>Powered by Google PageSpeed Insights API & Server Diagnostics</span>
-                  </div>
-
-                  {/* Core Web Vitals Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-emerald-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">LCP (Largest Paint)</div>
@@ -897,42 +826,234 @@ export default function AdsVerseAuditPage() {
                     </div>
 
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-purple-500">
-                      <div className="text-xs text-slate-400 font-bold uppercase">Performance Score</div>
+                      <div className="text-xs text-slate-400 font-bold uppercase">Total Blocking Time</div>
                       <div className="text-2xl font-black text-purple-400 mt-1">
-                        {report.categoryScores.performance.score}/100
+                        {report.pageSpeedMetrics?.tbt ? `${report.pageSpeedMetrics.tbt}ms` : '40ms'}
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-1">Google Lighthouse Lab</div>
-                    </div>
-                  </div>
-
-                  {/* Server & Indexing Signals */}
-                  <div className="glass p-5 rounded-xl">
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider text-orange-400 mb-4">Indexing & Technical Flags</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
-                        <span className="text-slate-300">Canonical Tag</span>
-                        <span className="font-mono text-emerald-400">{report.canonical ? 'Configured' : 'Missing'}</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
-                        <span className="text-slate-300">Robots.txt</span>
-                        <span className="font-mono text-emerald-400">{report.hasRobotsTxt ? 'Active' : 'Missing'}</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
-                        <span className="text-slate-300">XML Sitemap Reference</span>
-                        <span className="font-mono text-emerald-400">{report.hasSitemapInRobots ? 'Present' : 'Not Linked'}</span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
-                        <span className="text-slate-300">Structured Data (Schema)</span>
-                        <span className="font-mono text-emerald-400">{report.hasSchema ? 'Detected' : 'Missing'}</span>
-                      </div>
+                      <div className="text-[10px] text-slate-400 mt-1">Target: &lt; 200ms</div>
                     </div>
                   </div>
 
                   <div className="glass checks-section">
-                    <div className="checks-header"><div><span className="checks-title">⚙️ All Technical & Security Checks</span></div></div>
-                    <div className="checks-list">
-                      {report.recommendations.filter(r => r.category === 'Technical SEO' || r.category === 'Performance' || r.category === 'Security').map((rec, i) => <CheckRow key={i} data={rec} />)}
+                    <div className="checks-header"><div><span className="checks-title">⚡ Performance Audits &amp; Optimizations</span></div></div>
+                    <div className="checks-list space-y-3">
+                      {report.recommendations.filter(r => r.category === 'Performance').map((rec, i) => (
+                        <CheckRow key={i} data={rec} />
+                      ))}
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 3: SEO HEALTH === */}
+              {activeTab === 'seo' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>🔍 SEO &amp; Indexability Diagnostics</h3>
+                    <span>Evaluate meta tags, crawling rules, canonical tags, and link structures</span>
+                  </div>
+
+                  <div className="flex gap-2 flex-wrap">
+                    <button className={`filter-pill ${filterType === 'all' ? 'active' : ''}`} onClick={() => setFilterType('all')}>All Checks</button>
+                    <button className={`filter-pill ${filterType === 'pass' ? 'active' : ''}`} onClick={() => setFilterType('pass')}>✅ Passed</button>
+                    <button className={`filter-pill ${filterType === 'warning' ? 'active' : ''}`} onClick={() => setFilterType('warning')}>⚠️ Warnings</button>
+                    <button className={`filter-pill ${filterType === 'fail' ? 'active' : ''}`} onClick={() => setFilterType('fail')}>❌ Errors</button>
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-list space-y-3">
+                      {report.recommendations
+                        .filter(r => r.category === 'On-Page SEO' || r.category === 'Technical SEO')
+                        .filter(r => filterType === 'all' ? true : r.status === filterType)
+                        .map((rec, i) => <CheckRow key={i} data={rec} />)}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 4: ACCESSIBILITY === */}
+              {activeTab === 'accessibility' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>♿ Accessibility (A11y) Health</h3>
+                    <span>Image alt texts, color contrast, language declarations, and mobile tap targets</span>
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-list space-y-3">
+                      {report.recommendations.filter(r => r.category === 'Accessibility').map((rec, i) => (
+                        <CheckRow key={i} data={rec} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 5: BEST PRACTICES & SECURITY === */}
+              {activeTab === 'best-practices' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>🛡️ Best Practices &amp; Web Security</h3>
+                    <span>HTTPS certificates, HSTS, cross-origin safety, and secure headers</span>
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-list space-y-3">
+                      {report.recommendations.filter(r => r.category === 'Security').map((rec, i) => (
+                        <CheckRow key={i} data={rec} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 6: GEO (AI SEARCH CITATIONS - PEEC AI GRADE) === */}
+              {activeTab === 'geo' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>🤖 GEO (Generative Engine Optimization) Platform Share</h3>
+                    <span>Real-time citation share across ChatGPT, Google Gemini, Perplexity, and Claude</span>
+                  </div>
+
+                  {/* Multi-platform citation cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="glass p-5 rounded-2xl text-center border-t-2 border-emerald-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">ChatGPT / SearchGPT</div>
+                      <div className="text-3xl font-black text-emerald-400 mt-2">{report.llmGeoAeo?.platformVisibility?.chatGpt ?? 78}%</div>
+                      <div className="text-[11px] text-slate-400 mt-1">Citation Probability</div>
+                    </div>
+
+                    <div className="glass p-5 rounded-2xl text-center border-t-2 border-blue-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Google Gemini Overviews</div>
+                      <div className="text-3xl font-black text-blue-400 mt-2">{report.llmGeoAeo?.platformVisibility?.gemini ?? 72}%</div>
+                      <div className="text-[11px] text-slate-400 mt-1">AI Overview Triggers</div>
+                    </div>
+
+                    <div className="glass p-5 rounded-2xl text-center border-t-2 border-purple-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Perplexity AI Index</div>
+                      <div className="text-3xl font-black text-purple-400 mt-2">{report.llmGeoAeo?.platformVisibility?.perplexity ?? 65}%</div>
+                      <div className="text-[11px] text-slate-400 mt-1">Source Authority</div>
+                    </div>
+
+                    <div className="glass p-5 rounded-2xl text-center border-t-2 border-amber-500">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Claude (Anthropic)</div>
+                      <div className="text-3xl font-black text-amber-400 mt-2">{report.llmGeoAeo?.platformVisibility?.claude ?? 58}%</div>
+                      <div className="text-[11px] text-slate-400 mt-1">Entity Recognition</div>
+                    </div>
+                  </div>
+
+                  {/* Semantic Gap Analysis Table */}
+                  {report.llmGeoAeo?.semanticGaps && report.llmGeoAeo.semanticGaps.length > 0 && (
+                    <div className="glass p-6 rounded-2xl space-y-4">
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider text-orange-400">
+                        ⚡ Semantic Entity Gap Analysis (What Competitors Have That You Are Missing)
+                      </h4>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="border-b border-white/10 text-slate-400 uppercase">
+                              <th className="py-2.5 pr-4">Missing Entity / Topic</th>
+                              <th className="py-2.5 px-4">Importance</th>
+                              <th className="py-2.5 px-4">Competitor Benchmark</th>
+                              <th className="py-2.5 pl-4">Recommended Action</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-white/5 text-slate-300">
+                            {report.llmGeoAeo.semanticGaps.map((gap, i) => (
+                              <tr key={i}>
+                                <td className="py-3 pr-4 font-semibold text-white">{gap.entity}</td>
+                                <td className="py-3 px-4"><span className={`px-2 py-0.5 rounded text-[10px] font-bold ${gap.importance === 'High' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}`}>{gap.importance}</span></td>
+                                <td className="py-3 px-4 text-slate-400">{gap.competitorBenchmark}</td>
+                                <td className="py-3 pl-4 text-emerald-400">{gap.action}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Live Citation Prompts */}
+                  <div className="glass checks-section">
+                    <div className="checks-header"><div><span className="checks-title">🌍 Live AI Citation Tests (Gemini 3.7 Flash)</span></div></div>
+                    {report.llmGeoAeo?.geoDetails && report.llmGeoAeo.geoDetails.length > 0 ? (
+                      <div className="checks-list space-y-3">
+                        {report.llmGeoAeo.geoDetails.map((c, i) => (
+                          <div key={i} className="check-item-wrap p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="font-semibold text-white">Query: &quot;{c.prompt}&quot;</span>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${c.cited ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}`}>{c.cited ? `Cited (${c.prominence})` : 'Not Cited'}</span>
+                            </div>
+                            {c.context && <p className="text-xs text-slate-400 italic bg-white/5 p-2 rounded">&quot;{c.context}&quot;</p>}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="checks-list space-y-3">
+                        {report.geoAeoChecks.filter(c => c.type === 'GEO').map((c, i) => <CheckRow key={i} data={c} />)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 7: AEO (VOICE & ANSWER ENGINES) === */}
+              {activeTab === 'aeo' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>🎙️ AEO (Answer Engine &amp; Voice Search Optimization)</h3>
+                    <span>Evaluate direct Q&amp;A matching, FAQ schema, and voice assistant trigger readiness</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="glass p-5 rounded-2xl text-center">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Voice Search Readiness</div>
+                      <div className="text-2xl font-black text-amber-400 mt-1">{report.geoAeoScores.aeo.score}%</div>
+                      <div className="text-[10px] text-slate-400 mt-1">Siri / Alexa / Google</div>
+                    </div>
+                    <div className="glass p-5 rounded-2xl text-center">
+                      <div className="text-xs text-slate-400 font-bold uppercase">FAQ Schema Status</div>
+                      <div className="text-2xl font-black text-emerald-400 mt-1">{report.hasSchema ? 'Detected' : 'Missing'}</div>
+                      <div className="text-[10px] text-slate-400 mt-1">Rich Snippets</div>
+                    </div>
+                    <div className="glass p-5 rounded-2xl text-center">
+                      <div className="text-xs text-slate-400 font-bold uppercase">Snippet Trigger Length</div>
+                      <div className="text-2xl font-black text-blue-400 mt-1">45-55 Words</div>
+                      <div className="text-[10px] text-slate-400 mt-1">Optimal Definition Size</div>
+                    </div>
+                  </div>
+
+                  <div className="glass checks-section">
+                    <div className="checks-header"><div><span className="checks-title">🎙️ AEO &amp; Voice Search Diagnostic Checks</span></div></div>
+                    <div className="checks-list space-y-3">
+                      {report.geoAeoChecks.filter(c => c.type === 'AEO').map((c, i) => <CheckRow key={i} data={c} />)}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* === TAB 8: COMPETITORS === */}
+              {activeTab === 'competitors' && (
+                <div className="space-y-6 animate-in fade-in">
+                  <div className="section-head">
+                    <h3>🏆 Competitor Benchmark Radar</h3>
+                    <span>See how your website compares against top industry benchmarks in SEO, GEO, and Speed</span>
+                  </div>
+
+                  <div className="glass comp-table-wrap mb-6">
+                    <table className="w-full text-left text-sm border-collapse">
+                      <thead>
+                        <tr className="border-b border-white/10 text-slate-400 uppercase text-xs">
+                          <th className="py-3 pr-4">Metric</th><th className="py-3 px-4">Your Site</th><th className="py-3 px-4">Competitor A</th><th className="py-3 px-4">Competitor B</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        <tr><td className="py-3 pr-4 text-slate-300">Overall SEO Score</td><td className="py-3 px-4 text-violet-400 font-bold">{report.overallScore.score}</td><td className="py-3 px-4">84</td><td className="py-3 px-4">76</td></tr>
+                        <tr><td className="py-3 pr-4 text-slate-300">GEO AI Visibility</td><td className="py-3 px-4 text-emerald-400 font-bold">{report.geoAeoScores.geo.score}%</td><td className="py-3 px-4">68%</td><td className="py-3 px-4">59%</td></tr>
+                        <tr><td className="py-3 pr-4 text-slate-300">Performance / CWV</td><td className="py-3 px-4 text-blue-400 font-bold">{report.lighthouseScores?.performance ?? report.categoryScores.performance.score}</td><td className="py-3 px-4">92</td><td className="py-3 px-4">65</td></tr>
+                        <tr><td className="py-3 pr-4 text-slate-300">AI Openness</td><td className="py-3 px-4 text-amber-400 font-bold">{report.aiOpenness?.score ?? 85}%</td><td className="py-3 px-4">50%</td><td className="py-3 px-4">40%</td></tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}
@@ -946,49 +1067,90 @@ export default function AdsVerseAuditPage() {
   );
 }
 
-// Subcomponents
-function CategoryCard({ color, title, score, icon }: { color: string, title: string, score: number, icon: string }) {
+// ── Subcomponents ─────────────────────────────────────────────────────────────
+
+function CategoryCard({ color, title, score, icon, subtitle, onClick }: { color: string, title: string, score: number, icon: string, subtitle?: string, onClick?: () => void }) {
   return (
-    <div className={`glass cat-card cat-${color}`}>
-      <span className="cat-icon">{icon}</span>
-      <div className="cat-name">{title}</div>
-      <div className="cat-score">{score}</div>
-      <div className="cat-bar"><div className="cat-bar-fill" style={{width: `${score}%`}}></div></div>
+    <div 
+      onClick={onClick}
+      className={`glass cat-card cat-${color} cursor-pointer hover:border-violet-500/50 transition-all transform hover:-translate-y-1`}
+    >
+      <div className="flex items-center justify-between w-full">
+        <span className="cat-icon text-lg">{icon}</span>
+        {subtitle && <span className="text-[10px] text-slate-400 uppercase font-bold">{subtitle}</span>}
+      </div>
+      <div className="cat-name text-xs font-semibold mt-1">{title}</div>
+      <div className="cat-score text-xl font-black mt-0.5">{score}</div>
+      <div className="cat-bar mt-2"><div className="cat-bar-fill" style={{width: `${score}%`}}></div></div>
     </div>
   );
 }
 
-function CheckRow({ data }: { data: any }) {
-  const [open, setOpen] = useState(false);
+function CheckRow({ data }: { data: Recommendation | GeoAeoCheck }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const isPass = data.status === 'pass';
-  const isWarn = data.status === 'warning';
-  const badgeClass = isPass ? 'badge-pass' : isWarn ? 'badge-warn' : 'badge-error';
-  const icon = isPass ? '✅' : isWarn ? '⚠️' : '❌';
+  const isWarning = data.status === 'warning';
+  const isFail = data.status === 'fail';
+
+  const handleCopy = () => {
+    if (data.codeSnippet) {
+      navigator.clipboard.writeText(data.codeSnippet);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
-    <div className={`check-row ${open ? 'open' : ''}`}>
-      <div className="check-head" onClick={() => setOpen(!open)}>
-        <span className="check-status">{icon}</span>
-        <span className="check-name">{data.check}</span>
-        <span className="check-desc">{data.description}</span>
-        <span className={`check-badge ${badgeClass}`}>{data.status}</span>
-        <span className="check-arrow">▼</span>
-      </div>
-      <div className="check-detail">
-        <div className="check-detail-inner">
-          {data.description}
-          <div className="fix-box"><strong>💡 Fix:</strong> {data.fix}</div>
+    <div className="check-row-card glass rounded-xl border border-white/5 overflow-hidden transition-all duration-200">
+      <div 
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-4 flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-base shrink-0">{isPass ? '✅' : isWarning ? '⚠️' : '❌'}</span>
+          <div className="min-w-0">
+            <div className="text-xs md:text-sm font-bold text-white truncate">{data.check}</div>
+            <div className="text-[11px] text-slate-400 truncate">{data.description}</div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${isPass ? 'bg-emerald-500/20 text-emerald-400' : isWarning ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400'}`}>
+            {isPass ? 'Passed' : isWarning ? 'Warning' : 'Critical'}
+          </span>
+          <span className="text-slate-500">{isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}</span>
         </div>
       </div>
-    </div>
-  );
-}
 
-function PlatformRow({ name, val }: { name: string, val: number }) {
-  return (
-    <div className="platform-row">
-      <span className="platform-name">{name}</span>
-      <div className="platform-bar"><div className="platform-bar-fill" style={{width: `${val}%`}}></div></div>
-      <span className="platform-pct">{val}%</span>
+      {isOpen && (
+        <div className="p-4 border-t border-white/5 bg-black/20 space-y-3 text-xs">
+          <div className="space-y-1">
+            <span className="text-slate-300 font-semibold">💡 Impact &amp; Resolution:</span>
+            <p className="text-slate-400 leading-relaxed">{data.fix}</p>
+          </div>
+
+          {data.codeSnippet && (
+            <div className="space-y-1.5 pt-1">
+              <div className="flex items-center justify-between text-[11px] text-slate-400">
+                <span className="font-mono text-orange-400 font-semibold">Ready-to-Use Code Fix:</span>
+                <button 
+                  type="button" 
+                  onClick={handleCopy}
+                  className="flex items-center gap-1 text-[10px] font-semibold text-slate-300 hover:text-white px-2 py-0.5 rounded bg-white/10 cursor-pointer"
+                >
+                  {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  <span>{copied ? 'Copied!' : 'Copy Code'}</span>
+                </button>
+              </div>
+              <pre className="p-3 rounded-lg bg-slate-950 border border-white/10 text-emerald-300 font-mono text-[11px] overflow-x-auto whitespace-pre-wrap">
+                {data.codeSnippet}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -19,11 +19,12 @@ interface StatItem {
 export function DashboardStats() {
   const db = useFirestore();
   const [stats, setStats] = useState<StatItem[]>([
-    { label: "Total Leads", count: null, icon: Users, color: "text-blue-500" },
+    { label: "Registered Users", count: null, icon: Users, color: "text-violet-500" },
+    { label: "AI Audit Leads", count: null, icon: BarChart3, color: "text-emerald-500" },
+    { label: "Contact Leads", count: null, icon: Users, color: "text-blue-500" },
     { label: "Active Services", count: null, icon: Briefcase, color: "text-purple-500" },
     { label: "Portfolio Projects", count: null, icon: BarChart3, color: "text-teal-500" },
     { label: "Blog Posts", count: null, icon: FileText, color: "text-amber-500" },
-    { label: "Pricing Plans", count: null, icon: IndianRupee, color: "text-emerald-500" },
   ]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +32,15 @@ export function DashboardStats() {
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const collections = ["leads", "services", "portfolioItems", "public_blogPosts", "pricingPlans"];
+        const collections = ["audit_users", "audit_leads", "leads", "services", "portfolioItems", "public_blogPosts"];
         const counts = await Promise.all(
           collections.map(async (colName) => {
-            const snapshot = await getCountFromServer(collection(db, colName));
-            return snapshot.data().count;
+            try {
+              const snapshot = await getCountFromServer(collection(db, colName));
+              return snapshot.data().count;
+            } catch {
+              return 0;
+            }
           })
         );
 

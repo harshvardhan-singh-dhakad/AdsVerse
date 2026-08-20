@@ -125,11 +125,11 @@ export async function POST(req: NextRequest) {
       }
 
       analysisResult.overallScore.score = Math.round(
-        (analysisResult.categoryScores.onPage.score +
-         analysisResult.categoryScores.technical.score +
-         analysisResult.categoryScores.performance.score +
-         analysisResult.categoryScores.accessibility.score +
-         analysisResult.categoryScores.social.score) / 5
+        (analysisResult.lighthouseScores.performance * 0.25) +
+        (analysisResult.categoryScores.onPage.score * 0.25) +
+        (analysisResult.categoryScores.technical.score * 0.20) +
+        ((isPaidAudit ? analysisResult.geoAeoScores.geo.score : 50) * 0.15) +
+        ((isPaidAudit ? analysisResult.geoAeoScores.aeo.score : 50) * 0.15)
       );
     } catch (err: any) {
       return NextResponse.json(
