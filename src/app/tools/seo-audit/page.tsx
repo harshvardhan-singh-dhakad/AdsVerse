@@ -10,12 +10,10 @@ import { initializeFirebase } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { getApp } from 'firebase/app';
 import { doc, getDoc } from 'firebase/firestore';
-import dynamic from 'next/dynamic';
+import AuthWall from './AuthWall';
+import PhoneModal from './PhoneModal';
+import AuditPricingModal from './AuditPricingModal';
 import './styles.css';
-
-const AuthWall = dynamic(() => import('./AuthWall'), { ssr: false });
-const PhoneModal = dynamic(() => import('./PhoneModal'), { ssr: false });
-const AuditPricingModal = dynamic(() => import('./AuditPricingModal'), { ssr: false });
 
 const AUDIT_STEPS = [
   { id: 1, label: 'Connecting to Google PageSpeed Insights 4-pillar API...', duration: 2500 },
@@ -138,37 +136,6 @@ export default function AdsVerseAuditPage() {
     return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animationId); };
   }, []);
 
-  // Loading Animation
-  useEffect(() => {
-    if (!loading) return;
-    let stepTimer: ReturnType<typeof setTimeout>;
-    const runStep = (idx: number) => {
-      if (idx >= AUDIT_STEPS.length) {
-        setCompletedSteps([1,2,3,4,5]);
-        setTimeout(() => {
-          setLoading(false);
-          const err = analysisErrorRef.current;
-          if (err) {
-            if (err.status === 402) {
-              setPricingDomain(err.data?.domain || url.replace(/^https?:\/\//, '').split('/')[0]);
-              setShowAuditPricingModal(true);
-            } else {
-              setError(err.message || 'Audit failed. Please verify the URL.');
-            }
-          } else if (analysisResultRef.current) {
-            setReport(analysisResultRef.current);
-          }
-        }, 800);
-        return;
-      }
-      setCurrentStep(AUDIT_STEPS[idx].id);
-      setCompletedSteps(prev => [...prev, AUDIT_STEPS[idx].id]);
-      stepTimer = setTimeout(() => runStep(idx + 1), AUDIT_STEPS[idx].duration);
-    };
-    runStep(0);
-    return () => clearTimeout(stepTimer);
-  }, [loading, url]);
-
   const startAnalysis = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
@@ -176,10 +143,18 @@ export default function AdsVerseAuditPage() {
     setError(null);
     setReport(null);
     setLoading(true);
-    setCurrentStep(0);
+    setCurrentStep(1);
     setCompletedSteps([]);
-    analysisErrorRef.current = null;
-    analysisResultRef.current = null;
+
+    // Sequential visual progress runner
+    let step = 1;
+    const stepInterval = setInterval(() => {
+      if (step < 4) {
+        step++;
+        setCurrentStep(step);
+        setCompletedSteps(prev => [...prev, step - 1]);
+      }
+    }, 1800);
 
     try {
       const cleanDomain = url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
@@ -187,34 +162,57 @@ export default function AdsVerseAuditPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          url, 
+          url: url.trim(), 
           userId: user?.uid ?? null,
           userPlan: userPlan,
           forcePaidAudit: isReportPaid
         }),
       });
 
+      clearInterval(stepInterval);
+      setCurrentStep(5);
+      setCompletedSteps([1, 2, 3, 4, 5]);
+
       if (!auditRes.ok) {
         const errJson = await auditRes.json().catch(() => ({}));
-        analysisErrorRef.current = {
-          message: errJson.error || 'Server rejected audit request',
-          status: auditRes.status,
-          data: errJson,
-        };
+        throw new Error(errJson.error || 'Audit analysis failed. Please verify the URL.');
+      }
+
+      const resJson = await auditRes.json();
+      const finalReport = resJson.data || resJson.report;
+
+      if (!finalReport) {
+        // Fallback to local server action
+        const localData = await analyzeUrl(url.trim());
+        setIsReportPaid(false);
+        setTimeout(() => {
+          setReport(localData);
+          setLoading(false);
+        }, 500);
         return;
       }
 
-      const { data, paidUnlocked } = await auditRes.json();
-      setIsReportPaid(!!paidUnlocked);
-      analysisResultRef.current = data;
+      setIsReportPaid(!!(resJson.paidUnlocked ?? resJson.isPaid ?? isReportPaid));
+      setTimeout(() => {
+        setReport(finalReport);
+        setLoading(false);
+      }, 500);
+
     } catch (err: any) {
-      console.warn('[Audit Client] API call failed, falling back to local analyzeUrl action:', err);
+      clearInterval(stepInterval);
+      console.warn('[Audit Client] API error, attempting local action fallback:', err);
       try {
-        const localData = await analyzeUrl(url);
-        analysisResultRef.current = localData;
+        const localData = await analyzeUrl(url.trim());
+        setCurrentStep(5);
+        setCompletedSteps([1, 2, 3, 4, 5]);
         setIsReportPaid(false);
+        setTimeout(() => {
+          setReport(localData);
+          setLoading(false);
+        }, 500);
       } catch (localErr: any) {
-        analysisErrorRef.current = { message: localErr?.message || 'Analysis failed. Please check the URL and retry.' };
+        setError(localErr?.message || err?.message || 'Analysis failed. Please check the URL and retry.');
+        setLoading(false);
       }
     }
   };
@@ -257,28 +255,52 @@ export default function AdsVerseAuditPage() {
       <canvas id="starCanvas" ref={canvasRef}></canvas>
       
       {/* Custom Navbar */}
+      {/* Custom Navbar */}
       <nav className="navbar-custom print:hidden">
         <Link href="/" className="nav-logo">AdsVerse.Ai</Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
           <button 
             type="button"
             onClick={() => {
               const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
               setPricingDomain(cleanD);
-              setShowAuditPricingModal(true);
+              if (!user) {
+                setShowAuthModal(true);
+              } else {
+                setShowAuditPricingModal(true);
+              }
             }} 
-            className="text-xs md:text-sm font-semibold text-orange-400 hover:text-orange-300 transition flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 cursor-pointer"
+            className="text-xs md:text-sm font-semibold text-orange-400 hover:text-orange-300 transition flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500/10 border border-orange-500/20 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Audit Pass (₹10)
           </button>
+
           {user ? (
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-slate-400">{user.email}</span>
-              <button onClick={handleSignOut} className="text-xs text-slate-400 hover:text-white">Sign Out</button>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-xs text-white">
+                <div className="w-6 h-6 rounded-full bg-violet-600/30 text-violet-400 font-bold flex items-center justify-center text-[11px] shrink-0">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" />
+                  ) : (
+                    (user.displayName || user.email || 'U')[0].toUpperCase()
+                  )}
+                </div>
+                <span className="font-semibold text-slate-200 hidden sm:inline max-w-[110px] truncate">
+                  {user.displayName || user.email?.split('@')[0]}
+                </span>
+              </div>
+              <button 
+                onClick={handleSignOut} 
+                className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded-lg hover:bg-white/5 transition cursor-pointer"
+              >
+                Sign Out
+              </button>
             </div>
           ) : (
-            <button onClick={() => setShowAuthModal(true)} className="nav-cta">Sign In</button>
+            <button onClick={() => setShowAuthModal(true)} className="nav-cta cursor-pointer">
+              Sign In
+            </button>
           )}
         </div>
       </nav>
@@ -287,7 +309,7 @@ export default function AdsVerseAuditPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="relative w-full max-w-md my-8">
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">✕</button>
-            <AuthWall />
+            <AuthWall onAuthSuccess={() => { setShowAuthModal(false); setShowAuditPricingModal(true); }} />
           </div>
         </div>
       )}
@@ -302,7 +324,13 @@ export default function AdsVerseAuditPage() {
           onClose={() => setShowAuditPricingModal(false)}
           domain={pricingDomain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com')}
           userId={user?.uid}
+          userEmail={user?.email || ''}
+          userName={user?.displayName || user?.email?.split('@')[0] || ''}
           onPaymentSuccess={handleAuditPaymentSuccess}
+          onRequireAuth={() => {
+            setShowAuditPricingModal(false);
+            setShowAuthModal(true);
+          }}
         />
       )}
 

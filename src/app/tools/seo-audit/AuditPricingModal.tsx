@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2, Zap, ShieldCheck, ArrowRight, Loader2, Sparkles, X, QrCode, Globe, Wallet } from 'lucide-react';
+import { CheckCircle2, Zap, ShieldCheck, ArrowRight, Loader2, Sparkles, X, Globe, Lock, CreditCard, Smartphone, Building, Wallet, LogIn } from 'lucide-react';
 
 interface AuditPricingModalProps {
   isOpen: boolean;
   onClose: () => void;
   domain: string;
   userId?: string;
+  userEmail?: string;
+  userName?: string;
   onPaymentSuccess: () => void;
+  onRequireAuth?: () => void;
 }
 
 declare global {
@@ -41,7 +44,7 @@ const PACK_OPTIONS = [
   {
     id: 'wallet_12',
     title: '12 Audits Pack',
-    badge: '2 Free Audits (Best Value)',
+    badge: 'Best Value',
     priceInr: 100,
     usdPrice: '$1.20',
     credits: 12,
@@ -50,79 +53,94 @@ const PACK_OPTIONS = [
   },
 ];
 
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') return resolve(false);
+    if (window.Razorpay) return resolve(true);
+
+    const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => resolve(true));
+      existingScript.addEventListener('error', () => resolve(false));
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 export default function AuditPricingModal({
   isOpen,
   onClose,
   domain,
   userId,
+  userEmail,
+  userName,
   onPaymentSuccess,
+  onRequireAuth,
 }: AuditPricingModalProps) {
   const [selectedPack, setSelectedPack] = useState<'single' | 'wallet_5' | 'wallet_12'>('single');
   const [loading, setLoading] = useState(false);
-  const [showUpiDetails, setShowUpiDetails] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !window.Razorpay) {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.async = true;
-      document.body.appendChild(script);
+    if (isOpen) {
+      loadRazorpayScript();
     }
-  }, []);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const currentPack = PACK_OPTIONS.find((p) => p.id === selectedPack) || PACK_OPTIONS[0];
+  const isLoggedIn = !!userId && userId !== 'guest';
 
-  const handleRazorpayPayment = async () => {
+  const handlePaymentClick = async () => {
+    // If not logged in, require authentication first so credits are linked to user account
+    if (!isLoggedIn) {
+      if (onRequireAuth) {
+        onRequireAuth();
+      } else {
+        setErrorMessage('Please sign in or create an account to link your audit pass.');
+      }
+      return;
+    }
+
     setLoading(true);
     setErrorMessage(null);
 
     try {
-      // 1. Create order
+      // Ensure Razorpay SDK is loaded
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded || typeof window.Razorpay === 'undefined') {
+        throw new Error('Payment gateway is loading. Please retry in a few seconds.');
+      }
+
+      // 1. Create order on server
       const res = await fetch('/api/razorpay/create-audit-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           domain: domain || 'wallet',
           packType: selectedPack,
-          userId: userId || 'guest',
+          userId: userId,
         }),
       });
 
       const orderData = await res.json();
       if (!res.ok) {
-        throw new Error(orderData.error || 'Failed to initialize payment');
+        throw new Error(orderData.error || 'Failed to initialize payment gateway.');
       }
 
-      // If simulated order (no live razorpay credentials configured)
-      if (orderData.isSimulated || !window.Razorpay) {
-        const verifyRes = await fetch('/api/razorpay/verify-audit-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            razorpay_order_id: orderData.order_id,
-            razorpay_payment_id: `pay_sim_${Date.now()}`,
-            razorpay_signature: 'simulated_sig',
-            domain: domain || 'wallet',
-            packType: selectedPack,
-            userId: userId || 'guest',
-          }),
-        });
-
-        if (verifyRes.ok) {
-          setLoading(false);
-          onPaymentSuccess();
-          return;
-        }
-      }
-
-      // Load Razorpay Options
+      // 2. Open Official Razorpay Checkout Modal
       const options = {
         key: orderData.key_id,
         amount: orderData.amount,
-        currency: orderData.currency,
+        currency: orderData.currency || 'INR',
         name: 'AdsVerse.Ai',
         description: `${currentPack.title} (${currentPack.credits} Audit Credits)`,
         order_id: orderData.order_id,
@@ -137,7 +155,7 @@ export default function AuditPricingModal({
                 razorpay_signature: response.razorpay_signature,
                 domain: domain || 'wallet',
                 packType: selectedPack,
-                userId: userId || 'guest',
+                userId: userId,
               }),
             });
 
@@ -153,8 +171,8 @@ export default function AuditPricingModal({
           }
         },
         prefill: {
-          name: 'AdsVerse User',
-          email: 'contact@adsverse.in',
+          name: userName || 'AdsVerse User',
+          email: userEmail || 'contact@adsverse.in',
         },
         theme: {
           color: '#f97316',
@@ -167,6 +185,10 @@ export default function AuditPricingModal({
       };
 
       const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (resp: any) {
+        setErrorMessage(resp.error?.description || 'Payment was unsuccessful. Please try another method.');
+        setLoading(false);
+      });
       rzp.open();
     } catch (err: any) {
       setErrorMessage(err.message || 'Payment initiation failed.');
@@ -177,6 +199,7 @@ export default function AuditPricingModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in overflow-y-auto">
       <div className="relative w-full max-w-xl rounded-2xl bg-[#0b0f19] border border-orange-500/30 p-6 md:p-8 shadow-2xl shadow-orange-500/10 text-white my-8">
+        
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -192,11 +215,11 @@ export default function AuditPricingModal({
         </div>
 
         <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2">
-          Unlock Full Audit & PDF Export
+          Unlock Full Audit &amp; PDF Export
         </h3>
 
         <p className="text-slate-400 text-xs md:text-sm mb-5 leading-relaxed">
-          Target Domain: <span className="text-orange-400 font-mono font-bold">{domain || 'Your Site'}</span>. Select a single audit pass or a wallet pack for bulk audits:
+          Target Domain: <span className="text-orange-400 font-mono font-bold">{domain || 'Your Site'}</span>. Select an option to unlock detailed diagnostics:
         </p>
 
         {/* Pricing Options Cards */}
@@ -230,7 +253,7 @@ export default function AuditPricingModal({
         </div>
 
         {/* What's Included */}
-        <div className="space-y-2.5 mb-5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+        <div className="space-y-2 mb-5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
           <div className="text-xs font-bold text-orange-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5" /> What You Unlock:
           </div>
@@ -253,46 +276,66 @@ export default function AuditPricingModal({
           </div>
         )}
 
-        {/* Action Button */}
+        {/* Payment Button & Trust Badges */}
         <div className="space-y-3">
           <button
-            onClick={handleRazorpayPayment}
+            onClick={handlePaymentClick}
             disabled={loading}
-            className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer text-sm md:text-base"
           >
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Processing Payment...</span>
+                <span>Connecting to Razorpay...</span>
+              </>
+            ) : !isLoggedIn ? (
+              <>
+                <LogIn className="w-4 h-4" />
+                <span>Sign In to Pay ₹{currentPack.priceInr} &amp; Unlock</span>
+                <ArrowRight className="w-4 h-4" />
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 fill-white" />
-                <span>Pay ₹{currentPack.priceInr} ({currentPack.usdPrice}) & Unlock</span>
+                <span>Pay ₹{currentPack.priceInr} ({currentPack.usdPrice}) &amp; Unlock</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
 
-          <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/10">
-            <span className="flex items-center gap-1">
-              <Globe className="w-3.5 h-3.5 text-blue-400" /> All Indian UPI & Global Cards Accepted
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowUpiDetails(!showUpiDetails)}
-              className="text-orange-400 hover:underline flex items-center gap-1"
-            >
-              <QrCode className="w-3.5 h-3.5" /> UPI / QR Info
-            </button>
+          {/* Official Razorpay Available Payment Methods Banner */}
+          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
+            <div className="flex items-center justify-between text-[11px] text-slate-400">
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5" /> 100% Secure Razorpay Checkout
+              </span>
+              <span className="text-slate-500">Auto-Instant Activation</span>
+            </div>
+
+            <div className="grid grid-cols-4 gap-2 pt-1 text-center">
+              <div className="p-1.5 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center">
+                <Smartphone className="w-4 h-4 text-emerald-400 mb-0.5" />
+                <span className="text-[10px] text-slate-300 font-semibold">UPI Apps</span>
+                <span className="text-[8px] text-slate-500">GPay/PhonePe/Paytm</span>
+              </div>
+              <div className="p-1.5 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center">
+                <CreditCard className="w-4 h-4 text-blue-400 mb-0.5" />
+                <span className="text-[10px] text-slate-300 font-semibold">All Cards</span>
+                <span className="text-[8px] text-slate-500">Debit / Credit</span>
+              </div>
+              <div className="p-1.5 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center">
+                <Building className="w-4 h-4 text-violet-400 mb-0.5" />
+                <span className="text-[10px] text-slate-300 font-semibold">NetBanking</span>
+                <span className="text-[8px] text-slate-500">50+ Banks</span>
+              </div>
+              <div className="p-1.5 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center">
+                <Wallet className="w-4 h-4 text-amber-400 mb-0.5" />
+                <span className="text-[10px] text-slate-300 font-semibold">Wallets</span>
+                <span className="text-[8px] text-slate-500">Paytm/MobiKwik</span>
+              </div>
+            </div>
           </div>
 
-          {showUpiDetails && (
-            <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1 mt-2">
-              <p><strong>Direct UPI ID:</strong> <span className="font-mono text-orange-400">9685123339@upi</span></p>
-              <p className="text-slate-400 text-[11px]">Pay via GPay/PhonePe/Paytm and click the button above to auto-verify instantly.</p>
-            </div>
-          )}
         </div>
       </div>
     </div>
