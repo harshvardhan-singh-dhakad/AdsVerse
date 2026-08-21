@@ -16,10 +16,10 @@ import AuditPricingModal from './AuditPricingModal';
 import './styles.css';
 
 const AUDIT_STEPS = [
-  { id: 1, label: 'Connecting to Google PageSpeed Insights 4-pillar API...', duration: 2500 },
+  { id: 1, label: 'Connecting to Core Web Vitals & Performance Engine...', duration: 2500 },
   { id: 2, label: 'Auditing On-Page SEO, Accessibility & Best Practices...', duration: 2500 },
-  { id: 3, label: 'Running AI Openness & Bot Crawlability diagnostic...', duration: 2500 },
-  { id: 4, label: 'Testing live GEO citations on Gemini, ChatGPT, Perplexity...', duration: 2000 },
+  { id: 3, label: 'Running AI Bot Openness & Semantic Architecture scan...', duration: 2500 },
+  { id: 4, label: 'Testing Generative Search Citations across AI platforms...', duration: 2000 },
   { id: 5, label: 'Synthesizing actionable code fixes and full report...', duration: 1500 },
 ];
 
@@ -342,7 +342,7 @@ export default function AdsVerseAuditPage() {
             <h1 className="hero-heading max-w-4xl mx-auto">
               Free <span className="grad-seo">SEO</span>, <span className="grad-aeo">AEO</span> &amp; <span className="grad-geo">GEO</span> Audit Tool — Check If ChatGPT &amp; Google AI Cite Your Website
             </h1>
-            <p className="hero-sub max-w-2xl">See if you rank on Google AND get cited by ChatGPT, Perplexity, and Gemini — all in one report.</p>
+            <p className="hero-sub max-w-2xl">See if you rank on Google AND get cited by ChatGPT, Perplexity, and Google AI — all in one report.</p>
 
             {/* Modern Wide Search Box */}
             <form className="w-full max-w-2xl mx-auto shadow-2xl px-4" onSubmit={startAnalysis}>
@@ -375,8 +375,8 @@ export default function AdsVerseAuditPage() {
 
             <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
               <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> 100% Free Initial Audit</span>
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Official Google 4-Pillar Lab Data</span>
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> Gemini 3.7 Flash AI Citations</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Core Web Vitals &amp; Tech Lab</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> Generative AI Search Citations</span>
             </div>
 
             {error && (
@@ -459,11 +459,11 @@ export default function AdsVerseAuditPage() {
                 </div>
                 <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
                   <h4 className="text-sm font-bold text-emerald-400 flex items-center gap-2"><span>⚡</span> Core Web Vitals</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">Largest Contentful Paint (LCP), First Contentful Paint (FCP), Cumulative Layout Shift (CLS), and Speed Index powered by PageSpeed API.</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">Largest Contentful Paint (LCP), First Contentful Paint (FCP), Cumulative Layout Shift (CLS), and Speed Index.</p>
                 </div>
                 <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
                   <h4 className="text-sm font-bold text-violet-400 flex items-center gap-2"><span>🧠</span> AI Brand Citations</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">Real-time Gemini 3.7 Flash analysis of brand prominence across generative engines, citation density, and AI visibility rank.</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">Real-time analysis of brand prominence across generative engines, citation density, and AI visibility rank.</p>
                 </div>
                 <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
                   <h4 className="text-sm font-bold text-blue-400 flex items-center gap-2"><span>⚙️</span> Technical &amp; Crawling</h4>
@@ -496,14 +496,14 @@ export default function AdsVerseAuditPage() {
               <div className="glass p-5 rounded-xl border border-white/10">
                 <h3 className="text-base font-bold text-white mb-2">How is this different from generic SEO checkers like Semrush or Ahrefs?</h3>
                 <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
-                  Traditional tools only analyze 10-year-old Google ranking factors. The AdsVerse.Ai audit combines classical Technical SEO with next-generation Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) to tell you how AI platforms like ChatGPT and Gemini cite your brand.
+                  Traditional tools only analyze classical search factors. The AdsVerse.Ai audit combines Technical SEO with next-generation Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) to tell you how AI platforms cite your brand.
                 </p>
               </div>
 
               <div className="glass p-5 rounded-xl border border-white/10">
                 <h3 className="text-base font-bold text-white mb-2">What is included in the ₹10 Paid Full Audit Pass?</h3>
                 <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
-                  The ₹10 Single Pass unlocks all 21+ technical error diagnostics, complete step-by-step code fixes (&quot;💡 Fix&quot;), live Gemini 3.7 Flash AI citation analysis, competitor benchmarking radar, content depth breakdown, and instant 1-click branded PDF export.
+                  The ₹10 Single Pass unlocks all 21+ technical error diagnostics, complete step-by-step code fixes (&quot;💡 Fix&quot;), live multi-platform AI citation analysis, competitor benchmarking radar, content depth breakdown, and instant 1-click branded PDF export.
                 </p>
               </div>
 
@@ -527,7 +527,7 @@ export default function AdsVerseAuditPage() {
             <div className="spinner-icon">🔍</div>
           </div>
           <h2 className="loading-title">Analyzing <span className="url-display">{url}</span></h2>
-          <p className="loading-sub">Running deep 4-pillar Google Lighthouse + Gemini AI citations...</p>
+          <p className="loading-sub">Running multi-engine SEO, AEO &amp; AI citation diagnostics...</p>
           <div className="steps-list mt-4">
             {AUDIT_STEPS.map(step => {
               const isDone = completedSteps.includes(step.id);
@@ -588,28 +588,28 @@ export default function AdsVerseAuditPage() {
             </div>
           </div>
 
-          {/* Navigation Category Tabs */}
+          {/* Navigation Category Tabs - Clean without numbers/percentages */}
           <div className="tool-tabs print:hidden">
             <button className={`tool-tab cursor-pointer ${activeTab === 'full' ? 'active-purple' : ''}`} onClick={() => setActiveTab('full')}>
               <span className="tab-dot" style={{background: '#a78bfa'}}></span> 📊 Executive Overview
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'performance' ? 'active-green' : ''}`} onClick={() => setActiveTab('performance')}>
-              <span className="tab-dot" style={{background: '#34d399'}}></span> ⚡ Performance ({report.lighthouseScores?.performance ?? report.categoryScores.performance.score})
+              <span className="tab-dot" style={{background: '#34d399'}}></span> ⚡ Performance
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'seo' ? 'active-blue' : ''}`} onClick={() => setActiveTab('seo')}>
-              <span className="tab-dot" style={{background: '#60a5fa'}}></span> 🔍 SEO ({report.lighthouseScores?.seo ?? 90})
+              <span className="tab-dot" style={{background: '#60a5fa'}}></span> 🔍 SEO Health
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'accessibility' ? 'active-amber' : ''}`} onClick={() => setActiveTab('accessibility')}>
-              <span className="tab-dot" style={{background: '#fbbf24'}}></span> ♿ Accessibility ({report.lighthouseScores?.accessibility ?? 90})
+              <span className="tab-dot" style={{background: '#fbbf24'}}></span> ♿ Accessibility
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'best-practices' ? 'active-purple' : ''}`} onClick={() => setActiveTab('best-practices')}>
-              <span className="tab-dot" style={{background: '#c084fc'}}></span> 🛡️ Best Practices ({report.lighthouseScores?.bestPractices ?? 95})
+              <span className="tab-dot" style={{background: '#c084fc'}}></span> 🛡️ Best Practices
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'geo' ? 'active-green' : ''}`} onClick={() => setActiveTab('geo')}>
-              <span className="tab-dot" style={{background: '#10b981'}}></span> 🤖 GEO Citations ({report.geoAeoScores.geo.score}%)
+              <span className="tab-dot" style={{background: '#10b981'}}></span> 🤖 GEO Citations
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'aeo' ? 'active-amber' : ''}`} onClick={() => setActiveTab('aeo')}>
-              <span className="tab-dot" style={{background: '#f59e0b'}}></span> 🎙️ AEO Voice ({report.geoAeoScores.aeo.score}%)
+              <span className="tab-dot" style={{background: '#f59e0b'}}></span> 🎙️ AEO Voice
             </button>
             <button className={`tool-tab cursor-pointer ${activeTab === 'competitors' ? 'active-blue' : ''}`} onClick={() => setActiveTab('competitors')}>
               <span className="tab-dot" style={{background: '#38bdf8'}}></span> 🏆 Competitor Radar
@@ -622,10 +622,10 @@ export default function AdsVerseAuditPage() {
               <span className="text-4xl block">🔒</span>
               <h3 className="text-2xl font-bold text-white">Unlock Deep {activeTab.toUpperCase()} Diagnostics</h3>
               <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
-                This deep diagnostic requires our full 4-pillar Google Lighthouse + Gemini AI citation pass. Unlock the full report, all code fixes, and PDF export for just ₹10.
+                This deep diagnostic requires our full Pro Audit Pass. Unlock the full report, all code fixes, and PDF export for just ₹10.
               </p>
               <button 
-                type="button"
+                type="button" 
                 onClick={() => {
                   const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
                   setPricingDomain(cleanD);
@@ -672,7 +672,7 @@ export default function AdsVerseAuditPage() {
                     <CategoryCard 
                       color="red" 
                       title="Best Practices" 
-                      score={report.lighthouseScores?.bestPractices ?? 95} 
+                      score={report.lighthouseScores?.bestPractices ?? 0} 
                       icon="🛡️" 
                       subtitle="Web Security"
                       onClick={() => setActiveTab('best-practices')} 
@@ -742,7 +742,7 @@ export default function AdsVerseAuditPage() {
                       <div className="space-y-3">
                         <div>
                           <div className="flex justify-between text-xs font-semibold mb-1">
-                            <span className="text-slate-300">AI Bot Openness (GPTBot, Claude, Gemini)</span>
+                            <span className="text-slate-300">AI Bot Crawlability (ChatGPT, Claude, Google AI)</span>
                             <span className="text-emerald-400">{report.aiOpenness?.score ?? 85}%</span>
                           </div>
                           <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
@@ -800,7 +800,7 @@ export default function AdsVerseAuditPage() {
                         <span className="text-3xl block">🔒</span>
                         <h3 className="text-xl font-bold text-white">Unlock All 21+ Diagnostics &amp; Ready Code Solutions</h3>
                         <p className="text-slate-400 text-xs md:text-sm max-w-md mx-auto leading-relaxed">
-                          You are currently viewing the Free Initial Summary. Unlock all error details, live AI citations across ChatGPT/Gemini, competitor gap comparison, and PDF export for just ₹10.
+                          You are currently viewing the Free Initial Summary. Unlock all error details, live AI citations across AI search platforms, competitor gap comparison, and PDF export for just ₹10.
                         </p>
                         <button 
                           type="button"
@@ -840,7 +840,7 @@ export default function AdsVerseAuditPage() {
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-blue-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">FCP (First Paint)</div>
                       <div className="text-2xl font-black text-white mt-1">
-                        {report.pageSpeedMetrics?.fcp ? `${(report.pageSpeedMetrics.fcp / 1000).toFixed(2)}s` : '1.2s'}
+                        {report.pageSpeedMetrics?.fcp ? `${(report.pageSpeedMetrics.fcp / 1000).toFixed(2)}s` : report.psiDataSource === 'estimated' ? 'N/A' : '1.8s+'}
                       </div>
                       <div className="text-[10px] text-blue-400 mt-1">Target: &lt; 1.8s</div>
                     </div>
@@ -856,7 +856,7 @@ export default function AdsVerseAuditPage() {
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-purple-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">Total Blocking Time</div>
                       <div className="text-2xl font-black text-purple-400 mt-1">
-                        {report.pageSpeedMetrics?.tbt ? `${report.pageSpeedMetrics.tbt}ms` : '40ms'}
+                        {report.pageSpeedMetrics?.tbt !== undefined ? `${Math.round(report.pageSpeedMetrics.tbt)}ms` : report.psiDataSource === 'estimated' ? 'N/A' : '200ms+'}
                       </div>
                       <div className="text-[10px] text-slate-400 mt-1">Target: &lt; 200ms</div>
                     </div>
@@ -1003,7 +1003,7 @@ export default function AdsVerseAuditPage() {
 
                   {/* Live Citation Prompts */}
                   <div className="glass checks-section">
-                    <div className="checks-header"><div><span className="checks-title">🌍 Live AI Citation Tests (Gemini 3.7 Flash)</span></div></div>
+                    <div className="checks-header"><div><span className="checks-title">🌍 Live AI Search Citation Tests</span></div></div>
                     {report.llmGeoAeo?.geoDetails && report.llmGeoAeo.geoDetails.length > 0 ? (
                       <div className="checks-list space-y-3">
                         {report.llmGeoAeo.geoDetails.map((c, i) => (
@@ -1064,27 +1064,319 @@ export default function AdsVerseAuditPage() {
               {activeTab === 'competitors' && (
                 <div className="space-y-6 animate-in fade-in">
                   <div className="section-head">
-                    <h3>🏆 Competitor Benchmark Radar</h3>
-                    <span>See how your website compares against top industry benchmarks in SEO, GEO, and Speed</span>
+                    <h3>🏆 Real Competitor Intelligence</h3>
+                    <span>
+                      {report.competitorAnalysis
+                        ? `Live data for "${report.competitorAnalysis.searchKeyword}" · ${report.competitorAnalysis.competitors.length} competitors found`
+                        : 'Competitor analysis running or unavailable'}
+                    </span>
                   </div>
 
-                  <div className="glass comp-table-wrap mb-6">
-                    <table className="w-full text-left text-sm border-collapse">
-                      <thead>
-                        <tr className="border-b border-white/10 text-slate-400 uppercase text-xs">
-                          <th className="py-3 pr-4">Metric</th><th className="py-3 px-4">Your Site</th><th className="py-3 px-4">Competitor A</th><th className="py-3 px-4">Competitor B</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5">
-                        <tr><td className="py-3 pr-4 text-slate-300">Overall SEO Score</td><td className="py-3 px-4 text-violet-400 font-bold">{report.overallScore.score}</td><td className="py-3 px-4">84</td><td className="py-3 px-4">76</td></tr>
-                        <tr><td className="py-3 pr-4 text-slate-300">GEO AI Visibility</td><td className="py-3 px-4 text-emerald-400 font-bold">{report.geoAeoScores.geo.score}%</td><td className="py-3 px-4">68%</td><td className="py-3 px-4">59%</td></tr>
-                        <tr><td className="py-3 pr-4 text-slate-300">Performance / CWV</td><td className="py-3 px-4 text-blue-400 font-bold">{report.lighthouseScores?.performance ?? report.categoryScores.performance.score}</td><td className="py-3 px-4">92</td><td className="py-3 px-4">65</td></tr>
-                        <tr><td className="py-3 pr-4 text-slate-300">AI Openness</td><td className="py-3 px-4 text-amber-400 font-bold">{report.aiOpenness?.score ?? 85}%</td><td className="py-3 px-4">50%</td><td className="py-3 px-4">40%</td></tr>
-                      </tbody>
-                    </table>
-                  </div>
+                  {/* No competitor data state */}
+                  {!report.competitorAnalysis || report.competitorAnalysis.competitors.length === 0 ? (
+                    <div className="glass p-8 text-center rounded-2xl border border-slate-700/50">
+                      <span className="text-4xl block mb-3">🔍</span>
+                      <h4 className="text-lg font-bold text-white mb-2">Competitor Data Not Available</h4>
+                      <p className="text-slate-400 text-sm max-w-md mx-auto">
+                        DuckDuckGo search did not return competitors for this site. 
+                        This can happen for very niche or new businesses. Try running the audit again.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Competitor Score Comparison Table */}
+                      <div className="glass rounded-2xl overflow-hidden border border-white/10">
+                        <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <span>📊</span> Score Comparison
+                          </h4>
+                          <span className="text-[10px] text-slate-400 bg-white/5 px-2 py-1 rounded-full">
+                            Powered by Google PageSpeed + DuckDuckGo SERP
+                          </span>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left text-sm border-collapse">
+                            <thead>
+                              <tr className="border-b border-white/10 text-slate-400 uppercase text-xs">
+                                <th className="py-3 pl-5 pr-4 min-w-[160px]">Metric</th>
+                                <th className="py-3 px-4 text-violet-300 font-bold min-w-[120px]">
+                                  Your Site
+                                </th>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <th key={i} className="py-3 px-4 min-w-[120px]">
+                                    <a href={c.url} target="_blank" rel="noopener noreferrer"
+                                      className="text-blue-400 hover:text-blue-300 hover:underline">
+                                      #{c.serpRank} {c.domain}
+                                    </a>
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                              {/* Performance */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">⚡ Performance</td>
+                                <td className="py-3 px-4">
+                                  <ScoreChip score={report.lighthouseScores?.performance} />
+                                </td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4">
+                                    <ScoreChip score={c.performanceScore} />
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* SEO */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">🔍 SEO Health</td>
+                                <td className="py-3 px-4">
+                                  <ScoreChip score={report.lighthouseScores?.seo} />
+                                </td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4">
+                                    <ScoreChip score={c.seoScore} />
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* Accessibility */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">♿ Accessibility</td>
+                                <td className="py-3 px-4">
+                                  <ScoreChip score={report.lighthouseScores?.accessibility} />
+                                </td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4">
+                                    <ScoreChip score={c.accessibilityScore} />
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* Best Practices */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">🛡️ Best Practices</td>
+                                <td className="py-3 px-4">
+                                  <ScoreChip score={report.lighthouseScores?.bestPractices} />
+                                </td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4">
+                                    <ScoreChip score={c.bestPracticesScore} />
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* Word Count */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">📝 Word Count</td>
+                                <td className="py-3 px-4 text-violet-400 font-bold">{report.wordCount}</td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className={`py-3 px-4 font-bold ${c.wordCount > report.wordCount ? 'text-red-400' : 'text-emerald-400'}`}>
+                                    {c.wordCount}
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* Schema */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">🏷️ Schema Types</td>
+                                <td className="py-3 px-4 text-slate-300">{report.hasSchema ? '✅ Yes' : '❌ No'}</td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4 text-slate-300">
+                                    {c.hasSchema ? `✅ ${c.detectedSchemas.slice(0, 2).join(', ')}` : '❌ None'}
+                                  </td>
+                                ))}
+                              </tr>
+                              {/* LCP */}
+                              <tr className="hover:bg-white/3 transition-colors">
+                                <td className="py-3 pl-5 pr-4 text-slate-300">🕐 LCP Speed</td>
+                                <td className="py-3 px-4 font-bold">
+                                  <span className={report.pageSpeedMetrics?.lcp ? (report.pageSpeedMetrics.lcp < 2500 ? 'text-emerald-400' : report.pageSpeedMetrics.lcp < 4000 ? 'text-amber-400' : 'text-red-400') : 'text-slate-400'}>
+                                    {report.pageSpeedMetrics?.lcp ? `${(report.pageSpeedMetrics.lcp / 1000).toFixed(1)}s` : 'N/A'}
+                                  </span>
+                                </td>
+                                {report.competitorAnalysis.competitors.map((c, i) => (
+                                  <td key={i} className="py-3 px-4 font-bold">
+                                    <span className={c.lcp ? (c.lcp < 2500 ? 'text-emerald-400' : c.lcp < 4000 ? 'text-amber-400' : 'text-red-400') : 'text-slate-400'}>
+                                      {c.lcp ? `${(c.lcp / 1000).toFixed(1)}s` : 'N/A'}
+                                    </span>
+                                  </td>
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      {/* Competitor Profile Cards */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {report.competitorAnalysis.competitors.map((c, i) => (
+                          <div key={i} className="glass p-5 rounded-2xl border border-white/10 space-y-3">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <div className="flex items-center gap-1.5 mb-0.5">
+                                  <span className="text-[10px] font-bold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded">
+                                    SERP #{c.serpRank}
+                                  </span>
+                                </div>
+                                <a href={c.url} target="_blank" rel="noopener noreferrer"
+                                  className="text-sm font-bold text-white hover:text-blue-400 transition-colors line-clamp-1">
+                                  {c.domain}
+                                </a>
+                              </div>
+                              <div className="text-right">
+                                <div className={`text-xl font-black ${c.overallScore >= 70 ? 'text-emerald-400' : c.overallScore >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                                  {c.overallScore}
+                                </div>
+                                <div className="text-[10px] text-slate-400">Score</div>
+                              </div>
+                            </div>
+
+                            {c.h1 && (
+                              <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                                <span className="text-slate-500">H1:</span> {c.h1}
+                              </p>
+                            )}
+
+                            <div className="space-y-1.5">
+                              <ScoreBar label="Performance" score={c.performanceScore} color="#a78bfa" />
+                              <ScoreBar label="SEO" score={c.seoScore} color="#60a5fa" />
+                              <ScoreBar label="Accessibility" score={c.accessibilityScore} color="#fbbf24" />
+                            </div>
+
+                            {c.detectedSchemas.length > 0 && (
+                              <div className="flex flex-wrap gap-1">
+                                {c.detectedSchemas.slice(0, 3).map((s, j) => (
+                                  <span key={j} className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
+                                    {s}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+
+                            {c.contentTopics.length > 0 && (
+                              <div>
+                                <div className="text-[10px] text-slate-500 font-bold uppercase mb-1">Content Topics</div>
+                                <div className="text-xs text-slate-400 line-clamp-2">{c.contentTopics.slice(0, 3).join(' · ')}</div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* AI Strategy Report */}
+                      {report.strategyReport && (
+                        <div className="glass rounded-2xl overflow-hidden border border-violet-500/30">
+                          <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                              <span>🤖</span> AI Strategy: How to Beat Your Competitors
+                              {report.strategyReport.generatedByAI && (
+                                <span className="text-[10px] bg-violet-500/20 text-violet-400 border border-violet-500/30 px-1.5 py-0.5 rounded-full">Gemini AI</span>
+                              )}
+                            </h4>
+                          </div>
+                          
+                          <div className="p-5 space-y-5">
+                            {/* Summary */}
+                            <p className="text-sm text-slate-300 leading-relaxed border-l-2 border-violet-500/50 pl-3">
+                              {report.strategyReport.summary}
+                            </p>
+
+                            {/* Avg Comparison */}
+                            {(report.strategyReport.yourVsAvg.performance || report.strategyReport.yourVsAvg.seo) && (
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                {report.strategyReport.yourVsAvg.performance !== null && (
+                                  <div className="glass p-3 rounded-xl text-center">
+                                    <div className="text-[10px] text-slate-400 uppercase font-bold">Your Perf</div>
+                                    <div className="text-lg font-black text-violet-400">{report.lighthouseScores?.performance ?? '?'}</div>
+                                    <div className="text-[10px] text-slate-500">Avg: {report.strategyReport.yourVsAvg.performance}</div>
+                                  </div>
+                                )}
+                                {report.strategyReport.yourVsAvg.seo !== null && (
+                                  <div className="glass p-3 rounded-xl text-center">
+                                    <div className="text-[10px] text-slate-400 uppercase font-bold">Your SEO</div>
+                                    <div className="text-lg font-black text-blue-400">{report.lighthouseScores?.seo ?? '?'}</div>
+                                    <div className="text-[10px] text-slate-500">Avg: {report.strategyReport.yourVsAvg.seo}</div>
+                                  </div>
+                                )}
+                                {report.strategyReport.yourVsAvg.wordCount !== null && (
+                                  <div className="glass p-3 rounded-xl text-center">
+                                    <div className="text-[10px] text-slate-400 uppercase font-bold">Your Words</div>
+                                    <div className="text-lg font-black text-amber-400">{report.wordCount}</div>
+                                    <div className="text-[10px] text-slate-500">Avg: {report.strategyReport.yourVsAvg.wordCount}</div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Quick Wins */}
+                            {report.strategyReport.quickWins.length > 0 && (
+                              <div>
+                                <h5 className="text-xs font-bold text-emerald-400 uppercase mb-2 flex items-center gap-1.5">
+                                  ⚡ Quick Wins <span className="text-slate-500 font-normal normal-case">· Fix in 24 hours</span>
+                                </h5>
+                                <div className="space-y-2">
+                                  {report.strategyReport.quickWins.map((action, i) => (
+                                    <StrategyCard key={i} action={action} />
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Medium Wins */}
+                            {report.strategyReport.mediumWins.length > 0 && (
+                              <div>
+                                <h5 className="text-xs font-bold text-amber-400 uppercase mb-2 flex items-center gap-1.5">
+                                  📈 Growth Plays <span className="text-slate-500 font-normal normal-case">· Fix in 1 week</span>
+                                </h5>
+                                <div className="space-y-2">
+                                  {report.strategyReport.mediumWins.map((action, i) => (
+                                    <StrategyCard key={i} action={action} />
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Long Term */}
+                            {report.strategyReport.longTermWins.length > 0 && (
+                              <div>
+                                <h5 className="text-xs font-bold text-blue-400 uppercase mb-2 flex items-center gap-1.5">
+                                  🎯 Strategic Moves <span className="text-slate-500 font-normal normal-case">· 1-3 months</span>
+                                </h5>
+                                <div className="space-y-2">
+                                  {report.strategyReport.longTermWins.map((action, i) => (
+                                    <StrategyCard key={i} action={action} />
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Schema & Content Gaps */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {report.strategyReport.schemaGaps && report.strategyReport.schemaGaps.length > 0 && (
+                                <div className="glass p-4 rounded-xl">
+                                  <h5 className="text-xs font-bold text-red-400 mb-2">❌ Missing Schema Types</h5>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {report.strategyReport.schemaGaps.map((s, i) => (
+                                      <span key={i} className="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded-full">{s}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {report.strategyReport.contentGaps && report.strategyReport.contentGaps.length > 0 && (
+                                <div className="glass p-4 rounded-xl">
+                                  <h5 className="text-xs font-bold text-amber-400 mb-2">📝 Content Gap Topics</h5>
+                                  <div className="space-y-1">
+                                    {report.strategyReport.contentGaps.slice(0, 4).map((t, i) => (
+                                      <div key={i} className="text-xs text-slate-400">• {t}</div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
+
+
 
             </div>
           )}
@@ -1114,7 +1406,83 @@ function CategoryCard({ color, title, score, icon, subtitle, onClick }: { color:
   );
 }
 
+// ── Competitor Intelligence Subcomponents ──────────────────────────────────────
+
+function ScoreChip({ score }: { score: number | null | undefined }) {
+  if (score === null || score === undefined) {
+    return <span className="text-slate-500 text-xs font-mono">N/A</span>;
+  }
+  const color = score >= 90 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+    : score >= 70 ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+    : 'text-red-400 bg-red-500/10 border-red-500/20';
+  return (
+    <span className={`text-xs font-black px-2 py-0.5 rounded border ${color}`}>
+      {score}
+    </span>
+  );
+}
+
+function ScoreBar({ label, score, color }: { label: string; score: number | null; color: string }) {
+  const pct = score ?? 0;
+  return (
+    <div>
+      <div className="flex justify-between text-[10px] mb-0.5">
+        <span className="text-slate-400">{label}</span>
+        <span className="font-bold text-white">{score !== null ? score : '—'}</span>
+      </div>
+      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
+      </div>
+    </div>
+  );
+}
+
+type StrategyAction = {
+  priority: string;
+  timeframe: string;
+  category: string;
+  title: string;
+  description: string;
+  competitorBenchmark: string;
+  expectedImpact: string;
+};
+
+function StrategyCard({ action }: { action: StrategyAction }) {
+  const priorityColor = action.priority === 'Critical' ? 'bg-red-500/20 text-red-400 border-red-500/30'
+    : action.priority === 'High' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+    : action.priority === 'Medium' ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+    : 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+
+  const categoryIcon: Record<string, string> = {
+    'Performance': '⚡', 'Content': '📝', 'Technical SEO': '🔧',
+    'Schema': '🏷️', 'Accessibility': '♿', 'UX': '🎨', 'Off-Page': '🔗',
+  };
+
+  return (
+    <div className="glass p-4 rounded-xl border border-white/5 flex items-start gap-3 hover:border-violet-500/20 transition-colors">
+      <span className="text-lg shrink-0">{categoryIcon[action.category] || '💡'}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <h6 className="text-xs font-bold text-white">{action.title}</h6>
+          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${priorityColor}`}>
+            {action.priority}
+          </span>
+        </div>
+        <p className="text-[11px] text-slate-400 mb-1.5">{action.description}</p>
+        <div className="flex items-start gap-1.5 flex-wrap">
+          <span className="text-[10px] text-slate-500">📊 {action.competitorBenchmark}</span>
+          <span className="text-[10px] text-emerald-500">→ {action.expectedImpact}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CheckRow({ data }: { data: Recommendation | GeoAeoCheck }) {
+
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 

@@ -4,6 +4,8 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { fetchPageSpeedData, type PageSpeedMetrics } from '@/lib/pagespeed';
 import type { LlmGeoAeoResult } from '@/lib/gemini-geo-aeo';
+import type { CompetitorAnalysis } from '@/lib/competitor-engine';
+import type { CompetitorStrategyReport } from '@/lib/strategy-advisor';
 
 // ── Interfaces for Structured Results ─────────────────────────────────────────
 
@@ -110,8 +112,12 @@ export interface AnalysisResult {
   canonical: string | undefined;
   loadTime: number;
   pageSpeedMetrics?: PageSpeedMetrics | null;
+  psiDataSource?: 'mobile' | 'desktop' | 'estimated';
   bodyTextExcerpt: string;
   llmGeoAeo?: LlmGeoAeoResult;
+  // Competitor Intelligence
+  competitorAnalysis?: CompetitorAnalysis | null;
+  strategyReport?: CompetitorStrategyReport | null;
 }
 
 function getGrade(score: number): string {
@@ -186,10 +192,13 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
   const loadTime = Date.now() - startTime;
   const $ = cheerio.load(html);
 
-  // Parallel Fetch: PageSpeed 4 Categories + Robots.txt + LLMs.txt
+  // Parallel Fetch: PageSpeed 4 Categories (mobile+desktop for best coverage) + Robots.txt + LLMs.txt
   const domainUrl = new URL(finalUrl).origin;
-  const [psiData, robotsRes, llmsRes, agentJsonRes] = await Promise.all([
+
+  // Try mobile first; if it fails/times-out, fall back to desktop result
+  const [psiMobile, psiDesktop, robotsRes, llmsRes, agentJsonRes] = await Promise.all([
     fetchPageSpeedData(finalUrl, 'mobile').catch(() => null),
+    fetchPageSpeedData(finalUrl, 'desktop').catch(() => null),
     axios.get(`${domainUrl}/robots.txt`, { 
       timeout: 5000, 
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AdsVerseAudit/2.0)' }, 
@@ -206,6 +215,15 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
       validateStatus: () => true 
     }).catch(() => null),
   ]);
+
+  // Use mobile PSI preferentially; fall back to desktop if mobile timed out
+  const psiData = psiMobile ?? psiDesktop;
+  const psiSource: 'mobile' | 'desktop' | 'estimated' = psiMobile ? 'mobile' : psiDesktop ? 'desktop' : 'estimated';
+  if (psiSource !== 'estimated') {
+    console.log(`[analyzeUrl] PSI data source: ${psiSource} — Performance=${psiData?.performanceScore}, SEO=${psiData?.seoScore}, A11y=${psiData?.accessibilityScore}, BP=${psiData?.bestPracticesScore}`);
+  } else {
+    console.warn(`[analyzeUrl] PSI API unavailable for ${finalUrl} — using estimated scores`);
+  }
 
   const robotsTxt = robotsRes && robotsRes.status === 200 && typeof robotsRes.data === 'string' ? robotsRes.data : '';
   const hasLlmsTxt = llmsRes ? llmsRes.status === 200 : false;
@@ -344,25 +362,45 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
 
   // ── Lighthouse 4 Pillars ──
   // If Google PageSpeed Insights succeeded, use real Google lab scores.
-  // Otherwise, compute accurate realistic benchmarks based on live crawler response.
-  const estimatedPerf = Math.min(95, Math.max(35, Math.round(100 - (loadTime / 80) - (htmlSize > 500000 ? 25 : htmlSize > 200000 ? 15 : 0))));
-  const estimatedSeo = Math.round(
-    (titleStatus === 'pass' ? 30 : titleStatus === 'warning' ? 18 : 0) +
-    (descStatus === 'pass' ? 30 : descStatus === 'warning' ? 18 : 0) +
-    (h1Status === 'pass' ? 20 : h1Status === 'warning' ? 10 : 0) +
-    (canonical ? 10 : 0) +
-    (robotsOk ? 10 : 0)
-  );
-  const estimatedAccess = Math.round(
-    (lang ? 35 : 0) +
-    (altStatus === 'pass' ? 35 : altStatus === 'warning' ? 20 : 0) +
-    (viewport ? 30 : 0)
-  );
-  const estimatedBest = Math.round(
-    (isHttps ? 40 : 0) +
-    (hasHsts ? 30 : 10) +
-    (!hasMixedContent ? 30 : 0)
-  );
+  // Otherwise, compute REALISTIC benchmarks that vary per site (avoid always-100 fallbacks).
+
+  // Performance: Based on actual load time, HTML size, and server response
+  const estimatedPerf = Math.min(88, Math.max(25, Math.round(
+    100
+    - (loadTime > 8000 ? 35 : loadTime > 5000 ? 20 : loadTime > 3000 ? 10 : loadTime > 1500 ? 5 : 0)
+    - (htmlSize > 500000 ? 20 : htmlSize > 200000 ? 10 : htmlSize > 100000 ? 5 : 0)
+    - (statusCode >= 400 ? 30 : 0)
+    - (hasMixedContent ? 5 : 0)
+  )));
+
+  // SEO: Weighted scoring — but capped at 85 when estimated (real Google catches many more issues)
+  const seoPoints =
+    (titleStatus === 'pass' ? 22 : titleStatus === 'warning' ? 12 : 0) +
+    (descStatus === 'pass' ? 22 : descStatus === 'warning' ? 12 : 0) +
+    (h1Status === 'pass' ? 18 : h1Status === 'warning' ? 8 : 0) +
+    (canonical ? 12 : 0) +
+    (robotsOk ? 12 : 0) +
+    (!isNoIndex ? 7 : -25) +
+    (viewport ? 7 : 0);
+  const estimatedSeo = Math.min(85, Math.max(15, seoPoints));
+
+  // Accessibility: Real Lighthouse checks 50+ rules; our DOM scan is limited, so cap at 72
+  const a11yPoints =
+    (lang ? 20 : 0) +
+    (altStatus === 'pass' ? 25 : altStatus === 'warning' ? 12 : 0) +
+    (viewport ? 15 : 0) +
+    (images.total === 0 ? 10 : 0) + // bonus if no images to alt-check
+    (h1Status === 'pass' ? 10 : 0);
+  const estimatedAccess = Math.min(72, Math.max(20, a11yPoints));
+
+  // Best Practices: HTTPS + headers + mixed content
+  const bpPoints =
+    (isHttps ? 35 : 0) +
+    (hasHsts ? 25 : 8) +
+    (hasXFrame ? 15 : 5) +
+    (hasContentTypeOpt ? 15 : 5) +
+    (!hasMixedContent ? 10 : 0);
+  const estimatedBest = Math.min(78, Math.max(20, bpPoints));
 
   const lighthouseScores: LighthouseCategoryScores = {
     performance: psiData?.performanceScore ?? estimatedPerf,
@@ -370,6 +408,9 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     accessibility: psiData?.accessibilityScore ?? estimatedAccess,
     bestPractices: psiData?.bestPracticesScore ?? estimatedBest,
   };
+
+  // Log whether we used real or estimated scores
+  console.log(`[analyzeUrl] Final lighthouseScores (source=${psiSource}):`, JSON.stringify(lighthouseScores));
 
   const onPageScore = Math.round(
     (titleStatus === 'pass' ? 25 : titleStatus === 'warning' ? 15 : 0) +
@@ -603,7 +644,7 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     {
       id: 'ai_openness_bots',
       type: 'GEO',
-      check: 'AI Crawler Permissions (GPTBot, ClaudeBot, Gemini)',
+      check: 'AI Search Crawler Permissions (GPTBot, ClaudeBot, Perplexity)',
       description: blockedBots.length === 0 ? 'All major AI search bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) are permitted in robots.txt.' : `Robots.txt blocks ${blockedBots.join(', ')}.`,
       fix: blockedBots.length === 0 ? 'AI bots have unrestricted crawling access.' : 'Allow AI search crawlers in robots.txt so LLMs can read and cite your website.',
       codeSnippet: `User-agent: GPTBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /`,
@@ -719,6 +760,7 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     canonical,
     loadTime,
     pageSpeedMetrics: psiData,
+    psiDataSource: psiSource,
     bodyTextExcerpt: bodyText.slice(0, 1000),
   };
 }

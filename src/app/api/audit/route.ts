@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import { analyzeUrl } from '@/app/tools/seo-audit/actions';
 import { runLlmGeoAeo, blendGeoScore, blendAeoScore } from '@/lib/gemini-geo-aeo';
+import { runCompetitorAnalysis } from '@/lib/competitor-engine';
+import { generateStrategyReport } from '@/lib/strategy-advisor';
 import { FieldValue } from 'firebase-admin/firestore';
 
 export function extractDomain(inputUrl: string): string {
@@ -95,9 +97,10 @@ export async function POST(req: NextRequest) {
     try {
       analysisResult = await analyzeUrl(normalizedUrl);
 
-      // Run live Gemini LLM AI GEO/AEO citations dynamically
-      try {
-        const llmResult = await runLlmGeoAeo({
+      // ── Run Gemini AI GEO/AEO + Competitor Analysis in PARALLEL ──────────────
+      const [llmResult, competitorResult] = await Promise.allSettled([
+        // 1. Gemini GEO/AEO citations
+        runLlmGeoAeo({
           domain: normalizedUrl,
           title: analysisResult.title,
           h1: analysisResult.h1s[0] ?? '',
@@ -105,16 +108,52 @@ export async function POST(req: NextRequest) {
           h3s: analysisResult.h3s,
           bodyExcerpt: analysisResult.bodyTextExcerpt,
           staticAeoScore: analysisResult.geoAeoScores.aeo.score,
-        });
+        }),
+        // 2. Competitor discovery + analysis
+        runCompetitorAnalysis({
+          targetUrl: normalizedUrl,
+          targetDomain: domain,
+          title: analysisResult.title,
+          h1: analysisResult.h1s[0] ?? '',
+          bodyExcerpt: analysisResult.bodyTextExcerpt,
+          maxCompetitors: 3,
+        }),
+      ]);
 
-        const blendedGeo = blendGeoScore(analysisResult.geoAeoScores.geo.score, llmResult);
-        const blendedAeo = blendAeoScore(analysisResult.geoAeoScores.aeo.score, llmResult);
-
+      // Apply GEO/AEO results
+      if (llmResult.status === 'fulfilled') {
+        const lResult = llmResult.value;
+        const blendedGeo = blendGeoScore(analysisResult.geoAeoScores.geo.score, lResult);
+        const blendedAeo = blendAeoScore(analysisResult.geoAeoScores.aeo.score, lResult);
         analysisResult.geoAeoScores.geo.score = blendedGeo;
         analysisResult.geoAeoScores.aeo.score = blendedAeo;
-        analysisResult.llmGeoAeo = llmResult;
-      } catch (llmErr) {
-        console.warn('[api/audit] Gemini GEO/AEO warning:', llmErr);
+        analysisResult.llmGeoAeo = lResult;
+      } else {
+        console.warn('[api/audit] Gemini GEO/AEO warning:', llmResult.reason);
+      }
+
+      // Apply competitor analysis results + generate AI strategy report
+      if (competitorResult.status === 'fulfilled' && competitorResult.value.competitors.length > 0) {
+        analysisResult.competitorAnalysis = competitorResult.value;
+        // Generate strategy report using competitor data
+        try {
+          const strategyReport = await generateStrategyReport({
+            targetDomain: domain,
+            targetTitle: analysisResult.title,
+            targetPerf: analysisResult.lighthouseScores.performance,
+            targetSeo: analysisResult.lighthouseScores.seo,
+            targetA11y: analysisResult.lighthouseScores.accessibility,
+            targetBP: analysisResult.lighthouseScores.bestPractices,
+            targetWordCount: analysisResult.wordCount,
+            targetSchemas: [],
+            competitors: competitorResult.value.competitors,
+          });
+          analysisResult.strategyReport = strategyReport;
+        } catch (stratErr) {
+          console.warn('[api/audit] Strategy report warning:', stratErr);
+        }
+      } else if (competitorResult.status === 'rejected') {
+        console.warn('[api/audit] Competitor analysis failed:', competitorResult.reason);
       }
 
       analysisResult.overallScore.score = Math.round(
