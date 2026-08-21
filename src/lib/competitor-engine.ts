@@ -293,7 +293,12 @@ async function scrapeCompetitorBasics(url: string): Promise<{
     console.warn(`[CompetitorEngine] Scrape failed for ${url}:`, (err as any).message);
     return defaults;
   }
+}
+
+
+
 // ── Gemini keyword extraction ─────────────────────────────────────────────────
+
 
 
 async function extractSearchKeyword(
@@ -351,9 +356,10 @@ export async function runCompetitorAnalysis(params: {
   h1: string;
   bodyExcerpt: string;
   maxCompetitors?: number;
+  onCompetitorFound?: (profile: CompetitorProfile) => void;
 }): Promise<CompetitorAnalysis> {
   const startTime = Date.now();
-  const { targetUrl, targetDomain, title, h1, bodyExcerpt, maxCompetitors = 3 } = params;
+  const { targetUrl, targetDomain, title, h1, bodyExcerpt, maxCompetitors = 3, onCompetitorFound } = params;
 
   console.log(`[CompetitorEngine] Starting analysis for: ${targetDomain}`);
 
@@ -362,7 +368,15 @@ export async function runCompetitorAnalysis(params: {
   console.log(`[CompetitorEngine] Search keyword: "${searchKeyword}"`);
 
   // Step 2: Find competitors via DuckDuckGo SERP
-  const serpResults = await searchDuckDuckGo(searchKeyword, 10);
+  let serpResults = await searchDuckDuckGo(searchKeyword, 10);
+  let source: 'duckduckgo' | 'gemini_fallback' = 'duckduckgo';
+
+  // Fallback: If DuckDuckGo HTML returns no results, use Gemini AI to discover top competitors for this niche
+  if (serpResults.length === 0) {
+    console.warn('[CompetitorEngine] DuckDuckGo empty. Asking Gemini AI for real competitors...');
+    serpResults = await askGeminiForCompetitors(targetDomain, searchKeyword, title);
+    source = 'gemini_fallback';
+  }
 
   // Filter out the target site itself and duplicate domains
   const seenDomains = new Set([targetDomain, `www.${targetDomain}`]);
@@ -446,6 +460,7 @@ export async function runCompetitorAnalysis(params: {
     };
 
     console.log(`[CompetitorEngine] Profiled ${candidate.domain}: Perf=${profile.performanceScore}, SEO=${profile.seoScore}`);
+    if (onCompetitorFound) onCompetitorFound(profile);
     return profile;
   });
 
@@ -459,6 +474,64 @@ export async function runCompetitorAnalysis(params: {
     targetDomain,
     competitors,
     analysisTime: Date.now() - startTime,
-    source: 'duckduckgo',
+    source,
   };
 }
+
+// ── Gemini AI Competitor Discovery Fallback ───────────────────────────────────
+
+async function askGeminiForCompetitors(
+  targetDomain: string,
+  searchKeyword: string,
+  title: string
+): Promise<CompetitorBasicInfo[]> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return [];
+
+  const prompt = `Identify top 3 real, actual market competitors for website "${targetDomain}" (Title: "${title}", Industry: "${searchKeyword}").
+Return ONLY a valid JSON array of objects with fields:
+[
+  { "domain": "competitor1.com", "url": "https://competitor1.com", "title": "Competitor Title", "snippet": "Description" }
+]
+Rules:
+- Give real, existing business URLs in the same niche/country.
+- Do NOT include generic platforms like wikipedia, youtube, facebook, amazon.
+- Output ONLY JSON array.`;
+
+  try {
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json' },
+        }),
+        signal: AbortSignal.timeout(8000),
+      }
+    );
+
+    if (resp.ok) {
+      const data = await resp.json();
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      if (text) {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          return parsed.map((item, idx) => ({
+            domain: item.domain || new URL(item.url || `https://${item.domain}`).hostname,
+            url: item.url || `https://${item.domain}`,
+            title: item.title || item.domain,
+            snippet: item.snippet || '',
+            serpRank: idx + 1,
+          }));
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('[CompetitorEngine] askGeminiForCompetitors error:', err);
+  }
+
+  return [];
+}
+

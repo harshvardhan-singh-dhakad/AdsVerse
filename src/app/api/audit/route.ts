@@ -6,7 +6,7 @@ import { runCompetitorAnalysis } from '@/lib/competitor-engine';
 import { generateStrategyReport } from '@/lib/strategy-advisor';
 import { FieldValue } from 'firebase-admin/firestore';
 
-export function extractDomain(inputUrl: string): string {
+function extractDomain(inputUrl: string): string {
   let clean = inputUrl.trim();
   if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
     clean = `https://${clean}`;
@@ -55,38 +55,40 @@ export async function POST(req: NextRequest) {
     let uid = userId || 'guest';
     let userEmail = '';
     let userWalletCredits = 0;
+    let domainCredits = 0;
 
-    if (idToken) {
-      try {
-        const decoded = await adminAuth.verifyIdToken(idToken);
-        uid = decoded.uid;
-        userEmail = decoded.email || '';
-      } catch {}
-    }
+    try {
+      if (idToken) {
+        try {
+          const decoded = await adminAuth.verifyIdToken(idToken);
+          uid = decoded.uid;
+          userEmail = decoded.email || '';
+        } catch {}
+      }
 
-    if (uid && uid !== 'guest') {
+      if (uid && uid !== 'guest') {
+        try {
+          const userDoc = await adminDb.collection('audit_users').doc(uid).get();
+          if (userDoc.exists) {
+            const uData = userDoc.data();
+            userWalletCredits = Number(uData?.paidCredits || 0);
+            if (!userEmail) userEmail = uData?.email || '';
+          }
+        } catch (e) {
+          console.warn('[api/audit] User credits fetch warning:', e);
+        }
+      }
+
       try {
-        const userDoc = await adminDb.collection('audit_users').doc(uid).get();
-        if (userDoc.exists) {
-          const uData = userDoc.data();
-          userWalletCredits = Number(uData?.paidCredits || 0);
-          if (!userEmail) userEmail = uData?.email || '';
+        const domainSnap = await adminDb.collection('audited_domains').doc(domain).get();
+        if (domainSnap.exists) {
+          domainCredits = Number(domainSnap.data()?.paidCredits || 0);
         }
       } catch (e) {
-        console.warn('[api/audit] User credits fetch warning:', e);
-      }
-    }
-
-    // ── 3. Check Domain Paid Status ─────────────────────────────────────────
-    const domainDocRef = adminDb.collection('audited_domains').doc(domain);
-    let domainCredits = 0;
-    try {
-      const domainSnap = await domainDocRef.get();
-      if (domainSnap.exists) {
-        domainCredits = Number(domainSnap.data()?.paidCredits || 0);
+        console.warn('[api/audit] Domain fetch warning:', e);
       }
     } catch (e) {
-      console.warn('[api/audit] Domain fetch warning:', e);
+      console.warn('[api/audit] Firebase Admin DB skipped (local dev mode):', (e as any)?.message);
     }
 
     // Determine if this audit run is Paid (Unlocked)
@@ -173,6 +175,7 @@ export async function POST(req: NextRequest) {
 
     // ── 5. Record Domain Tracking & Decrement Credit ─────────────────────────
     try {
+      const domainDocRef = adminDb.collection('audited_domains').doc(domain);
       if (isPaidAudit) {
         if (domainCredits > 0) {
           // Decrement domain credit

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { adminDb } from '@/lib/firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
-import { AUDIT_PACKS } from '../create-audit-order/route';
+import { AUDIT_PACKS } from '@/lib/audit-packs';
 
 export async function POST(req: NextRequest) {
   try {

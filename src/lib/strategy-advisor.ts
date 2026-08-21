@@ -59,10 +59,10 @@ export async function generateStrategyReport(params: {
   const avgWords = competitors.length ? Math.round(competitors.reduce((s, c) => s + c.wordCount, 0) / competitors.length) : null;
 
   // Find content & schema gaps
-  const allCompetitorSchemas = [...new Set(competitors.flatMap(c => c.detectedSchemas))];
+  const allCompetitorSchemas = Array.from(new Set(competitors.flatMap(c => c.detectedSchemas)));
   const schemaGaps = allCompetitorSchemas.filter(s => !targetSchemas.includes(s));
 
-  const allCompetitorTopics = [...new Set(competitors.flatMap(c => c.contentTopics))];
+  const allCompetitorTopics = Array.from(new Set(competitors.flatMap(c => c.contentTopics)));
   const contentGaps = allCompetitorTopics.filter(t => t.length > 5).slice(0, 6);
 
   // Build basic strategy without AI first (as fallback)

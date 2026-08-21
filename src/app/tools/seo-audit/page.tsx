@@ -146,30 +146,87 @@ export default function AdsVerseAuditPage() {
     setCurrentStep(1);
     setCompletedSteps([]);
 
-    // Sequential visual progress runner
-    let step = 1;
-    const stepInterval = setInterval(() => {
-      if (step < 4) {
-        step++;
-        setCurrentStep(step);
-        setCompletedSteps(prev => [...prev, step - 1]);
-      }
-    }, 1800);
+    // Progress updates mapper
+    const updateProgressStep = (stepNumber: number, stepLabel?: string) => {
+      setCurrentStep(stepNumber);
+      setCompletedSteps(prev => {
+        const next = new Set(prev);
+        for (let i = 1; i < stepNumber; i++) next.add(i);
+        return Array.from(next);
+      });
+    };
 
     try {
-      const cleanDomain = url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+      // 1. Try real-time streaming endpoint first
+      const streamRes = await fetch('/api/audit-stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          url: url.trim(), 
+          userId: user?.uid ?? null,
+          userPlan,
+          forcePaidAudit: isReportPaid
+        }),
+      });
+
+      if (streamRes.ok && streamRes.body) {
+        const reader = streamRes.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          const lines = buffer.split('\n\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            const match = line.match(/^data:\s*(.+)$/m);
+            if (!match) continue;
+            try {
+              const payload = JSON.parse(match[1]);
+              const { phase, data } = payload;
+
+              if (phase === 'started') {
+                updateProgressStep(1);
+              } else if (phase === 'basic_done') {
+                updateProgressStep(2);
+              } else if (phase === 'psi_done') {
+                updateProgressStep(3);
+              } else if (phase === 'geo_aeo_started' || phase === 'competitor_analyzed') {
+                updateProgressStep(4);
+              } else if (phase === 'competitors_done' || phase === 'strategy_started') {
+                updateProgressStep(5);
+              } else if (phase === 'complete' && data) {
+                setCompletedSteps([1, 2, 3, 4, 5]);
+                setCurrentStep(5);
+                setReport(data);
+                setLoading(false);
+                return;
+              } else if (phase === 'error') {
+                throw new Error(payload.message || 'Streaming audit error');
+              }
+            } catch (e) {
+              console.warn('[Stream parse error]', e);
+            }
+          }
+        }
+      }
+
+      // 2. Standard API Fallback (if stream is unavailable or completes without returning complete object)
       const auditRes = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           url: url.trim(), 
           userId: user?.uid ?? null,
-          userPlan: userPlan,
+          userPlan,
           forcePaidAudit: isReportPaid
         }),
       });
 
-      clearInterval(stepInterval);
       setCurrentStep(5);
       setCompletedSteps([1, 2, 3, 4, 5]);
 
@@ -182,34 +239,26 @@ export default function AdsVerseAuditPage() {
       const finalReport = resJson.data || resJson.report;
 
       if (!finalReport) {
-        // Fallback to local server action
         const localData = await analyzeUrl(url.trim());
         setIsReportPaid(false);
-        setTimeout(() => {
-          setReport(localData);
-          setLoading(false);
-        }, 500);
+        setReport(localData);
+        setLoading(false);
         return;
       }
 
       setIsReportPaid(!!(resJson.paidUnlocked ?? resJson.isPaid ?? isReportPaid));
-      setTimeout(() => {
-        setReport(finalReport);
-        setLoading(false);
-      }, 500);
+      setReport(finalReport);
+      setLoading(false);
 
     } catch (err: any) {
-      clearInterval(stepInterval);
       console.warn('[Audit Client] API error, attempting local action fallback:', err);
       try {
         const localData = await analyzeUrl(url.trim());
         setCurrentStep(5);
         setCompletedSteps([1, 2, 3, 4, 5]);
         setIsReportPaid(false);
-        setTimeout(() => {
-          setReport(localData);
-          setLoading(false);
-        }, 500);
+        setReport(localData);
+        setLoading(false);
       } catch (localErr: any) {
         setError(localErr?.message || err?.message || 'Analysis failed. Please check the URL and retry.');
         setLoading(false);
@@ -224,7 +273,7 @@ export default function AdsVerseAuditPage() {
     } catch {}
   };
 
-  const handleAuditPaymentSuccess = (creditsRemaining: number) => {
+  const handleAuditPaymentSuccess = (creditsRemaining?: number) => {
     setShowAuditPricingModal(false);
     setIsReportPaid(true);
     // Re-run audit with unlocked status
