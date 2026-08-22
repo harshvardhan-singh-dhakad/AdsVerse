@@ -26,7 +26,7 @@ import {
 
 import { AnimatedCounter } from "@/components/pages/animated-counter";
 import { FAQAccordion } from "@/components/pages/faq-accordion";
-import { OrbitalGraphic } from "@/components/pages/orbital-graphic";
+const OrbitalGraphic = dynamic(() => import("@/components/pages/orbital-graphic").then(mod => mod.OrbitalGraphic), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -246,7 +246,7 @@ export default function HomePage() {
                 Grow sales faster with n8n automation, WhatsApp AI bots, GEO (AI Search), and Google &amp; Meta Ads — built by Indore's top digital marketing experts.
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
-                <Button asChild size="lg" aria-label="Get Free Audit" className="bg-primary hover:bg-primary/95 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
+                <Button asChild size="lg" aria-label="Get Free Audit" className="bg-orange-700 hover:bg-orange-800 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
                   <Link href="/contact" prefetch={false} aria-label="Get Free Audit" className="flex items-center gap-2">
                     Get Free Audit <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Link>
@@ -353,7 +353,7 @@ export default function HomePage() {
       </section>
 
       {/* Core Services */}
-      <section aria-label="Our Services" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      <section aria-label="Our Services" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px] heavy-section">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
             <div>
               <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
@@ -477,7 +477,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section aria-label="Frequently Asked Questions" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]" id="faq">
+      <section aria-label="Frequently Asked Questions" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px] heavy-section" id="faq">
           <div className="text-center mb-10">
             <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange">FAQ</span>
             <h2 className="font-sans text-[32px] sm:text-[40px] md:text-[48px] font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white mt-4">Frequently Asked <span className="text-brand-orange">Questions</span></h2>

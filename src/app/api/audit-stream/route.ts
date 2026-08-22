@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   let body: any = {};
   try { body = await req.json(); } catch {}
   
-  const { url, idToken, userId } = body as { url: string; idToken?: string; userId?: string };
+  const { url, idToken, userId, device } = body as { url: string; idToken?: string; userId?: string; device?: 'mobile' | 'desktop' };
 
   if (!url || typeof url !== 'string') {
     return new Response(
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
         // ── PHASE 1: Basic DOM Audit ──────────────────────────────────────────
         send('started', { domain, url: normalizedUrl }, '🔍 Analyzing website structure...');
         
-        const analysisResult = await analyzeUrl(normalizedUrl);
+        const analysisResult = await analyzeUrl(normalizedUrl, device || 'mobile');
         
         // Send basic result immediately (without PSI scores yet)
         send('basic_done', {

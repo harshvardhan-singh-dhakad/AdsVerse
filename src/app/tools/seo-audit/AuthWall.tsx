@@ -18,11 +18,10 @@ import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, ArrowRight, ShieldCheck } f
 
 type Tab = 'signup' | 'signin';
 
+
 function getFirebaseAuth() {
   try {
-    const { getAuth: ga } = require('firebase/auth');
-    const { getApp } = require('firebase/app');
-    return ga(getApp());
+    return getAuth(getApp());
   } catch (e) {
     return null as any;
   }
@@ -66,18 +65,14 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
     } catch {}
   };
 
-  const friendlyError = (code: string) => {
-    const map: Record<string, string> = {
-      'auth/email-already-in-use': 'This email is already registered. Please sign in.',
-      'auth/user-not-found': 'No account found with this email. Please sign up first.',
-      'auth/wrong-password': 'Incorrect password. Please try again.',
-      'auth/invalid-email': 'Please enter a valid email address.',
-      'auth/weak-password': 'Password must be at least 6 characters.',
+  const friendlyError = (code: string, message: string) => {
+    const map: any = {
       'auth/invalid-credential': 'Invalid email or password.',
-      'auth/too-many-requests': 'Too many attempts. Please try again later.',
-      'auth/popup-closed-by-user': 'Sign-in popup was closed. Please try again.',
+      'auth/email-already-in-use': 'This email is already registered.',
+      'auth/weak-password': 'Password is too weak.',
+      'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
     };
-    return map[code] ?? 'Something went wrong. Please try again.';
+    return map[code] ?? (message || 'Something went wrong. Please try again.');
   };
 
   const handleEmailAuth = async (e: React.FormEvent) => {
@@ -105,7 +100,7 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
         }
       });
     } catch (err: any) {
-      setError(friendlyError(err.code));
+      setError(friendlyError(err.code, err.message));
     } finally {
       setLoading(false);
     }
@@ -124,7 +119,7 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
         }
       });
     } catch (err: any) {
-      setError(friendlyError(err.code));
+      setError(friendlyError(err.code, err.message));
     } finally {
       setGoogleLoading(false);
     }
@@ -140,7 +135,7 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
       setResetSent(true);
       setShowReset(false);
     } catch (err: any) {
-      setError(friendlyError(err.code));
+      setError(friendlyError(err.code, err.message));
     } finally {
       setLoading(false);
     }

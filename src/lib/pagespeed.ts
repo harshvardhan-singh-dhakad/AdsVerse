@@ -41,8 +41,8 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
   }
 
   const controller = new AbortController();
-  // Allow up to 25s for Google's headless Chrome emulation to finish
-  const timer = setTimeout(() => controller.abort(), 25000);
+  // Allow up to 40s for Google's headless Chrome emulation to finish
+  const timer = setTimeout(() => controller.abort(), 40000);
 
   try {
     const response = await fetch(apiUrl, { 
@@ -52,14 +52,21 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
     clearTimeout(timer);
 
     if (!response.ok) {
-      console.warn(`[PageSpeed] API returned ${response.status} for ${url}`);
+      console.warn(`[PageSpeed] API returned ${response.status} ${response.statusText} for ${url}`);
+      try {
+        const errorText = await response.text();
+        console.warn(`[PageSpeed] API Error body:`, errorText.substring(0, 500));
+      } catch (e) {}
       return null;
     }
 
     const data = await response.json();
     const lighthouse = data.lighthouseResult;
 
-    if (!lighthouse || !lighthouse.categories) return null;
+    if (!lighthouse || !lighthouse.categories) {
+      console.warn(`[PageSpeed] No lighthouse or categories in response for ${url}`);
+      return null;
+    }
 
     const catPerf = Math.round((lighthouse.categories?.performance?.score ?? 0) * 100);
     const catSeo = Math.round((lighthouse.categories?.seo?.score ?? 0) * 100);
@@ -113,7 +120,7 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
       audits,
     };
   } catch (error) {
-    console.error('[PageSpeed] Error fetching 4-pillar data:', error);
+    console.error(`[PageSpeed] Error fetching 4-pillar data for ${url}:`, error);
     return null;
   }
 }

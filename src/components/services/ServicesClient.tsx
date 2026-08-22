@@ -70,8 +70,10 @@ const CSS = `
 .scroll-arrow.left{left:8px}.scroll-arrow.right{right:8px}
 .cat-btn{flex-shrink:0;padding:7px 16px;border-radius:var(--rsm);border:1.5px solid var(--bd);background:var(--bg3);color:var(--tx2);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .cat-btn:hover{border-color:var(--or);color:var(--or);background:var(--or-dim)}
-.cat-btn.on{background:var(--or);border-color:var(--or);color:#fff;box-shadow:0 4px 12px rgba(249,115,22,0.3)}
+.cat-btn.on{background:#c2410c;border-color:#c2410c;color:#fff;box-shadow:0 4px 12px rgba(194,65,12,0.3)}
 
+.cat-section-animate #email .cat-service-count { color: #4338ca; }
+.cat-section-animate #analytics .cat-service-count { color: #a78bfa; }
 /* ── CATEGORY SECTION ── */
 .cat-section{margin-bottom:60px;scroll-margin-top:170px}
 @keyframes fadeIn {
@@ -448,7 +450,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
       {/* Dynamic Tabs Server Rendered / Indexable by Crawlers */}
       <div className={mainTab === "dm" ? "" : "hidden"}>
         <div className="cat-strip-wrap">
-          <button className="scroll-arrow left" onClick={() => scrollStrip(dmStripRef, 'left')}>
+          <button className="scroll-arrow left" onClick={() => scrollStrip(dmStripRef, 'left')} aria-label="Scroll categories left">
             <ChevronLeft size={18} />
           </button>
           <div className="cat-strip" ref={dmStripRef}>
@@ -468,7 +470,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               </button>
             ))}
           </div>
-          <button className="scroll-arrow right" onClick={() => scrollStrip(dmStripRef, 'right')}>
+          <button className="scroll-arrow right" onClick={() => scrollStrip(dmStripRef, 'right')} aria-label="Scroll categories right">
             <ChevronRight size={18} />
           </button>
         </div>
@@ -502,7 +504,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
 
       <div className={mainTab === "ai" ? "" : "hidden"}>
         <div className="cat-strip-wrap">
-          <button className="scroll-arrow left" onClick={() => scrollStrip(aiStripRef, 'left')}>
+          <button className="scroll-arrow left" onClick={() => scrollStrip(aiStripRef, 'left')} aria-label="Scroll categories left">
             <ChevronLeft size={18} />
           </button>
           <div className="cat-strip" ref={aiStripRef}>
@@ -522,7 +524,7 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
               </button>
             ))}
           </div>
-          <button className="scroll-arrow right" onClick={() => scrollStrip(aiStripRef, 'right')}>
+          <button className="scroll-arrow right" onClick={() => scrollStrip(aiStripRef, 'right')} aria-label="Scroll categories right">
             <ChevronRight size={18} />
           </button>
         </div>

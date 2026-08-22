@@ -2,14 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { 
   GoogleAuthProvider, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   signInWithPopup,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  onAuthStateChanged
 } from "firebase/auth";
 import { useAuth } from "@/firebase";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,19 @@ export default function LoginPage() {
   const [forgotSent, setForgotSent] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
   const auth = useAuth();
+
+  useEffect(() => {
+    if (!auth) return;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const returnUrl = searchParams.get("returnUrl") || "/tools/seo-audit";
+        router.replace(returnUrl);
+      }
+    });
+    return () => unsubscribe();
+  }, [auth, router, searchParams]);
 
   const syncUserWithBackend = async (firebaseUser: any, customName?: string) => {
     try {

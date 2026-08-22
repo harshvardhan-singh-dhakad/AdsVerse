@@ -146,11 +146,11 @@ export default function AboutPage() {
               <Image
                 src="/images/deepak-dhakad-founder.webp"
                 alt="Deepak Dhakad - Digital Marketing Expert and Founder, AdsVerse Indore"
-                width={400}
-                height={600}
+                width={380}
+                height={570}
                 data-ai-hint="man professional"
                 className="w-full h-full object-cover object-top rounded-b-[5rem]"
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 380px"
               />
             </div>
             <div className="md:col-span-2 p-8 md:p-12">

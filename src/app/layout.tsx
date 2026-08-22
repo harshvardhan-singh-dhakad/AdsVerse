@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import { ThemeProvider } from "@/components/layout/theme-provider";
-import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -237,7 +236,6 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon.ico?v=1", sizes: "any" },
       { url: "/favicon-96x96.png?v=1", sizes: "96x96", type: "image/png" },
-      { url: "/favicon.svg?v=1", type: "image/svg+xml" },
     ],
     apple: [
       { url: "/apple-touch-icon.png?v=1", sizes: "180x180", type: "image/png" },
@@ -345,12 +343,18 @@ export default async function RootLayout({
           type="application/json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webMcpManifest) }}
         />
+        {/* Agentic Browsing / AI Search Support */}
+        <link rel="llms-txt" href="/llms.txt" />
+        <link rel="llms-full-txt" href="/llms-full.txt" />
       </head>
       <body className={cn(
         "bg-background font-body antialiased selection:bg-primary selection:text-primary-foreground",
         plusJakartaSans.variable,
         instrumentSans.variable
       )}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-background focus:text-foreground">
+          Skip to main content
+        </a>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-M6GV59XL"
@@ -366,7 +370,17 @@ export default async function RootLayout({
             __html: `window.dataLayer = window.dataLayer || [];`
           }}
         />
-        <ScriptOptimizer />
+        <Script
+          id="gtm-script"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-M6GV59XL');`
+          }}
+        />
         {/* Microsoft Clarity Analytics for Bing Webmaster Tools */}
         <Script
           id="microsoft-clarity"

@@ -151,7 +151,30 @@ function processBlogContent(html: string): { cleanedHtml: string; headings: Head
     return `<h2 id="${uniqueId}"${attrs}>${innerText}</h2>`;
   });
 
-  return { cleanedHtml, headings };
+  // 5. Optimize raw HTML images using Next.js Image API
+  cleaned = cleanedHtml.replace(/<img([^>]+)>/gi, (match, attrs) => {
+    // Extract src attribute
+    const srcMatch = attrs.match(/src="([^"]+)"/i) || attrs.match(/src='([^']+)'/i);
+    if (!srcMatch) return match;
+    
+    const originalSrc = srcMatch[1];
+    
+    // Only optimize absolute URLs or known domains to prevent relative path breakage
+    if (originalSrc.startsWith('http')) {
+      const optimizedSrc = `/_next/image?url=${encodeURIComponent(originalSrc)}&w=1080&q=75`;
+      const newAttrs = attrs.replace(srcMatch[0], `src="${optimizedSrc}"`);
+      
+      // Add lazy loading if not present
+      let finalAttrs = newAttrs;
+      if (!/loading=/i.test(finalAttrs)) {
+        finalAttrs += ' loading="lazy" decoding="async"';
+      }
+      return `<img${finalAttrs}>`;
+    }
+    return match;
+  });
+
+  return { cleanedHtml: cleaned, headings };
 }
 
 
@@ -296,6 +319,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               alt={post.title}
               fill
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
@@ -368,7 +392,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       <Share2 className="w-24 h-24 text-primary" />
                     </div>
                     
-                    <h3 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h3>
+                    <h2 className="text-3xl font-black font-headline mb-4 text-foreground">Join the Conversation</h2>
                     <p className="text-slate-800 dark:text-muted-foreground mb-8 max-w-lg mx-auto">
                       Have insights or questions about this post? We'd love to hear from you. 
                       Connect with our team directly or share your thoughts via WhatsApp.
@@ -392,7 +416,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               
               {relatedPosts.length > 0 && (
                 <section className="pt-12 mt-16 border-t border-primary/10">
-                  <h3 className="text-3xl font-black font-headline mb-8 text-foreground text-center md:text-left">Related Articles</h3>
+                  <h2 className="text-3xl font-black font-headline mb-8 text-foreground text-center md:text-left">Related Articles</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {relatedPosts.map(rp => (
                       <Card key={rp.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500">

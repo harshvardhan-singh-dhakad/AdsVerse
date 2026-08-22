@@ -78,7 +78,7 @@ export function Footer() {
             </div>
           </div>
           <div className="md:pl-4">
-            <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
+            <h2 className="font-semibold mb-4 text-foreground text-lg">Quick Links</h2>
             <ul className="space-y-2">
               <li><Link href="/about" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">About Us</Link></li>
               <li><Link href="/services" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Services</Link></li>
@@ -90,7 +90,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="md:pl-4">
-            <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
+            <h2 className="font-semibold mb-4 text-foreground text-lg">Legal</h2>
             <ul className="space-y-2">
               <li><Link href="/privacy-policy" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
               <li><Link href="/terms-of-service" prefetch={false} className="text-sm text-slate-800 dark:text-muted-foreground hover:text-primary">Terms of Service</Link></li>
@@ -98,7 +98,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-4 text-foreground">Newsletter</h3>
+            <h2 className="font-semibold mb-4 text-foreground text-lg">Newsletter</h2>
             <p className="text-sm text-slate-800 dark:text-muted-foreground mb-2">Stay updated with our latest insights.</p>
             <form className="flex space-x-2">
               <Input type="email" placeholder="Enter your email" className="flex-1" aria-label="Email for newsletter subscription" />

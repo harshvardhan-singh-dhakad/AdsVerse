@@ -1,15 +1,16 @@
 /**
  * competitor-engine.ts — Server-side ONLY
  *
- * Discovers real competitors from DuckDuckGo SERP results,
+ * Discovers real competitors from Google SERP via Serper.dev API,
  * then runs PSI + DOM analysis on each competitor site.
- * 
- * Stack: DuckDuckGo HTML scraping (free, no API key) + Gemini AI keyword extraction
- * Uses only built-in fetch (no axios dependency required)
+ *
+ * Stack: Serper.dev (real Google results) → PSI + DOM scrape
+ * Falls back to DuckDuckGo HTML scraping if SERPER_API_KEY is not set.
  */
 
 import * as cheerio from 'cheerio';
 import { fetchPageSpeedData } from './pagespeed';
+import { searchSerper, type SerperOrganicResult } from './serper';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -65,7 +66,7 @@ export interface CompetitorAnalysis {
   targetDomain: string;
   competitors: CompetitorProfile[];
   analysisTime: number; // ms
-  source: 'duckduckgo' | 'gemini_fallback';
+  source: 'duckduckgo' | 'gemini_fallback' | 'serper';
 }
 
 // ── DuckDuckGo SERP Scraper ───────────────────────────────────────────────────
@@ -367,9 +368,27 @@ export async function runCompetitorAnalysis(params: {
   const searchKeyword = await extractSearchKeyword(targetDomain, title, h1, bodyExcerpt);
   console.log(`[CompetitorEngine] Search keyword: "${searchKeyword}"`);
 
-  // Step 2: Find competitors via DuckDuckGo SERP
-  let serpResults = await searchDuckDuckGo(searchKeyword, 10);
-  let source: 'duckduckgo' | 'gemini_fallback' = 'duckduckgo';
+  // Step 2: Find competitors — Serper.dev (primary) → DuckDuckGo (fallback) → Gemini (last resort)
+  let serpResults: CompetitorBasicInfo[] = [];
+  let source: 'duckduckgo' | 'gemini_fallback' | 'serper' = 'serper';
+
+  // Try Serper.dev first (real Google results)
+  const serperResults = await searchSerper(searchKeyword, 10);
+  if (serperResults.length > 0) {
+    serpResults = serperResults.map(r => ({
+      domain: r.domain,
+      url: r.link,
+      title: r.title,
+      snippet: r.snippet,
+      serpRank: r.position,
+    }));
+    console.log(`[CompetitorEngine] Serper returned ${serpResults.length} results for: "${searchKeyword}"`);
+  } else {
+    // Fallback to DuckDuckGo if Serper key is missing or failed
+    console.warn('[CompetitorEngine] Serper returned 0 results, falling back to DuckDuckGo...');
+    serpResults = await searchDuckDuckGo(searchKeyword, 10);
+    source = 'duckduckgo';
+  }
 
   // Fallback: If DuckDuckGo HTML returns no results, use Gemini AI to discover top competitors for this niche
   if (serpResults.length === 0) {

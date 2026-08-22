@@ -33,11 +33,12 @@ export async function POST(req: NextRequest) {
   try {
     // ── 1. Parse body ──────────────────────────────────────────────────────
     const body = await req.json().catch(() => ({}));
-    const { url, idToken, userId, forcePaidAudit } = body as { 
+    const { url, idToken, userId, forcePaidAudit, device } = body as { 
       url: string; 
       idToken?: string; 
       userId?: string; 
       forcePaidAudit?: boolean;
+      device?: 'mobile' | 'desktop';
     };
 
     if (!url || typeof url !== 'string') {
@@ -97,7 +98,7 @@ export async function POST(req: NextRequest) {
     // ── 4. Run SEO / GEO / AEO Analysis ────────────────────────────────────
     let analysisResult;
     try {
-      analysisResult = await analyzeUrl(normalizedUrl);
+      analysisResult = await analyzeUrl(normalizedUrl, device || 'mobile');
 
       // ── Run Gemini AI GEO/AEO + Competitor Analysis in PARALLEL ──────────────
       const [llmResult, competitorResult] = await Promise.allSettled([

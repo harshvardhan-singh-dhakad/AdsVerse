@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { 
-  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertTriangle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
+  Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertCircle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
 import { initializeFirebase } from '@/firebase';
@@ -49,6 +49,8 @@ export default function AdsVerseAuditPage() {
   const [isMounted, setIsMounted] = useState(false);
   const { user, isUserLoading } = useAuditUser();
   const [url, setUrl] = useState('');
+  const [device, setDevice] = useState<'mobile' | 'desktop'>('mobile');
+  const [isFetchingDevice, setIsFetchingDevice] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -165,7 +167,8 @@ export default function AdsVerseAuditPage() {
           url: url.trim(), 
           userId: user?.uid ?? null,
           userPlan,
-          forcePaidAudit: isReportPaid
+          forcePaidAudit: isReportPaid,
+          device
         }),
       });
 
@@ -223,7 +226,8 @@ export default function AdsVerseAuditPage() {
           url: url.trim(), 
           userId: user?.uid ?? null,
           userPlan,
-          forcePaidAudit: isReportPaid
+          forcePaidAudit: isReportPaid,
+          device
         }),
       });
 
@@ -239,7 +243,7 @@ export default function AdsVerseAuditPage() {
       const finalReport = resJson.data || resJson.report;
 
       if (!finalReport) {
-        const localData = await analyzeUrl(url.trim());
+        const localData = await analyzeUrl(url.trim(), device);
         setIsReportPaid(false);
         setReport(localData);
         setLoading(false);
@@ -253,7 +257,7 @@ export default function AdsVerseAuditPage() {
     } catch (err: any) {
       console.warn('[Audit Client] API error, attempting local action fallback:', err);
       try {
-        const localData = await analyzeUrl(url.trim());
+        const localData = await analyzeUrl(url.trim(), device);
         setCurrentStep(5);
         setCompletedSteps([1, 2, 3, 4, 5]);
         setIsReportPaid(false);
@@ -263,6 +267,76 @@ export default function AdsVerseAuditPage() {
         setError(localErr?.message || err?.message || 'Analysis failed. Please check the URL and retry.');
         setLoading(false);
       }
+    }
+  };
+
+  const handleDeviceSwitch = async (newDevice: 'mobile' | 'desktop') => {
+    if (device === newDevice || !report || isFetchingDevice) return;
+    setDevice(newDevice);
+    setIsFetchingDevice(true);
+
+    try {
+      const res = await fetch('/api/pagespeed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: report.url, device: newDevice }),
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || `PageSpeed API failed (${res.status})`);
+      }
+
+      const json = await res.json();
+      const data = json.data;
+
+      if (data) {
+        setReport(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            pageSpeedMetrics: data,
+            lighthouseScores: {
+              performance: data.performanceScore,
+              seo: data.seoScore,
+              accessibility: data.accessibilityScore,
+              bestPractices: data.bestPracticesScore,
+            },
+            psiDataSource: newDevice,
+            recommendations: prev.recommendations.map(rec => {
+              if (rec.id === 'fcp') {
+                return {
+                  ...rec,
+                  status: data.fcp < 1800 ? 'pass' : data.fcp < 3000 ? 'warning' : 'fail',
+                  description: `First Contentful Paint is ${(data.fcp / 1000).toFixed(2)}s.`,
+                };
+              }
+              if (rec.id === 'lcp') {
+                return {
+                  ...rec,
+                  status: data.lcp < 2500 ? 'pass' : data.lcp < 4000 ? 'warning' : 'fail',
+                  description: `Largest Contentful Paint is ${(data.lcp / 1000).toFixed(2)}s.`,
+                };
+              }
+              if (rec.id === 'cls') {
+                return {
+                  ...rec,
+                  status: data.cls < 0.1 ? 'pass' : 'fail',
+                  description: `Cumulative Layout Shift is ${data.cls.toFixed(3)}.`,
+                };
+              }
+              return rec;
+            }),
+          };
+        });
+      }
+    } catch (err: any) {
+      console.error('[Device Switch] Failed:', err);
+      // Revert device back if fetch failed
+      setDevice(prev => (prev === newDevice ? (newDevice === 'mobile' ? 'desktop' : 'mobile') : prev));
+      setError(`Could not load ${newDevice} data: ${err?.message || 'Unknown error'}`);
+    } finally {
+      setIsFetchingDevice(false);
     }
   };
 
@@ -430,7 +504,7 @@ export default function AdsVerseAuditPage() {
 
             {error && (
               <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm max-w-md mx-auto text-center flex items-center justify-center gap-2">
-                <AlertTriangle className="w-5 h-5 shrink-0 text-red-400" />
+                <AlertCircle className="w-5 h-5 shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
             )}
@@ -503,7 +577,7 @@ export default function AdsVerseAuditPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                  <h4 className="text-sm font-bold text-orange-400 flex items-center gap-2"><span>📄</span> On-Page &amp; Content</h4>
+                  <h3 className="text-sm font-bold text-orange-400 flex items-center gap-2"><span>📄</span> On-Page &amp; Content</h3>
                   <p className="text-xs text-slate-400 leading-relaxed">Title &amp; Meta length verification, H1-H4 semantic heading hierarchy, image ALT attributes, and word count depth.</p>
                 </div>
                 <div className="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
@@ -872,12 +946,39 @@ export default function AdsVerseAuditPage() {
               {/* === TAB 2: PERFORMANCE (Lighthouse + Core Web Vitals) === */}
               {activeTab === 'performance' && (
                 <div className="space-y-6 animate-in fade-in">
-                  <div className="section-head">
-                    <h3>⚡ Performance &amp; Google Core Web Vitals</h3>
-                    <span>Lab measurements powered by Google PageSpeed Insights API</span>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 section-head">
+                    <div>
+                      <h3>⚡ Performance &amp; Google Core Web Vitals</h3>
+                      <span>Lab measurements powered by Google PageSpeed Insights API</span>
+                    </div>
+                    <div className="bg-slate-800/80 p-1 rounded-xl flex items-center gap-1 border border-white/10 shrink-0">
+                      <button 
+                        type="button" 
+                        onClick={() => handleDeviceSwitch('mobile')} 
+                        disabled={isFetchingDevice}
+                        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${device === 'mobile' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'} ${isFetchingDevice ? 'opacity-50' : ''}`}
+                      >
+                        📱 Mobile {isFetchingDevice && device === 'mobile' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                      </button>
+                      <button 
+                        type="button" 
+                        onClick={() => handleDeviceSwitch('desktop')} 
+                        disabled={isFetchingDevice}
+                        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${device === 'desktop' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'} ${isFetchingDevice ? 'opacity-50' : ''}`}
+                      >
+                        💻 Desktop {isFetchingDevice && device === 'desktop' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {isFetchingDevice ? (
+                    <div className="py-20 flex flex-col items-center justify-center space-y-3">
+                      <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
+                      <p className="text-slate-400 text-sm">Fetching real-time data for {device} from Google...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-emerald-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">LCP (Largest Paint)</div>
                       <div className="text-2xl font-black text-white mt-1">
@@ -919,6 +1020,8 @@ export default function AdsVerseAuditPage() {
                       ))}
                     </div>
                   </div>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -928,6 +1031,71 @@ export default function AdsVerseAuditPage() {
                   <div className="section-head">
                     <h3>🔍 SEO &amp; Indexability Diagnostics</h3>
                     <span>Evaluate meta tags, crawling rules, canonical tags, and link structures</span>
+                  </div>
+
+                  {/* SERP Rank Card — powered by Serper.dev */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="glass p-5 rounded-2xl border border-white/10 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">🏆</span>
+                        <h4 className="text-sm font-bold text-white">Google SERP Position</h4>
+                        <span className="ml-auto text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">Powered by Serper.dev</span>
+                      </div>
+                      {report.serpRank ? (
+                        report.serpRank.found ? (
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <div className={`text-3xl font-black ${report.serpRank.position! <= 3 ? 'text-emerald-400' : report.serpRank.position! <= 10 ? 'text-amber-400' : 'text-orange-400'}`}>
+                                #{report.serpRank.position}
+                              </div>
+                              <div>
+                                <div className="text-xs text-slate-300 font-semibold">on Google</div>
+                                <div className={`text-[10px] font-bold ${report.serpRank.position! <= 3 ? 'text-emerald-400' : report.serpRank.position! <= 10 ? 'text-amber-400' : 'text-orange-400'}`}>
+                                  {report.serpRank.position! <= 3 ? '🥇 Top 3 — Excellent!' : report.serpRank.position! <= 10 ? '✅ Page 1 — Good' : '⚠️ Page 2+ — Improve'}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-[11px] text-slate-400 bg-white/5 rounded-lg px-3 py-1.5">
+                              Keyword: <span className="text-white font-semibold">"{report.targetKeyword}"</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="text-2xl font-black text-red-400">Not in Top 30</div>
+                            <div className="text-[11px] text-slate-400 bg-white/5 rounded-lg px-3 py-1.5">
+                              Keyword checked: <span className="text-white font-semibold">"{report.targetKeyword}"</span>
+                            </div>
+                            <div className="text-[11px] text-red-300">Your site is not appearing in Google's first 3 pages for this keyword.</div>
+                          </div>
+                        )
+                      ) : (
+                        <div className="text-sm text-slate-400">
+                          {process.env.NEXT_PUBLIC_HAS_SERPER ? 'Fetching rank data...' : (
+                            <span>Add <code className="text-violet-400 bg-violet-500/10 px-1 rounded">SERPER_API_KEY</code> to .env.local to enable SERP rank tracking</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Brand Mentions Card */}
+                    <div className="glass p-5 rounded-2xl border border-white/10 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">📰</span>
+                        <h4 className="text-sm font-bold text-white">Brand Mentions (Google News)</h4>
+                      </div>
+                      {report.brandMentions && report.brandMentions.length > 0 ? (
+                        <div className="space-y-2">
+                          {report.brandMentions.map((m, i) => (
+                            <a key={i} href={m.link} target="_blank" rel="noopener noreferrer" className="block text-[11px] text-slate-300 hover:text-white transition bg-white/5 rounded-lg px-3 py-2">
+                              <div className="font-semibold text-white line-clamp-1">{m.title}</div>
+                              <div className="text-slate-500 mt-0.5">{m.source} {m.date ? `· ${m.date}` : ''}</div>
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-slate-400">No recent brand mentions found in Google News.</div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex gap-2 flex-wrap">
@@ -947,6 +1115,7 @@ export default function AdsVerseAuditPage() {
                   </div>
                 </div>
               )}
+
 
               {/* === TAB 4: ACCESSIBILITY === */}
               {activeTab === 'accessibility' && (

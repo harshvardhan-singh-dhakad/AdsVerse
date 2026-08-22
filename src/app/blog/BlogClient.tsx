@@ -178,7 +178,7 @@ export default function BlogClient({ initialPosts = [] }: BlogClientProps) {
           </>
         ) : (
           <div className="text-center py-20 bg-card/20 backdrop-blur-sm rounded-2xl border border-primary/5">
-            <h3 className="text-2xl font-headline text-primary mb-4">No insights found.</h3>
+            <h2 className="text-2xl font-headline text-primary mb-4">No insights found.</h2>
             <p className="text-slate-800 dark:text-muted-foreground">Try selecting a different category or check back later.</p>
           </div>
         )}

@@ -21,6 +21,12 @@ env:
       - RUNTIME
       - BUILD
 
+  - variable: PAGESPEED_API_KEY
+    secret: PAGESPEED_API_KEY
+    availability:
+      - RUNTIME
+      - BUILD
+
   - variable: DAILY_LLM_AUDIT_CAP
     value: "50"
     availability:

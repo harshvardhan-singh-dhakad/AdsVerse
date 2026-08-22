@@ -3,6 +3,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { fetchPageSpeedData, type PageSpeedMetrics } from '@/lib/pagespeed';
+import { checkSerpRank, searchBrandMentions, type SerpRankResult, type BrandMention } from '@/lib/serper';
 import type { LlmGeoAeoResult } from '@/lib/gemini-geo-aeo';
 import type { CompetitorAnalysis } from '@/lib/competitor-engine';
 import type { CompetitorStrategyReport } from '@/lib/strategy-advisor';
@@ -118,6 +119,10 @@ export interface AnalysisResult {
   // Competitor Intelligence
   competitorAnalysis?: CompetitorAnalysis | null;
   strategyReport?: CompetitorStrategyReport | null;
+  // SERP Data (Serper.dev)
+  serpRank?: SerpRankResult | null;
+  targetKeyword?: string | null;
+  brandMentions?: BrandMention[];
 }
 
 function getGrade(score: number): string {
@@ -151,7 +156,19 @@ function isUrlBlockedByRobots(url: string, robotsTxt: string, targetAgent: strin
   return false;
 }
 
-export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
+export async function getPageSpeedOnly(urlInput: string, device: 'mobile' | 'desktop' = 'desktop') {
+  let url = urlInput.trim();
+  if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+  try {
+    const data = await fetchPageSpeedData(url, device);
+    return data;
+  } catch (err) {
+    console.error(`[getPageSpeedOnly] Error for ${device}:`, err);
+    return null;
+  }
+}
+
+export async function analyzeUrl(urlInput: string, device: 'mobile' | 'desktop' = 'mobile'): Promise<AnalysisResult> {
   const startTime = Date.now();
   let url = urlInput.trim();
   if (!/^https?:\/\//i.test(url)) {
@@ -195,10 +212,9 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
   // Parallel Fetch: PageSpeed 4 Categories (mobile+desktop for best coverage) + Robots.txt + LLMs.txt
   const domainUrl = new URL(finalUrl).origin;
 
-  // Try mobile first; if it fails/times-out, fall back to desktop result
-  const [psiMobile, psiDesktop, robotsRes, llmsRes, agentJsonRes] = await Promise.all([
-    fetchPageSpeedData(finalUrl, 'mobile').catch(() => null),
-    fetchPageSpeedData(finalUrl, 'desktop').catch(() => null),
+  // Fetch PageSpeed for the selected device, Robots, LLMs
+  const [psiDevice, robotsRes, llmsRes, agentJsonRes] = await Promise.all([
+    fetchPageSpeedData(finalUrl, device).catch((err) => { console.error(`PSI ${device} error:`, err); return null; }),
     axios.get(`${domainUrl}/robots.txt`, { 
       timeout: 5000, 
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AdsVerseAudit/2.0)' }, 
@@ -216,9 +232,9 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     }).catch(() => null),
   ]);
 
-  // Use mobile PSI preferentially; fall back to desktop if mobile timed out
-  const psiData = psiMobile ?? psiDesktop;
-  const psiSource: 'mobile' | 'desktop' | 'estimated' = psiMobile ? 'mobile' : psiDesktop ? 'desktop' : 'estimated';
+  // Use PSI preferentially; if failed, fall back to estimated
+  const psiData = psiDevice;
+  const psiSource: 'mobile' | 'desktop' | 'estimated' = psiDevice ? device : 'estimated';
   if (psiSource !== 'estimated') {
     console.log(`[analyzeUrl] PSI data source: ${psiSource} — Performance=${psiData?.performanceScore}, SEO=${psiData?.seoScore}, A11y=${psiData?.accessibilityScore}, BP=${psiData?.bestPracticesScore}`);
   } else {
@@ -692,13 +708,6 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
       status: hasFAQSchema ? 'pass' : 'fail',
     },
     {
-      id: 'direct_answer_blocks',
-      type: 'AEO',
-      check: 'Direct Answer Paragraph Structure (40-55 Words)',
-      description: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'Found question-formatted H2 subheadings.' : 'Headings do not use conversational question format.',
-      fix: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'Questions match voice search queries.' : 'Format H2 subheadings as exact questions with a concise 2-sentence direct answer immediately below.',
-      codeSnippet: `<h2>How does [Service] increase business ROI?</h2>\n<p>[Service] automates customer acquisition by connecting high-intent search ads with conversational WhatsApp bots, reducing acquisition cost by up to 40%.</p>`,
-      priority: 'High',
       status: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'pass' : 'warning',
     },
   ];
@@ -719,6 +728,37 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     warningPercent: Math.round((warningCount / totalCount) * 100),
     errorPercent: Math.round((errorCount / totalCount) * 100),
   };
+
+  // ── SERP Rank Check (Serper.dev) — runs in background, does not block report ──
+  let serpRankResult: SerpRankResult | null = null;
+  let targetKeyword: string | null = null;
+  let brandMentionsList: BrandMention[] = [];
+
+  try {
+    // Extract a search keyword from the page title/content for rank checking
+    const rawTitle = title || '';
+    const keywordForRank = rawTitle.split(' | ')[0].split(' - ')[0].split(' – ')[0].trim().slice(0, 60);
+
+    if (keywordForRank.length > 3) {
+      targetKeyword = keywordForRank;
+
+      const domain = new URL(finalUrl).hostname.replace(/^www\./, '');
+      const [rankResult, mentions] = await Promise.all([
+        checkSerpRank(domain, keywordForRank).catch(() => null),
+        searchBrandMentions(domain, 3).catch(() => []),
+      ]);
+      serpRankResult = rankResult;
+      brandMentionsList = mentions;
+
+      if (rankResult?.found) {
+        console.log(`[analyzeUrl] SERP rank: ${domain} is #${rankResult.position} for "${keywordForRank}"`);
+      } else {
+        console.log(`[analyzeUrl] SERP rank: ${domain} not found in top 30 for "${keywordForRank}"`);
+      }
+    }
+  } catch (err) {
+    console.warn('[analyzeUrl] SERP rank check failed (non-critical):', err);
+  }
 
   return {
     url,
@@ -762,5 +802,8 @@ export async function analyzeUrl(urlInput: string): Promise<AnalysisResult> {
     pageSpeedMetrics: psiData,
     psiDataSource: psiSource,
     bodyTextExcerpt: bodyText.slice(0, 1000),
+    serpRank: serpRankResult,
+    targetKeyword,
+    brandMentions: brandMentionsList,
   };
 }

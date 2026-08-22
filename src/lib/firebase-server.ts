@@ -1,6 +1,7 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getFirestore as getFirestoreLite } from "firebase/firestore/lite";
 import { firebaseConfig } from "@/firebase/config";
 
 // Initialize Firebase (Server Side & Client Side shared)
@@ -17,5 +18,4 @@ export function getFirebaseApp() {
 }
 
 export const db = getFirestore(getFirebaseApp());
-import { getFirestore as getFirestoreLite } from "firebase/firestore/lite";
 export const dbLite = getFirestoreLite(getFirebaseApp());
