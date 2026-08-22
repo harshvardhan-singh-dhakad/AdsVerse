@@ -53,3 +53,6 @@ src/app/[lang]/seed/
 # scratch/ scripts
 /scratch/
 test*.js
+test*.mjs
+build-log*.txt
+build-output*.txt
