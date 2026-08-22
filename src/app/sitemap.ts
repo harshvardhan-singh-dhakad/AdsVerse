@@ -44,27 +44,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch dynamic blog posts from Firestore to include in the sitemap
   let blogPages: Array<{ url: string; priority: number; changeFrequency: any; lastModified: Date }> = [];
   try {
+    const snap = await getDocs(collection(db, "public_blogPosts"));
     const now = new Date().toISOString();
-    const q = query(
-      collection(db, "public_blogPosts"),
-      where("publishedDate", "<=", now)
-    );
-    const snap = await getDocs(q);
-    blogPages = snap.docs.map(doc => {
-      const data = doc.data();
-      let lastMod = new Date();
-      if (data.updatedAt) {
-        lastMod = typeof data.updatedAt.toDate === 'function' ? data.updatedAt.toDate() : new Date(data.updatedAt);
-      } else if (data.publishedDate) {
-        lastMod = new Date(data.publishedDate);
-      }
-      return {
-        url: `${baseUrl}/blog/${data.slug}`,
-        priority: 0.8,
-        changeFrequency: 'weekly' as const,
-        lastModified: lastMod
-      };
-    });
+    blogPages = snap.docs
+      .map(doc => doc.data())
+      .filter(data => data && data.slug && (data.publishedDate ? String(data.publishedDate) <= now : true))
+      .map(data => {
+        let lastMod = new Date();
+        if (data.updatedAt) {
+          lastMod = typeof data.updatedAt.toDate === 'function' ? data.updatedAt.toDate() : new Date(data.updatedAt);
+        } else if (data.publishedDate) {
+          lastMod = new Date(data.publishedDate);
+        }
+        return {
+          url: `${baseUrl}/blog/${data.slug}`,
+          priority: 0.8,
+          changeFrequency: 'weekly' as const,
+          lastModified: lastMod
+        };
+      });
   } catch (error) {
     console.error("Error generating dynamic blog sitemap:", error);
   }

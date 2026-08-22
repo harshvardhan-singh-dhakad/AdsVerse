@@ -301,7 +301,7 @@ const webMcpManifest = {
     {
       name: "getServiceCatalog",
       description: "Get listing of all agency services (SEO, Meta Ads, Google Ads, n8n automation, WhatsApp AI bots)",
-      endpoint: "/our-services",
+      endpoint: "/services",
       method: "GET"
     }
   ]

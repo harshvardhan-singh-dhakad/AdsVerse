@@ -2,8 +2,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: { absolute: "Privacy Policy | AdsVerse" },
-    description: "Read the Privacy Policy for AdsVerse to understand how we collect, use, and protect your personal information and data when you use our website and services.",
+    title: { absolute: "Privacy Policy | AdsVerse Digital Marketing" },
+    description: "Read the AdsVerse Privacy Policy to learn how we protect your data, handle client privacy, and ensure secure digital marketing transactions.",
     alternates: {
         canonical: 'https://adsverse.in/privacy-policy',
     },

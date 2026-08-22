@@ -38,8 +38,8 @@ const stateBorderMap: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: { absolute: "Locations We Serve | Digital Marketing & AI Agency Across India | AdsVerse" },
-  description: "AdsVerse delivers AI-first SEO, WhatsApp automation, and performance ads in Indore, Bhopal, Jaipur, Lucknow, Raipur, Guwahati & 18+ Indian cities. Tier-2 focused, Tier-1 results.",
+  title: { absolute: "Locations We Serve | AI Marketing Agency | AdsVerse" },
+  description: "AdsVerse delivers AI SEO, WhatsApp bots, and performance ads across 25+ Indian cities including Indore, Bhopal, Jaipur, Lucknow, and Raipur. Tier-1 ROI.",
   alternates: {
     canonical: "https://adsverse.in/locations",
   },

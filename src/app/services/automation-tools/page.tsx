@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "n8n Workflow & Marketing Automation Agency in Indore | AdsVerse" },
-  description: "AdsVerse is India's top marketing automation agency & n8n workflow specialist based in Indore. Custom WhatsApp AI bots, CRM automation, and 24/7 lead workflows for SMBs.",
+  title: { absolute: "n8n Workflow & Automation Agency in Indore | AdsVerse" },
+  description: "AdsVerse builds custom n8n workflows, WhatsApp AI bots, and CRM automation in Indore. Automate your entire lead capture and sales pipeline 24/7.",
   keywords: [
     "n8n workflow automation agency india",
     "marketing automation agency in indore",

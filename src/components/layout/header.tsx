@@ -376,10 +376,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                           <ul className="space-y-2 text-xs font-semibold">
                             <li><Link href="/locations/noida" className="text-muted-foreground hover:text-primary transition-colors">Noida (NCR)</Link></li>
                             <li><Link href="/locations/lucknow" className="text-muted-foreground hover:text-primary transition-colors">Lucknow</Link></li>
+                            <li><Link href="/locations/kanpur" className="text-muted-foreground hover:text-primary transition-colors">Kanpur</Link></li>
                             <li><Link href="/locations/patna" className="text-muted-foreground hover:text-primary transition-colors">Patna</Link></li>
-                            <li><Link href="/locations/kochi" className="text-muted-foreground hover:text-primary transition-colors">Kochi</Link></li>
-                            <li><Link href="/locations/coimbatore" className="text-muted-foreground hover:text-primary transition-colors">Coimbatore</Link></li>
-                            <li><Link href="/locations/visakhapatnam" className="text-muted-foreground hover:text-primary transition-colors">Vizag</Link></li>
+                            <li><Link href="/locations/raipur" className="text-muted-foreground hover:text-primary transition-colors">Raipur</Link></li>
+                            <li><Link href="/locations/guwahati" className="text-muted-foreground hover:text-primary transition-colors">Guwahati</Link></li>
                           </ul>
                         </div>
                       </div>
@@ -594,10 +594,10 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                         <div className="grid grid-cols-2 gap-1.5 pl-1">
                                           <Link href="/locations/noida" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Noida</Link>
                                           <Link href="/locations/lucknow" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Lucknow</Link>
+                                          <Link href="/locations/kanpur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Kanpur</Link>
                                           <Link href="/locations/patna" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Patna</Link>
-                                          <Link href="/locations/kochi" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Kochi</Link>
-                                          <Link href="/locations/coimbatore" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Coimbatore</Link>
-                                          <Link href="/locations/visakhapatnam" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Vizag</Link>
+                                          <Link href="/locations/raipur" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Raipur</Link>
+                                          <Link href="/locations/guwahati" onClick={closeMobileMenu} className="text-xs text-muted-foreground hover:text-primary font-medium transition-colors">Guwahati</Link>
                                         </div>
                                       </div>
                                     </>

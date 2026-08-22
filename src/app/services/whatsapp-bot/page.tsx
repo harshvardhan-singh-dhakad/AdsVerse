@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "WhatsApp AI Chatbot Development Company in Indore | AdsVerse" },
-  description: "AdsVerse is the #1 WhatsApp AI chatbot development company in Indore. Automate customer support, capture leads 24/7, and qualify sales prospects with Gemini-powered WhatsApp bots.",
+  title: { absolute: "WhatsApp AI Chatbot Agency in Indore | AdsVerse" },
+  description: "AdsVerse develops custom WhatsApp AI chatbots in Indore. Automate customer support 24/7, capture verified leads, and sync with your CRM effortlessly.",
   keywords: [
     "whatsapp ai chatbot development company indore",
     "whatsapp automation agency india",

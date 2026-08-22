@@ -30,8 +30,8 @@ const OrbitalGraphic = dynamic(() => import("@/components/pages/orbital-graphic"
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: { absolute: "AI-First Digital Marketing Agency in Indore | Best AI Agency — AdsVerse" },
-    description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. We scale local businesses & Indian SMBs using AI SEO, GEO (AI Search), WhatsApp automation, n8n workflows, and high-ROI Google & Meta Ads.",
+    title: { absolute: "AI Digital Marketing Agency in Indore | AdsVerse" },
+    description: "AdsVerse is the top AI digital marketing agency in Indore. Scale sales with AI SEO, GEO search, WhatsApp bots, n8n automation, and high-ROI Google & Meta Ads.",
     keywords: [
       "ai first digital marketing agency in indore",
       "best ai digital marketing agency in indore",
@@ -43,8 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `https://adsverse.in`,
     },
     openGraph: {
-      title: { absolute: "AI-First Digital Marketing Agency in Indore | AdsVerse" },
-      description: "AdsVerse is the #1 AI-first digital marketing agency in Indore. Scale sales & organic search traffic with AI automation, SEO, and performance ads.",
+      title: { absolute: "AI Digital Marketing Agency in Indore | AdsVerse" },
+      description: "Scale sales & organic search traffic with AI automation, SEO, WhatsApp bots, and performance ads by AdsVerse in Indore.",
       url: "https://adsverse.in",
       siteName: "AdsVerse",
     },

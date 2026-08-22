@@ -21,18 +21,6 @@ env:
       - RUNTIME
       - BUILD
 
-  - variable: PAGESPEED_API_KEY
-    value: AIzaSyBFp5LtOWERWWRXHMxiHuwpcH-H-oK64Ow
-    availability:
-      - RUNTIME
-      - BUILD
-
-  - variable: SERPER_API_KEY
-    value: 8a6ff85888b742b276a8a81744cd4fb25a25e716
-    availability:
-      - RUNTIME
-      - BUILD
-
   - variable: DAILY_LLM_AUDIT_CAP
     value: "50"
     availability:

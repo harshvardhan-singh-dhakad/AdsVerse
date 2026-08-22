@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Content Marketing Agency India — Blog Writing & SEO Content | AdsVerse" },
-  description: "Grow your authority with AdsVerse's content marketing services. We create SEO-optimized blog posts, articles & content strategy for Indian businesses — driving organic traffic and brand trust.",
+  title: { absolute: "Content Marketing & SEO Blog Writing Agency | AdsVerse" },
+  description: "Grow your authority with AdsVerse content marketing. We craft SEO blog posts, GEO articles, and content strategies that drive organic traffic and sales.",
   alternates: {
     canonical: 'https://adsverse.in/services/content-marketing',
   },

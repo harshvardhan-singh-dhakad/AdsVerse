@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Social Media Marketing Agency India — Instagram & Facebook | AdsVerse" },
-  description: "Grow your brand on Instagram, Facebook & LinkedIn with AdsVerse's expert social media management. We create content, manage communities & run ads for Indian businesses in Indore.",
+  title: { absolute: "Social Media Marketing Agency in Indore | AdsVerse" },
+  description: "Grow your brand on Instagram, Facebook & LinkedIn with AdsVerse. We create reels, manage communities, and scale paid social ads for high conversion.",
   alternates: {
     canonical: 'https://adsverse.in/services/social-media-management',
   },

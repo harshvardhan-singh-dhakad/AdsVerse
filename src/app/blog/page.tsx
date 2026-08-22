@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 120;
 import { Metadata } from "next";
 import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
@@ -6,8 +6,8 @@ import BlogClient from "./BlogClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: { absolute: "Insights & Digital Trends — AdsVerse Blog" },
-    description: "Latest digital marketing trends and strategies from AdsVerse. Expert tips on SEO, Paid Ads, and AI Automation.",
+    title: { absolute: "Insights & Digital Trends | AdsVerse Blog" },
+    description: "Latest digital marketing trends and strategies from AdsVerse. Expert tips on AI SEO, Paid Ads, and WhatsApp automation for Indian businesses.",
     alternates: {
       canonical: `https://adsverse.in/blog`,
     },

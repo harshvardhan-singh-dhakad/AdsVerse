@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -6,9 +6,9 @@ import { ArrowLeft, ArrowRight, CheckCircle, Video, MessageCircle, BarChart2, Ca
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "Remote Digital Marketing Services Across India | AdsVerse" },
+  title: { absolute: "Pan-India Remote Digital Marketing Services | AdsVerse" },
   description:
-    "AdsVerse is headquartered in Indore and works with clients across India remotely — SEO, WhatsApp automation, and paid ads delivered via video calls, WhatsApp, and shared dashboards. No local office required.",
+    "AdsVerse delivers remote AI digital marketing across India — SEO, WhatsApp automation, and paid ads managed via live dashboards and video reviews.",
   alternates: {
     canonical: "https://adsverse.in/locations/pan-india-remote",
   },

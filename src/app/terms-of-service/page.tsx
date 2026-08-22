@@ -2,8 +2,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: { absolute: "Terms of Service | AdsVerse" },
-    description: "Please read our Terms of Service carefully before using the AdsVerse website. This document outlines the rules and regulations for the use of our services.",
+    title: { absolute: "Terms of Service | AdsVerse Agency Agreement" },
+    description: "Review the Terms of Service for AdsVerse digital marketing, advertising campaigns, AI automation services, and client service agreements.",
     alternates: {
         canonical: 'https://adsverse.in/terms-of-service',
     },

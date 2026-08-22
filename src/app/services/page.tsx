@@ -5,8 +5,8 @@ import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "Digital Marketing, AI Automation & Web Design Services | AdsVerse" },
-  description: "AdsVerse offers 75+ digital marketing, AI automation & web design services in India — SEO, Google Ads, Meta Ads, WhatsApp AI bots, n8n workflows, website development. AI-first agency, Vijay Nagar Indore. Get free strategy call.",
+  title: { absolute: "Digital Marketing & AI Automation Services | AdsVerse" },
+  description: "Explore 75+ AI-first digital marketing, SEO, Google & Meta Ads, WhatsApp AI bots, n8n workflows, and web design services by AdsVerse in Indore & across India.",
   alternates: {
     canonical: "https://adsverse.in/services",
   },

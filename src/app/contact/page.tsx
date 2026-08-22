@@ -17,7 +17,7 @@ import { MapIframe } from "@/components/pages/map-iframe";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: "Contact AdsVerse — Free Audit & Consultation" },
-    description: "Get a free SEO audit and consultation from AdsVerse, Indore's top AI marketing agency. Contact us at +91-9685123339.",
+    description: "Contact AdsVerse in Vijay Nagar, Indore for a free SEO audit & AI consultation. Call +91-9685123339 or message our automation experts to scale your business.",
     alternates: {
       canonical: "https://adsverse.in/contact",
     },

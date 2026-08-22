@@ -60,20 +60,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const post = await getBlogPost(params.slug);
   if (!post) notFound();
 
-  const fullUrl = `https://adsverse.in/blog/${post.slug}`;
+  const slug = post.slug || params.slug;
+  const fullUrl = `https://adsverse.in/blog/${slug}`;
   const imageUrl = post.imageUrl || 'https://adsverse.in/images/og-adsverse-2026.png';
 
   // Strip "(NNN chars)" artifacts from excerpt if present
-  const cleanExcerpt = post.excerpt.replace(/\s*\(\d+\s*chars?\)\s*$/i, '');
-  const finalTitle = `${post.title} | AdsVerse Blog`;
+  const cleanExcerpt = (post.excerpt || 'Digital marketing and AI automation strategies from AdsVerse.')
+    .replace(/\s*\(\d+\s*chars?\)\s*$/i, '');
+  const finalTitle = `${post.title || 'Blog'} | AdsVerse Blog`;
 
-  // We are not throwing right now for validateMeta since we are just adding it.
-  // Actually, wait, validateMeta throws on duplicate brand.
-  // I will just prepare it for now.
   try {
     validateMeta(fullUrl, finalTitle, cleanExcerpt);
   } catch (e) {
-    // Only warn for now until we fix titles in Batch 2
     console.warn(e);
   }
 
