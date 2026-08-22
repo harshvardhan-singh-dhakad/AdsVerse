@@ -1,4 +1,4 @@
-export const revalidate = 120;
+export const dynamic = 'force-dynamic';
 import { Metadata } from "next";
 import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
