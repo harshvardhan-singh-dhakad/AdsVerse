@@ -10,7 +10,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import dynamic from "next/dynamic";
 const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"), { ssr: false });
-import Script from "next/script";
+import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase-server";
 
@@ -363,36 +363,7 @@ export default async function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        {/* GTM dataLayer initialization — must run before GTM script */}
-        <script
-          id="gtm-datalayer-init"
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];`
-          }}
-        />
-        <Script
-          id="gtm-script"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-M6GV59XL');`
-          }}
-        />
-        {/* Microsoft Clarity Analytics for Bing Webmaster Tools */}
-        <Script
-          id="microsoft-clarity"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "y4qtz4v0br");`
-          }}
-        />
+        <ScriptOptimizer />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
