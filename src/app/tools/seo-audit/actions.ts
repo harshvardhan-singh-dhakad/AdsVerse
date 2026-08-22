@@ -708,6 +708,12 @@ export async function analyzeUrl(urlInput: string, device: 'mobile' | 'desktop' 
       status: hasFAQSchema ? 'pass' : 'fail',
     },
     {
+      id: 'qa_headings_aeo',
+      type: 'AEO',
+      check: 'Question-Based Headings for Voice & AI Search',
+      description: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'Natural language question headings detected in H2/H3 tags.' : 'No question-based headings found (What/How/Why).',
+      fix: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'Question format helps voice search & AI answers direct extraction.' : 'Include FAQ questions as H2/H3 headers so AI engines can easily extract direct answers.',
+      priority: 'Medium',
       status: h2s.some(h => /\?|^what|^how|^why/i.test(h)) ? 'pass' : 'warning',
     },
   ];
