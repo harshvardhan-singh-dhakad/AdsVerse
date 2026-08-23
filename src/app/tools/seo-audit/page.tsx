@@ -62,6 +62,7 @@ export default function AdsVerseAuditPage() {
   const [isReportPaid, setIsReportPaid] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authIntent, setAuthIntent] = useState<'general' | 'upgrade'>('general');
   const [authModalReason, setAuthModalReason] = useState<string | null>(null);
   const [showAuditPricingModal, setShowAuditPricingModal] = useState(false);
   const [pricingDomain, setPricingDomain] = useState('');
@@ -77,6 +78,35 @@ export default function AdsVerseAuditPage() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Check intent from URL query params (e.g. from /login?intent=upgrade)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const intent = params.get('intent');
+      const paramDomain = params.get('domain');
+      if (paramDomain) setPricingDomain(paramDomain);
+      if (intent === 'upgrade' || intent === 'audit_pass') {
+        if (user) {
+          setShowAuditPricingModal(true);
+        } else {
+          setAuthIntent('upgrade');
+          setShowAuthModal(true);
+        }
+      }
+    }
+  }, [user]);
+
+  const handleOpenUpgrade = (customDomain?: string) => {
+    const cleanD = customDomain || (url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com');
+    setPricingDomain(cleanD);
+    if (!user) {
+      setAuthIntent('upgrade');
+      setShowAuthModal(true);
+    } else {
+      setShowAuditPricingModal(true);
+    }
+  };
 
   // Profile Check
   useEffect(() => {
@@ -384,15 +414,7 @@ export default function AdsVerseAuditPage() {
         <div className="flex items-center gap-3 md:gap-4">
           <button 
             type="button"
-            onClick={() => {
-              const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
-              setPricingDomain(cleanD);
-              if (!user) {
-                setShowAuthModal(true);
-              } else {
-                setShowAuditPricingModal(true);
-              }
-            }} 
+            onClick={() => handleOpenUpgrade()} 
             className="text-xs md:text-sm font-semibold text-orange-400 hover:text-orange-300 transition flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500/10 border border-orange-500/20 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -421,7 +443,13 @@ export default function AdsVerseAuditPage() {
               </button>
             </div>
           ) : (
-            <button onClick={() => setShowAuthModal(true)} className="nav-cta cursor-pointer">
+            <button 
+              onClick={() => {
+                setAuthIntent('general');
+                setShowAuthModal(true);
+              }} 
+              className="nav-cta cursor-pointer"
+            >
               Sign In
             </button>
           )}
@@ -432,7 +460,14 @@ export default function AdsVerseAuditPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
           <div className="relative w-full max-w-md my-8">
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">✕</button>
-            <AuthWall onAuthSuccess={() => { setShowAuthModal(false); setShowAuditPricingModal(true); }} />
+            <AuthWall 
+              onAuthSuccess={() => { 
+                setShowAuthModal(false); 
+                if (authIntent === 'upgrade') {
+                  setShowAuditPricingModal(true); 
+                }
+              }} 
+            />
           </div>
         </div>
       )}
@@ -452,6 +487,7 @@ export default function AdsVerseAuditPage() {
           onPaymentSuccess={handleAuditPaymentSuccess}
           onRequireAuth={() => {
             setShowAuditPricingModal(false);
+            setAuthIntent('upgrade');
             setShowAuthModal(true);
           }}
         />
@@ -695,11 +731,7 @@ export default function AdsVerseAuditPage() {
               ) : (
                 <button 
                   type="button" 
-                  onClick={() => {
-                    const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
-                    setPricingDomain(cleanD);
-                    setShowAuditPricingModal(true);
-                  }} 
+                  onClick={() => handleOpenUpgrade()} 
                   className="btn-purple cursor-pointer flex items-center gap-1.5"
                 >
                   <Sparkles className="w-3.5 h-3.5" /> Unlock Full Report (₹10)
@@ -749,11 +781,7 @@ export default function AdsVerseAuditPage() {
               </p>
               <button 
                 type="button" 
-                onClick={() => {
-                  const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
-                  setPricingDomain(cleanD);
-                  setShowAuditPricingModal(true);
-                }} 
+                onClick={() => handleOpenUpgrade()} 
                 className="btn-pro cursor-pointer mx-auto inline-flex items-center gap-2"
               >
                 Unlock with ₹10 Pass <ArrowRight className="w-4 h-4"/>
@@ -927,11 +955,7 @@ export default function AdsVerseAuditPage() {
                         </p>
                         <button 
                           type="button"
-                          onClick={() => {
-                            const cleanD = url ? url.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '') : 'yourwebsite.com';
-                            setPricingDomain(cleanD);
-                            setShowAuditPricingModal(true);
-                          }} 
+                          onClick={() => handleOpenUpgrade()} 
                           className="btn-pro cursor-pointer mx-auto inline-flex items-center gap-2"
                         >
                           Unlock Full Report + PDF (₹10) <ArrowRight className="w-4 h-4" />

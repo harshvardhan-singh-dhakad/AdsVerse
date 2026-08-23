@@ -25,14 +25,17 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin')) {
     const token = request.cookies.get('admin_token')?.value;
     if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('returnUrl', '/admin');
+      return NextResponse.redirect(loginUrl);
     }
   }
 
-  // 4. Prevent logged-in users from accessing /login again
+  // 4. Prevent logged-in admin from accessing /login without specific returnUrl
   if (pathname === '/login') {
-    const token = request.cookies.get('admin_token')?.value;
-    if (token) {
+    const adminToken = request.cookies.get('admin_token')?.value;
+    const returnUrl = request.nextUrl.searchParams.get('returnUrl');
+    if (adminToken && (!returnUrl || returnUrl === '/admin')) {
       return NextResponse.redirect(new URL('/admin', request.url));
     }
   }
@@ -41,7 +44,9 @@ export function middleware(request: NextRequest) {
   if (pathname === '/get-id') {
     const token = request.cookies.get('admin_token')?.value;
     if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('returnUrl', '/get-id');
+      return NextResponse.redirect(loginUrl);
     }
   }
 }

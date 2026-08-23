@@ -67,6 +67,27 @@ export async function POST(req: NextRequest) {
       }, { merge: true });
     }
 
+    if (role === 'admin') {
+      try {
+        await Promise.all([
+          adminDb.collection('roles_admin').doc(uid).set({
+            uid,
+            email,
+            role: 'admin',
+            updatedAt: FieldValue.serverTimestamp(),
+          }, { merge: true }),
+          email ? adminDb.collection('admins').doc(email).set({
+            uid,
+            email,
+            role: 'admin',
+            updatedAt: FieldValue.serverTimestamp(),
+          }, { merge: true }) : Promise.resolve(),
+        ]);
+      } catch (errAdmin) {
+        console.warn('[/api/auth/sync-user] Warning updating roles_admin doc:', errAdmin);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       user: {

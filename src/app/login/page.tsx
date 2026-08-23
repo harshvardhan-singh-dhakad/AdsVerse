@@ -45,15 +45,25 @@ export default function LoginPage() {
   const auth = useAuth();
 
   useEffect(() => {
+    if (searchParams.get("mode") === "signup") {
+      setMode("signup");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     if (!auth) return;
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const returnUrl = searchParams.get("returnUrl") || "/tools/seo-audit";
-        router.replace(returnUrl);
+    let isMounted = true;
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user && isMounted) {
+        setLoading(true);
+        await syncUserWithBackend(user);
       }
     });
-    return () => unsubscribe();
-  }, [auth, router, searchParams]);
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, [auth]);
 
   const syncUserWithBackend = async (firebaseUser: any, customName?: string) => {
     try {
@@ -67,19 +77,33 @@ export default function LoginPage() {
         }),
       });
       const data = await res.json();
+      const params = new URLSearchParams(window.location.search);
+      const returnUrl = params.get("returnUrl");
+      const intent = params.get("intent");
+      const domain = params.get("domain");
+
       if (data?.user?.role === "admin") {
-        Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "strict" });
-        window.location.href = "/admin";
+        Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
+        Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
+        window.location.href = returnUrl || "/admin";
       } else {
-        Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "strict" });
-        // Check if there was a return url
-        const params = new URLSearchParams(window.location.search);
-        const returnUrl = params.get("returnUrl") || "/tools/seo-audit";
-        window.location.href = returnUrl;
+        Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
+        Cookies.remove("admin_token");
+
+        let target = returnUrl || "/tools/seo-audit";
+        if (intent) {
+          const sep = target.includes('?') ? '&' : '?';
+          target += `${sep}intent=${encodeURIComponent(intent)}`;
+          if (domain) target += `&domain=${encodeURIComponent(domain)}`;
+        }
+        window.location.href = target;
       }
     } catch (err) {
       console.warn("User sync warning:", err);
-      window.location.href = "/tools/seo-audit";
+      Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
+      const params = new URLSearchParams(window.location.search);
+      const returnUrl = params.get("returnUrl") || "/tools/seo-audit";
+      window.location.href = returnUrl;
     }
   };
 

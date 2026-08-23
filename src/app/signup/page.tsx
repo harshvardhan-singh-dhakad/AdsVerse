@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 export default function SignupPage() {
   const router = useRouter();
   useEffect(() => {
-    router.replace("/login");
+    const params = new URLSearchParams(window.location.search);
+    params.set("mode", "signup");
+    router.replace(`/login?${params.toString()}`);
   }, [router]);
 
   return (

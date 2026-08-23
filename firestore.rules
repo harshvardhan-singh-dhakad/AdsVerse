@@ -53,7 +53,13 @@ service cloud.firestore {
       // Ensure the user is authenticated before checking for admin role
       return request.auth != null && (
         exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
-        exists(/databases/$(database)/documents/admins/$(request.auth.token.email))
+        exists(/databases/$(database)/documents/admins/$(request.auth.token.email)) ||
+        request.auth.token.email in [
+          'admin@adsverse.in',
+          'harshvardhan@adsverse.in',
+          'harshvardhan.dhakad@gmail.com',
+          'harshvardhan.singh.dhakad@gmail.com'
+        ]
       );
     }
 
@@ -213,18 +219,18 @@ service cloud.firestore {
      * @path /audit_reports/{reportId}
      */
     match /audit_reports/{reportId} {
-      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow read, list: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.userId);
       allow write: if false; // server-only via Admin SDK
     }
 
     /**
      * @description Stores audit tool user profiles (plan, phone, etc).
-     * Users can read their own profile only. Writes are server-side.
+     * Users can read their own profile only. Admin can read/list and manage.
      * @path /audit_users/{uid}
      */
     match /audit_users/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false; // server-only via Admin SDK
+      allow read, list: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow write: if isAdmin();
     }
 
     /**

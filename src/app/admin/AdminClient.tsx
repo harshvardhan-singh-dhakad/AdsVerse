@@ -17,23 +17,52 @@ export default function AdminPage() {
   const auth = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
+    if (!loading) {
+      if (!user) {
+        window.location.href = "/login?returnUrl=/admin";
+        return;
+      }
+
+      user.getIdToken().then(async (token) => {
+        try {
+          const res = await fetch("/api/auth/sync-user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken: token }),
+          });
+          const data = await res.json();
+          if (data?.user?.role === "admin") {
+            Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
+            setIsAuthorized(true);
+          } else {
+            setIsAuthorized(false);
+            window.location.href = "/tools/seo-audit";
+          }
+        } catch (err) {
+          console.warn("Admin verify warning:", err);
+          setIsAuthorized(true);
+        }
+      });
     }
-  }, [user, loading, router]);
+  }, [user, loading]);
 
   const handleSignOut = async () => {
     await firebaseSignOut(auth);
     Cookies.remove('admin_token');
+    Cookies.remove('user_token');
     window.location.href = '/login';
   };
 
-  if (loading || !user) {
+  if (loading || !user || isAuthorized === null) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase">Loading Admin Dashboard...</p>
+        </div>
       </div>
     );
   }
