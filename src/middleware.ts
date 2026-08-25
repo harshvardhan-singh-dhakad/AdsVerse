@@ -26,17 +26,22 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.get('admin_token')?.value;
     if (!token) {
       const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('returnUrl', '/admin');
+      loginUrl.searchParams.set('returnUrl', pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  // 4. Prevent logged-in admin from accessing /login without specific returnUrl
-  if (pathname === '/login') {
+  // 4. Prevent logged-in users from accessing /login again
+  if (pathname === '/login' || pathname === '/signup') {
     const adminToken = request.cookies.get('admin_token')?.value;
-    const returnUrl = request.nextUrl.searchParams.get('returnUrl');
-    if (adminToken && (!returnUrl || returnUrl === '/admin')) {
+    if (adminToken) {
       return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    const userToken = request.cookies.get('user_token')?.value;
+    if (userToken) {
+      const returnUrl = request.nextUrl.searchParams.get('returnUrl');
+      return NextResponse.redirect(new URL(returnUrl || '/tools/seo-audit', request.url));
     }
   }
 
@@ -53,13 +58,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files (images, svg, robots.txt, sitemap.xml, llms.txt)
-     */
     '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|llms.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

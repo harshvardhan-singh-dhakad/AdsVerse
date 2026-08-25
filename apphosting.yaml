@@ -56,3 +56,40 @@ env:
     availability:
       - RUNTIME
       - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: synergyflow-digital-p7c0g
+    availability:
+      - RUNTIME
+      - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyAO1xYAhh9ONCZjZI2zliUn_dEPdfaZr2Y
+    availability:
+      - RUNTIME
+      - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: synergyflow-digital-p7c0g.firebaseapp.com
+    availability:
+      - RUNTIME
+      - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: synergyflow-digital-p7c0g.firebasestorage.app
+    availability:
+      - RUNTIME
+      - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "867205490601"
+    availability:
+      - RUNTIME
+      - BUILD
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:867205490601:web:a4b9a8f0cd5c93f79346b8"
+    availability:
+      - RUNTIME
+      - BUILD
+

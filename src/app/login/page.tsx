@@ -39,22 +39,27 @@ export default function LoginPage() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
+  const isSyncingRef = React.useRef(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const auth = useAuth();
+  
+  const isAdminFlow = searchParams.get("returnUrl")?.startsWith("/admin");
 
   useEffect(() => {
-    if (searchParams.get("mode") === "signup") {
+    if (searchParams.get("mode") === "signup" && !isAdminFlow) {
       setMode("signup");
+    } else if (isAdminFlow) {
+      setMode("login");
     }
-  }, [searchParams]);
+  }, [searchParams, isAdminFlow]);
 
   useEffect(() => {
     if (!auth) return;
     let isMounted = true;
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && isMounted) {
+      if (user && isMounted && !isSyncingRef.current) {
         setLoading(true);
         await syncUserWithBackend(user);
       }
@@ -66,8 +71,11 @@ export default function LoginPage() {
   }, [auth]);
 
   const syncUserWithBackend = async (firebaseUser: any, customName?: string) => {
+    if (isSyncingRef.current) return;
+    isSyncingRef.current = true;
+
     try {
-      const idToken = await firebaseUser.getIdToken(true);
+      const idToken = await firebaseUser.getIdToken(false);
       const res = await fetch("/api/auth/sync-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -122,6 +130,15 @@ export default function LoginPage() {
     }
     if (errCode.includes("popup-closed-by-user")) {
       return "Google sign-in was closed before completion.";
+    }
+    if (errCode.includes("popup-blocked")) {
+      return "Sign-in popup was blocked by your browser. Please allow popups for this site.";
+    }
+    if (errCode.includes("unauthorized-domain")) {
+      return "Domain is not authorized for OAuth in Firebase Console. Please add adsverse.in and localhost to Authorized Domains in Firebase Console > Authentication > Settings.";
+    }
+    if (errCode.includes("operation-not-allowed")) {
+      return "Google sign-in provider is disabled. Please enable Google sign-in in Firebase Console > Authentication > Sign-in method.";
     }
     return defaultMsg || "Authentication failed. Please try again.";
   };
@@ -227,27 +244,36 @@ export default function LoginPage() {
         <Card className="border border-white/10 bg-slate-900/80 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-6">
             <CardTitle className="text-xl md:text-2xl font-extrabold text-white">
-              {mode === "login" ? "Welcome Back" : "Create Free Account"}
+              {isAdminFlow 
+                ? "Admin Login" 
+                : mode === "login" 
+                  ? "Welcome Back" 
+                  : "Create Free Account"}
             </CardTitle>
             <CardDescription className="text-slate-400 text-xs mt-1">
-              {mode === "login" 
-                ? "Sign in to manage your SEO audits, wallet credits & campaigns." 
-                : "Get instant access to AI SEO audits, reports & wallet tools."}
+              {isAdminFlow 
+                ? "Authorized personnel only."
+                : mode === "login" 
+                  ? "Sign in to manage your SEO audits, wallet credits & campaigns." 
+                  : "Get instant access to AI SEO audits, reports & wallet tools."}
             </CardDescription>
           </CardHeader>
 
           <CardContent className="p-6 pt-3 space-y-5">
             
-            {/* Tabs */}
-            <Tabs value={mode} onValueChange={(val) => { setMode(val as any); setErrorMessage(null); }} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-slate-800/80 p-1 rounded-xl border border-white/5">
-                <TabsTrigger value="login" className="text-xs font-bold py-2 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">
-                  Sign In
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="text-xs font-bold py-2 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">
-                  Sign Up
-                </TabsTrigger>
-              </TabsList>
+            {/* Tabs (Hidden for Admin Flow) */}
+            {!isAdminFlow && (
+              <Tabs value={mode} onValueChange={(val) => { setMode(val as any); setErrorMessage(null); }} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 bg-slate-800/80 p-1 rounded-xl border border-white/5">
+                  <TabsTrigger value="login" className="text-xs font-bold py-2 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">
+                    Sign In
+                  </TabsTrigger>
+                  <TabsTrigger value="signup" className="text-xs font-bold py-2 rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white transition-all">
+                    Sign Up
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            )}
 
               {/* Error & Success Alerts */}
               {errorMessage && (
@@ -282,7 +308,7 @@ export default function LoginPage() {
                       <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.98-6.19c-2.13 1.45-4.84 2.3-7.91 2.3-6.27 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
                     </svg>
                   )}
-                  Continue with Google / Gmail
+                  {isAdminFlow ? "Continue with Google Admin" : "Continue with Google / Gmail"}
                 </Button>
               </div>
 
@@ -297,7 +323,8 @@ export default function LoginPage() {
               </div>
 
               {/* Form 1: Sign In */}
-              <TabsContent value="login" className="space-y-4 m-0">
+              {(mode === "login" || isAdminFlow) && (
+                <div className="space-y-4 m-0">
                 <form onSubmit={handleEmailLogin} className="space-y-4">
                   <div className="space-y-1.5">
                     <Label className="text-xs font-semibold text-slate-300">Email Address</Label>
@@ -354,10 +381,12 @@ export default function LoginPage() {
                     Sign In to Account
                   </Button>
                 </form>
-              </TabsContent>
+              </div>
+            )}
 
-              {/* Form 2: Sign Up */}
-              <TabsContent value="signup" className="space-y-4 m-0">
+            {/* Form 2: Sign Up */}
+            {(mode === "signup" && !isAdminFlow) && (
+              <div className="space-y-4 m-0">
                 <form onSubmit={handleEmailSignUp} className="space-y-4">
                   <div className="space-y-1.5">
                     <Label className="text-xs font-semibold text-slate-300">Your Full Name</Label>
@@ -435,9 +464,10 @@ export default function LoginPage() {
                     Create Free Account
                   </Button>
                 </form>
-              </TabsContent>
+              </div>
+            )}
 
-            </Tabs>
+
 
           </CardContent>
         </Card>

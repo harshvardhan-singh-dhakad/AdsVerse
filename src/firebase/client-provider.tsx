@@ -16,10 +16,11 @@ export function FirebaseClientProvider({ children }: FirebaseClientProviderProps
   }, []); // Empty dependency array ensures this runs only once on mount
 
   const authInstance = useMemo(() => {
-    if (typeof window !== 'undefined') {
+    try {
       return getAuth(firebaseServices.firebaseApp);
+    } catch {
+      return null as any;
     }
-    return null as any;
   }, [firebaseServices]);
 
   return (
