@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import {
   Query,
-  onSnapshot,
   DocumentData,
   FirestoreError,
   QuerySnapshot,
   CollectionReference,
 } from 'firebase/firestore';
+import { onSnapshot } from '../init';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 

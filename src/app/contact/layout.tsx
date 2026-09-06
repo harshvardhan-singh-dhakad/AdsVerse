@@ -1,6 +1,6 @@
 'use client';
 
-import { FirebaseClientProvider } from "@/firebase";
+import { FirebaseClientProvider } from "@/firebase/client-provider";
 import { ReactNode } from "react";
 
 export default function ContactLayout({ children }: { children: ReactNode }) {

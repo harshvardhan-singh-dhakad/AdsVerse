@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { DM_CATEGORIES, AI_CATEGORIES } from '@/lib/services-data';
-import { db } from '@/lib/firebase-server';
-import { collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
+import { adminDb } from '@/firebase/admin';
 
 export async function GET() {
   try {
@@ -10,13 +9,11 @@ export async function GET() {
     // Try to fetch recent blogs for the AI agent context
     try {
       const now = new Date().toISOString();
-      const q = query(
-        collection(db, "public_blogPosts"),
-        where("publishedDate", "<=", now),
-        orderBy("publishedDate", "desc"),
-        limit(20)
-      );
-      const snap = await getDocs(q);
+      const snap = await adminDb.collection("public_blogPosts")
+        .where("publishedDate", "<=", now)
+        .orderBy("publishedDate", "desc")
+        .limit(20)
+        .get();
       
       if (snap && snap.docs) {
         blogPosts = snap.docs.map((doc: any) => {

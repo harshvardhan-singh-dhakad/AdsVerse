@@ -5,6 +5,8 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+} from './init';
+import {
   CollectionReference,
   DocumentReference,
   SetOptions,

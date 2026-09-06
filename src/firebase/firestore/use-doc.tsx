@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import {
   DocumentReference,
-  onSnapshot,
   DocumentData,
   FirestoreError,
   DocumentSnapshot,
 } from 'firebase/firestore';
+import { onSnapshot } from '../init';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 

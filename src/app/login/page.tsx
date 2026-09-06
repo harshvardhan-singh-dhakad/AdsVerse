@@ -4,15 +4,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { 
-  GoogleAuthProvider, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
-  signInWithPopup,
   sendPasswordResetEmail,
   updateProfile,
   onAuthStateChanged
 } from "firebase/auth";
-import { useAuth } from "@/firebase";
+import { auth, signInWithGoogle } from "@/firebase/init";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,7 +41,6 @@ export default function LoginPage() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const auth = useAuth();
   
   const isAdminFlow = searchParams.get("returnUrl")?.startsWith("/admin");
 
@@ -192,11 +189,8 @@ export default function LoginPage() {
     setSuccessMessage(null);
     setGoogleLoading(true);
 
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-
     try {
-      const cred = await signInWithPopup(auth, provider);
+      const cred = await signInWithGoogle();
       await syncUserWithBackend(cred.user);
     } catch (err: any) {
       setErrorMessage(getFriendlyError(err?.code || "", err?.message || ""));

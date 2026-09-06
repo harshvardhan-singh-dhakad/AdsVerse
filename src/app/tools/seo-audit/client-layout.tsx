@@ -1,22 +1,16 @@
 'use client';
 
-import { FirebaseClientProvider } from "@/firebase";
-import { ReactNode, useState, useEffect } from "react";
+import { FirebaseClientProvider } from "@/firebase/client-provider";
+import { ReactNode, Suspense } from "react";
 
 export default function SEOAuditClientLayout({ children }: { children: ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   return (
     <FirebaseClientProvider>
-      {children}
+      <Suspense fallback={<div className="min-h-screen bg-[#060912] flex items-center justify-center text-white text-xs">Loading SEO Audit...</div>}>
+        {children}
+      </Suspense>
     </FirebaseClientProvider>
   );
 }
+
+console.log('DEBUG LAYOUT IMPORTS:', { FirebaseClientProvider: typeof FirebaseClientProvider });

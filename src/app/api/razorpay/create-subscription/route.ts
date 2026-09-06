@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
-import { adminAuth, adminDb } from '@/lib/firebase-admin';
+import { adminAuth, adminDb } from '@/firebase/admin';
 
 const PLAN_MAP: Record<string, string> = {
   '1_site': process.env.RAZORPAY_PLAN_1_SITE || 'plan_1',

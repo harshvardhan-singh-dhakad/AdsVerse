@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { Metadata } from "next";
-import { collection, query, orderBy, getDocs, where, limit } from "firebase/firestore";
-import { db } from "@/lib/firebase-server";
+import { adminDb } from "@/firebase/admin";
 import BlogClient from "./BlogClient";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,13 +41,11 @@ const FALLBACK_POSTS = [
 async function getBlogPosts() {
   try {
     const now = new Date().toISOString();
-    const q = query(
-      collection(db, "public_blogPosts"),
-      where("publishedDate", "<=", now),
-      orderBy("publishedDate", "desc"),
-      limit(200)
-    );
-    const snap = await getDocs(q);
+    const snap = await adminDb.collection("public_blogPosts")
+      .where("publishedDate", "<=", now)
+      .orderBy("publishedDate", "desc")
+      .limit(200)
+      .get();
     if (snap && snap.docs && snap.docs.length > 0) {
       const posts = snap.docs.map((doc: any) => ({
         id: doc.id,

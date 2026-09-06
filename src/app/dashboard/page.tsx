@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, db } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,6 +32,7 @@ const PLAN_PRICES: Record<string, number> = {
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
+  const firestore = useFirestore();
   const router = useRouter();
   const [subscription, setSubscription] = useState<any>(null);
   const [subLoading, setSubLoading] = useState(true);
@@ -48,8 +49,18 @@ export default function DashboardPage() {
       router.push('/login?redirect=/dashboard');
       return;
     }
+    if (!firestore) return;
 
-    const docRef = doc(db, 'subscriptions', user.uid);
+    console.log('CALLING doc() with:', firestore);
+    let docRef;
+    try {
+      docRef = doc(firestore, 'subscriptions', user.uid);
+      console.log('doc() SUCCEEDED!', docRef);
+    } catch(e) {
+      console.error('doc() FAILED!', e);
+      return;
+    }
+
     const unsubscribe = onSnapshot(docRef, (snap) => {
       if (snap.exists()) {
         setSubscription(snap.data());
@@ -74,10 +85,11 @@ export default function DashboardPage() {
   }, [user, isUserLoading, router]);
 
   useEffect(() => {
-    if (!user || !subscription) return;
+    if (!user || !subscription || !firestore) return;
     setHistoryLoading(true);
+    console.log('FIRESTORE IN DASHBOARD:', firestore, typeof firestore);
     const q = query(
-      collection(db, 'audit_reports'),
+      collection(firestore, 'audit_reports'),
       where('userId', '==', user.uid),
       orderBy('createdAt', 'desc'),
       limit(10)
@@ -93,7 +105,7 @@ export default function DashboardPage() {
       }));
       setAuditHistory(items);
     }).catch(console.error).finally(() => setHistoryLoading(false));
-  }, [user, subscription]);
+  }, [user, subscription, firestore]);
 
   const currentPlan = subscription?.plan || null;
   const currentStatus = subscription?.status || 'inactive';
@@ -103,7 +115,7 @@ export default function DashboardPage() {
 
   const handleAddSite = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !firestore) return;
     setError('');
 
     try {
@@ -125,7 +137,7 @@ export default function DashboardPage() {
 
     setIsAdding(true);
     try {
-      const docRef = doc(db, 'subscriptions', user.uid);
+      const docRef = doc(firestore, 'subscriptions', user.uid);
       const newSites = [...trackedSites, newUrl];
       await updateDoc(docRef, { siteSlots: newSites });
       setNewUrl('');
@@ -138,9 +150,9 @@ export default function DashboardPage() {
   };
 
   const handleRemoveSite = async (siteUrl: string) => {
-    if (!user) return;
+    if (!user || !firestore) return;
     try {
-      const docRef = doc(db, 'subscriptions', user.uid);
+      const docRef = doc(firestore, 'subscriptions', user.uid);
       const newSites = trackedSites.filter((s: string) => s !== siteUrl);
       await updateDoc(docRef, { siteSlots: newSites });
     } catch (err) {

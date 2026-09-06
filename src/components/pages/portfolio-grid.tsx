@@ -50,7 +50,7 @@ export function PortfolioGrid() {
     async function fetchItems() {
       try {
         const { collection, query, orderBy, getDocs } = await import("firebase/firestore");
-        const { db } = await import("@/lib/firebase-server");
+        const { db } = await import("@/firebase/init");
         const q = query(collection(db, "portfolioItems"), orderBy("projectDate", "desc"));
         const snap = await getDocs(q);
         if (!snap.empty) {

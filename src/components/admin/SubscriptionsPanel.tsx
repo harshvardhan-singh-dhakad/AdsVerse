@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { collection, query, orderBy, limit, getDocs, onSnapshot, Timestamp, where } from "firebase/firestore";
-import { initializeFirebase } from "@/firebase";
+import { db } from "@/firebase/init";
 import {
   Crown, Users, TrendingUp, Activity, CheckCircle, XCircle, 
   Clock, Globe, Mail, Phone, Calendar, RefreshCw, Search,
@@ -93,10 +93,8 @@ export function SubscriptionsPanel() {
   });
 
   useEffect(() => {
-    const { firestore } = initializeFirebase();
-
     const subsUnsub = onSnapshot(
-      query(collection(firestore, "subscriptions"), orderBy("updatedAt", "desc")),
+      query(collection(db, "subscriptions"), orderBy("updatedAt", "desc")),
       (snap) => {
         const data: Subscription[] = snap.docs.map((d) => {
           const raw = d.data();
@@ -132,7 +130,7 @@ export function SubscriptionsPanel() {
     );
 
     // Fetch recent audit reports
-    getDocs(query(collection(firestore, "audit_reports"), orderBy("createdAt", "desc"), limit(50))).then(
+    getDocs(query(collection(db, "audit_reports"), orderBy("createdAt", "desc"), limit(50))).then(
       (snap) => {
         const data: AuditReport[] = snap.docs.map((d) => {
           const raw = d.data();

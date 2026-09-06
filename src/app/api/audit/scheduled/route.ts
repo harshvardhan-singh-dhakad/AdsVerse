@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb, adminAuth } from '@/lib/firebase-admin';
+import { adminDb, adminAuth } from '@/firebase/admin';
 import { analyzeUrl } from '@/app/tools/seo-audit/actions';
 import { runLlmGeoAeo, blendGeoScore, blendAeoScore } from '@/lib/gemini-geo-aeo';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';

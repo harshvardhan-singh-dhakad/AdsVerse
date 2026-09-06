@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminAuth, adminDb } from '@/lib/firebase-admin';
+import { adminAuth, adminDb } from '@/firebase/admin';
 import { analyzeUrl } from '@/app/tools/seo-audit/actions';
 import { runLlmGeoAeo, blendGeoScore, blendAeoScore } from '@/lib/gemini-geo-aeo';
 import { runCompetitorAnalysis } from '@/lib/competitor-engine';

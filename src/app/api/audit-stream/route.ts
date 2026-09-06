@@ -17,7 +17,7 @@ import { analyzeUrl } from '@/app/tools/seo-audit/actions';
 import { runCompetitorAnalysis } from '@/lib/competitor-engine';
 import { generateStrategyReport } from '@/lib/strategy-advisor';
 import { runLlmGeoAeo, blendGeoScore, blendAeoScore } from '@/lib/gemini-geo-aeo';
-import { adminAuth, adminDb } from '@/lib/firebase-admin';
+import { adminAuth, adminDb } from '@/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 
 export const runtime = 'nodejs';

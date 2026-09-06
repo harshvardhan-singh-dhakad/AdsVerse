@@ -142,23 +142,7 @@ export const useFirebase = (): FirebaseServicesAndUser => {
 /** Hook to access Firebase Auth instance. */
 export const useAuth = (): Auth => {
   const context = useContext(FirebaseContext);
-  if (context?.auth) {
-    return context.auth;
-  }
-  if (context?.firebaseApp) {
-    try {
-      const { getAuth } = require('firebase/auth');
-      return getAuth(context.firebaseApp);
-    } catch {}
-  }
-  if (typeof window !== 'undefined') {
-    try {
-      const { getAuth } = require('firebase/auth');
-      const { getApp } = require('firebase/app');
-      return getAuth(getApp());
-    } catch {}
-  }
-  return null as any;
+  return context.auth as Auth;
 };
 
 /** Hook to access Firestore instance. */

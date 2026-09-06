@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
-import { initializeFirebase } from '@/firebase';
+import { db } from '@/firebase/init';
 import { ChevronDown, ChevronUp, RotateCcw, Clock, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -54,9 +54,8 @@ export default function AuditHistory({ uid, plan, onRescan }: AuditHistoryProps)
   const fetchHistory = async () => {
     setLoadingHistory(true);
     try {
-      const { firestore } = initializeFirebase();
       const q = query(
-        collection(firestore, 'audit_reports'),
+        collection(db, 'audit_reports'),
         where('userId', '==', uid),
         orderBy('createdAt', 'desc'),
         limit(10)

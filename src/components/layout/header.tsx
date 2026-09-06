@@ -48,7 +48,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const { auth } = require("@/firebase");
+        const { auth } = require("@/firebase/init");
         if (auth && auth.currentUser) {
           setIsLoggedIn(true);
         }

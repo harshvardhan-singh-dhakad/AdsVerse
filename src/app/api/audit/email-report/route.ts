@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminAuth } from '@/lib/firebase-admin';
+import { adminAuth } from '@/firebase/admin';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {

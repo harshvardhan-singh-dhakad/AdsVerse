@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { adminDb } from '@/lib/firebase-admin';
+import { adminDb } from '@/firebase/admin';
 
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET || 'secret';
 

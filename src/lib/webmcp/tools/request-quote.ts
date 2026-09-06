@@ -54,7 +54,7 @@ export const requestQuoteTool: WebMCPTool<RequestQuoteInput, RequestQuoteRespons
         };
       }
 
-      const { db } = await import("@/lib/firebase-server");
+      const { db } = await import("@/firebase/init");
       const { addDoc, collection, Timestamp } = await import("firebase/firestore");
 
       const leadsCollection = collection(db, "leads");

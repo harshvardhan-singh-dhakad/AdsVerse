@@ -1,5 +1,5 @@
 
-import { Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 
 // Base type for documents with an ID
 export type BaseDoc = {

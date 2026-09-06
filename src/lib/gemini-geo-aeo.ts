@@ -10,7 +10,7 @@
  */
 
 import crypto from 'crypto';
-import { adminDb } from '@/lib/firebase-admin';
+import { adminDb } from '@/firebase/admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { scrapeLiveSearchResults } from './scraper-agent';
 

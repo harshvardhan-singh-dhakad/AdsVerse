@@ -1,5 +1,5 @@
-import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase-server";
+// import { collection, query, orderBy, getDocs } removed
+import { adminDb } from "@/firebase/admin";
 import { type Service as ServiceDef } from "@/lib/definitions";
 import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
@@ -172,8 +172,7 @@ const STATIC_SERVICES = [
 
 async function getServices(): Promise<ServiceDef[]> {
   try {
-    const q = query(collection(db, "services"), orderBy("displayOrder", "asc"));
-    const snap = await getDocs(q);
+    const snap = await adminDb.collection("services").orderBy("displayOrder", "asc").get();
     return snap.docs.map(doc => {
       const data = doc.data();
       return {

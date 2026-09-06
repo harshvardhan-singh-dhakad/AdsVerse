@@ -1,4 +1,4 @@
-import { adminDb } from '../src/lib/firebase-admin';
+import { adminDb } from '../src/firebase/admin';
 
 async function clearCache() {
   const snapshot = await adminDb.collection('geo_aeo_cache').get();

@@ -4,28 +4,17 @@ import React, { useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
   setPersistence,
   browserLocalPersistence,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { getApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { auth, signInWithGoogle } from '@/firebase/init';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 type Tab = 'signup' | 'signin';
 
-
-function getFirebaseAuth() {
-  try {
-    return getAuth(getApp());
-  } catch (e) {
-    return null as any;
-  }
-}
 
 interface AuthWallProps {
   onAuthSuccess?: () => void;
@@ -43,13 +32,7 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
   const [resetSent, setResetSent] = useState(false);
   const [showReset, setShowReset] = useState(false);
 
-  const getAuthInstance = () => {
-    return getFirebaseAuth();
-  };
-
   const withPersistence = async (fn: (auth: any) => Promise<void>) => {
-    const auth = getAuthInstance();
-    if (!auth) return;
     await setPersistence(auth, browserLocalPersistence);
     await fn(auth);
   };
@@ -110,9 +93,8 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
     setError('');
     setGoogleLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
       await withPersistence(async (authInstance) => {
-        const cred = await signInWithPopup(authInstance, provider);
+        const cred = await signInWithGoogle();
         if (cred?.user) {
           await syncUser(cred.user);
           if (onAuthSuccess) onAuthSuccess();
@@ -129,9 +111,7 @@ export default function AuthWall({ onAuthSuccess }: AuthWallProps) {
     if (!email) { setError('Enter your email address above, then click Forgot Password.'); return; }
     setLoading(true);
     try {
-      const authInstance = getAuthInstance();
-      if (!authInstance) return;
-      await sendPasswordResetEmail(authInstance, email.trim());
+      await sendPasswordResetEmail(auth, email.trim());
       setResetSent(true);
       setShowReset(false);
     } catch (err: any) {

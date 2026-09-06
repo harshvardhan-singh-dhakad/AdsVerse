@@ -6,10 +6,10 @@ import {
   Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertCircle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
 } from 'lucide-react';
 import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
-import { initializeFirebase } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { getApp } from 'firebase/app';
 import { doc, getDoc } from 'firebase/firestore';
+import { useUser } from '@/firebase';
+import { auth, db } from '@/firebase/init';
 import AuthWall from './AuthWall';
 import PhoneModal from './PhoneModal';
 import AuditPricingModal from './AuditPricingModal';
@@ -23,25 +23,10 @@ const AUDIT_STEPS = [
   { id: 5, label: 'Synthesizing actionable code fixes and full report...', duration: 1500 },
 ];
 
+
+
 function useAuditUser() {
-  const [user, setUser] = useState<any>(null);
-  const [isUserLoading, setIsUserLoading] = useState(false);
-
-  useEffect(() => {
-    try {
-      const { getAuth, onAuthStateChanged } = require("firebase/auth");
-      const { getApp } = require("firebase/app");
-      const auth = getAuth(getApp());
-      const unsubscribe = onAuthStateChanged(auth, (u: any) => {
-        setUser(u);
-        setIsUserLoading(false);
-      });
-      return () => unsubscribe();
-    } catch {
-      setIsUserLoading(false);
-    }
-  }, []);
-
+  const { user, isUserLoading } = useUser();
   return { user, isUserLoading };
 }
 
@@ -113,8 +98,7 @@ export default function AdsVerseAuditPage() {
     if (!user) return;
     const checkProfile = async () => {
       try {
-        const { firestore } = initializeFirebase();
-        const snap = await getDoc(doc(firestore, 'audit_users', user.uid));
+        const snap = await getDoc(doc(db, 'audit_users', user.uid));
         if (snap.exists()) {
           const data = snap.data();
           setUserPlan(data.plan ?? 'free');
@@ -372,8 +356,10 @@ export default function AdsVerseAuditPage() {
 
   const handleSignOut = async () => {
     try {
-      const { auth } = require('@/firebase');
       await signOut(auth);
+      const Cookies = require('js-cookie');
+      Cookies.remove('admin_token');
+      Cookies.remove('user_token');
     } catch {}
   };
 
@@ -1792,3 +1778,7 @@ function CheckRow({ data }: { data: Recommendation | GeoAeoCheck }) {
     </div>
   );
 }
+
+console.log('DEBUG COMPONENT IMPORTS:', { AuthWall: typeof AuthWall, PhoneModal: typeof PhoneModal, AuditPricingModal: typeof AuditPricingModal });
+
+console.log('DEBUG LUCIDE:', { Download: typeof Download, Mail: typeof Mail, CheckCircle: typeof CheckCircle, Loader2: typeof Loader2, ArrowRight: typeof ArrowRight, XCircle: typeof XCircle, AlertCircle: typeof AlertCircle, Info: typeof Info, Crown: typeof Crown, Sparkles: typeof Sparkles, Copy: typeof Copy, Check: typeof Check, ChevronDown: typeof ChevronDown, ChevronUp: typeof ChevronUp, ShieldCheck: typeof ShieldCheck, Zap: typeof Zap, Globe: typeof Globe, Cpu: typeof Cpu, Award: typeof Award });

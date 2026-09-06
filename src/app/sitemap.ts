@@ -1,6 +1,5 @@
 import { MetadataRoute } from 'next';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase-server";
+import { adminDb } from "@/firebase/admin";
 import { DM_CATEGORIES, AI_CATEGORIES, getServiceSlug } from "@/lib/services-data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -45,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogPages: Array<{ url: string; priority: number; changeFrequency: any; lastModified: Date }> = [];
   try {
     const fetchPosts = async () => {
-      const snap = await getDocs(collection(db, "public_blogPosts"));
+      const snap = await adminDb.collection("public_blogPosts").get();
       return snap;
     };
     const snap = await Promise.race([

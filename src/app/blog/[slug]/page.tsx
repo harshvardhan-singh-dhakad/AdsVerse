@@ -9,9 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getFirestore, collection, query, where, getDocs, limit, orderBy } from "firebase/firestore";
-
-import { db } from "@/lib/firebase-server";
+import { adminDb } from "@/firebase/admin";
 
 import { BlogPost } from "@/lib/definitions";
 import { validateMeta } from "@/lib/seo-guard";
@@ -22,12 +20,9 @@ import { ReadingProgressBar } from "@/components/layout/ReadingProgressBar";
 
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  // Use public_blogPosts — publicly readable, contains only published posts
-  const q = query(
-    collection(db, "public_blogPosts"),
-    where("slug", "==", slug)
-  );
-  const snap = await getDocs(q);
+  const snap = await adminDb.collection("public_blogPosts")
+    .where("slug", "==", slug)
+    .get();
   if (snap.empty) return null;
   const post = snap.docs[0].data() as BlogPost;
   
@@ -41,14 +36,12 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 async function getRelatedPosts(category: string, currentSlug: string) {
   const now = new Date().toISOString();
-  const q = query(
-    collection(db, "public_blogPosts"),
-    where("category", "==", category),
-    where("publishedDate", "<=", now),
-    orderBy("publishedDate", "desc"),
-    limit(4)
-  );
-  const snap = await getDocs(q);
+  const snap = await adminDb.collection("public_blogPosts")
+    .where("category", "==", category)
+    .where("publishedDate", "<=", now)
+    .orderBy("publishedDate", "desc")
+    .limit(4)
+    .get();
   const posts = snap.docs
     .map(doc => doc.data() as BlogPost)
     .filter(post => post.slug !== currentSlug)
