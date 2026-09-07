@@ -9,11 +9,6 @@ runConfig:
 
 # Environment variables and secrets.
 env:
-  - variable: INDEXNOW_API_KEY
-    secret: INDEXNOW_API_KEY
-    availability:
-      - RUNTIME
-      - BUILD
 
   - variable: GEMINI_API_KEY
     secret: GEMINI_API_KEY
