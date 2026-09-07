@@ -10,7 +10,7 @@ runConfig:
 # Environment variables and secrets.
 env:
   - variable: INDEXNOW_API_KEY
-    value: 8e9728eb6c5b47e58d50a26e0e9f20c1
+    secret: INDEXNOW_API_KEY
     availability:
       - RUNTIME
       - BUILD
@@ -28,31 +28,51 @@ env:
       - BUILD
 
   - variable: RAZORPAY_KEY_ID
-    value: rzp_test_TKmw2FXlZDc79a
+    secret: RAZORPAY_KEY_ID
     availability:
       - RUNTIME
       - BUILD
 
   - variable: RAZORPAY_KEY_SECRET
-    value: kGkVBjPwLJo0v9ZjBubyz9GB
+    secret: RAZORPAY_KEY_SECRET
     availability:
       - RUNTIME
       - BUILD
 
   - variable: NEXT_PUBLIC_RAZORPAY_KEY_ID
-    value: rzp_test_TKmw2FXlZDc79a
+    secret: RAZORPAY_KEY_ID
     availability:
       - RUNTIME
       - BUILD
 
+  - variable: RAZORPAY_PLAN_1_SITE
+    secret: RAZORPAY_PLAN_1_SITE
+    availability:
+      - RUNTIME
+
+  - variable: RAZORPAY_PLAN_3_SITE
+    secret: RAZORPAY_PLAN_3_SITE
+    availability:
+      - RUNTIME
+
+  - variable: RAZORPAY_PLAN_5_SITE
+    secret: RAZORPAY_PLAN_5_SITE
+    availability:
+      - RUNTIME
+
+  - variable: RAZORPAY_PLAN_10_SITE
+    secret: RAZORPAY_PLAN_10_SITE
+    availability:
+      - RUNTIME
+
   - variable: RAZORPAY_WEBHOOK_SECRET
-    value: adsverse_webhook_secret_2024
+    secret: RAZORPAY_WEBHOOK_SECRET
     availability:
       - RUNTIME
       - BUILD
 
   - variable: CRON_SECRET
-    value: adsverse_cron_secret_2024
+    secret: CRON_SECRET
     availability:
       - RUNTIME
       - BUILD
@@ -92,4 +112,3 @@ env:
     availability:
       - RUNTIME
       - BUILD
-

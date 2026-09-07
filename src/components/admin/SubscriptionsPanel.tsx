@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PLAN_LABELS, PLAN_PRICES as PLAN_MRR } from "@/lib/subscription-plans";
 
 interface Subscription {
   uid: string;
@@ -35,19 +36,7 @@ interface AuditReport {
   trendDelta?: { seo: number; geo: number; aeo: number };
 }
 
-const PLAN_LABELS: Record<string, string> = {
-  "1_site": "1 Website — ₹299/mo",
-  "3_site": "3 Websites — ₹449/mo",
-  "5_site": "5 Websites — ₹599/mo",
-  "10_site": "10 Websites — ₹999/mo",
-};
 
-const PLAN_MRR: Record<string, number> = {
-  "1_site": 299,
-  "3_site": 449,
-  "5_site": 599,
-  "10_site": 999,
-};
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; className: string }> = {

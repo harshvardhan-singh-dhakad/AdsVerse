@@ -3,32 +3,19 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser, useFirestore } from '@/firebase';
-import { doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Crown, Link as LinkIcon, Trash2, ArrowRight, CheckCircle, AlertTriangle, Loader2, TrendingUp, TrendingDown, Minus, History } from 'lucide-react';
 import Link from 'next/link';
 import { trackPaymentCompleted } from '@/lib/analytics';
+import { SUBSCRIPTION_PLANS, PLAN_LIMITS, PLAN_PRICES } from '@/lib/subscription-plans';
 
 declare global {
   interface Window {
     Razorpay: any;
   }
 }
-
-const PLAN_LIMITS: Record<string, number> = {
-  '1_site': 1,
-  '3_site': 3,
-  '5_site': 5,
-  '10_site': 10,
-};
-
-const PLAN_PRICES: Record<string, number> = {
-  '1_site': 299,
-  '3_site': 449,
-  '5_site': 599,
-  '10_site': 999,
-};
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -39,6 +26,7 @@ export default function DashboardPage() {
   const [newUrl, setNewUrl] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [upgradeLoading, setUpgradeLoading] = useState('');
   const [auditHistory, setAuditHistory] = useState<any[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -135,28 +123,46 @@ export default function DashboardPage() {
       return;
     }
 
-    setIsAdding(true);
     try {
-      const docRef = doc(firestore, 'subscriptions', user.uid);
-      const newSites = [...trackedSites, newUrl];
-      await updateDoc(docRef, { siteSlots: newSites });
+      setIsAdding(true);
+      const token = await user.getIdToken();
+      const response = await fetch('/api/subscription/sites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ action: 'add', siteUrl: newUrl }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to add website.');
       setNewUrl('');
     } catch (err) {
       console.error(err);
-      setError('Failed to add website. Please try again.');
+      setError(err instanceof Error ? err.message : 'Failed to add website. Please try again.');
     } finally {
       setIsAdding(false);
     }
   };
 
   const handleRemoveSite = async (siteUrl: string) => {
-    if (!user || !firestore) return;
+    if (!user) return;
     try {
-      const docRef = doc(firestore, 'subscriptions', user.uid);
-      const newSites = trackedSites.filter((s: string) => s !== siteUrl);
-      await updateDoc(docRef, { siteSlots: newSites });
+      setError('');
+      const token = await user.getIdToken();
+      const response = await fetch('/api/subscription/sites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ action: 'remove', siteUrl }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to remove website.');
     } catch (err) {
       console.error(err);
+      setError(err instanceof Error ? err.message : 'Failed to remove website. Please try again.');
     }
   };
 
@@ -164,6 +170,7 @@ export default function DashboardPage() {
     if (!user) return;
     setUpgradeLoading(planTier);
     setError('');
+    setSuccessMessage('');
 
     try {
       const idToken = await user.getIdToken();
@@ -179,22 +186,50 @@ export default function DashboardPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to create subscription');
 
+      const planConfig = SUBSCRIPTION_PLANS[planTier];
+
       const options = {
         key: data.key_id,
         subscription_id: data.subscription_id,
         name: "AdsVerse",
-        description: `Upgrade to ${PLAN_LIMITS[planTier]} Sites Plan`,
-        handler: function (response: any) {
-          // Razorpay returns razorpay_payment_id, razorpay_subscription_id, razorpay_signature
-          // We rely on Webhooks to update Firestore, but fire client-side event for GTM attribution
+        description: `Upgrade to ${planConfig?.name || planTier}`,
+        handler: async function (response: any) {
+          // 1. Client-side tracking
           trackPaymentCompleted({
             plan: planTier,
             value: PLAN_PRICES[planTier],
             currency: 'INR',
             razorpaySubscriptionId: response.razorpay_subscription_id,
           });
-          alert('Subscription successful! Your dashboard will update shortly.');
-          setUpgradeLoading('');
+
+          // 2. Immediately verify with backend to activate subscription in Firestore instantly
+          try {
+            const token = await user.getIdToken();
+            const verifyRes = await fetch('/api/razorpay/verify-subscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                razorpay_subscription_id: response.razorpay_subscription_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                planTier
+              })
+            });
+
+            if (verifyRes.ok) {
+              setSuccessMessage(`Subscription activated! You are now subscribed to ${planConfig?.name || planTier}.`);
+            } else {
+              setSuccessMessage('Payment completed! Your subscription is being processed.');
+            }
+          } catch (verifyErr) {
+            console.warn('Direct verify failed, relying on webhook:', verifyErr);
+            setSuccessMessage('Payment received! Your dashboard will update shortly.');
+          } finally {
+            setUpgradeLoading('');
+          }
         },
         prefill: {
           email: user.email,
@@ -206,7 +241,7 @@ export default function DashboardPage() {
 
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response: any){
-        setError(`Payment Failed: ${response.error.description}`);
+        setError(`Payment Failed: ${response.error?.description || 'Transaction unsuccessful'}`);
         setUpgradeLoading('');
       });
       rzp1.open();
@@ -271,6 +306,7 @@ export default function DashboardPage() {
                   </Button>
                 </form>
 
+                {successMessage && <div className="p-3 mb-6 bg-green-500/10 border border-green-500/20 text-green-500 text-sm rounded-lg flex items-center gap-2"><CheckCircle className="w-4 h-4"/>{successMessage}</div>}
                 {error && <div className="p-3 mb-6 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-lg flex items-center gap-2"><AlertTriangle className="w-4 h-4"/>{error}</div>}
                 
                 {allowedLimit === 0 && !error && (
@@ -378,9 +414,10 @@ export default function DashboardPage() {
               </div>
               
               <div className="space-y-4">
-                {Object.keys(PLAN_LIMITS).map(planTier => {
-                  const limit = PLAN_LIMITS[planTier];
-                  const price = PLAN_PRICES[planTier];
+                {Object.values(SUBSCRIPTION_PLANS).map(plan => {
+                  const planTier = plan.id;
+                  const limit = plan.sitesLimit;
+                  const price = plan.priceInr;
                   const isActive = currentPlan === planTier && currentStatus === 'active';
                   
                   return (
@@ -392,10 +429,9 @@ export default function DashboardPage() {
                         <span className="font-mono font-bold text-lg">₹{price}<span className="text-xs text-muted-foreground font-sans font-normal">/mo</span></span>
                       </div>
                       <ul className="text-xs text-muted-foreground space-y-1 mb-4">
-                        <li>• Track up to {limit} {limit === 1 ? 'domain' : 'domains'}</li>
-                        <li>• Unlimited daily audits</li>
-                        <li>• PDF & Email Reports</li>
-                        <li>• Full GEO/AEO Citations</li>
+                        {plan.features.map((feat, fIdx) => (
+                          <li key={fIdx}>• {feat}</li>
+                        ))}
                       </ul>
                       
                       {isActive ? (

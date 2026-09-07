@@ -4,10 +4,15 @@ import { adminDb } from '@/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { AUDIT_PACKS } from '@/lib/audit-packs';
 
-const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET || 'adsverse_webhook_secret_2024';
+const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET;
 
 export async function POST(req: NextRequest) {
   try {
+    if (!WEBHOOK_SECRET) {
+      console.error('RAZORPAY_WEBHOOK_SECRET is not configured.');
+      return NextResponse.json({ error: 'Webhook is not configured.' }, { status: 503 });
+    }
+
     const bodyText = await req.text();
     const signature = req.headers.get('x-razorpay-signature');
 
@@ -21,7 +26,9 @@ export async function POST(req: NextRequest) {
       .update(bodyText)
       .digest('hex');
 
-    if (expectedSignature !== signature) {
+    const expected = Buffer.from(expectedSignature, 'hex');
+    const received = Buffer.from(signature, 'hex');
+    if (expected.length !== received.length || !crypto.timingSafeEqual(expected, received)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
@@ -74,16 +81,26 @@ export async function POST(req: NextRequest) {
           break;
 
         case 'subscription.cancelled':
+        case 'subscription.completed':
           await docRef.set({
-            status: 'cancelled',
+            status: event === 'subscription.completed' ? 'completed' : 'cancelled',
             updatedAt: new Date()
           }, { merge: true });
           break;
 
+        case 'subscription.pending':
         case 'subscription.halted':
         case 'subscription.paused':
           await docRef.set({
             status: 'past_due',
+            updatedAt: new Date()
+          }, { merge: true });
+          break;
+
+        case 'subscription.resumed':
+          await docRef.set({
+            status: 'active',
+            currentPeriodEnd: subscription.current_end ? new Date(subscription.current_end * 1000) : null,
             updatedAt: new Date()
           }, { merge: true });
           break;

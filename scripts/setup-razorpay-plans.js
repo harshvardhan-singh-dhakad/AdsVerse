@@ -1,9 +1,8 @@
 const Razorpay = require('razorpay');
-const fs = require('fs');
 
 const razorpay = new Razorpay({
-  key_id: 'rzp_test_TKmw2FXlZDc79a',
-  key_secret: 'kGkVBjPwLJo0v9ZjBubyz9GB',
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const plans = [
@@ -62,6 +61,10 @@ const plans = [
 ];
 
 async function setup() {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    throw new Error('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET before creating plans.');
+  }
+
   try {
     let envAdditions = `\n# Razorpay Plan IDs\n`;
     for (const plan of plans) {
@@ -71,8 +74,8 @@ async function setup() {
       envAdditions += `RAZORPAY_PLAN_${plan.id.toUpperCase()}=${response.id}\n`;
     }
     
-    fs.appendFileSync('.env.local', envAdditions);
-    console.log('Successfully created plans and updated .env.local');
+    console.log('Successfully created plans. Add these values to your local environment and App Hosting secrets:');
+    console.log(envAdditions);
   } catch (error) {
     console.error('Error creating plans:', error);
   }

@@ -1,57 +1,72 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
-import { adminAuth, adminDb } from '@/firebase/admin';
-
-const PLAN_MAP: Record<string, string> = {
-  '1_site': process.env.RAZORPAY_PLAN_1_SITE || 'plan_1',
-  '3_site': process.env.RAZORPAY_PLAN_3_SITE || 'plan_3',
-  '5_site': process.env.RAZORPAY_PLAN_5_SITE || 'plan_5',
-  '10_site': process.env.RAZORPAY_PLAN_10_SITE || 'plan_10',
-};
+import { adminAuth } from '@/firebase/admin';
+import { SUBSCRIPTION_PLANS } from '@/lib/subscription-plans';
 
 export async function POST(req: NextRequest) {
   try {
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'dummy_key',
-      key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret',
-    });
+    const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
     // 1. Verify User Authentication via Bearer token
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized. Please log in.' }, { status: 401 });
     }
+
     const token = authHeader.split('Bearer ')[1];
     let decodedToken;
     try {
       decodedToken = await adminAuth.verifyIdToken(token);
     } catch (e) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid or expired session token.' }, { status: 401 });
     }
     const uid = decodedToken.uid;
 
-    const { plan } = await req.json();
-    if (!plan || !PLAN_MAP[plan]) {
-      return NextResponse.json({ error: 'Invalid plan selected' }, { status: 400 });
+    const { plan } = await req.json().catch(() => ({}));
+    const planConfig = SUBSCRIPTION_PLANS[plan];
+
+    if (!plan || !planConfig) {
+      return NextResponse.json({
+        error: `Invalid plan selected: '${plan}'. Valid plans are: ${Object.keys(SUBSCRIPTION_PLANS).join(', ')}`
+      }, { status: 400 });
     }
 
-    const planId = PLAN_MAP[plan];
+    if (!keyId || !keySecret) {
+      console.error('Razorpay credentials are not configured.');
+      return NextResponse.json({ error: 'Payments are not configured. Please contact support.' }, { status: 503 });
+    }
 
-    // 2. Create Razorpay Subscription
+    const razorpay = new Razorpay({
+      key_id: keyId,
+      key_secret: keySecret,
+    });
+
+    // Plan IDs are provisioned once in Razorpay and configured per environment.
+    // Creating plans during checkout creates duplicates and makes reconciliation unreliable.
+    const planId = process.env[planConfig.envKey];
+
+    if (!planId || !planId.startsWith('plan_')) {
+      console.error(`Missing or invalid Razorpay plan configuration: ${planConfig.envKey}`);
+      return NextResponse.json({ error: 'This subscription plan is not configured. Please contact support.' }, { status: 503 });
+    }
+
+    // 3. Create Razorpay Subscription
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
       customer_notify: 1,
-      total_count: 120, // 10 years limit usually
+      total_count: 120, // 10 years monthly max
       notes: {
         uid: uid,
         plan_tier: plan,
-      }
+      },
     });
 
-    // 3. Return Subscription ID to client
+    // 4. Return Subscription ID to client
     return NextResponse.json({
       subscription_id: subscription.id,
       plan_tier: plan,
-      key_id: process.env.RAZORPAY_KEY_ID
+      key_id: keyId,
     });
   } catch (error: any) {
     console.error('Error creating subscription:', error);
