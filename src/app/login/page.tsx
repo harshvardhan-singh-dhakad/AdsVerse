@@ -43,6 +43,8 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   
   const isAdminFlow = searchParams.get("returnUrl")?.startsWith("/admin");
+  const getSafeReturnUrl = (value: string | null, fallback: string) =>
+    value?.startsWith("/") && !value.startsWith("//") ? value : fallback;
 
   useEffect(() => {
     if (searchParams.get("mode") === "signup" && !isAdminFlow) {
@@ -81,21 +83,24 @@ export default function LoginPage() {
           name: customName || firebaseUser.displayName,
         }),
       });
+      if (!res.ok) {
+        throw new Error("Unable to sync the signed-in user");
+      }
       const data = await res.json();
       const params = new URLSearchParams(window.location.search);
-      const returnUrl = params.get("returnUrl");
+      const returnUrl = getSafeReturnUrl(params.get("returnUrl"), "/tools/seo-audit");
       const intent = params.get("intent");
       const domain = params.get("domain");
 
       if (data?.user?.role === "admin") {
         Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
         Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
-        window.location.href = returnUrl || "/admin";
+        window.location.href = returnUrl === "/tools/seo-audit" ? "/admin" : returnUrl;
       } else {
         Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
         Cookies.remove("admin_token");
 
-        let target = returnUrl || "/tools/seo-audit";
+        let target = returnUrl.startsWith("/admin") ? "/tools/seo-audit" : returnUrl;
         if (intent) {
           const sep = target.includes('?') ? '&' : '?';
           target += `${sep}intent=${encodeURIComponent(intent)}`;
@@ -106,9 +111,7 @@ export default function LoginPage() {
     } catch (err) {
       console.warn("User sync warning:", err);
       Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
-      const params = new URLSearchParams(window.location.search);
-      const returnUrl = params.get("returnUrl") || "/tools/seo-audit";
-      window.location.href = returnUrl;
+      window.location.href = "/tools/seo-audit";
     }
   };
 

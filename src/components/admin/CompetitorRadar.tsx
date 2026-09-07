@@ -9,6 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { auth } from "@/firebase/init";
 
 interface CompetitorKeyword {
   keyword: string;
@@ -63,7 +64,11 @@ export function CompetitorRadar() {
   const fetchRadar = async () => {
     try {
       setError(null);
-      const res = await fetch("/api/admin/competitor-radar");
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) throw new Error("Authentication required");
+      const res = await fetch("/api/admin/competitor-radar", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const json = await res.json();
       if (res.ok && json.radar) {
         setData(json.radar);
@@ -86,7 +91,12 @@ export function CompetitorRadar() {
     setRefreshing(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/competitor-radar", { method: "POST" });
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) throw new Error("Authentication required");
+      const res = await fetch("/api/admin/competitor-radar", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const json = await res.json();
       if (res.ok && json.radar) {
         setData(json.radar);

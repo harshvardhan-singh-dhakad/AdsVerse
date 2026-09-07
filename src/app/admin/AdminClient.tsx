@@ -33,6 +33,9 @@ export default function AdminPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idToken: token }),
           });
+          if (!res.ok) {
+            throw new Error("Could not verify administrator access");
+          }
           const data = await res.json();
           if (data?.user?.role === "admin") {
             Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
@@ -42,8 +45,9 @@ export default function AdminPage() {
             window.location.href = "/tools/seo-audit";
           }
         } catch (err) {
-          console.warn("Admin verify warning:", err);
-          setIsAuthorized(true);
+          console.warn("Admin verification failed:", err);
+          setIsAuthorized(false);
+          window.location.href = "/tools/seo-audit";
         }
       });
     }

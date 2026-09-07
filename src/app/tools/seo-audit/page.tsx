@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { 
   Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertCircle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
 } from 'lucide-react';
@@ -396,7 +395,6 @@ export default function AdsVerseAuditPage() {
       {/* Custom Navbar */}
       {/* Custom Navbar */}
       <nav className="navbar-custom print:hidden">
-        <Link href="/" className="nav-logo">AdsVerse.Ai</Link>
         <div className="flex items-center gap-3 md:gap-4">
           <button 
             type="button"

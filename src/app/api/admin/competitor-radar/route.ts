@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '@/firebase/admin';
+import { adminAuth, adminDb } from '@/firebase/admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 const GEMINI_MODEL = 'gemini-3.6-flash';
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
+
+async function requireAdmin(request: NextRequest) {
+  const token = request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
+  if (!token) return false;
+
+  try {
+    const decoded = await adminAuth.verifyIdToken(token);
+    return (await adminDb.collection('roles_admin').doc(decoded.uid).get()).exists;
+  } catch {
+    return false;
+  }
+}
 
 async function callGeminiJson(prompt: string): Promise<any> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -36,6 +48,10 @@ async function callGeminiJson(prompt: string): Promise<any> {
 }
 
 export async function GET(req: NextRequest) {
+  if (!await requireAdmin(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const docRef = adminDb.collection('admin_competitor_radar').doc('latest');
     const snap = await docRef.get();
@@ -57,6 +73,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!await requireAdmin(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     return await generateAndSaveRadar();
   } catch (err: any) {
