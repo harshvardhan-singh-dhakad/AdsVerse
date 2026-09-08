@@ -421,7 +421,7 @@ export default function AdsVerseAuditPage() {
               </div>
               <a 
                 href="/dashboard"
-                className="text-xs font-bold text-white bg-violet-600 hover:bg-violet-500 px-3 py-1.5 rounded-lg transition shadow-md shadow-violet-600/20"
+                className="text-xs font-bold text-white bg-orange-500 hover:bg-orange-600 px-3 py-1.5 rounded-lg transition shadow-md shadow-orange-500/20"
               >
                 Dashboard
               </a>
