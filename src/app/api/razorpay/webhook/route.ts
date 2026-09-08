@@ -98,6 +98,7 @@ export async function POST(req: NextRequest) {
           break;
 
         case 'subscription.resumed':
+        case 'subscription.updated':
           await docRef.set({
             status: 'active',
             currentPeriodEnd: subscription.current_end ? new Date(subscription.current_end * 1000) : null,
