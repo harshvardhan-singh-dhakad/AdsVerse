@@ -46,11 +46,16 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const checkAuth = () => {
+    let unsubscribe: (() => void) | undefined;
+    
+    const setupAuthListener = () => {
       try {
         const { auth } = require("@/firebase/init");
-        if (auth && auth.currentUser) {
-          setIsLoggedIn(true);
+        const { onAuthStateChanged } = require("firebase/auth");
+        if (auth) {
+          unsubscribe = onAuthStateChanged(auth, (user: any) => {
+            setIsLoggedIn(!!user);
+          });
         }
       } catch (e) {
         // Firebase auth not initialized on public SSR pages
@@ -58,13 +63,12 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
     };
 
     if (typeof window !== "undefined") {
-      if ("requestIdleCallback" in window) {
-        (window as any).requestIdleCallback(checkAuth, { timeout: 3500 });
-      } else {
-        const t = setTimeout(checkAuth, 3000);
-        return () => clearTimeout(t);
-      }
+      setupAuthListener();
     }
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const activeNavLinks = isLoggedIn ? [...navLinks, { href: '/dashboard', label: 'Dashboard' }] : navLinks;
