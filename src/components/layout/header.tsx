@@ -83,7 +83,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto relative flex h-16 items-center justify-between px-4 sm:px-8">
-        
+
         {/* Left: Brand/Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-1" aria-label="AdsVerse Home">
@@ -111,7 +111,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                     {label}
                     <ChevronDown />
                   </Link>
-                  
+
                   {/* Mega Menu Dropdown */}
                   <div className="absolute top-[40px] left-1/2 -translate-x-1/2 w-[760px] lg:w-[860px] bg-background/95 dark:bg-slate-900/95 backdrop-blur-md border border-border/40 shadow-2xl rounded-2xl p-6 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto z-50">
                     <div className="grid grid-cols-12 gap-6">
@@ -417,7 +417,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
               </Link>
             </Button>
           </div>
-          
+
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
             <Sheet open={isMobileMenuOpen} onOpenChange={(open) => {
@@ -468,7 +468,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
                                 </svg>
                               </button>
-                              
+
                               <div
                                 className={cn(
                                   "grid transition-all duration-300 ease-in-out pl-4 border-l border-border/60 mt-1 space-y-3",
@@ -485,7 +485,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                       >
                                         All Services &rarr;
                                       </Link>
-                                      
+
                                       {/* Traffic & SEO */}
                                       <div className="space-y-1.5">
                                         <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Traffic & SEO</div>
@@ -564,7 +564,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                                       >
                                         View All 37+ Cities &rarr;
                                       </Link>
-                                      
+
                                       {/* Madhya Pradesh */}
                                       <div className="space-y-1.5">
                                         <div className="text-[10px] font-extrabold uppercase tracking-wider text-orange-500/70">Madhya Pradesh</div>

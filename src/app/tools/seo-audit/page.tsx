@@ -419,6 +419,12 @@ export default function AdsVerseAuditPage() {
                   {user.displayName || user.email?.split('@')[0]}
                 </span>
               </div>
+              <a 
+                href="/dashboard"
+                className="text-xs font-bold text-white bg-violet-600 hover:bg-violet-500 px-3 py-1.5 rounded-lg transition shadow-md shadow-violet-600/20"
+              >
+                Dashboard
+              </a>
               <button 
                 onClick={handleSignOut} 
                 className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded-lg hover:bg-white/5 transition cursor-pointer"
