@@ -25,13 +25,22 @@ export async function POST(req: NextRequest) {
     const provider = decoded.firebase?.sign_in_provider || 'password';
 
     const userDocRef = adminDb.collection('audit_users').doc(uid);
-    const snap = await userDocRef.get();
+    // Keep the login decision consistent with Firestore's admin authorization
+    // model. Admins may have been granted through the dedicated role records
+    // even when their legacy audit_users profile still says "user".
+    const [snap, roleAdminSnap, emailAdminSnap] = await Promise.all([
+      userDocRef.get(),
+      adminDb.collection('roles_admin').doc(uid).get(),
+      email ? adminDb.collection('admins').doc(email).get() : Promise.resolve(null),
+    ]);
+    const hasAdminRecord = roleAdminSnap.exists || !!emailAdminSnap?.exists;
+    const isConfiguredAdmin = ADMIN_EMAILS.includes(email) || hasAdminRecord;
 
     let role = 'user';
     let paidCredits = 0;
 
     // Check if email is in pre-configured admin list
-    if (ADMIN_EMAILS.includes(email)) {
+    if (isConfiguredAdmin) {
       role = 'admin';
     }
 
@@ -54,7 +63,7 @@ export async function POST(req: NextRequest) {
     } else {
       // Update existing user profile
       const data = snap.data();
-      role = data?.role === 'admin' || ADMIN_EMAILS.includes(email) ? 'admin' : 'user';
+      role = data?.role === 'admin' || isConfiguredAdmin ? 'admin' : 'user';
       paidCredits = Number(data?.paidCredits || 0);
 
       await userDocRef.set({
