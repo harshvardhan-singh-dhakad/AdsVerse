@@ -172,15 +172,14 @@ export default function AdsVerseAuditPage() {
     };
 
     try {
+      const idToken = user ? await user.getIdToken() : undefined;
       // 1. Try real-time streaming endpoint first
       const streamRes = await fetch('/api/audit-stream', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
         body: JSON.stringify({ 
           url: url.trim(), 
-          userId: user?.uid ?? null,
-          userPlan,
-          forcePaidAudit: isReportPaid,
+          idToken,
           device
         }),
       });
@@ -234,12 +233,10 @@ export default function AdsVerseAuditPage() {
       // 2. Standard API Fallback (if stream is unavailable or completes without returning complete object)
       const auditRes = await fetch('/api/audit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
         body: JSON.stringify({ 
           url: url.trim(), 
-          userId: user?.uid ?? null,
-          userPlan,
-          forcePaidAudit: isReportPaid,
+          idToken,
           device
         }),
       });

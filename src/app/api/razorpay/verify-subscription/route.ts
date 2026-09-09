@@ -56,9 +56,13 @@ export async function POST(req: NextRequest) {
       status: string;
       notes?: Record<string, string>;
       current_end?: number;
+      plan_id?: string;
     };
     if (razorpaySubscription.notes?.uid !== uid || razorpaySubscription.notes?.plan_tier !== planTier) {
       return NextResponse.json({ error: 'Subscription does not belong to this account or plan.' }, { status: 403 });
+    }
+    if (razorpaySubscription.plan_id !== process.env[SUBSCRIPTION_PLANS[planTier].envKey]) {
+      return NextResponse.json({ error: 'Subscription plan does not match the selected plan.' }, { status: 403 });
     }
     if (!['authenticated', 'active'].includes(razorpaySubscription.status)) {
       return NextResponse.json({ error: 'Subscription payment is not active yet.' }, { status: 409 });

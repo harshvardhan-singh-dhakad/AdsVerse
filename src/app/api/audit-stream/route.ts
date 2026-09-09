@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   let body: any = {};
   try { body = await req.json(); } catch {}
   
-  const { url, idToken, userId, device } = body as { url: string; idToken?: string; userId?: string; device?: 'mobile' | 'desktop' };
+  const { url, idToken, device } = body as { url: string; idToken?: string; device?: 'mobile' | 'desktop' };
 
   if (!url || typeof url !== 'string') {
     return new Response(
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   const domain = extractDomain(url);
 
   // Verify auth & paid status (optional)
-  let uid = userId || 'guest';
+  let uid = 'guest';
   let userWalletCredits = 0;
   let domainCredits = 0;
 
@@ -93,7 +93,22 @@ export async function POST(req: NextRequest) {
     console.warn('[stream] Firebase Admin DB skipped (local dev mode):', (e as any)?.message);
   }
 
-  const isPaidAudit = domainCredits > 0 || userWalletCredits > 0;
+  const isPaidAudit = uid !== 'guest' && userWalletCredits > 0;
+  if (isPaidAudit) {
+    try {
+      const userRef = adminDb.collection('audit_users').doc(uid);
+      await adminDb.runTransaction(async (transaction) => {
+        const userSnap = await transaction.get(userRef);
+        if (Number(userSnap.data()?.paidCredits || 0) < 1) throw new Error('NO_AUDIT_CREDITS');
+        transaction.update(userRef, { paidCredits: FieldValue.increment(-1), lastAuditAt: FieldValue.serverTimestamp() });
+      });
+    } catch (error: any) {
+      if (error?.message === 'NO_AUDIT_CREDITS') {
+        return new Response(encodeEvent('error', null, 'Your audit credits have already been used. Please purchase another audit pass.'), { status: 403, headers: { 'Content-Type': 'text/event-stream' } });
+      }
+      return new Response(encodeEvent('error', null, 'Could not reserve your audit credit. Please try again.'), { status: 500, headers: { 'Content-Type': 'text/event-stream' } });
+    }
+  }
 
   // Create readable stream for SSE
   const stream = new ReadableStream({

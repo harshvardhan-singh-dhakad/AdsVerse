@@ -33,11 +33,9 @@ export async function POST(req: NextRequest) {
   try {
     // ── 1. Parse body ──────────────────────────────────────────────────────
     const body = await req.json().catch(() => ({}));
-    const { url, idToken, userId, forcePaidAudit, device } = body as { 
+    const { url, idToken, device } = body as {
       url: string; 
       idToken?: string; 
-      userId?: string; 
-      forcePaidAudit?: boolean;
       device?: 'mobile' | 'desktop';
     };
 
@@ -53,7 +51,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── 2. Check User Profile & User Wallet Credits ─────────────────────────
-    let uid = userId || 'guest';
+    let uid = 'guest';
     let userEmail = '';
     let userWalletCredits = 0;
     let domainCredits = 0;
@@ -93,7 +91,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Determine if this audit run is Paid (Unlocked)
-    const isPaidAudit = !!forcePaidAudit || domainCredits > 0 || userWalletCredits > 0;
+    // Paid access comes only from the authenticated user's wallet. Never trust
+    // a client supplied flag, UID, or a globally shared domain credit balance.
+    const isPaidAudit = uid !== 'guest' && userWalletCredits > 0;
+    if (isPaidAudit) {
+      try {
+        const userRef = adminDb.collection('audit_users').doc(uid);
+        await adminDb.runTransaction(async (transaction) => {
+          const userSnap = await transaction.get(userRef);
+          if (Number(userSnap.data()?.paidCredits || 0) < 1) throw new Error('NO_AUDIT_CREDITS');
+          transaction.update(userRef, { paidCredits: FieldValue.increment(-1), lastAuditAt: FieldValue.serverTimestamp() });
+        });
+      } catch (error: any) {
+        if (error?.message === 'NO_AUDIT_CREDITS') {
+          return NextResponse.json({ error: 'Your audit credits have already been used. Please purchase another audit pass.' }, { status: 403 });
+        }
+        throw error;
+      }
+    }
 
     // ── 4. Run SEO / GEO / AEO Analysis ────────────────────────────────────
     let analysisResult;
@@ -177,41 +192,13 @@ export async function POST(req: NextRequest) {
     // ── 5. Record Domain Tracking & Decrement Credit ─────────────────────────
     try {
       const domainDocRef = adminDb.collection('audited_domains').doc(domain);
-      if (isPaidAudit) {
-        if (domainCredits > 0) {
-          // Decrement domain credit
-          await domainDocRef.update({
-            paidCredits: FieldValue.increment(-1),
-            lastAuditAt: FieldValue.serverTimestamp(),
-            auditCount: FieldValue.increment(1),
-            lastScore: analysisResult.overallScore.score,
-          });
-        } else if (userWalletCredits > 0 && uid !== 'guest') {
-          // Decrement user wallet credit
-          await adminDb.collection('audit_users').doc(uid).update({
-            paidCredits: FieldValue.increment(-1),
-            lastAuditAt: FieldValue.serverTimestamp(),
-          });
-          await domainDocRef.set({
-            domain: domain,
-            firstUrl: normalizedUrl,
-            lastAuditAt: FieldValue.serverTimestamp(),
-            auditCount: FieldValue.increment(1),
-            paidCredits: 0,
-            lastScore: analysisResult.overallScore.score,
-          }, { merge: true });
-        }
-      } else {
-        // First free audit tracking for this website domain
-        await domainDocRef.set({
-          domain: domain,
-          firstUrl: normalizedUrl,
-          lastAuditAt: FieldValue.serverTimestamp(),
-          auditCount: FieldValue.increment(1),
-          paidCredits: 0,
-          lastScore: analysisResult.overallScore.score,
-        }, { merge: true });
-      }
+      await domainDocRef.set({
+        domain,
+        firstUrl: normalizedUrl,
+        lastAuditAt: FieldValue.serverTimestamp(),
+        auditCount: FieldValue.increment(1),
+        lastScore: analysisResult.overallScore.score,
+      }, { merge: true });
     } catch (e) {
       console.warn('[api/audit] Firestore domain tracking warning:', e);
     }
@@ -273,7 +260,7 @@ export async function POST(req: NextRequest) {
       reportId: `audit_${Date.now()}`,
       domain: domain,
       tier: isPaidAudit ? 'paid_10' : 'free_initial',
-      creditsRemaining: Math.max(0, domainCredits + userWalletCredits - 1),
+      creditsRemaining: Math.max(0, userWalletCredits - (isPaidAudit ? 1 : 0)),
     });
   } catch (err: any) {
     console.error('[/api/audit] Unhandled error:', err);

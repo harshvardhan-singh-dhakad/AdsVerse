@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -42,34 +42,7 @@ type HeaderProps = {
 };
 
 export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    
-    const setupAuthListener = () => {
-      try {
-        const { auth } = require("@/firebase/init");
-        const { onAuthStateChanged } = require("firebase/auth");
-        if (auth) {
-          unsubscribe = onAuthStateChanged(auth, (user: any) => {
-            setIsLoggedIn(!!user);
-          });
-        }
-      } catch (e) {
-        // Firebase auth not initialized on public SSR pages
-      }
-    };
-
-    if (typeof window !== "undefined") {
-      setupAuthListener();
-    }
-
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, []);
 
   const activeNavLinks = navLinks;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -415,19 +388,11 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            {isLoggedIn ? (
-              <Button asChild size="sm" className="bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all flex items-center gap-1.5 border-none">
-                <Link href="/dashboard" prefetch={false}>
-                  Dashboard <span className="text-sm font-semibold">&rarr;</span>
-                </Link>
-              </Button>
-            ) : (
-              <Button asChild size="sm" className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all flex items-center gap-1.5 border-none">
-                <Link href="/tools/seo-audit" prefetch={false}>
-                  Free Audit <span className="text-sm font-semibold">&rarr;</span>
-                </Link>
-              </Button>
-            )}
+            <Button asChild size="sm" className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all flex items-center gap-1.5 border-none">
+              <Link href="/tools/seo-audit" prefetch={false}>
+                Free Audit <span className="text-sm font-semibold">&rarr;</span>
+              </Link>
+            </Button>
           </div>
 
           <div className="md:hidden flex items-center gap-2">

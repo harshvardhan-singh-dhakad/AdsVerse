@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { adminDb } from '@/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { AUDIT_PACKS } from '@/lib/audit-packs';
+import { SUBSCRIPTION_PLANS } from '@/lib/subscription-plans';
 
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET;
 
@@ -45,9 +46,10 @@ export async function POST(req: NextRequest) {
       const notes = subscription.notes || {};
       const uid = notes.uid;
       const plan_tier = notes.plan_tier;
+      const planConfig = SUBSCRIPTION_PLANS[plan_tier];
 
-      if (!uid) {
-        console.warn(`Webhook received for sub ${subId} but no UID in notes. Ignoring.`);
+      if (!uid || !planConfig || subscription.plan_id !== process.env[planConfig.envKey]) {
+        console.warn(`Webhook received for sub ${subId} with invalid account or plan metadata. Ignoring.`);
         return NextResponse.json({ status: 'ignored' }, { status: 200 });
       }
 
@@ -131,14 +133,20 @@ export async function POST(req: NextRequest) {
       const notes = paymentEntity?.notes || orderEntity?.notes || {};
       const packType = notes.packType;
       const domain = notes.domain;
-      const userId = notes.userId;
+      // Orders created by the secure checkout route bind the purchase to uid.
+      // userId is retained only for legacy orders made before this migration.
+      const userId = notes.uid || notes.userId;
 
-      // Verify this is an SEO audit pack purchase
-      if (packType && (AUDIT_PACKS[packType] || notes.credits)) {
+      // Only accept audit packs created by our checkout route. Do not trust a
+      // free-form credits value placed in Razorpay order notes.
+      if (packType && AUDIT_PACKS[packType]) {
         const paymentId = paymentEntity?.id;
         const orderId = orderEntity?.id || paymentEntity?.order_id;
-        const selectedPack = AUDIT_PACKS[packType] || AUDIT_PACKS.single;
-        const creditsToAdd = Number(notes.credits) || selectedPack.credits;
+        const selectedPack = AUDIT_PACKS[packType];
+        if (paymentEntity?.amount !== selectedPack.paise || paymentEntity?.currency !== 'INR') {
+          return NextResponse.json({ status: 'ignored', reason: 'payment_amount_mismatch' }, { status: 200 });
+        }
+        const creditsToAdd = selectedPack.credits;
         const cleanDomain = domain ? domain.toLowerCase().trim() : '';
 
         // Idempotency: check if this payment was already processed

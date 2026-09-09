@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { CheckCircle2, Zap, ShieldCheck, ArrowRight, Loader2, Sparkles, X, Globe, Lock, CreditCard, Smartphone, Building, Wallet, LogIn } from 'lucide-react';
+import { auth } from '@/firebase/init';
 
 interface AuditPricingModalProps {
   isOpen: boolean;
@@ -114,6 +115,8 @@ export default function AuditPricingModal({
     setErrorMessage(null);
 
     try {
+      const idToken = await auth.currentUser?.getIdToken();
+      if (!idToken) throw new Error('Your session has expired. Please sign in again.');
       // Ensure Razorpay SDK is loaded
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded || typeof window.Razorpay === 'undefined') {
@@ -123,11 +126,10 @@ export default function AuditPricingModal({
       // 1. Create order on server
       const res = await fetch('/api/razorpay/create-audit-order', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
         body: JSON.stringify({
           domain: domain || 'wallet',
           packType: selectedPack,
-          userId: userId,
         }),
       });
 
@@ -148,14 +150,11 @@ export default function AuditPricingModal({
           try {
             const verifyRes = await fetch('/api/razorpay/verify-audit-payment', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
               body: JSON.stringify({
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                domain: domain || 'wallet',
-                packType: selectedPack,
-                userId: userId,
               }),
             });
 

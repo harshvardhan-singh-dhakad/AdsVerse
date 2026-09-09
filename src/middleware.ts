@@ -41,6 +41,14 @@ export function middleware(request: NextRequest) {
     const userToken = request.cookies.get('user_token')?.value;
     if (userToken) {
       const returnUrl = request.nextUrl.searchParams.get('returnUrl');
+      // An authenticated user opening /admin must be allowed to reach the
+      // admin login mode. The page verifies their Firebase role and creates
+      // the admin session cookie when appropriate. Redirecting them straight
+      // back to /admin here creates a /admin <-> /login loop because that
+      // cookie has not been issued yet.
+      if (returnUrl?.startsWith('/admin')) {
+        return NextResponse.next();
+      }
       return NextResponse.redirect(new URL(returnUrl || '/tools/seo-audit', request.url));
     }
   }

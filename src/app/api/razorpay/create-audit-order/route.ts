@@ -1,32 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
+import { adminAuth } from '@/firebase/admin';
 import { AUDIT_PACKS } from '@/lib/audit-packs';
+
+function normalizeDomain(value: unknown): string | null {
+  if (typeof value !== 'string' || value.length > 253) return null;
+  const candidate = value.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  return candidate && /^[a-z0-9.-]+$/i.test(candidate) ? candidate : null;
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}));
-    const { domain, packType = 'single', userId } = body;
-
-    if (!domain && !userId) {
-      return NextResponse.json({ error: 'Domain or User ID is required.' }, { status: 400 });
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Please log in before purchasing audit credits.' }, { status: 401 });
     }
-
-    const selectedPack = AUDIT_PACKS[packType] || AUDIT_PACKS.single;
+    const decoded = await adminAuth.verifyIdToken(authHeader.slice(7));
+    const body = await req.json().catch(() => ({}));
+    const packType = typeof body.packType === 'string' ? body.packType : 'single';
+    const selectedPack = AUDIT_PACKS[packType];
+    const domain = normalizeDomain(body.domain) || 'wallet';
+    if (!selectedPack) return NextResponse.json({ error: 'Invalid audit pack.' }, { status: 400 });
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret) {
-      // Fallback for simulation / test mode if Razorpay credentials are not yet configured in env
-      return NextResponse.json({
-        order_id: `order_sim_${Date.now()}`,
-        amount: selectedPack.paise,
-        currency: 'INR',
-        key_id: keyId || 'rzp_test_simulated',
-        domain: domain || 'wallet',
-        packType,
-        credits: selectedPack.credits,
-        isSimulated: true,
-      });
+      console.error('Razorpay credentials are not configured.');
+      return NextResponse.json({ error: 'Payments are not configured. Please contact support.' }, { status: 503 });
     }
 
     const razorpay = new Razorpay({
@@ -39,11 +39,11 @@ export async function POST(req: NextRequest) {
       currency: 'INR',
       receipt: `aud_${Date.now().toString().slice(-8)}`,
       notes: {
-        domain: (domain || 'wallet').toLowerCase(),
+        domain,
         packType,
         credits: selectedPack.credits.toString(),
         price_inr: selectedPack.priceInr.toString(),
-        userId: userId || 'guest',
+        uid: decoded.uid,
       },
     });
 
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       amount: order.amount,
       currency: order.currency,
       key_id: keyId,
-      domain: domain || 'wallet',
+      domain,
       packType,
       credits: selectedPack.credits,
     });
