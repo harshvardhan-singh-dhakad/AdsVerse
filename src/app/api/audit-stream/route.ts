@@ -238,7 +238,16 @@ export async function POST(req: NextRequest) {
         } catch {}
 
         // ── COMPLETE ─────────────────────────────────────────────────────────
-        send('complete', analysisResult, '🎉 Full audit complete!');
+        // Keep the entitlement decision alongside the streamed report. The
+        // client must not infer unlock state from payment UI or local state;
+        // admin-granted credits and Razorpay credits are both trusted only
+        // after this server-side wallet check.
+        send('complete', {
+          ...analysisResult,
+          paidUnlocked: isPaidAudit,
+          isPaid: isPaidAudit,
+          creditsRemaining: Math.max(0, userWalletCredits - (isPaidAudit ? 1 : 0)),
+        }, '🎉 Full audit complete!');
 
       } catch (err: any) {
         send('error', null, err?.message || 'Audit failed. Please try again.');

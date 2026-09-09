@@ -217,6 +217,10 @@ export default function AdsVerseAuditPage() {
               } else if (phase === 'complete' && data) {
                 setCompletedSteps([1, 2, 3, 4, 5]);
                 setCurrentStep(5);
+                // The stream response is authoritative for both Razorpay
+                // credits and admin-granted free credits. Without this update
+                // the full report arrives but the UI keeps showing the paywall.
+                setIsReportPaid(Boolean(data.paidUnlocked ?? data.isPaid));
                 setReport(data);
                 setLoading(false);
                 return;
