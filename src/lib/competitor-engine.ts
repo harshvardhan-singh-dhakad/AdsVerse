@@ -168,22 +168,25 @@ async function fetchDomainAuthority(domains: string[]): Promise<Map<string, Page
   }
 
   try {
-    // Open PageRank allows up to 100 domains per request
+    // OpenPageRank allows up to 100 domains per request.
     const batch = domains.slice(0, 100);
-    const resp = await fetch('https://openpagerank.com/api/v1.0/getPageRank?' + batch.map(d => `domains[]=${encodeURIComponent(d)}`).join('&'), {
+    const resp = await fetch('https://openpagerank.keywordseverywhere.com/v1/domains/bulk', {
+      method: 'POST',
       headers: {
-        'API-OPR': apiKey,
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ domains: batch, include_history: false }),
       signal: AbortSignal.timeout(8000),
     });
 
     if (resp.ok) {
       const data = await resp.json();
-      for (const item of (data.response || [])) {
+      for (const item of (data.results || [])) {
         results.set(item.domain, {
           domain: item.domain,
-          page_rank_decimal: item.page_rank_decimal ?? null,
-          rank: item.rank ?? null,
+          page_rank_decimal: item.open_page_rank ?? null,
+          rank: item.rank != null ? String(item.rank) : null,
         });
       }
     }
