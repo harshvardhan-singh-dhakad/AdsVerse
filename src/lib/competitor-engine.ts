@@ -322,6 +322,7 @@ Focus on the business niche and city/region if mentioned.
 Return ONLY the search query, nothing else. No quotes.`;
 
   try {
+    console.info('[CompetitorEngine] Gemini keyword request', { targetDomain: domain, prompt });
     const resp = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
@@ -334,6 +335,7 @@ Return ONLY the search query, nothing else. No quotes.`;
     if (resp.ok) {
       const data = await resp.json();
       const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+      console.info('[CompetitorEngine] Gemini keyword response', { targetDomain: domain, status: resp.status, rawResponse: text });
       if (text && text.length > 3 && text.length < 60) {
         console.log(`[CompetitorEngine] Gemini keyword: "${text}"`);
         return text;
@@ -518,6 +520,7 @@ Rules:
 - Output ONLY JSON array.`;
 
   try {
+    console.info('[CompetitorEngine] Gemini competitor request', { targetDomain, prompt });
     const resp = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
@@ -534,6 +537,7 @@ Rules:
     if (resp.ok) {
       const data = await resp.json();
       const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      console.info('[CompetitorEngine] Gemini competitor response', { targetDomain, status: resp.status, rawResponse: text });
       if (text) {
         const parsed = JSON.parse(text);
         if (Array.isArray(parsed)) {

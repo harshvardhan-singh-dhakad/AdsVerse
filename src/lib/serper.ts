@@ -66,6 +66,7 @@ async function serperFetch(
   }
 
   try {
+    console.info('[Serper] request', { endpoint, payload: { gl: 'in', hl: 'en', num: 10, ...payload } });
     const res = await fetch(`${SERPER_BASE}${endpoint}`, {
       method: 'POST',
       headers: {
@@ -81,7 +82,9 @@ async function serperFetch(
       return null;
     }
 
-    return await res.json();
+    const data = await res.json();
+    console.info('[Serper] response', { endpoint, status: res.status, rawResponse: data });
+    return data;
   } catch (err) {
     console.error(`[Serper] Fetch error for ${endpoint}:`, err);
     return null;

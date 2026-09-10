@@ -45,6 +45,7 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
   const timer = setTimeout(() => controller.abort(), 40000);
 
   try {
+    console.info('[PageSpeed] request', { url, strategy, hasApiKey: Boolean(apiKey) });
     const response = await fetch(apiUrl, { 
       signal: controller.signal,
       cache: 'no-store',
@@ -61,6 +62,7 @@ export async function fetchPageSpeedData(url: string, strategy: 'mobile' | 'desk
     }
 
     const data = await response.json();
+    console.info('[PageSpeed] response', { url, strategy, status: response.status, rawResponse: JSON.stringify(data) });
     const lighthouse = data.lighthouseResult;
 
     if (!lighthouse || !lighthouse.categories) {

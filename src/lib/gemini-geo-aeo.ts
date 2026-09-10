@@ -72,12 +72,12 @@ async function callGemini(
   prompt: string,
   jsonMode = false,
   timeoutMs = 8000,
-  targetModel = 'gemini-3.7-flash',
+  targetModel = process.env.GEMINI_AUDIT_MODEL || 'gemini-2.5-flash',
 ): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY is not configured');
 
-  const modelsToTry = [targetModel, 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-flash-lite-latest', 'gemini-3.1-pro-preview'].filter(
+  const modelsToTry = [targetModel, 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-lite-latest'].filter(
     (m, i, arr) => arr.indexOf(m) === i
   );
 
@@ -86,6 +86,9 @@ async function callGemini(
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
+      // Deliberately log the prompt: it contains the submitted URL/content and
+      // lets production logs prove that each call is tied to this audit.
+      console.info('[Gemini GEO/AEO] request', { model, prompt });
       const res = await fetch(
         `${GEMINI_BASE}/${model}:generateContent?key=${apiKey}`,
         {
@@ -113,6 +116,7 @@ async function callGemini(
       if (res.ok) {
         const data = await res.json();
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+        console.info('[Gemini GEO/AEO] response', { model, status: res.status, rawResponse: text });
         if (text) return text;
       } else {
         const errText = await res.text();
@@ -124,7 +128,7 @@ async function callGemini(
     }
   }
 
-  return '';
+  throw new Error('Gemini returned no usable response from every configured audit model');
 }
 
 // ── Step 1: Detect brand + industry ──────────────────────────────────────────
@@ -210,27 +214,6 @@ Reply ONLY as valid JSON array of 3 strings: ["q1", "q2", "q3"]
 
 // ── Step 3: Test each prompt for citation (Parallel) ──────────────────────────
 
-function extractCitationContext(text: string, domain: string, brand: string): {
-  cited: boolean;
-  position: number;
-  context: string | null;
-} {
-  const lowerText = text.toLowerCase();
-  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase();
-  const lowerBrand = brand.toLowerCase();
-
-  let idx = lowerText.indexOf(cleanDomain);
-  if (idx === -1) idx = lowerText.indexOf(lowerBrand);
-
-  if (idx === -1) return { cited: false, position: -1, context: null };
-
-  const start = Math.max(0, idx - 100);
-  const end = Math.min(text.length, idx + 150);
-  const context = text.slice(start, end).replace(/\s+/g, ' ').trim();
-
-  return { cited: true, position: idx, context };
-}
-
 async function testCitationPrompts(
   domain: string,
   brand: string,
@@ -242,20 +225,20 @@ async function testCitationPrompts(
     promptList.map(async (prompt) => {
       try {
         const liveResults = await scrapeLiveSearchResults(prompt, 5);
-        let contextText = liveResults.length > 0
-          ? liveResults.map((r, idx) => `[Rank ${idx + 1}] Title: ${r.title} | Snippet: ${r.snippet} | URL: ${r.url}`).join('\n')
-          : "No live search results available.";
-
-        const aiPrompt = `
-Search Query: "${prompt}"
-Search Results:
-${contextText}
-
-Factual answer mentioning specific companies. Does "${brand}" or "${domain}" appear?
-`.trim();
-
-        const response = await callGemini(aiPrompt, false, 6000);
-        const { cited, position, context } = extractCitationContext(response, domain, brand);
+        // Citation is verified against the actual live SERP response—not against
+        // an LLM sentence that can repeat the target brand while denying it.
+        const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase();
+        const cleanBrand = brand.trim().toLowerCase();
+        const evidenceIndex = liveResults.findIndex((result) => {
+          let resultDomain = '';
+          try { resultDomain = new URL(result.url).hostname.replace(/^www\./, '').toLowerCase(); } catch {}
+          return resultDomain === cleanDomain ||
+            Boolean(cleanBrand) && `${result.title} ${result.snippet}`.toLowerCase().includes(cleanBrand);
+        });
+        const evidence = evidenceIndex >= 0 ? liveResults[evidenceIndex] : null;
+        const cited = evidence !== null;
+        const position = evidenceIndex >= 0 ? evidenceIndex * 100 : -1;
+        const context = evidence ? `${evidence.title} — ${evidence.snippet}`.slice(0, 300) : null;
 
         let prominence: GeoLlmCitation['prominence'] = 'none';
         let weight = 0;
@@ -418,10 +401,8 @@ export async function runLlmGeoAeo(params: {
 }): Promise<LlmGeoAeoResult> {
   const { domain, title, h1, h2s, h3s, bodyExcerpt } = params;
 
-  const cached = await getCached(domain);
-  if (cached) {
-    return cached;
-  }
+  // On-demand audits must be live. A seven-day cache made Gemini appear not to
+  // run and could serve an outdated report after the target page changed.
 
   const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
 
@@ -503,35 +484,12 @@ export async function runLlmGeoAeo(params: {
       llmSkipped: false,
     };
 
-    await writeCache(domain, result);
     return result;
   } catch (err) {
     console.error('[runLlmGeoAeo] Main execution failed:', err);
-    return {
-      brand: cleanDomain.split('.')[0] || 'Brand',
-      industry: 'Business',
-      city: null,
-      geoLlmScore: 65,
-      aeoLlmScore: 70,
-      platformVisibility: { chatGpt: 68, gemini: 62, perplexity: 58, claude: 50 },
-      sentiment: 'Neutral',
-      semanticGaps: [
-        {
-          entity: 'Direct Q&A Structure',
-          category: 'AEO',
-          importance: 'High',
-          competitorBenchmark: 'Competitors feature FAQ Schema',
-          action: 'Add FAQ Schema to pages.',
-        }
-      ],
-      geoDetails: [],
-      aeoDetails: [],
-      promptsGenerated: 0,
-      citationsFound: 0,
-      callsUsed: 0,
-      cacheHit: false,
-      llmSkipped: false,
-    };
+    // Never manufacture a plausible-looking AI report. The caller records the
+    // unavailable integration and keeps the verified DOM/PSI findings intact.
+    throw err;
   }
 }
 

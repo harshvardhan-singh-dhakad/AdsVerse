@@ -6,6 +6,9 @@ const envConfig = dotenv.parse(fs.readFileSync('.env.local'));
 
 const secrets = [
     'GEMINI_API_KEY',
+    'PAGESPEED_API_KEY',
+    'SERPER_API_KEY',
+    'OPEN_PAGERANK_API_KEY',
     'RAZORPAY_KEY_ID',
     'RAZORPAY_KEY_SECRET',
     'RAZORPAY_PLAN_1_SITE',

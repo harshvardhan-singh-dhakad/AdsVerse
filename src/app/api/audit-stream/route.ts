@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
             h3s: analysisResult.h3s,
             bodyExcerpt: analysisResult.bodyTextExcerpt,
             staticAeoScore: analysisResult.geoAeoScores.aeo.score,
-          }).catch(e => { console.warn('[stream] GEO/AEO error:', e); return null; }),
+          }),
           // Competitor search (DuckDuckGo + Gemini keyword)
           runCompetitorAnalysis({
             targetUrl: normalizedUrl,
@@ -174,7 +174,7 @@ export async function POST(req: NextRequest) {
               // Stream each competitor as it's analyzed
               send('competitor_analyzed', comp, `✅ Analyzed ${comp.domain}`);
             },
-          }).catch(e => { console.warn('[stream] Competitor error:', e); return null; }),
+          }),
         ]);
 
         // Apply GEO/AEO results
@@ -185,10 +185,21 @@ export async function POST(req: NextRequest) {
           analysisResult.geoAeoScores.geo.score = blendedGeo;
           analysisResult.geoAeoScores.aeo.score = blendedAeo;
           analysisResult.llmGeoAeo = lResult;
+          analysisResult.dataSources = { ...analysisResult.dataSources!, geoAeo: 'live' };
           send('geo_aeo_done', { llmGeoAeo: lResult, geoAeoScores: analysisResult.geoAeoScores }, '✅ AI brand citation analysis complete');
+        } else if (llmResult.status === 'rejected') {
+          const message = llmResult.reason instanceof Error ? llmResult.reason.message : String(llmResult.reason);
+          console.error('[stream] GEO/AEO unavailable', { url: normalizedUrl, message });
+          send('geo_aeo_unavailable', { url: normalizedUrl, error: message }, 'AI GEO/AEO data is unavailable; no fallback scores were used.');
         }
 
         const competitorData = competitorResult.status === 'fulfilled' ? competitorResult.value : null;
+        if (competitorData) {
+          analysisResult.dataSources = { ...analysisResult.dataSources!, competitors: 'live' };
+        }
+        if (competitorResult.status === 'rejected') {
+          console.error('[stream] Competitor analysis unavailable', { url: normalizedUrl, error: competitorResult.reason });
+        }
         
         // ── PHASE 4: AI Strategy Report ───────────────────────────────────────
         let strategyReport = null;

@@ -146,6 +146,7 @@ export async function POST(req: NextRequest) {
         analysisResult.geoAeoScores.geo.score = blendedGeo;
         analysisResult.geoAeoScores.aeo.score = blendedAeo;
         analysisResult.llmGeoAeo = lResult;
+        analysisResult.dataSources = { ...analysisResult.dataSources!, geoAeo: 'live' };
       } else {
         console.warn('[api/audit] Gemini GEO/AEO warning:', llmResult.reason);
       }
@@ -153,6 +154,7 @@ export async function POST(req: NextRequest) {
       // Apply competitor analysis results + generate AI strategy report
       if (competitorResult.status === 'fulfilled' && competitorResult.value.competitors.length > 0) {
         analysisResult.competitorAnalysis = competitorResult.value;
+        analysisResult.dataSources = { ...analysisResult.dataSources!, competitors: 'live' };
         // Generate strategy report using competitor data
         try {
           const strategyReport = await generateStrategyReport({

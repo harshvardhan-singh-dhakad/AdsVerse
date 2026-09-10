@@ -123,6 +123,13 @@ export interface AnalysisResult {
   serpRank?: SerpRankResult | null;
   targetKeyword?: string | null;
   brandMentions?: BrandMention[];
+  /** Provenance is returned with the report so unavailable APIs are never presented as live data. */
+  dataSources?: {
+    targetPage: 'live';
+    pageSpeed: 'live' | 'estimated';
+    geoAeo: 'live' | 'unavailable';
+    competitors: 'live' | 'unavailable';
+  };
 }
 
 function getGrade(score: number): string {
@@ -202,8 +209,8 @@ export async function analyzeUrl(urlInput: string, device: 'mobile' | 'desktop' 
       redirected = finalUrl !== url;
     }
   } catch (err: any) {
-    statusCode = 500;
-    html = '';
+    console.error('[analyzeUrl] Target-page request failed', { url, message: err?.message });
+    throw new Error(`Could not fetch ${url}: ${err?.message || 'request failed'}`);
   }
 
   const loadTime = Date.now() - startTime;
@@ -811,5 +818,12 @@ export async function analyzeUrl(urlInput: string, device: 'mobile' | 'desktop' 
     serpRank: serpRankResult,
     targetKeyword,
     brandMentions: brandMentionsList,
+    dataSources: {
+      targetPage: 'live',
+      pageSpeed: psiSource === 'estimated' ? 'estimated' : 'live',
+      // The route updates these after the external AI/competitor work settles.
+      geoAeo: 'unavailable',
+      competitors: 'unavailable',
+    },
   };
 }

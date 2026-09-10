@@ -16,6 +16,23 @@ env:
       - RUNTIME
       - BUILD
 
+  # Required by the SEO audit report builder. These must be created with
+  # `firebase apphosting:secrets:set` before deployment.
+  - variable: PAGESPEED_API_KEY
+    secret: PAGESPEED_API_KEY
+    availability:
+      - RUNTIME
+
+  - variable: SERPER_API_KEY
+    secret: SERPER_API_KEY
+    availability:
+      - RUNTIME
+
+  - variable: OPEN_PAGERANK_API_KEY
+    secret: OPEN_PAGERANK_API_KEY
+    availability:
+      - RUNTIME
+
   - variable: DAILY_LLM_AUDIT_CAP
     value: "50"
     availability:
