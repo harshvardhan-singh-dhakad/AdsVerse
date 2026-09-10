@@ -8,9 +8,11 @@
       "src/app/api/seed-portfolio/**",
       "src/app/[lang]/seed/**",
       "node_modules",
+      ".next",
       ".git",
       "firebase-debug.log",
       "firebase-debug.*.log",
+      "recent_changes.diff",
       "functions"
     ],
     "alwaysDeployFromSource": true
