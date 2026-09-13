@@ -148,23 +148,36 @@ export default function AuditPricingModal({
         order_id: orderData.order_id,
         handler: async function (response: any) {
           try {
-            const verifyRes = await fetch('/api/razorpay/verify-audit-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
+            // Credits are granted only by the signed Razorpay webhook. Poll the
+            // read-only verification endpoint briefly so an audit cannot start
+            // before the wallet transaction has completed.
+            let credited = false;
+            for (let attempt = 0; attempt < 10; attempt += 1) {
+              const verifyRes = await fetch('/api/razorpay/verify-audit-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                }),
+              });
+              const verification = await verifyRes.json().catch(() => ({}));
+              if (!verifyRes.ok) throw new Error(verification.error || 'Payment verification failed.');
+              if (verification.credited) {
+                credited = true;
+                break;
+              }
+              await new Promise((resolve) => window.setTimeout(resolve, 1000));
+            }
 
-            if (verifyRes.ok) {
+            if (credited) {
               onPaymentSuccess();
             } else {
-              setErrorMessage('Payment verification failed. Please contact support.');
+              setErrorMessage('Payment received. Your credits are being confirmed securely; please refresh in a few seconds.');
             }
-          } catch {
-            setErrorMessage('Network error while verifying payment.');
+          } catch (error: any) {
+            setErrorMessage(error?.message || 'Network error while verifying payment.');
           } finally {
             setLoading(false);
           }

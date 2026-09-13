@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy, doc, updateDoc, increment } from "firebase/firestore";
+import { collection, query, orderBy, doc, updateDoc } from "firebase/firestore";
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Users, UserCheck, Shield, Crown, Sparkles, Loader2, Search, PlusCircle, 
+  Users, UserCheck, Shield, Crown, Sparkles, Loader2, Search,
   Mail, Calendar, ArrowUpDown, Check, RefreshCw 
 } from "lucide-react";
 import { format } from "date-fns";
@@ -41,8 +41,6 @@ interface AuditUser {
 export function UsersTable() {
   const firestore = useFirestore();
   const [searchTerm, setSearchTerm] = useState("");
-  const [creditModalUser, setCreditModalUser] = useState<AuditUser | null>(null);
-  const [creditAmount, setCreditAmount] = useState<number>(5);
   const [updatingUser, setUpdatingUser] = useState<string | null>(null);
 
   const usersQuery = useMemoFirebase(
@@ -66,22 +64,6 @@ export function UsersTable() {
   const totalUsers = users?.length || 0;
   const adminUsers = users?.filter((u) => u.role === "admin").length || 0;
   const totalCreditsInCirculation = users?.reduce((acc, u) => acc + (Number(u.paidCredits) || 0), 0) || 0;
-
-  const handleAddCredits = async () => {
-    if (!creditModalUser || creditAmount <= 0) return;
-    setUpdatingUser(creditModalUser.uid);
-    try {
-      const userRef = doc(firestore, "audit_users", creditModalUser.uid);
-      await updateDoc(userRef, {
-        paidCredits: increment(creditAmount),
-      });
-      setCreditModalUser(null);
-    } catch (err) {
-      console.error("Failed to add credits:", err);
-    } finally {
-      setUpdatingUser(null);
-    }
-  };
 
   const handleToggleRole = async (user: AuditUser) => {
     const newRole = user.role === "admin" ? "user" : "admin";
@@ -145,7 +127,7 @@ export function UsersTable() {
           <div>
             <CardTitle className="text-xl font-bold">User Directory &amp; Audit Wallets</CardTitle>
             <CardDescription className="text-xs text-muted-foreground mt-1">
-              Manage accounts, gift audit credits, and grant admin roles.
+              Manage accounts and grant admin roles. Audit credits are added through Razorpay payments.
             </CardDescription>
           </div>
 
@@ -238,14 +220,6 @@ export function UsersTable() {
                           <div className="flex items-center justify-end gap-2">
                             <Button
                               size="sm"
-                              variant="outline"
-                              onClick={() => setCreditModalUser(u)}
-                              className="h-7 text-[11px] px-2.5 bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20"
-                            >
-                              <PlusCircle className="w-3 h-3 mr-1" /> Gift Credits
-                            </Button>
-                            <Button
-                              size="sm"
                               variant="ghost"
                               disabled={updatingUser === u.uid}
                               onClick={() => handleToggleRole(u)}
@@ -265,67 +239,6 @@ export function UsersTable() {
           )}
         </CardContent>
       </Card>
-
-      {/* Gift Credits Modal */}
-      {creditModalUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-sm bg-card border border-border/40 rounded-2xl p-6 shadow-2xl space-y-4">
-            <button
-              onClick={() => setCreditModalUser(null)}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-sm"
-            >
-              ✕
-            </button>
-            <h3 className="text-lg font-bold text-foreground">Gift Audit Credits</h3>
-            <p className="text-xs text-muted-foreground">
-              Add paid audit credits to <span className="font-semibold text-primary">{creditModalUser.email}</span>.
-            </p>
-
-            <div className="space-y-3 pt-2">
-              <label className="text-xs font-semibold text-foreground">Select or enter credit amount:</label>
-              <div className="grid grid-cols-4 gap-2">
-                {[1, 5, 10, 25].map((amt) => (
-                  <button
-                    key={amt}
-                    type="button"
-                    onClick={() => setCreditAmount(amt)}
-                    className={`py-2 text-xs font-bold rounded-lg border transition-all ${
-                      creditAmount === amt
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background border-border hover:bg-muted"
-                    }`}
-                  >
-                    +{amt}
-                  </button>
-                ))}
-              </div>
-
-              <Input
-                type="number"
-                min="1"
-                max="100"
-                value={creditAmount}
-                onChange={(e) => setCreditAmount(Number(e.target.value))}
-                className="text-xs"
-                placeholder="Custom amount"
-              />
-
-              <Button
-                onClick={handleAddCredits}
-                disabled={updatingUser === creditModalUser.uid || creditAmount <= 0}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-4 mt-2"
-              >
-                {updatingUser === creditModalUser.uid ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-1" />
-                ) : (
-                  <Sparkles className="w-4 h-4 mr-1" />
-                )}
-                Confirm +{creditAmount} Credits
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

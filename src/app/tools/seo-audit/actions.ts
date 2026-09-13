@@ -204,6 +204,17 @@ export async function analyzeUrl(urlInput: string, device: 'mobile' | 'desktop' 
     html = typeof response.data === 'string' ? response.data : '';
     headers = response.headers as Record<string, string>;
 
+    const contentType = String(headers['content-type'] || '').toLowerCase();
+    if (statusCode < 200 || statusCode >= 400) {
+      throw new Error(`The website responded with HTTP ${statusCode}`);
+    }
+    if (!contentType.includes('text/html') && !contentType.includes('application/xhtml+xml')) {
+      throw new Error(`The URL did not return an HTML page (${contentType || 'unknown content type'})`);
+    }
+    if (!html.trim()) {
+      throw new Error('The website returned an empty HTML document');
+    }
+
     if (response.request && response.request.res && response.request.res.responseUrl) {
       finalUrl = response.request.res.responseUrl;
       redirected = finalUrl !== url;

@@ -129,13 +129,10 @@ export async function POST(req: NextRequest) {
     const paymentEntity = payload.payload?.payment?.entity;
     const orderEntity = payload.payload?.order?.entity;
 
-    if (event === 'order.paid' || event === 'payment.captured') {
+    if (event === 'payment.captured') {
       const notes = paymentEntity?.notes || orderEntity?.notes || {};
       const packType = notes.packType;
-      const domain = notes.domain;
-      // Orders created by the secure checkout route bind the purchase to uid.
-      // userId is retained only for legacy orders made before this migration.
-      const userId = notes.uid || notes.userId;
+      const userId = notes.uid;
 
       // Only accept audit packs created by our checkout route. Do not trust a
       // free-form credits value placed in Razorpay order notes.
@@ -143,102 +140,51 @@ export async function POST(req: NextRequest) {
         const paymentId = paymentEntity?.id;
         const orderId = orderEntity?.id || paymentEntity?.order_id;
         const selectedPack = AUDIT_PACKS[packType];
-        if (paymentEntity?.amount !== selectedPack.paise || paymentEntity?.currency !== 'INR') {
+        if (!paymentId || !userId || paymentEntity?.amount !== selectedPack.paise || paymentEntity?.currency !== 'INR') {
           return NextResponse.json({ status: 'ignored', reason: 'payment_amount_mismatch' }, { status: 200 });
         }
         const creditsToAdd = selectedPack.credits;
-        const cleanDomain = domain ? domain.toLowerCase().trim() : '';
 
-        // Idempotency: check if this payment was already processed
-        if (paymentId) {
-          const directDoc = await adminDb.collection('audit_payments').doc(paymentId).get();
-          if (directDoc.exists && directDoc.data()?.status === 'success') {
-            return NextResponse.json({ status: 'already_processed', paymentId }, { status: 200 });
+        // The payment document ID is the Razorpay payment ID. Reading it and
+        // crediting the wallet in the same transaction makes webhook retries
+        // and duplicate delivery exactly-once operations.
+        const paymentRef = adminDb.collection('audit_payments').doc(paymentId);
+        const userRef = adminDb.collection('audit_users').doc(userId);
+        let alreadyProcessed = false;
+        await adminDb.runTransaction(async (transaction) => {
+          const existingPayment = await transaction.get(paymentRef);
+          if (existingPayment.exists) {
+            alreadyProcessed = true;
+            return;
           }
 
-          const paySnap = await adminDb.collection('audit_payments')
-            .where('paymentId', '==', paymentId)
-            .limit(1)
-            .get();
-          if (!paySnap.empty) {
-            return NextResponse.json({ status: 'already_processed', paymentId }, { status: 200 });
-          }
-        }
-
-        if (orderId) {
-          const orderSnap = await adminDb.collection('audit_payments')
-            .where('orderId', '==', orderId)
-            .limit(1)
-            .get();
-          if (!orderSnap.empty) {
-            return NextResponse.json({ status: 'already_processed', orderId }, { status: 200 });
-          }
-        }
-
-        // 2a. Credit the Domain record if specified
-        if (cleanDomain && cleanDomain !== 'wallet') {
-          const domainDocRef = adminDb.collection('audited_domains').doc(cleanDomain);
-          const domainSnap = await domainDocRef.get();
-
-          if (domainSnap.exists) {
-            await domainDocRef.update({
-              paidCredits: FieldValue.increment(creditsToAdd),
-              lastPaymentAt: FieldValue.serverTimestamp(),
-              lastPaymentId: paymentId || orderId || 'webhook',
-            });
-          } else {
-            await domainDocRef.set({
-              domain: cleanDomain,
-              firstAuditAt: FieldValue.serverTimestamp(),
-              lastAuditAt: FieldValue.serverTimestamp(),
-              auditCount: 0,
-              paidCredits: creditsToAdd,
-              lastPaymentAt: FieldValue.serverTimestamp(),
-              lastPaymentId: paymentId || orderId || 'webhook',
-            });
-          }
-        }
-
-        // 2b. Credit the User profile if userId provided
-        if (userId && userId !== 'guest') {
-          try {
-            const userDocRef = adminDb.collection('audit_users').doc(userId);
-            await userDocRef.set(
-              {
-                paidCredits: FieldValue.increment(creditsToAdd),
-                plan: 'paid',
-                lastRechargeAt: FieldValue.serverTimestamp(),
-              },
-              { merge: true }
-            );
-          } catch (e) {
-            console.warn('Webhook: Failed to credit user account:', e);
-          }
-        }
-
-        // 2c. Record transaction in audit_payments collection (idempotent doc ID)
-        const recordId = paymentId || orderId || adminDb.collection('audit_payments').doc().id;
-        await adminDb.collection('audit_payments').doc(recordId).set({
-          id: recordId,
-          domain: cleanDomain || 'wallet',
-          userId: userId || 'guest',
-          packType,
-          amount: selectedPack.priceInr,
-          currency: 'INR',
-          credits: creditsToAdd,
-          paymentId: paymentId || null,
-          orderId: orderId || null,
-          source: 'razorpay_webhook',
-          status: 'success',
-          createdAt: FieldValue.serverTimestamp(),
-        }, { merge: true });
+          transaction.set(userRef, {
+            paidCredits: FieldValue.increment(creditsToAdd),
+            plan: 'paid',
+            lastRechargeAt: FieldValue.serverTimestamp(),
+          }, { merge: true });
+          transaction.set(paymentRef, {
+            id: paymentId,
+            domain: String(notes.domain || 'wallet'),
+            userId,
+            packType,
+            amount: selectedPack.priceInr,
+            currency: 'INR',
+            credits: creditsToAdd,
+            paymentId,
+            orderId: orderId || null,
+            source: 'razorpay_webhook',
+            status: 'success',
+            createdAt: FieldValue.serverTimestamp(),
+          });
+        });
 
         return NextResponse.json({
-          status: 'success',
+          status: alreadyProcessed ? 'already_processed' : 'success',
           type: 'audit_pack',
           packType,
           credits: creditsToAdd,
-          domain: cleanDomain || 'wallet'
+          paymentId,
         }, { status: 200 });
       }
     }

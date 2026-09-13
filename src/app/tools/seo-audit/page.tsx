@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertCircle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
 } from 'lucide-react';
-import { analyzeUrl, type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
+import { type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useUser } from '@/firebase';
@@ -188,6 +188,8 @@ export default function AdsVerseAuditPage() {
         const reader = streamRes.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
+        let streamCompleted = false;
+        let streamError: string | null = null;
 
         while (true) {
           const { done, value } = await reader.read();
@@ -223,18 +225,36 @@ export default function AdsVerseAuditPage() {
                 setIsReportPaid(Boolean(data.paidUnlocked ?? data.isPaid));
                 setReport(data);
                 setLoading(false);
+                streamCompleted = true;
                 return;
               } else if (phase === 'error') {
-                throw new Error(payload.message || 'Streaming audit error');
+                streamError = payload.message || 'Streaming audit error';
+                await reader.cancel();
+                break;
               }
             } catch (e) {
               console.warn('[Stream parse error]', e);
             }
           }
+          if (streamError) break;
+        }
+
+        // A successful SSE response owns this audit attempt (and possibly its
+        // paid credit). Do not send a second request after an incomplete/error
+        // stream, otherwise the same audit could be charged and run twice.
+        if (!streamCompleted) {
+          throw new Error(streamError || 'The live audit did not complete. No report was generated; please try again.');
         }
       }
 
-      // 2. Standard API Fallback (if stream is unavailable or completes without returning complete object)
+      // Only use the legacy endpoint when SSE is absent in an older deployment.
+      // All report data still comes from the server-side audit engine.
+      if (streamRes.status !== 404 && streamRes.status !== 405) {
+        const message = await streamRes.text().catch(() => '');
+        throw new Error(message || `Live audit service is unavailable (${streamRes.status}). Please try again.`);
+      }
+
+      // 2. Standard API fallback for deployments that do not yet expose SSE.
       const auditRes = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
@@ -257,11 +277,7 @@ export default function AdsVerseAuditPage() {
       const finalReport = resJson.data || resJson.report;
 
       if (!finalReport) {
-        const localData = await analyzeUrl(url.trim(), device);
-        setIsReportPaid(false);
-        setReport(localData);
-        setLoading(false);
-        return;
+        throw new Error('The audit service returned no report data. Please try again.');
       }
 
       setIsReportPaid(!!(resJson.paidUnlocked ?? resJson.isPaid ?? isReportPaid));
@@ -269,18 +285,9 @@ export default function AdsVerseAuditPage() {
       setLoading(false);
 
     } catch (err: any) {
-      console.warn('[Audit Client] API error, attempting local action fallback:', err);
-      try {
-        const localData = await analyzeUrl(url.trim(), device);
-        setCurrentStep(5);
-        setCompletedSteps([1, 2, 3, 4, 5]);
-        setIsReportPaid(false);
-        setReport(localData);
-        setLoading(false);
-      } catch (localErr: any) {
-        setError(localErr?.message || err?.message || 'Analysis failed. Please check the URL and retry.');
-        setLoading(false);
-      }
+      console.error('[Audit Client] Live audit failed:', err);
+      setError(err?.message || 'Analysis failed. Please check the URL and retry.');
+      setLoading(false);
     }
   };
 
@@ -964,7 +971,9 @@ export default function AdsVerseAuditPage() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 section-head">
                     <div>
                       <h3>⚡ Performance &amp; Google Core Web Vitals</h3>
-                      <span>Lab measurements powered by Google PageSpeed Insights API</span>
+                      <span>{report.psiDataSource === 'estimated'
+                        ? 'Google PageSpeed was unavailable — estimated scores are clearly marked and Web Vitals are not reported.'
+                        : 'Lab measurements powered by Google PageSpeed Insights API'}</span>
                     </div>
                     <div className="bg-slate-800/80 p-1 rounded-xl flex items-center gap-1 border border-white/10 shrink-0">
                       <button 
@@ -997,7 +1006,7 @@ export default function AdsVerseAuditPage() {
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-emerald-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">LCP (Largest Paint)</div>
                       <div className="text-2xl font-black text-white mt-1">
-                        {report.pageSpeedMetrics?.lcp ? `${(report.pageSpeedMetrics.lcp / 1000).toFixed(2)}s` : `${(report.loadTime / 1000).toFixed(2)}s`}
+                        {report.pageSpeedMetrics?.lcp ? `${(report.pageSpeedMetrics.lcp / 1000).toFixed(2)}s` : 'N/A'}
                       </div>
                       <div className="text-[10px] text-emerald-400 mt-1">Target: &lt; 2.5s</div>
                     </div>
@@ -1013,7 +1022,7 @@ export default function AdsVerseAuditPage() {
                     <div className="glass p-4 rounded-xl text-center border-l-4 border-l-amber-500">
                       <div className="text-xs text-slate-400 font-bold uppercase">CLS (Layout Shift)</div>
                       <div className="text-2xl font-black text-white mt-1">
-                        {report.pageSpeedMetrics?.cls !== undefined ? report.pageSpeedMetrics.cls.toFixed(3) : '0.000'}
+                        {report.pageSpeedMetrics?.cls !== undefined ? report.pageSpeedMetrics.cls.toFixed(3) : 'N/A'}
                       </div>
                       <div className="text-[10px] text-amber-400 mt-1">Target: &lt; 0.1</div>
                     </div>
