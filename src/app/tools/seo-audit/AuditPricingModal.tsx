@@ -11,9 +11,12 @@ interface AuditPricingModalProps {
   userId?: string;
   userEmail?: string;
   userName?: string;
+  walletCredits?: number;
   onPaymentSuccess: () => void;
   onRequireAuth?: () => void;
 }
+
+type PaymentPhase = 'idle' | 'creating_order' | 'opening_gateway' | 'payment_received' | 'verifying_wallet' | 'credits_added' | 'webhook_pending';
 
 declare global {
   interface Window {
@@ -82,12 +85,14 @@ export default function AuditPricingModal({
   userId,
   userEmail,
   userName,
+  walletCredits,
   onPaymentSuccess,
   onRequireAuth,
 }: AuditPricingModalProps) {
   const [selectedPack, setSelectedPack] = useState<'single' | 'wallet_5' | 'wallet_12'>('single');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [paymentPhase, setPaymentPhase] = useState<PaymentPhase>('idle');
 
   useEffect(() => {
     if (isOpen) {
@@ -113,6 +118,7 @@ export default function AuditPricingModal({
 
     setLoading(true);
     setErrorMessage(null);
+    setPaymentPhase('creating_order');
 
     try {
       const idToken = await auth.currentUser?.getIdToken();
@@ -137,6 +143,7 @@ export default function AuditPricingModal({
       if (!res.ok) {
         throw new Error(orderData.error || 'Failed to initialize payment gateway.');
       }
+      setPaymentPhase('opening_gateway');
 
       // 2. Open Official Razorpay Checkout Modal
       const options = {
@@ -148,10 +155,12 @@ export default function AuditPricingModal({
         order_id: orderData.order_id,
         handler: async function (response: any) {
           try {
+            setPaymentPhase('payment_received');
             // Credits are granted only by the signed Razorpay webhook. Poll the
             // read-only verification endpoint briefly so an audit cannot start
             // before the wallet transaction has completed.
             let credited = false;
+            setPaymentPhase('verifying_wallet');
             for (let attempt = 0; attempt < 10; attempt += 1) {
               const verifyRes = await fetch('/api/razorpay/verify-audit-payment', {
                 method: 'POST',
@@ -172,11 +181,16 @@ export default function AuditPricingModal({
             }
 
             if (credited) {
+              setPaymentPhase('credits_added');
+              // Brief delay so user sees the success state
+              await new Promise((resolve) => window.setTimeout(resolve, 800));
               onPaymentSuccess();
             } else {
-              setErrorMessage('Payment received. Your credits are being confirmed securely; please refresh in a few seconds.');
+              setPaymentPhase('webhook_pending');
+              setErrorMessage('Payment received — credits are being confirmed securely. They will appear in your wallet within a few seconds.');
             }
           } catch (error: any) {
+            setPaymentPhase('idle');
             setErrorMessage(error?.message || 'Network error while verifying payment.');
           } finally {
             setLoading(false);
@@ -192,6 +206,7 @@ export default function AuditPricingModal({
         modal: {
           ondismiss: function () {
             setLoading(false);
+            setPaymentPhase('idle');
           },
         },
       };
@@ -205,6 +220,7 @@ export default function AuditPricingModal({
     } catch (err: any) {
       setErrorMessage(err.message || 'Payment initiation failed.');
       setLoading(false);
+      setPaymentPhase('idle');
     }
   };
 
@@ -220,10 +236,18 @@ export default function AuditPricingModal({
           <X className="w-5 h-5" />
         </button>
 
-        {/* Header Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wider mb-3">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>SEO · GEO · AEO Audit Pass</span>
+        {/* Header Badge + Wallet Balance */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>SEO · GEO · AEO Audit Pass</span>
+          </div>
+          {typeof walletCredits === 'number' && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
+              <Wallet className="w-3.5 h-3.5" />
+              <span>{walletCredits} credit{walletCredits !== 1 ? 's' : ''}</span>
+            </div>
+          )}
         </div>
 
         <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2">
@@ -298,7 +322,15 @@ export default function AuditPricingModal({
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Connecting to Razorpay...</span>
+                <span>
+                  {paymentPhase === 'creating_order' && 'Creating secure order...'}
+                  {paymentPhase === 'opening_gateway' && 'Opening payment gateway...'}
+                  {paymentPhase === 'payment_received' && 'Payment received...'}
+                  {paymentPhase === 'verifying_wallet' && 'Verifying wallet credits...'}
+                  {paymentPhase === 'credits_added' && '✓ Credits added to wallet!'}
+                  {paymentPhase === 'webhook_pending' && 'Credits processing securely...'}
+                  {paymentPhase === 'idle' && 'Processing...'}
+                </span>
               </>
             ) : !isLoggedIn ? (
               <>
@@ -314,6 +346,37 @@ export default function AuditPricingModal({
               </>
             )}
           </button>
+
+          {/* Payment Phase Progress Steps */}
+          {loading && paymentPhase !== 'idle' && (
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1.5">
+              {[
+                { phase: 'creating_order' as const, label: 'Creating secure order' },
+                { phase: 'opening_gateway' as const, label: 'Opening payment gateway' },
+                { phase: 'payment_received' as const, label: 'Payment received' },
+                { phase: 'verifying_wallet' as const, label: 'Verifying wallet credits' },
+                { phase: 'credits_added' as const, label: 'Credits added to wallet' },
+              ].map((step, idx) => {
+                const phases: PaymentPhase[] = ['creating_order', 'opening_gateway', 'payment_received', 'verifying_wallet', 'credits_added'];
+                const currentIdx = phases.indexOf(paymentPhase);
+                const stepIdx = phases.indexOf(step.phase);
+                const isDone = stepIdx < currentIdx;
+                const isActive = stepIdx === currentIdx;
+                return (
+                  <div key={step.phase} className={`flex items-center gap-2 text-[11px] transition-all ${isDone ? 'text-emerald-400' : isActive ? 'text-orange-400 font-semibold' : 'text-slate-600'}`}>
+                    {isDone ? (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : isActive ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <div className="w-3.5 h-3.5 rounded-full border border-slate-700" />
+                    )}
+                    <span>{step.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Official Razorpay Available Payment Methods Banner */}
           <div className="p-3 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">

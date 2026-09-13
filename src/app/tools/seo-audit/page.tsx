@@ -6,12 +6,13 @@ import {
 } from 'lucide-react';
 import { type AnalysisResult, type Recommendation, type GeoAeoCheck } from './actions';
 import { signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useUser } from '@/firebase';
 import { auth, db } from '@/firebase/init';
 import AuthWall from './AuthWall';
 import PhoneModal from './PhoneModal';
 import AuditPricingModal from './AuditPricingModal';
+import WalletPanel from './WalletPanel';
 import './styles.css';
 
 const AUDIT_STEPS = [
@@ -50,6 +51,7 @@ export default function AdsVerseAuditPage() {
   const [authModalReason, setAuthModalReason] = useState<string | null>(null);
   const [showAuditPricingModal, setShowAuditPricingModal] = useState(false);
   const [pricingDomain, setPricingDomain] = useState('');
+  const [navWalletCredits, setNavWalletCredits] = useState<number | null>(null);
   
   // Tabs & UI state
   const [activeTab, setActiveTab] = useState('full');
@@ -108,6 +110,15 @@ export default function AdsVerseAuditPage() {
       } catch {}
     };
     checkProfile();
+  }, [user]);
+
+  // Real-time wallet credits for navbar badge
+  useEffect(() => {
+    if (!user) { setNavWalletCredits(null); return; }
+    const unsubscribe = onSnapshot(doc(db, 'audit_users', user.uid), (snap) => {
+      setNavWalletCredits(snap.exists() ? Number(snap.data().paidCredits || 0) : 0);
+    });
+    return () => unsubscribe();
   }, [user]);
 
   // Star Background Canvas
@@ -410,8 +421,14 @@ export default function AdsVerseAuditPage() {
             className="text-xs md:text-sm font-semibold text-orange-400 hover:text-orange-300 transition flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500/10 border border-orange-500/20 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Audit Pass (₹10)
+            Buy Credits
           </button>
+          {user && typeof navWalletCredits === 'number' && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.5" /><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></svg>
+              {navWalletCredits}
+            </div>
+          )}
 
           {user ? (
             <div className="flex items-center gap-3">
@@ -482,6 +499,7 @@ export default function AdsVerseAuditPage() {
           userId={user?.uid}
           userEmail={user?.email || ''}
           userName={user?.displayName || user?.email?.split('@')[0] || ''}
+          walletCredits={navWalletCredits ?? undefined}
           onPaymentSuccess={handleAuditPaymentSuccess}
           onRequireAuth={() => {
             setShowAuditPricingModal(false);
@@ -541,6 +559,15 @@ export default function AdsVerseAuditPage() {
                 <AlertCircle className="w-5 h-5 shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
+            )}
+
+            {/* Wallet & Subscription Panel — only for logged-in users */}
+            {user && (
+              <WalletPanel
+                uid={user.uid}
+                userToken={() => user.getIdToken()}
+                onBuyCredits={() => handleOpenUpgrade()}
+              />
             )}
           </section>
 
