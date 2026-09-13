@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { adminDb } from "@/firebase/admin";
+import { FALLBACK_POSTS, sanitizeBlogPost } from "@/lib/fallback-blogs";
 
 import { BlogPost } from "@/lib/definitions";
 import { validateMeta } from "@/lib/seo-guard";
@@ -18,35 +19,50 @@ import { cn } from "@/lib/utils";
 import { TableOfContents } from "@/components/layout/TableOfContents";
 import { ReadingProgressBar } from "@/components/layout/ReadingProgressBar";
 
-
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  const snap = await adminDb.collection("public_blogPosts")
-    .where("slug", "==", slug)
-    .get();
-  if (snap.empty) return null;
-  const post = snap.docs[0].data() as BlogPost;
-  
-  // Security check: Don't show scheduled posts before their time
-  const now = new Date().toISOString();
-  if (post.publishedDate > now) {
-    return null;
+  try {
+    const snap = await adminDb.collection("public_blogPosts")
+      .where("slug", "==", slug)
+      .get();
+    if (!snap.empty) {
+      const post = sanitizeBlogPost(snap.docs[0].id, snap.docs[0].data());
+      const now = new Date().toISOString();
+      if (post.publishedDate > now) {
+        return null;
+      }
+      return post as any;
+    }
+  } catch (err) {
+    console.warn("[getBlogPost] Firestore lookup failed for slug:", slug, err);
   }
-  return post;
+
+  // Check fallback posts
+  const fallback = FALLBACK_POSTS.find(p => p.slug === slug);
+  if (fallback) {
+    return fallback as any;
+  }
+  return null;
 }
 
-async function getRelatedPosts(category: string, currentSlug: string) {
-  const now = new Date().toISOString();
-  const snap = await adminDb.collection("public_blogPosts")
-    .where("category", "==", category)
-    .where("publishedDate", "<=", now)
-    .orderBy("publishedDate", "desc")
-    .limit(4)
-    .get();
-  const posts = snap.docs
-    .map(doc => doc.data() as BlogPost)
-    .filter(post => post.slug !== currentSlug)
-    .slice(0, 3);
-  return posts;
+async function getRelatedPosts(category: string, currentSlug: string): Promise<BlogPost[]> {
+  try {
+    const now = new Date().toISOString();
+    const snap = await adminDb.collection("public_blogPosts")
+      .where("category", "==", category)
+      .where("publishedDate", "<=", now)
+      .orderBy("publishedDate", "desc")
+      .limit(4)
+      .get();
+    if (snap && snap.docs && snap.docs.length > 0) {
+      return snap.docs
+        .map(doc => sanitizeBlogPost(doc.id, doc.data()))
+        .filter(post => post.slug !== currentSlug)
+        .slice(0, 3) as any;
+    }
+  } catch (err) {
+    console.warn("[getRelatedPosts] Firestore related posts query error:", err);
+  }
+  return FALLBACK_POSTS.filter(post => post.slug !== currentSlug).slice(0, 3) as any;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -202,7 +218,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       }
     },
     "datePublished": post.publishedDate,
-    "dateModified": post.updatedAt?.toDate()?.toISOString() || post.publishedDate,
+    "dateModified": (typeof (post.updatedAt as any)?.toDate === 'function')
+      ? (post.updatedAt as any).toDate().toISOString()
+      : (typeof post.updatedAt === 'string' ? post.updatedAt : post.publishedDate),
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://adsverse.in/blog/${post.slug}`
@@ -295,7 +313,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <time dateTime={post.publishedDate} className="post-date">
                   Last Updated: {
                     (post.updatedAt 
-                      ? (typeof post.updatedAt.toDate === 'function' ? post.updatedAt.toDate() : new Date(post.updatedAt as any)) 
+                      ? (typeof (post.updatedAt as any)?.toDate === 'function' ? (post.updatedAt as any).toDate() : new Date(post.updatedAt as any)) 
                       : new Date(post.publishedDate)
                     ).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                   }
@@ -306,8 +324,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-2xl border border-primary/10">
             <Image
-              src={post.imageUrl}
-              alt={post.title}
+              src={post.imageUrl || '/images/og-adsverse-2026.png'}
+              alt={post.title || 'AdsVerse Blog'}
               fill
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
@@ -413,8 +431,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       <Card key={rp.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500">
                         <div className="relative h-40 w-full overflow-hidden">
                           <Image 
-                            src={rp.imageUrl}
-                            alt={rp.title}
+                            src={rp.imageUrl || '/images/og-adsverse-2026.png'}
+                            alt={rp.title || 'Related Article'}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-110"
                             sizes="(max-width: 768px) 100vw, 33vw"

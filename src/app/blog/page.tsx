@@ -13,30 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const FALLBACK_POSTS = [
-  {
-    id: "seo-trends-2026",
-    slug: "seo-trends-2026",
-    title: "Top SEO & GEO Search Trends for 2026",
-    excerpt: "Discover how AI search engines, answer engine optimization, and semantic search are reshaping Google rankings in 2026.",
-    imageUrl: "/images/og-adsverse-2026.png",
-    category: "seo",
-    publishedDate: "2026-01-10",
-    author: "Deepak Dhakad",
-    isFeatured: true,
-  },
-  {
-    id: "meta-ads-scaling-guide",
-    slug: "meta-ads-scaling-guide",
-    title: "How to Scale Meta Ads to ₹50L+ Revenue",
-    excerpt: "Learn the exact ad creative structure, Advantage+ campaign setups, and custom audience strategies we use to scale D2C brands.",
-    imageUrl: "/images/og-adsverse-2026.png",
-    category: "paid-ads",
-    publishedDate: "2026-01-05",
-    author: "Deepak Dhakad",
-    isFeatured: false,
-  },
-];
+import { FALLBACK_POSTS, sanitizeBlogPost } from "@/lib/fallback-blogs";
 
 async function getBlogPosts() {
   try {
@@ -47,10 +24,7 @@ async function getBlogPosts() {
       .limit(200)
       .get();
     if (snap && snap.docs && snap.docs.length > 0) {
-      const posts = snap.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const posts = snap.docs.map((doc: any) => sanitizeBlogPost(doc.id, doc.data()));
       return posts.sort((a: any, b: any) => {
         if (a.isFeatured && !b.isFeatured) return -1;
         if (!a.isFeatured && b.isFeatured) return 1;
@@ -59,6 +33,7 @@ async function getBlogPosts() {
     }
     return FALLBACK_POSTS;
   } catch (error) {
+    console.warn("[getBlogPosts] Falling back to default posts:", error);
     return FALLBACK_POSTS;
   }
 }
