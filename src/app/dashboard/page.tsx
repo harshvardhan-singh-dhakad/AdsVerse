@@ -6,10 +6,19 @@ import { useUser, useFirestore } from '@/firebase';
 import { doc, getDoc, onSnapshot, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Crown, Link as LinkIcon, Trash2, ArrowRight, CheckCircle, AlertTriangle, Loader2, TrendingUp, TrendingDown, Minus, History } from 'lucide-react';
+import { Crown, Link as LinkIcon, Trash2, ArrowRight, CheckCircle, AlertTriangle, Loader2, TrendingUp, TrendingDown, History, Wallet, Globe2, Sparkles, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 import { trackPaymentCompleted } from '@/lib/analytics';
 import { SUBSCRIPTION_PLANS, PLAN_LIMITS, PLAN_PRICES } from '@/lib/subscription-plans';
+
+interface WalletPayment {
+  id: string;
+  credits: number;
+  amount: number;
+  packType: string;
+  status: string;
+  createdAt: string | null;
+}
 
 declare global {
   interface Window {
@@ -22,6 +31,9 @@ export default function DashboardPage() {
   const firestore = useFirestore();
   const router = useRouter();
   const [subscription, setSubscription] = useState<any>(null);
+  const [auditProfile, setAuditProfile] = useState<any>(null);
+  const [walletPayments, setWalletPayments] = useState<WalletPayment[]>([]);
+  const [walletLoading, setWalletLoading] = useState(false);
   const [subLoading, setSubLoading] = useState(true);
   const [newUrl, setNewUrl] = useState('');
   const [isAdding, setIsAdding] = useState(false);
@@ -57,6 +69,9 @@ export default function DashboardPage() {
       }
       setSubLoading(false);
     });
+    const unsubscribeWallet = onSnapshot(doc(firestore, 'audit_users', user.uid), (snap) => {
+      setAuditProfile(snap.exists() ? snap.data() : null);
+    });
 
     // Load Razorpay script
     const script = document.createElement('script');
@@ -66,6 +81,7 @@ export default function DashboardPage() {
 
     return () => {
       unsubscribe();
+      unsubscribeWallet();
       if (document.body.contains(script)) {
         document.body.removeChild(script);
       }
@@ -73,7 +89,7 @@ export default function DashboardPage() {
   }, [user, isUserLoading, router]);
 
   useEffect(() => {
-    if (!user || !subscription || !firestore) return;
+    if (!user || !firestore) return;
     setHistoryLoading(true);
     console.log('FIRESTORE IN DASHBOARD:', firestore, typeof firestore);
     const q = query(
@@ -95,9 +111,23 @@ export default function DashboardPage() {
     }).catch(console.error).finally(() => setHistoryLoading(false));
   }, [user, subscription, firestore]);
 
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    setWalletLoading(true);
+    user.getIdToken()
+      .then((token) => fetch('/api/audit/wallet', { headers: { Authorization: `Bearer ${token}` } }))
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Wallet request failed')))
+      .then((data) => { if (!cancelled) setWalletPayments(data.payments || []); })
+      .catch((error) => console.warn('[dashboard] Wallet activity unavailable:', error))
+      .finally(() => { if (!cancelled) setWalletLoading(false); });
+    return () => { cancelled = true; };
+  }, [user, auditProfile?.paidCredits]);
+
   const currentPlan = subscription?.plan || null;
   const currentStatus = subscription?.status || 'inactive';
   const trackedSites = subscription?.siteSlots || [];
+  const walletCredits = Number(auditProfile?.paidCredits || 0);
   const allowedLimit = currentPlan && currentStatus === 'active' ? PLAN_LIMITS[currentPlan] || 0 : 0;
   const isLimitReached = trackedSites.length >= allowedLimit;
 
@@ -262,11 +292,44 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen font-sans bg-background pt-8 pb-24">
       <div className="max-w-6xl mx-auto px-4">
-        
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground mt-2">Manage your subscriptions and tracked websites for daily automated audits.</p>
-        </div>
+        <section className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-slate-950 via-slate-900 to-primary/20 px-6 py-8 md:px-9 md:py-10 text-white shadow-2xl shadow-primary/10">
+          <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/25 blur-3xl" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-white/85">
+                <Sparkles className="h-3.5 w-3.5 text-amber-300" /> AdsVerse workspace
+              </div>
+              <h1 className="text-3xl font-black tracking-tight md:text-4xl">Your SEO command center</h1>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Run audits, manage your wallet, and keep every tracked website moving forward from one place.</p>
+            </div>
+            <Button asChild className="bg-white text-slate-950 hover:bg-slate-100">
+              <Link href="/tools/seo-audit">Run an audit <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
+          </div>
+        </section>
+
+        <section className="-mt-1 grid grid-cols-1 gap-4 py-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-2xl border border-emerald-500/20 bg-card p-5 shadow-sm">
+            <div className="flex items-start justify-between"><span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Audit wallet</span><Wallet className="h-5 w-5 text-emerald-500" /></div>
+            <p className="mt-3 text-3xl font-black text-foreground">{walletCredits}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{walletCredits === 1 ? 'audit credit available' : 'audit credits available'}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex items-start justify-between"><span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Subscription</span><Crown className="h-5 w-5 text-amber-500" /></div>
+            <p className="mt-3 text-lg font-black text-foreground">{currentStatus === 'active' && currentPlan ? currentPlan.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'No active plan'}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{currentStatus === 'active' ? 'Daily automated audits enabled' : 'Subscribe to track sites daily'}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex items-start justify-between"><span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tracked sites</span><Globe2 className="h-5 w-5 text-primary" /></div>
+            <p className="mt-3 text-3xl font-black text-foreground">{trackedSites.length}<span className="text-base text-muted-foreground">/{allowedLimit || 0}</span></p>
+            <p className="mt-1 text-xs text-muted-foreground">Website slots in your plan</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex items-start justify-between"><span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Recent audits</span><BarChart3 className="h-5 w-5 text-violet-500" /></div>
+            <p className="mt-3 text-3xl font-black text-foreground">{auditHistory.length}</p>
+            <p className="mt-1 text-xs text-muted-foreground">Latest reports in your history</p>
+          </div>
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Content */}
@@ -406,11 +469,41 @@ export default function DashboardPage() {
 
           {/* Sidebar / Upgrade */}
           <aside className="lg:col-span-4 space-y-6">
+            <section className="overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-card to-card p-6 shadow-sm">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">One-time audit wallet</p>
+                  <p className="mt-2 text-3xl font-black text-foreground">{walletCredits} credits</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">Use credits for full on-demand SEO, GEO and AEO reports.</p>
+                </div>
+                <Wallet className="h-7 w-7 text-emerald-500" />
+              </div>
+              <Button asChild variant="outline" className="mt-5 w-full border-emerald-500/30 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-300">
+                <Link href="/tools/seo-audit">Buy credits or run audit <ArrowRight className="ml-2 h-4 w-4" /></Link>
+              </Button>
+              <div className="mt-5 border-t border-emerald-500/15 pt-4">
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Recent wallet activity</p>
+                {walletLoading ? (
+                  <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground"><Loader2 className="h-3.5 w-3.5 animate-spin" /> Loading activity</div>
+                ) : walletPayments.length === 0 ? (
+                  <p className="py-2 text-xs text-muted-foreground">No credit purchases yet.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {walletPayments.slice(0, 3).map((payment) => (
+                      <div key={payment.id} className="flex items-center justify-between gap-3 text-xs">
+                        <div className="min-w-0"><p className="font-semibold text-foreground">+{payment.credits} audit credits</p><p className="text-muted-foreground">{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : 'Processing'}</p></div>
+                        <span className="shrink-0 font-bold text-emerald-600 dark:text-emerald-400">₹{payment.amount}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
             
             <div className="bg-card border border-border rounded-xl shadow-sm p-6 sticky top-24">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-amber-500/10 rounded-lg"><Crown className="w-6 h-6 text-amber-500" /></div>
-                <h3 className="text-xl font-bold">Subscription Plans</h3>
+                <div><h3 className="text-xl font-bold">Daily monitoring</h3><p className="mt-1 text-xs text-muted-foreground">For automated audits and tracked-site monitoring.</p></div>
               </div>
               
               <div className="space-y-4">

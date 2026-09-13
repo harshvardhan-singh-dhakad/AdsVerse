@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
+import { useCollection, useFirestore, useMemoFirebase, useUser } from "@/firebase";
 import { collection, query, orderBy, doc, updateDoc } from "firebase/firestore";
 import {
   Table,
@@ -38,10 +38,21 @@ interface AuditUser {
   lastLoginAt?: Timestamp;
 }
 
+interface WalletPayment {
+  id: string;
+  userId: string;
+  credits: number;
+  amount: number;
+  status: string;
+  createdAt: string | null;
+}
+
 export function UsersTable() {
   const firestore = useFirestore();
+  const { user } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [updatingUser, setUpdatingUser] = useState<string | null>(null);
+  const [recentPayments, setRecentPayments] = useState<WalletPayment[]>([]);
 
   const usersQuery = useMemoFirebase(
     () => query(collection(firestore, "audit_users"), orderBy("createdAt", "desc")),
@@ -64,6 +75,15 @@ export function UsersTable() {
   const totalUsers = users?.length || 0;
   const adminUsers = users?.filter((u) => u.role === "admin").length || 0;
   const totalCreditsInCirculation = users?.reduce((acc, u) => acc + (Number(u.paidCredits) || 0), 0) || 0;
+
+  React.useEffect(() => {
+    if (!user) return;
+    user.getIdToken()
+      .then((token) => fetch('/api/admin/wallet-payments', { headers: { Authorization: `Bearer ${token}` } }))
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Payment activity request failed')))
+      .then((data) => setRecentPayments(data.payments || []))
+      .catch((error) => console.warn('Could not load wallet payment activity:', error));
+  }, [user]);
 
   const handleToggleRole = async (user: AuditUser) => {
     const newRole = user.role === "admin" ? "user" : "admin";
@@ -235,6 +255,30 @@ export function UsersTable() {
                   })}
                 </TableBody>
               </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card className="border border-border/40 bg-card/40 backdrop-blur-xl">
+        <CardHeader>
+          <CardTitle className="text-lg font-bold">Recent Wallet Payments</CardTitle>
+          <CardDescription className="text-xs">Verified Razorpay credit purchases. Credits are granted only after the signed webhook is processed.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {recentPayments.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">No verified wallet payments yet.</p>
+          ) : (
+            <div className="space-y-2">
+              {recentPayments.slice(0, 8).map((payment) => {
+                const paymentUser = users?.find((candidate) => candidate.uid === payment.userId);
+                return (
+                  <div key={payment.id} className="flex items-center justify-between gap-4 rounded-lg border border-border/50 bg-background/30 px-4 py-3 text-xs">
+                    <div className="min-w-0"><p className="font-semibold truncate">{paymentUser?.email || payment.userId}</p><p className="mt-0.5 text-muted-foreground">{payment.createdAt ? new Date(payment.createdAt).toLocaleString('en-IN') : 'Processing'} · {payment.id}</p></div>
+                    <div className="shrink-0 text-right"><p className="font-black text-emerald-500">+{payment.credits} credits</p><p className="mt-0.5 text-muted-foreground">₹{payment.amount} · {payment.status}</p></div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </CardContent>
