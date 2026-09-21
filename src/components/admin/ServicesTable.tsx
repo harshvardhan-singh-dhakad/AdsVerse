@@ -63,7 +63,7 @@ export function ServicesTable() {
 
             // Trigger IndexNow submission in background
             if (service?.name) {
-                const serviceUrl = `https://adsverse.in/services/${getServiceSlug(service.name)}`;
+                const serviceUrl = `https://adsverse.in/services/${service.slug || getServiceSlug(service.name)}`;
                 const ourServicesUrl = `https://adsverse.in/services`;
                 fetch('/api/indexnow', {
                     method: 'POST',
