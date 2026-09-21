@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { type PricingPlan } from "@/lib/definitions";
+import { getServiceSlug } from "@/lib/services-data";
 import { useFirestore } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { Switch } from "@/components/ui/switch";
@@ -46,8 +47,10 @@ const pricingPlanSchema = z.object({
   category: z.string().min(1, "Category is required."),
   categoryLabel: z.string().min(1, "Category label is required."),
   subCategory: z.string().optional(),
+  serviceSlug: z.string().optional(),
   features: z.array(z.object({ value: z.string().min(1, "Feature cannot be empty.") })),
   isPopular: z.boolean().default(false),
+  isPublished: z.boolean().default(true),
   callToAction: z.string().min(1, "CTA is required."),
   displayOrder: z.coerce.number().min(0, "Order must be a positive number."),
   planType: z.enum(['service', 'automation', 'video']),
@@ -82,6 +85,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       subCategory: "",
       features: [{ value: "" }],
       isPopular: false,
+      isPublished: true,
       callToAction: "Get Started",
       displayOrder: 0,
       planType: 'service',
@@ -105,6 +109,7 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
       description: data.description || '',
       frequency: data.frequency || '',
       subCategory: data.subCategory || '',
+      serviceSlug: data.serviceSlug?.trim() || getServiceSlug(data.name),
       features: data.features.map(f => f.value),
     };
 
@@ -235,6 +240,21 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
 
         <FormField
           control={form.control}
+          name="serviceSlug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Linked Service Slug</FormLabel>
+              <FormControl><Input placeholder="e.g., seo-optimization" {...field} /></FormControl>
+              <FormDescription className="text-[10px]">
+                Leave blank to derive it from the plan name. This connects the plan price to the public service card.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -318,6 +338,24 @@ export function PricingForm({ plan, onFinished }: PricingFormProps) {
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="isPublished"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border border-border/60 p-3 shadow-sm">
+              <div className="space-y-0.5">
+                <FormLabel>Publish on public service pricing</FormLabel>
+                <FormDescription className="text-[10px]">
+                  Unpublished plans stay in Admin but do not override public service pricing.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
