@@ -1,11 +1,25 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 interface AdsVerseLogoProps {
   size?: string;
   className?: string;
+  logoUrl?: string;
 }
 
-export default function AdsVerseLogo({ size = 'text-5xl', className = '' }: AdsVerseLogoProps) {
+export default function AdsVerseLogo({ size = 'text-5xl', className = '', logoUrl }: AdsVerseLogoProps) {
+  if (logoUrl) {
+    return (
+      <span className={`inline-flex items-center select-none ${size} ${className}`}>
+        <img
+          src={logoUrl}
+          alt="AdsVerse"
+          className="h-[1.25em] w-auto max-w-full object-contain"
+        />
+      </span>
+    );
+  }
   return (
     <span className={`inline-flex items-center select-none ${size} ${className}`}>
       <svg

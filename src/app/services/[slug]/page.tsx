@@ -7,25 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
-import { getServiceBySlug, getServiceSlug, DM_CATEGORIES, AI_CATEGORIES, getServicePrice } from "@/lib/services-data";
+import { getPublicServiceBySlug, getPublicServices } from "@/lib/service-catalog";
 import { getCategoryDetails } from "@/lib/service-details";
 import { ArrowLeft, CheckCircle, Sparkles, Wrench, Package, Calendar } from "lucide-react";
 
 // Force static pre-rendering of all service slugs during build
 export async function generateStaticParams() {
-  const params: { slug: string }[] = [];
-  const allCategories = [...DM_CATEGORIES, ...AI_CATEGORIES];
-  
-  for (const cat of allCategories) {
-    for (const service of cat.services) {
-      // Only generate dynamic page if it doesn't point to a custom static directory/route
-      if (!service.href) {
-        params.push({ slug: getServiceSlug(service.name) });
-      }
-    }
-  }
-  
-  return params;
+  const services = await getPublicServices();
+  return services
+    .filter((service) => !service.href)
+    .map((service) => ({ slug: service.slug }));
 }
 
 interface PageProps {
@@ -34,7 +25,7 @@ interface PageProps {
 
 // Generate dynamic SEO Metadata
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const result = getServiceBySlug(params.slug);
+  const result = await getPublicServiceBySlug(params.slug);
   if (!result) notFound();
 
   const { service, category } = result;
@@ -59,15 +50,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function DynamicServicePage({ params }: PageProps) {
-  const result = getServiceBySlug(params.slug);
+export default async function DynamicServicePage({ params }: PageProps) {
+  const result = await getPublicServiceBySlug(params.slug);
   
   if (!result) {
     notFound();
   }
 
   const { service, category } = result;
-  const basePrice = getServicePrice(service.name);
+  const basePrice = service.price;
   const details = getCategoryDetails(category.id, service.name, service.tags);
 
   // Dynamic content block calculations

@@ -1,5 +1,4 @@
-import { adminDb } from "@/firebase/admin";
-import { type Service as ServiceDef } from "@/lib/definitions";
+import { getPublicServices } from "@/lib/service-catalog";
 import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
@@ -60,22 +59,8 @@ const itemListSchema = {
   ],
 };
 
-async function getServices(): Promise<ServiceDef[]> {
-  try {
-    const snap = await adminDb.collection("services").orderBy("displayOrder", "asc").get();
-    return snap.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate?.()?.toISOString() || null,
-        updatedAt: data.updatedAt?.toDate?.()?.toISOString() || null,
-      };
-    }) as any[];
-  } catch (error) {
-    console.error("Error fetching services:", error);
-    return [];
-  }
+async function getServices() {
+  return getPublicServices();
 }
 
 export default async function ServicesPage() {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { DM_CATEGORIES, AI_CATEGORIES } from '@/lib/services-data';
+import { getPublicServiceGroups } from '@/lib/service-catalog';
 import { adminDb } from '@/firebase/admin';
 
 export async function GET() {
@@ -34,10 +34,7 @@ export async function GET() {
     const payload = {
       agency_name: "AdsVerse",
       description: "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
-      services: {
-        digital_marketing: DM_CATEGORIES,
-        ai_automation: AI_CATEGORIES
-      },
+      services: serviceGroups,
       recent_articles: blogPosts,
       contact: {
         email: "contact@adsverse.in",

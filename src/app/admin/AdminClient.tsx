@@ -1,23 +1,44 @@
 "use client";
 
-import { useUser, useAuth } from "@/firebase";
+import { useUser, useAuth, useFirestore } from "@/firebase";
 import { signOut as firebaseSignOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { AdminSidebar, type AdminTab } from "@/components/admin/AdminSidebar";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-defaults";
 
 export default function AdminPage() {
   const { user, isUserLoading: loading } = useUser();
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const [brand, setBrand] = useState<BrandSettings>(DEFAULT_BRAND);
+
+  useEffect(() => {
+    if (isAuthorized !== true) return;
+    let cancelled = false;
+    getDoc(doc(firestore, "brandSettings", "global"))
+      .then((snapshot) => {
+        if (!cancelled && snapshot.exists()) {
+          setBrand({ ...DEFAULT_BRAND, ...(snapshot.data() as Partial<BrandSettings>) });
+        }
+      })
+      .catch(() => {
+        // Keep default branding when the optional brand document is unavailable.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [firestore, isAuthorized]);
 
   useEffect(() => {
     if (!loading) {
@@ -79,6 +100,7 @@ export default function AdminPage() {
           onTabChange={setActiveTab}
           onLogout={handleSignOut}
           userName={user.displayName || user.email || "Admin"}
+          logoUrl={brand.logoUrl || undefined}
         />
         <SidebarInset className="flex flex-col flex-1 bg-background relative overflow-hidden">
 

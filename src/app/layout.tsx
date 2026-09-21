@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"), { ssr: false });
 import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { adminDb } from "@/firebase/admin";
+import { getBrandSettings } from "@/lib/brand-settings";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -195,57 +196,63 @@ const schemaArray = [
   }
 ];
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: "AdsVerse | AI Marketing & Automation Agency",
-    template: "%s | AdsVerse",
-  },
-  description: "AdsVerse is Indore's top AI marketing agency. We specialize in SEO, Google & Meta Ads, and Automation to drive measurable growth for your business.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrandSettings();
+  const ogImage = new URL(brand.ogImageUrl, siteUrl).toString();
+
+  return {
+    metadataBase: new URL(siteUrl),
     title: {
-      default: "AdsVerse | Digital Marketing That Drives Results",
-      template: "%s | AdsVerse",
+      default: `${brand.siteName} | AI Marketing & Automation Agency`,
+      template: `%s | ${brand.siteName}`,
     },
-    description: description,
-    url: siteUrl,
-    siteName: siteName,
-    images: [
-      {
-        url: `${siteUrl}/images/og-adsverse-2026.png`,
-        width: 1200,
-        height: 630,
-        alt: "AdsVerse - Digital Marketing Agency",
+    description: brand.description,
+    openGraph: {
+      title: {
+        default: `${brand.siteName} | Digital Marketing That Drives Results`,
+        template: `%s | ${brand.siteName}`,
       },
-    ],
-    locale: 'en_IN',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: {
-      default: "AdsVerse | Digital Marketing That Drives Results",
-      template: "%s | AdsVerse",
+      description: brand.description,
+      url: siteUrl,
+      siteName: brand.siteName,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${brand.siteName} - Digital Marketing Agency`,
+        },
+      ],
+      locale: "en_IN",
+      type: "website",
     },
-    description: description,
-    creator: twitterHandle,
-    images: [`${siteUrl}/images/og-adsverse-2026.png`],
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico?v=1", sizes: "any" },
-      { url: "/favicon-96x96.png?v=1", sizes: "96x96", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png?v=1", sizes: "180x180", type: "image/png" },
-    ],
-  },
-  manifest: '/site.webmanifest',
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+    twitter: {
+      card: "summary_large_image",
+      title: {
+        default: `${brand.siteName} | Digital Marketing That Drives Results`,
+        template: `%s | ${brand.siteName}`,
+      },
+      description: brand.description,
+      creator: twitterHandle,
+      images: [ogImage],
+    },
+    icons: {
+      icon: [
+        { url: `${brand.faviconUrl}?v=1`, sizes: "any" },
+        { url: "/favicon-96x96.png?v=1", sizes: "96x96", type: "image/png" },
+      ],
+      apple: [
+        { url: "/apple-touch-icon.png?v=1", sizes: "180x180", type: "image/png" },
+      ],
+    },
+    manifest: "/site.webmanifest",
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -313,6 +320,43 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const brand = await getBrandSettings();
+  const resolvedLogo = brand.logoUrl ? new URL(brand.logoUrl, siteUrl).toString() : `${siteUrl}/images/logo-white.webp`;
+  const resolvedOgImage = new URL(brand.ogImageUrl, siteUrl).toString();
+  const resolvedSchemaArray = schemaArray.map((item: any, index) => {
+    if (index === 0) {
+      return {
+        ...item,
+        name: brand.siteName,
+        alternateName: `${brand.siteName} Digital Marketing Agency`,
+        logo: resolvedLogo,
+        image: resolvedOgImage,
+        description: brand.description,
+        telephone: brand.phone,
+        email: brand.email,
+        slogan: brand.tagline,
+        sameAs: [brand.instagramUrl, brand.facebookUrl, brand.xUrl, brand.linkedinUrl],
+        address: {
+          ...item.address,
+          streetAddress: brand.address,
+        },
+        contactPoint: {
+          ...item.contactPoint,
+          telephone: brand.phone,
+          email: brand.email,
+        },
+      };
+    }
+    if (index === 2) {
+      return {
+        ...item,
+        name: brand.siteName,
+        description: brand.description,
+      };
+    }
+    return item;
+  });
+
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
@@ -336,7 +380,7 @@ export default async function RootLayout({
         <script
           id="adsverse-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaArray) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(resolvedSchemaArray) }}
         />
         {/* WebMCP Tool Manifest Declaration */}
         <script
@@ -373,11 +417,11 @@ export default async function RootLayout({
         >
           <div className="relative z-10 min-h-screen flex flex-col">
             <BackgroundEffects />
-            <Header navLinks={navLinks} latestPosts={[]} />
+            <Header navLinks={navLinks} latestPosts={await getLatestPosts()} brand={brand} />
             <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
             </main>
-            <Footer />
+            <Footer brand={brand} />
             <FloatingActionButton />
             <Toaster />
             <WebMCPProvider />

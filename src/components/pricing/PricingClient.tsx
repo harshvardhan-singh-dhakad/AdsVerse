@@ -904,16 +904,6 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
                       console.error("Local storage error:", e);
                     }
 
-                    // GOOGLE SHEETS WEBHOOK CALL (no-cors)
-                    try {
-                      fetch("https://script.google.com/macros/s/AKfycbz_placeholder/exec", {
-                        method: "POST",
-                        mode: "no-cors",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(bookingObj)
-                      }).catch(e => console.log("Silent sheets POST ignored."));
-                    } catch(err) {}
-
                     // Trigger Auto Click sandbox bypass
                     const encodedMsg = encodeURIComponent(msg);
                     const url = `https://wa.me/919685123339?text=${encodedMsg}`;

@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { adminDb } from "@/firebase/admin";
-import { DM_CATEGORIES, AI_CATEGORIES, getServiceSlug } from "@/lib/services-data";
+import { getPublicServices } from "@/lib/service-catalog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://adsverse.in';
@@ -85,19 +85,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const baseUrls = new Set(allStaticPages.map(page => page.url));
 
-  const allServicePages = [
-    ...DM_CATEGORIES.flatMap(cat => cat.services),
-    ...AI_CATEGORIES.flatMap(cat => cat.services)
-  ].map(s => {
-    const slug = s.href || `/services/${getServiceSlug(s.name)}`;
-    const url = slug.startsWith('http') ? slug : `${baseUrl}${slug}`;
-    return {
-      url,
-      priority: 0.8,
-      changeFrequency: 'monthly' as const,
-      lastModified: new Date()
-    };
-  }).filter(page => !baseUrls.has(page.url));
+  const publicServices = await getPublicServices();
+
+  const allServicePages = publicServices
+    .map((service) => {
+      const path = service.href || `/services/${service.slug}`;
+      const url = path.startsWith("http") ? path : `${baseUrl}${path}`;
+      return {
+        url,
+        priority: 0.8,
+        changeFrequency: "monthly" as const,
+        lastModified: new Date(),
+      };
+    })
+    .filter((page) => !baseUrls.has(page.url));
 
   const allPages = [...allStaticPages, ...allServicePages, ...cityPages, ...blogPages];
 

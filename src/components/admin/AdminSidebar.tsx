@@ -27,6 +27,7 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import AdsVerseLogo from "@/components/AdsVerseLogo";
 
 export type AdminTab =
   | "dashboard"
@@ -39,13 +40,15 @@ export type AdminTab =
   | "portfolio"
   | "pricing"
   | "blogs"
-  | "media";
+  | "media"
+  | "brand";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
   onTabChange: (tab: AdminTab) => void;
   onLogout: () => void;
   userName: string;
+  logoUrl?: string;
 }
 
 const groups = [
@@ -63,6 +66,12 @@ const groups = [
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
+    ],
+  },
+  {
+    label: "Brand",
+    items: [
+      { id: "brand", label: "Brand Settings", icon: Sparkles },
     ],
   },
   {
@@ -85,17 +94,14 @@ const groups = [
   items: Array<{ id: AdminTab; label: string; icon: typeof LayoutDashboard }>;
 }>;
 
-export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: AdminSidebarProps) {
+export function AdminSidebar({ activeTab, onTabChange, onLogout, userName, logoUrl }: AdminSidebarProps) {
   return (
     <Sidebar variant="inset" className="border-r border-border/60 bg-background">
       <SidebarHeader className="border-b border-border/60 p-5">
         <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card/70 p-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-lg font-black text-primary-foreground shadow-sm">
-            A
-          </div>
-          <div className="min-w-0">
-            <h2 className="font-headline text-base font-black tracking-tight text-foreground">AdsVerse</h2>
-            <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <AdsVerseLogo logoUrl={logoUrl} size="text-xl" className="max-w-full" />
+            <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
           </div>
         </div>
       </SidebarHeader>

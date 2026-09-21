@@ -2,7 +2,7 @@
 "use client";
 
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection, query, orderBy, doc, deleteDoc, where } from "firebase/firestore";
+import { collection, query, orderBy, doc, updateDoc } from "firebase/firestore";
 import { type Service } from "@/lib/definitions";
 import { getServiceSlug } from "@/lib/services-data";
 import {
@@ -58,12 +58,12 @@ export function ServicesTable() {
         if (!window.confirm("Are you sure you want to delete this service?")) return;
         const service = services?.find(s => s.id === serviceId);
         try {
-            await deleteDoc(doc(firestore, "services", serviceId));
-            toast({ title: "Success", description: "Service deleted successfully." });
+            await updateDoc(doc(firestore, "services", serviceId), { isPublished: false });
+            toast({ title: "Success", description: "Service archived successfully." });
 
             // Trigger IndexNow submission in background
             if (service?.name) {
-                const serviceUrl = `https://adsverse.in/services/${getServiceSlug(service.name)}`;
+                const serviceUrl = `https://adsverse.in/services/${service.slug || getServiceSlug(service.name)}`;
                 const ourServicesUrl = `https://adsverse.in/services`;
                 fetch('/api/indexnow', {
                     method: 'POST',

@@ -14,7 +14,7 @@ import { type Service } from "@/lib/definitions";
 import { useFirestore } from "@/firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getServiceSlug } from "@/lib/services-data";
+import { getServicePrice, getServiceSlug } from "@/lib/services-data";
 
 const SERVICE_CATEGORIES = [
   // Digital Marketing
@@ -42,6 +42,8 @@ const SERVICE_CATEGORIES = [
 
 const serviceSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
+  slug: z.string().optional(),
+  price: z.coerce.number().min(0, "Price cannot be negative."),
   description: z.string().min(10, "Description must be at least 10 characters."),
   iconName: z.string().min(2, "Icon name is required."),
   displayOrder: z.coerce.number().min(0, "Display order must be a positive number."),
@@ -68,11 +70,15 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
     resolver: zodResolver(serviceSchema),
     defaultValues: service ? {
       ...service,
+      slug: service.slug || getServiceSlug(service.name),
+      price: service.price ?? getServicePrice(service.name),
       planType: service.planType || (SERVICE_CATEGORIES.find(c => c.id === service.category)?.id ? (SERVICE_CATEGORIES.findIndex(c => c.id === service.category) < 12 ? 'dm' : 'ai') : 'dm'),
       categoryLabel: service.categoryLabel || SERVICE_CATEGORIES.find(c => c.id === service.category)?.label || "",
       tags: service.tags?.map(t => ({ value: t })) || [],
     } : {
       name: "",
+      slug: "",
+      price: 0,
       description: "",
       iconName: "",
       displayOrder: 0,
@@ -96,6 +102,7 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
   const processForm = async (data: ServiceFormData) => {
     const dataForFirestore = {
       ...data,
+      slug: data.slug?.trim() || getServiceSlug(data.name),
       tags: data.tags.map(t => t.value),
     };
     
@@ -110,7 +117,7 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
 
       // Trigger IndexNow submission in background
       try {
-        const serviceUrl = `https://adsverse.in/services/${getServiceSlug(data.name)}`;
+        const serviceUrl = `https://adsverse.in/services/${data.slug || getServiceSlug(data.name)}`;
         const ourServicesUrl = `https://adsverse.in/services`;
         fetch('/api/indexnow', {
           method: 'POST',
@@ -152,6 +159,30 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(processForm)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Public URL Slug</FormLabel>
+                  <FormControl><Input placeholder="e.g. seo-optimization" {...field} /></FormControl>
+                  <FormDescription>Optional. Leave blank to generate from the service name. Keep it stable after publishing.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Starting Price (₹)</FormLabel>
+                  <FormControl><Input type="number" min="0" {...field} /></FormControl>
+                  <FormDescription>Displayed on the public service catalog.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
             control={form.control}
             name="name"

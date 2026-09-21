@@ -11,6 +11,7 @@ import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
+import type { BrandSettings } from "@/lib/brand-settings";
 
 const ChevronDown = () => (
   <svg
@@ -39,9 +40,10 @@ type LatestPost = {
 type HeaderProps = {
   navLinks: NavLink[];
   latestPosts?: LatestPost[];
+  brand?: Pick<BrandSettings, "logoUrl">;
 };
 
-export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
+export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
   const pathname = usePathname();
 
   const activeNavLinks = navLinks;
@@ -64,7 +66,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
         {/* Left: Brand/Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-1" aria-label="AdsVerse Home">
-            <AdsVerseLogo size="text-xl sm:text-2xl" />
+            <AdsVerseLogo logoUrl={brand?.logoUrl || undefined} size="text-xl sm:text-2xl" />
             <span className="text-brand-orange font-bold text-2xl leading-none animate-pulse">•</span>
           </Link>
         </div>
@@ -413,7 +415,7 @@ export function Header({ navLinks, latestPosts = [] }: HeaderProps) {
                   <div className="flex flex-col h-[calc(100vh-140px)]">
                     <div className="border-b border-border/40 pb-4 shrink-0">
                       <Link href="/" className="flex items-center space-x-1" onClick={closeMobileMenu} aria-label="AdsVerse Home">
-                        <AdsVerseLogo size="text-2xl" />
+                        <AdsVerseLogo logoUrl={brand?.logoUrl || undefined} size="text-2xl" />
                         <span className="text-brand-orange font-bold text-2xl leading-none">•</span>
                       </Link>
                     </div>
