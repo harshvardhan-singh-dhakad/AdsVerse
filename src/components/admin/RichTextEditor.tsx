@@ -29,6 +29,7 @@ interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   onOpenMedia?: () => void;
+  insertImage?: { src: string; alt?: string } | null;
   className?: string;
 }
 
@@ -74,7 +75,7 @@ const ToolbarButton = ({
 
 const SectionDivider = () => <div className="w-px h-6 bg-border/40 mx-1" />;
 
-export function RichTextEditor({ value, onChange, onOpenMedia, className }: RichTextEditorProps) {
+export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, className }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -125,6 +126,11 @@ export function RichTextEditor({ value, onChange, onOpenMedia, className }: Rich
       editor.commands.setContent(value);
     }
   }, [value, editor]);
+
+  React.useEffect(() => {
+    if (!editor || !insertImage?.src) return;
+    editor.chain().focus().setImage({ src: insertImage.src, alt: insertImage.alt || '' }).run();
+  }, [editor, insertImage]);
 
   const addImage = useCallback(() => {
     if (onOpenMedia) {
