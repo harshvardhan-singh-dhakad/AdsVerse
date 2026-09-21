@@ -28,6 +28,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
+  onOpenMedia?: () => void;
+  insertImage?: { src: string; alt?: string } | null;
   className?: string;
 }
 
@@ -73,7 +75,7 @@ const ToolbarButton = ({
 
 const SectionDivider = () => <div className="w-px h-6 bg-border/40 mx-1" />;
 
-export function RichTextEditor({ value, onChange, className }: RichTextEditorProps) {
+export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, className }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -125,12 +127,21 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
     }
   }, [value, editor]);
 
+  React.useEffect(() => {
+    if (!editor || !insertImage?.src) return;
+    editor.chain().focus().setImage({ src: insertImage.src, alt: insertImage.alt || '' }).run();
+  }, [editor, insertImage]);
+
   const addImage = useCallback(() => {
-    const url = window.prompt('URL');
+    if (onOpenMedia) {
+      onOpenMedia();
+      return;
+    }
+    const url = window.prompt('Image URL');
     if (url) {
       editor?.chain().focus().setImage({ src: url }).run();
     }
-  }, [editor]);
+  }, [editor, onOpenMedia]);
 
   const setLink = useCallback(() => {
     const previousUrl = editor?.getAttributes('link').href;
@@ -277,7 +288,7 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
           </ToolbarButton>
           <ToolbarButton
             onClick={addImage}
-            tooltip="Insert Image"
+            tooltip="Insert from Media Library"
           >
             <ImageIcon className="w-4 h-4" />
           </ToolbarButton>
