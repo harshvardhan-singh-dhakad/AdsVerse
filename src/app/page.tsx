@@ -204,8 +204,8 @@ export default async function HomePage() {
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
                 <Button asChild size="lg" aria-label="Get Free Audit" className="bg-orange-700 hover:bg-orange-800 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
-                  <Link href="/contact" prefetch={false} aria-label="Get Free Audit" className="flex items-center gap-2">
-                    Get Free Audit <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+                  <Link href="/tools/seo-audit" prefetch={false} aria-label="Run Free SEO Audit" className="flex items-center gap-2">
+                    Run Free SEO Audit <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="glass-card text-slate-900 dark:text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold hover:bg-white/5 transition-all text-base md:text-lg border border-border-glass">
@@ -465,7 +465,7 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 pt-6 md:pt-8">
               <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/95 text-black px-10 md:px-12 py-4 md:py-5 h-auto rounded-2xl font-bold text-lg md:text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1 border-none">
-                <Link href="/contact" prefetch={false}>Claim Free Audit Now</Link>
+                <Link href="/tools/seo-audit" prefetch={false}>Run Free SEO Audit Now</Link>
               </Button>
               <Button asChild variant="link" size="lg" className="text-slate-900 dark:text-white hover:text-brand-orange transition-colors font-bold flex items-center gap-3 text-base md:text-lg px-6 py-4 md:py-5 h-auto">
                 <Link href="/contact" prefetch={false} className="flex items-center gap-2">
