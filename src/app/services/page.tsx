@@ -1,6 +1,4 @@
-import { adminDb } from "@/firebase/admin";
 import { getPublicServices } from "@/lib/service-catalog";
-import { type Service as ServiceDef } from "@/lib/definitions";
 import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
