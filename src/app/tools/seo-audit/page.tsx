@@ -396,18 +396,6 @@ export default function AdsVerseAuditPage() {
     window.print();
   };
 
-  if (!isMounted) {
-    return (
-      <div className="rankai-app min-h-screen bg-[#060912]">
-        <section className="hero">
-          <div className="pill-badge"><span className="dot"></span> SEO · GEO · AEO — All in One Tool</div>
-          <h1 className="hero-heading">Free SEO, AEO &amp; GEO Audit Tool</h1>
-          <p className="hero-sub">Loading audit engine...</p>
-        </section>
-      </div>
-    );
-  }
-
   return (
     <div className="rankai-app">
       <canvas id="starCanvas" ref={canvasRef}></canvas>
@@ -518,7 +506,11 @@ export default function AdsVerseAuditPage() {
             <h1 className="hero-heading max-w-4xl mx-auto">
               Free <span className="grad-seo">SEO</span>, <span className="grad-aeo">AEO</span> &amp; <span className="grad-geo">GEO</span> Audit Tool — Check If ChatGPT &amp; Google AI Cite Your Website
             </h1>
-            <p className="hero-sub max-w-2xl">See if you rank on Google AND get cited by ChatGPT, Perplexity, and Google AI — all in one report.</p>
+            <p className="hero-sub max-w-2xl">Run a free website SEO check in seconds. Find technical SEO issues, on-page problems, Core Web Vitals gaps, crawlability errors and AI-search visibility signals in one report.</p>
+
+            <p className="max-w-3xl mx-auto mt-4 text-xs md:text-sm leading-6 text-slate-400">
+              The AdsVerse <strong className="text-slate-200">free SEO audit tool</strong> is a practical website SEO checker for businesses, marketers and agencies. Check your website before you invest in SEO, content or paid traffic.
+            </p>
 
             {/* Modern Wide Search Box */}
             <form className="w-full max-w-2xl mx-auto shadow-2xl px-4" onSubmit={startAnalysis}>
@@ -550,9 +542,10 @@ export default function AdsVerseAuditPage() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> 100% Free Initial Audit</span>
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Core Web Vitals &amp; Tech Lab</span>
-              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> Generative AI Search Citations</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-400" /> Free Initial SEO Audit</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-blue-400" /> Technical SEO &amp; Core Web Vitals</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-violet-400" /> GEO &amp; AEO Search Signals</span>
+              <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-orange-400" /> Actionable Fix Recommendations</span>
             </div>
 
             {error && (
