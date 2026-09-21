@@ -12,7 +12,6 @@ import {
   Globe,
   Crown,
   Sparkles,
-  Image,
   ChevronRight,
 } from "lucide-react";
 import {
