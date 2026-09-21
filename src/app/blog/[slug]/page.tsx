@@ -196,30 +196,19 @@ function processBlogContent(html: string): { cleanedHtml: string; headings: Head
     return `<h2 id="${uniqueId}"${attrs}>${innerText}</h2>`;
   });
 
-  // 5. Optimize raw HTML images using Next.js Image API
-  cleaned = cleanedHtml.replace(/<img([^>]+)>/gi, (match, attrs) => {
-    // Extract src attribute
-    const srcMatch = attrs.match(/src="([^"]+)"/i) || attrs.match(/src='([^']+)'/i);
-    if (!srcMatch) return match;
-    
-    const originalSrc = srcMatch[1];
-    
-    // Only optimize absolute URLs or known domains to prevent relative path breakage
-    if (originalSrc.startsWith('http')) {
-      const optimizedSrc = `/_next/image?url=${encodeURIComponent(originalSrc)}&w=1080&q=75`;
-      const newAttrs = attrs.replace(srcMatch[0], `src="${optimizedSrc}"`);
-      
-      // Add lazy loading if not present
-      let finalAttrs = newAttrs;
-      if (!/loading=/i.test(finalAttrs)) {
-        finalAttrs += ' loading="lazy" decoding="async"';
-      }
-      return `<img${finalAttrs}>`;
-    }
-    return match;
+  // 5. Keep stored image URLs untouched. Only add browser-safe loading hints.
+  //    Rewriting arbitrary URLs to /_next/image can break images from domains that
+  //    are not configured in next.config.mjs, so the renderer intentionally preserves
+  //    the original src while making article images lazy/async.
+  const cleanedHtmlWithImageHints = cleanedHtml.replace(/<img([^>]*?)>/gi, (match, attrs) => {
+    let nextAttrs = attrs;
+    if (!/\bloading=/i.test(nextAttrs)) nextAttrs += ' loading="lazy"';
+    if (!/\bdecoding=/i.test(nextAttrs)) nextAttrs += ' decoding="async"';
+    if (!/\bdraggable=/i.test(nextAttrs)) nextAttrs += ' draggable="false"';
+    return `<img${nextAttrs}>`;
   });
 
-  return { cleanedHtml: cleaned, headings };
+  return { cleanedHtml: cleanedHtmlWithImageHints, headings };
 }
 
 
@@ -332,7 +321,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </Link>
         </Button>
 
-        <article className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <article className="space-y-8 blog-article-shell">
           <header className="space-y-6">
             <Badge variant="secondary" className="px-3 py-1 text-sm font-medium bg-primary/10 text-primary border-none">
               {post.category}
@@ -360,14 +349,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             </div>
           </header>
 
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-2xl border border-primary/10">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-primary/10 shadow-lg">
             <Image
               src={post.imageUrl || '/images/og-adsverse-2026.png'}
               alt={post.title || 'AdsVerse Blog'}
               fill
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              className="object-cover"
             />
           </div>
 
@@ -413,9 +402,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               "space-y-8",
               headings.length > 0 ? "lg:col-span-3" : "w-full"
             )}>
-              <Card className="border-none bg-card/40 backdrop-blur-md shadow-xl overflow-hidden">
-                <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
+              <Card className="border border-primary/10 bg-card/35 shadow-sm overflow-hidden">
+                <CardContent className="p-6 md:p-10 lg:p-12 prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
                   <div
+                    className="blog-html"
                     suppressHydrationWarning
                     dangerouslySetInnerHTML={{ __html: cleanedHtml }}
                   />
