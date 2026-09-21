@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
 
   // 5. Block /get-id from public access
   if (pathname === '/get-id') {
-    const token = request.cookies.get('admin_token')?.value;
+    const token = request.cookies.get('admin_session')?.value;
     if (!token) {
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('returnUrl', '/get-id');
