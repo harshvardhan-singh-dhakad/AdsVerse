@@ -12,7 +12,6 @@ import { AuditLeadsTable } from "./AuditLeadsTable";
 import { SubscriptionsPanel } from "./SubscriptionsPanel";
 import { CompetitorRadar } from "./CompetitorRadar";
 import { type AdminTab } from "./AdminSidebar";
-import { MediaLibrary } from "./MediaLibrary";
 import { BrandSettings } from "./BrandSettings";
 import { NavigationSettings } from "./NavigationSettings";
 import { TestimonialsTable } from "./TestimonialsTable";
@@ -52,16 +51,6 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <BrandSettings />;
     case "navigation":
       return <NavigationSettings />;
-    case "media":
-      return (
-        <div className="rounded-3xl border border-border/60 bg-card/60 p-5 shadow-sm md:p-7">
-          <div className="mb-6">
-            <h2 className="text-2xl font-black tracking-tight text-foreground">Media Library</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Upload, organize and reuse blog images from Firebase Storage.</p>
-          </div>
-          <MediaLibrary />
-        </div>
-      );
     default:
       return <DashboardStats />;
   }
