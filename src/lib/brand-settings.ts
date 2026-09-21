@@ -30,4 +30,4 @@ export async function getBrandSettings(): Promise<BrandSettings> {
     console.warn("[brand-settings] Firestore unavailable; using defaults.", error);
     return DEFAULT_BRAND;
   }
-});
+}
