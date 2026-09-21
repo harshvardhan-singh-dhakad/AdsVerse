@@ -315,6 +315,12 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
         onInsert={(image) => {
           editor.chain().focus().setImage({ src: image.url, alt: image.alt }).run();
         }}
+        onInsertMany={(images) => {
+          editor.chain().focus();
+          images.forEach((image) => {
+            editor.chain().focus().setImage({ src: image.url, alt: image.alt }).run();
+          });
+        }}
       />
 
       <BubbleMenu editor={editor} className="flex overflow-hidden rounded-full bg-card border border-border/10 shadow-2xl p-1 gap-1">
