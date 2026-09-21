@@ -27,6 +27,7 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import AdsVerseLogo from "@/components/AdsVerseLogo";
 
 export type AdminTab =
   | "dashboard"
@@ -90,12 +91,9 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, userName }: Adm
     <Sidebar variant="inset" className="border-r border-border/60 bg-background">
       <SidebarHeader className="border-b border-border/60 p-5">
         <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card/70 p-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-lg font-black text-primary-foreground shadow-sm">
-            A
-          </div>
-          <div className="min-w-0">
-            <h2 className="font-headline text-base font-black tracking-tight text-foreground">AdsVerse</h2>
-            <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <AdsVerseLogo size="text-xl" className="max-w-full" />
+            <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Admin workspace</p>
           </div>
         </div>
       </SidebarHeader>
