@@ -14,8 +14,11 @@ export function BackgroundEffects() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Disable background effects on admin and utility routes
+  // Keep global background visuals, but disable their continuous animation on
+  // blog pages because long HTML articles are much more sensitive to paint/layout
+  // work during browser zoom and resize.
   const isAdminRoute = pathname?.includes("/admin") || pathname?.includes("/get-id");
+  const isBlogRoute = pathname === "/blog" || pathname?.startsWith("/blog/");
 
   if (isAdminRoute) return null;
 
@@ -23,7 +26,8 @@ export function BackgroundEffects() {
     <div
       className={cn(
         "fixed top-0 left-0 w-full h-full -z-20 overflow-hidden pointer-events-none hidden dark:block",
-        isLoaded && "ready-to-animate"
+        isBlogRoute && "blog-static-effects",
+        isLoaded && !isBlogRoute && "ready-to-animate"
       )}
       aria-hidden="true"
       role="presentation"

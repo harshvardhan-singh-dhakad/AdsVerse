@@ -600,4 +600,95 @@
     content-visibility: auto;
     contain-intrinsic-size: 1px 5000px; /* Placeholder dimensions */
   }
-}
+}
+
+  /* ============================================
+     BLOG ARTICLE PERFORMANCE / ZOOM SAFETY
+     Existing stored HTML and image URLs remain untouched.
+     These rules only constrain the rendering surface.
+     ============================================ */
+  .blog-article-shell {
+    min-width: 0;
+    width: 100%;
+    overflow: visible;
+    isolation: isolate;
+  }
+
+  .blog-html {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1800px;
+  }
+
+  .blog-html img,
+  .blog-html video,
+  .blog-html iframe,
+  .blog-html embed,
+  .blog-html object,
+  .blog-html canvas,
+  .blog-html svg {
+    max-width: 100%;
+  }
+
+  .blog-html img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    margin-inline: auto;
+  }
+
+  .blog-html pre,
+  .blog-html code {
+    max-width: 100%;
+  }
+
+  .blog-html pre {
+    overflow-x: auto;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .blog-html table {
+    max-width: 100%;
+  }
+
+  .blog-html a,
+  .blog-html p,
+  .blog-html li,
+  .blog-html td,
+  .blog-html th {
+    overflow-wrap: anywhere;
+  }
+
+  .blog-html > :first-child {
+    margin-top: 0;
+  }
+
+  .blog-html > :last-child {
+    margin-bottom: 0;
+  }
+
+  .blog-static-effects .glow-effect,
+  .blog-static-effects .stars {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  @media (max-width: 768px) {
+    .blog-html {
+      font-size: 1rem;
+    }
+
+    .blog-html table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+  }
+
