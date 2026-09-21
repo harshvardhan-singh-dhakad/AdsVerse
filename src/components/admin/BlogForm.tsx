@@ -1156,7 +1156,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                 onInsert={(item: BlogMediaItem) => {
                   setEditorInsertImage({ src: item.url, alt: item.alt });
                   setMediaOpen(false);
-                  toast({ title: 'Image queued', description: 'The image was inserted at the current editor position.' });
+                  toast({ title: 'Image inserted', description: 'The image was inserted into the editor.' });
                 }}
                 onSetFeatured={(item: BlogMediaItem) => {
                   form.setValue('imageUrl', item.url, { shouldValidate: true, shouldDirty: true });
@@ -1217,7 +1217,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </div>
                   <div
                     className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary"
-                    dangerouslySetInnerHTML={{ __html: watchAllDetails.content || '<p>Your article content will appear here.</p>' }}
+                    dangerouslySetInnerHTML={{ __html: (isFullHtmlMode ? fullHtml : watchAllDetails.content) || '<p>Your article content will appear here.</p>' }}
                   />
                 </div>
               </article>
