@@ -115,8 +115,16 @@ export default function LoginPage() {
         }
         window.location.href = target;
       }
-    } catch (err) {
+    } catch (err: any) {
       console.warn("User sync warning:", err);
+      isSyncingRef.current = false;
+
+      if (isAdminFlow) {
+        setLoading(false);
+        setErrorMessage(err?.message || "Administrator session could not be established. Please try again.");
+        return;
+      }
+
       Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
       window.location.href = "/tools/seo-audit";
     }
