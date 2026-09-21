@@ -546,7 +546,12 @@ export default function ServicesClient({
                 className={isVisible ? "cat-section-animate" : ""}
                 style={{ display: isVisible ? "block" : "none" }}
               >
-                <CatSection cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
+                <CatSection
+                  cat={cat}
+                  selectedServices={selectedServices}
+                  onToggleService={toggleService}
+                  servicePriceOverrides={servicePriceOverrides}
+                />
               </div>
             );
           })}
