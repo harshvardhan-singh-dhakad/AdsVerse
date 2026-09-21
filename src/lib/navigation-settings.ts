@@ -31,7 +31,8 @@ export async function getNavigationLinks(): Promise<NavigationLink[]> {
       }))
       .filter((item: NavigationLink) => item.href && item.label && item.href.startsWith("/"));
 
-    return normalized.length > 0 ? normalized : DEFAULT_NAVIGATION_LINKS;
+    const visibleLinks = normalized.filter((item) => item.enabled);
+    return visibleLinks.length > 0 ? visibleLinks : DEFAULT_NAVIGATION_LINKS;
   } catch (error) {
     console.warn("[navigation-settings] Firestore unavailable; using defaults.", error);
     return DEFAULT_NAVIGATION_LINKS;
