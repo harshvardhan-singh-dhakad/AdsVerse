@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 
 interface AdsVerseLogoProps {
   size?: string;
@@ -12,12 +12,9 @@ export default function AdsVerseLogo({ size = 'text-5xl', className = '', logoUr
   if (logoUrl) {
     return (
       <span className={`inline-flex items-center select-none ${size} ${className}`}>
-        <Image
+        <img
           src={logoUrl}
           alt="AdsVerse"
-          width={2079}
-          height={440}
-          unoptimized
           className="h-[1.25em] w-auto max-w-full object-contain"
         />
       </span>
