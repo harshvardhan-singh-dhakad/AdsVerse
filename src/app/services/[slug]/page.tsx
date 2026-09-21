@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function DynamicServicePage({ params }: PageProps) {
-  const result = getServiceBySlug(params.slug);
+  const result = await getPublicServiceBySlug(params.slug);
   
   if (!result) {
     notFound();
