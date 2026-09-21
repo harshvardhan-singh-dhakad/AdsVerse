@@ -32,14 +32,14 @@ export async function generateMetadata(): Promise<Metadata> {
 const buildContactJsonLd = (brand: BrandSettings) => ({
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  "name": "Contact AdsVerse | Digital Marketing Agency",
-  "description": "Get in touch with the AdsVerse team. Whether you have a project in mind or just want to say hello, we'd love to hear from you.",
+  "name": `Contact ${brand.siteName} | Digital Marketing Agency`,
+  "description": brand.description,
   "url": "https://adsverse.in/contact",
   "mainEntity": {
     "@type": "Organization",
-    "name": "AdsVerse",
+    "name": brand.siteName,
     "url": "https://adsverse.in",
-    "logo": "https://adsverse.in/images/logo-white.webp",
+    "logo": brand.logoUrl || "https://adsverse.in/images/logo-white.webp",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": brand.phone,
