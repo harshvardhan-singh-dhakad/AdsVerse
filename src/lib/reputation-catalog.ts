@@ -28,7 +28,7 @@ const normalizeTestimonials = (docs: FirebaseFirestore.QueryDocumentSnapshot[]):
         displayOrder: Number(data.displayOrder ?? index) || index,
       } satisfies TestimonialItem;
     })
-    .filter((item): item is TestimonialItem => Boolean(item) && item.isPublished)
+    .filter((item): item is TestimonialItem => item !== null && item.isPublished !== false)
     .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
 const normalizeFaqs = (docs: FirebaseFirestore.QueryDocumentSnapshot[]): FAQItem[] =>
@@ -51,7 +51,7 @@ const normalizeFaqs = (docs: FirebaseFirestore.QueryDocumentSnapshot[]): FAQItem
         displayOrder: Number(data.displayOrder ?? index) || index,
       } satisfies FAQItem;
     })
-    .filter((item): item is FAQItem => Boolean(item) && item.isPublished)
+    .filter((item): item is FAQItem => item !== null && item.isPublished !== false)
     .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
 export async function getPublicTestimonials(): Promise<TestimonialItem[]> {
