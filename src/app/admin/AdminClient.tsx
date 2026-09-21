@@ -83,30 +83,27 @@ export default function AdminPage() {
         <SidebarInset className="flex flex-col flex-1 bg-background relative overflow-hidden">
 
 
-          <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center justify-between border-b border-border/5 bg-background/60 backdrop-blur-3xl px-8 shadow-2xl">
+          <header className="sticky top-0 z-40 flex min-h-16 shrink-0 items-center justify-between border-b border-border/60 bg-background/95 px-4 py-3 backdrop-blur-xl lg:px-8">
             <div className="flex items-center gap-6">
               <div className="p-2 rounded-lg hover:bg-muted/5 transition-colors">
                 <SidebarTrigger className="text-muted-foreground hover:text-primary transition-colors" />
               </div>
-              <div className="h-6 w-px bg-muted/10" />
-              <div className="flex flex-col">
-                <h2 className="text-2xl font-black font-headline text-foreground tracking-tighter capitalize leading-none mb-1">{activeTab}</h2>
-                <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest ml-0.5">Systems Management</p>
+              <div className="h-6 w-px bg-border/60" />
+              <div className="flex min-w-0 flex-col">
+                <h2 className="truncate text-lg font-black font-headline text-foreground capitalize leading-none">{activeTab === "seo-radar" ? "SEO & AI Radar" : activeTab.replace(/-/g, " ")}</h2>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AdsVerse admin workspace</p>
               </div>
             </div>
             <div className="flex items-center gap-6">
-              <div className="flex flex-col items-end mr-2">
-                <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mb-1">System Status</p>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[11px] font-black text-emerald-500 uppercase tracking-tighter">Fully Operational</span>
-                </div>
+              <div className="hidden items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1.5 sm:flex">
+                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Operational</span>
               </div>
             </div>
           </header>
 
-          <main className="flex-1 p-8 lg:p-12 overflow-auto custom-scrollbar relative z-10">
-            <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <main className="relative z-10 flex-1 overflow-auto bg-muted/[0.14] p-4 custom-scrollbar sm:p-6 lg:p-8">
+            <div className="mx-auto w-full max-w-[1600px] animate-in fade-in slide-in-from-bottom-4 duration-500">
               <AdminDashboard activeTab={activeTab} />
             </div>
           </main>
