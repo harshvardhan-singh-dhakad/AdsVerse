@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
 
   // 3. Admin protection
   if (pathname.startsWith('/admin')) {
-    const token = request.cookies.get('admin_token')?.value;
+    const token = request.cookies.get('admin_session')?.value;
     if (!token) {
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('returnUrl', pathname);
@@ -33,8 +33,8 @@ export function middleware(request: NextRequest) {
 
   // 4. Prevent logged-in users from accessing /login again
   if (pathname === '/login' || pathname === '/signup') {
-    const adminToken = request.cookies.get('admin_token')?.value;
-    if (adminToken) {
+    const adminSession = request.cookies.get('admin_session')?.value;
+    if (adminSession) {
       return NextResponse.redirect(new URL('/admin', request.url));
     }
 
@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
 
   // 5. Block /get-id from public access
   if (pathname === '/get-id') {
-    const token = request.cookies.get('admin_token')?.value;
+    const token = request.cookies.get('admin_session')?.value;
     if (!token) {
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('returnUrl', '/get-id');

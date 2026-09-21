@@ -2,10 +2,8 @@
 
 import { useUser, useAuth, useFirestore } from "@/firebase";
 import { signOut as firebaseSignOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from 'js-cookie';
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -18,7 +16,6 @@ export default function AdminPage() {
   const { user, isUserLoading: loading } = useUser();
   const auth = useAuth();
   const firestore = useFirestore();
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [brand, setBrand] = useState<BrandSettings>(DEFAULT_BRAND);
@@ -59,7 +56,15 @@ export default function AdminPage() {
           }
           const data = await res.json();
           if (data?.user?.role === "admin") {
-            Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
+            const sessionRes = await fetch("/api/auth/admin-session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken: token }),
+            });
+            if (!sessionRes.ok) {
+              throw new Error("Could not establish administrator session");
+            }
+            Cookies.remove("admin_token");
             setIsAuthorized(true);
           } else {
             setIsAuthorized(false);
@@ -75,10 +80,11 @@ export default function AdminPage() {
   }, [user, loading]);
 
   const handleSignOut = async () => {
+    await fetch("/api/auth/admin-session", { method: "DELETE" }).catch(() => undefined);
     await firebaseSignOut(auth);
-    Cookies.remove('admin_token');
-    Cookies.remove('user_token');
-    window.location.href = '/login';
+    Cookies.remove("admin_token");
+    Cookies.remove("user_token");
+    window.location.href = "/login";
   };
 
   if (loading || !user || isAuthorized === null) {
