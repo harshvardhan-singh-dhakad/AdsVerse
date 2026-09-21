@@ -93,12 +93,19 @@ export default function LoginPage() {
       const domain = params.get("domain");
 
       if (data?.user?.role === "admin") {
-        Cookies.set("admin_token", "authenticated", { expires: 7, secure: true, sameSite: "lax" });
+        const sessionRes = await fetch("/api/auth/admin-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idToken }),
+        });
+        if (!sessionRes.ok) {
+          throw new Error("Administrator session could not be established");
+        }
         Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
         window.location.href = returnUrl === "/tools/seo-audit" ? "/admin" : returnUrl;
       } else {
         Cookies.set("user_token", firebaseUser.uid, { expires: 30, secure: true, sameSite: "lax" });
-        Cookies.remove("admin_token");
+        await fetch("/api/auth/admin-session", { method: "DELETE" }).catch(() => undefined);
 
         let target = returnUrl.startsWith("/admin") ? "/tools/seo-audit" : returnUrl;
         if (intent) {
