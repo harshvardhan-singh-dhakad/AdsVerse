@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface AdsVerseLogoProps {
   size?: string;
   className?: string;
@@ -10,9 +12,12 @@ export default function AdsVerseLogo({ size = 'text-5xl', className = '', logoUr
   if (logoUrl) {
     return (
       <span className={`inline-flex items-center select-none ${size} ${className}`}>
-        <img
+        <Image
           src={logoUrl}
           alt="AdsVerse"
+          width={2079}
+          height={440}
+          unoptimized
           className="h-[1.25em] w-auto max-w-full object-contain"
         />
       </span>
