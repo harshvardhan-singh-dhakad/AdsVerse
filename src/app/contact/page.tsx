@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { getPublicServices } from "@/lib/service-catalog";
 
 const ContactForm = dynamic(
   () => import("@/components/pages/contact-form").then((mod) => mod.ContactForm),
@@ -71,7 +72,9 @@ const jsonLd = {
   }
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const services = await getPublicServices();
+  const serviceOptions = Array.from(new Set(services.map((service) => service.name).filter(Boolean)));
   return (
     <>
     <script
@@ -92,7 +95,7 @@ export default function ContactPage() {
             <CardTitle className="text-3xl font-headline text-center">Contact Us</CardTitle>
           </CardHeader>
           <CardContent>
-            <ContactForm />
+            <ContactForm services={serviceOptions} />
           </CardContent>
         </Card>
 
