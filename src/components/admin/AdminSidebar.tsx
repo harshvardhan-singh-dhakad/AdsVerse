@@ -8,6 +8,7 @@ import {
   IndianRupee,
   LogOut,
   FileText,
+  Image,
   Globe,
   Crown,
   Sparkles,
@@ -38,7 +39,8 @@ export type AdminTab =
   | "services"
   | "portfolio"
   | "pricing"
-  | "blogs";
+  | "blogs"
+  | "media";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -58,6 +60,7 @@ const groups = [
     label: "Content",
     items: [
       { id: "blogs", label: "Blogs", icon: FileText },
+      { id: "media", label: "Media Library", icon: Image },
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
