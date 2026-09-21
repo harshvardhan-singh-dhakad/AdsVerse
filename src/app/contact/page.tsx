@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPublicServices } from "@/lib/service-catalog";
 import { getBrandSettings } from "@/lib/brand-settings";
+import type { BrandSettings } from "@/lib/brand-defaults";
 
 const ContactForm = dynamic(
   () => import("@/components/pages/contact-form").then((mod) => mod.ContactForm),
@@ -17,16 +18,18 @@ const ContactForm = dynamic(
 import { MapIframe } from "@/components/pages/map-iframe";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrandSettings();
+
   return {
-    title: { absolute: "Contact AdsVerse — Free Audit & Consultation" },
-    description: "Contact AdsVerse in Vijay Nagar, Indore for a free SEO audit & AI consultation. Call +91-9685123339 or message our automation experts to scale your business.",
+    title: { absolute: `Contact ${brand.siteName} — Free Audit & Consultation` },
+    description: `Contact ${brand.siteName} for a free SEO audit & AI consultation. Call ${brand.phone} or message our automation experts to scale your business.`,
     alternates: {
       canonical: "https://adsverse.in/contact",
     },
   };
 }
 
-const jsonLd = {
+const buildContactJsonLd = (brand: BrandSettings) => ({
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact AdsVerse | Digital Marketing Agency",
@@ -71,7 +74,7 @@ const jsonLd = {
       }
     ]
   }
-};
+});
 
 export default async function ContactPage() {
   const [services, brand] = await Promise.all([
@@ -79,6 +82,8 @@ export default async function ContactPage() {
     getBrandSettings(),
   ]);
   const serviceOptions = Array.from(new Set(services.map((service) => service.name).filter(Boolean)));
+  const jsonLd = buildContactJsonLd(brand);
+
   return (
     <>
     <script
