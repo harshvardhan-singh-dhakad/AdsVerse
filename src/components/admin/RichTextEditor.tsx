@@ -90,6 +90,8 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
       Image.configure({
         HTMLAttributes: {
           class: 'rounded-2xl border border-border/10 shadow-2xl max-w-full my-8',
+          loading: 'lazy',
+          decoding: 'async',
         },
       }),
       TextStyle,
