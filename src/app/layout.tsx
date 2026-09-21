@@ -373,7 +373,7 @@ export default async function RootLayout({
         >
           <div className="relative z-10 min-h-screen flex flex-col">
             <BackgroundEffects />
-            <Header navLinks={navLinks} latestPosts={[]} />
+            <Header navLinks={navLinks} latestPosts={await getLatestPosts()} />
             <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
               {children}
             </main>
