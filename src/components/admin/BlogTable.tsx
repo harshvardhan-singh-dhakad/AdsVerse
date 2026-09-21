@@ -7,7 +7,7 @@ import { BlogPost } from '@/lib/definitions';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit2, Trash2, Plus, Eye, EyeOff, FileText } from 'lucide-react';
+import { Edit2, Trash2, Plus, Eye, EyeOff, FileText, Search, Filter, Sparkles } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { BlogForm } from './BlogForm';
 import { useToast } from '@/hooks/use-toast';
@@ -21,6 +21,8 @@ export function BlogTable() {
     const [isEditing, setIsEditing] = useState(false);
     const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
     const [error, setError] = useState<any>(null);
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState<'all' | 'publish' | 'draft' | 'schedule'>('all');
 
     useEffect(() => {
         const q = query(collection(db, 'blogPosts'), orderBy('publishedDate', 'desc'));
@@ -135,6 +137,13 @@ export function BlogTable() {
         }
     };
 
+    const visiblePosts = posts.filter((post) => {
+        const needle = search.trim().toLowerCase();
+        const matchesSearch = !needle || [post.title, post.category, post.slug, ...(post.tags || [])].join(' ').toLowerCase().includes(needle);
+        const matchesStatus = statusFilter === 'all' || post.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
     const formatDate = (publishedDate: any): string => {
         const date = getParsedDate(publishedDate);
         return date ? format(date, 'MMM d, yyyy') : "N/A";
@@ -227,7 +236,7 @@ export function BlogTable() {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="space-y-1">
-                    <h2 className="text-4xl font-black text-foreground font-headline tracking-tighter">Content Intelligence</h2>
+                    <h2 className="text-4xl font-black text-foreground font-headline tracking-tighter">Blog Content Studio</h2>
                     <p className="text-sm text-muted-foreground/60 font-medium uppercase tracking-[0.15em]">
                         Manage your brand's narrative and industry authority.
                     </p>
@@ -245,6 +254,53 @@ export function BlogTable() {
                         Create Article
                     </Button>
                 )}
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+                <div className="relative">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search title, category, slug or tag…"
+                        className="h-11 w-full rounded-xl border border-border/60 bg-card/70 pl-9 pr-4 text-sm outline-none ring-offset-background transition focus:border-primary/50 focus:ring-2 focus:ring-primary/10"
+                    />
+                </div>
+                <div className="relative">
+                    <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+                        className="h-11 min-w-[170px] appearance-none rounded-xl border border-border/60 bg-card/70 pl-9 pr-4 text-sm outline-none transition focus:border-primary/50"
+                    >
+                        <option value="all">All statuses</option>
+                        <option value="publish">Published</option>
+                        <option value="draft">Drafts</option>
+                        <option value="schedule">Scheduled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                <div className="rounded-2xl border border-border/50 bg-card/60 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total</p>
+                    <p className="mt-1 text-2xl font-black">{posts.length}</p>
+                </div>
+                <div className="rounded-2xl border border-border/50 bg-card/60 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Published</p>
+                    <p className="mt-1 text-2xl font-black text-emerald-500">{posts.filter((p) => p.isPublished).length}</p>
+                </div>
+                <div className="rounded-2xl border border-border/50 bg-card/60 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Drafts</p>
+                    <p className="mt-1 text-2xl font-black text-amber-500">{posts.filter((p) => p.status === 'draft').length}</p>
+                </div>
+                <div className="rounded-2xl border border-primary/15 bg-primary/[0.04] p-4">
+                    <div className="flex items-center gap-2 text-primary">
+                        <Sparkles className="h-4 w-4" />
+                        <p className="text-[10px] font-black uppercase tracking-widest">CMS</p>
+                    </div>
+                    <p className="mt-1 text-sm font-bold">Media + Preview ready</p>
+                </div>
             </div>
 
             {/* FULL PAGE EDITOR OVERLAY */}
@@ -305,7 +361,7 @@ export function BlogTable() {
                             </TableHeader>
 
                             <TableBody>
-                                {posts.length === 0 ? (
+                                {visiblePosts.length === 0 ? (
                                     <TableRow className="border-none">
                                         <TableCell colSpan={5} className="text-center py-32">
                                             <div className="flex flex-col items-center gap-6">
@@ -332,7 +388,7 @@ export function BlogTable() {
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    posts.map((post) => (
+                                    visiblePosts.map((post) => (
                                         <TableRow
                                             key={post.id}
                                             className="group/row hover:bg-muted/2 transition-all border-b border-border/5 last:border-0 h-24"
