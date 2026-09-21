@@ -17,15 +17,18 @@ const normalizeTestimonials = (docs: FirebaseFirestore.QueryDocumentSnapshot[]):
       const text = String(data.text || "").trim();
       if (!name || !text) return null;
 
+      const rawRating = Number(data.rating);
+      const rawOrder = Number(data.displayOrder);
+
       return {
         id: doc.id,
         name,
         role: String(data.role || "").trim(),
         text,
-        initials: String(data.initials || name.slice(0, 2)).trim().slice(0, 3),
-        rating: Number(data.rating || 5) || 5,
+        initials: String(data.initials || name.slice(0, 2)).trim().slice(0, 3).toUpperCase(),
+        rating: Number.isFinite(rawRating) ? Math.min(5, Math.max(1, Math.round(rawRating))) : 5,
         isPublished: data.isPublished !== false,
-        displayOrder: Number(data.displayOrder ?? index) || index,
+        displayOrder: Number.isFinite(rawOrder) && rawOrder >= 0 ? rawOrder : index,
       } satisfies TestimonialItem;
     })
     .filter((item): item is TestimonialItem => item !== null && item.isPublished !== false)
