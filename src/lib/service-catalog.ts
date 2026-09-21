@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { adminDb } from "@/firebase/admin";
 import type { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import {
@@ -126,7 +125,7 @@ const normalizeFirestoreServices = (docs: QueryDocumentSnapshot[]): PublicServic
     .filter((service) => service.isPublished)
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
-export const getPublicServices = cache(async (): Promise<PublicService[]> => {
+export async function getPublicServices(): Promise<PublicService[]> {
   try {
     const snapshot = await adminDb.collection("services").get();
 
@@ -140,7 +139,7 @@ export const getPublicServices = cache(async (): Promise<PublicService[]> => {
   }
 
   return normalizeStaticServices();
-});
+}
 
 export async function getPublicServiceBySlug(slug: string): Promise<PublicServiceResult | null> {
   const services = await getPublicServices();
