@@ -6,7 +6,7 @@ import { useStorage } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, ImagePlus, Loader2, UploadCloud } from 'lucide-react';
+import { Copy, ImagePlus, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export type InlineUploadedImage = {
@@ -17,6 +17,7 @@ export type InlineUploadedImage = {
 
 type InlineImageUploaderProps = {
   onInsert: (image: InlineUploadedImage) => void;
+  onInsertMany?: (images: InlineUploadedImage[]) => void;
   autoInsert?: boolean;
   compact?: boolean;
 };
@@ -41,6 +42,7 @@ function safeFileName(name: string) {
 
 export function InlineImageUploader({
   onInsert,
+  onInsertMany,
   autoInsert = false,
   compact = false,
 }: InlineImageUploaderProps) {
@@ -114,9 +116,10 @@ export function InlineImageUploader({
       );
 
       setUploaded((current) => [...results, ...current]);
-      results.forEach((image) => {
-        if (autoInsert) onInsert(image);
-      });
+      if (autoInsert) {
+        if (onInsertMany) onInsertMany(results);
+        else results.forEach((image) => onInsert(image));
+      }
 
       toast({
         title: `${results.length} image${results.length > 1 ? 's' : ''} uploaded`,
@@ -183,7 +186,6 @@ export function InlineImageUploader({
           ) : (
             <ImagePlus className="mr-2 h-4 w-4" />
           )}
-          <UploadCloud className="mr-1 h-3.5 w-3.5" />
           {uploading ? 'Uploading…' : 'Upload images'}
         </Button>
         <span className="text-[10px] text-muted-foreground">
