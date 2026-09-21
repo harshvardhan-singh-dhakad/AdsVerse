@@ -402,12 +402,15 @@ export default async function HomePage() {
               const avatarBg = avatarGradients[code % avatarGradients.length];
 
               return (
-                <li key={index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
+                <li key={t.id || index} className="glass-card p-5 sm:p-8 md:p-10 rounded-3xl relative flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-4 md:mb-6">
                       <Quote className={cn(textIconColor, "h-8 w-8 md:h-10 md:w-10 opacity-50")} aria-hidden="true" />
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, i) => (
+                      <div
+                        className="flex gap-0.5"
+                        aria-label={String(Math.min(5, Math.max(1, Number(t.rating || 5)))) + " star rating"}
+                      >
+                        {[...Array(Math.min(5, Math.max(1, Number(t.rating || 5))))].map((_, i) => (
                           <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400 border-none" aria-hidden="true" />
                         ))}
                       </div>

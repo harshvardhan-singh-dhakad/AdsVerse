@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { addDoc, collection, deleteDoc, doc, orderBy, query, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, query, setDoc } from "firebase/firestore";
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,10 +35,19 @@ export function TestimonialsTable() {
   const [saving, setSaving] = useState(false);
 
   const q = useMemoFirebase(
-    () => query(collection(firestore, "testimonials"), orderBy("displayOrder", "asc")),
+    () => query(collection(firestore, "testimonials")),
     [firestore]
   );
-  const { data: items, isLoading } = useCollection<TestimonialItem>(q);
+  const { data: items, isLoading, error } = useCollection<TestimonialItem>(q);
+
+  const orderedItems = useMemo(() => {
+    return [...(items || [])].sort((a, b) => {
+      const aOrder = Number.isFinite(Number(a.displayOrder)) ? Number(a.displayOrder) : Number.MAX_SAFE_INTEGER;
+      const bOrder = Number.isFinite(Number(b.displayOrder)) ? Number(b.displayOrder) : Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    });
+  }, [items]);
 
   const startNew = () => {
     setEditing(null);
@@ -48,7 +57,15 @@ export function TestimonialsTable() {
 
   const startEdit = (item: TestimonialItem) => {
     setEditing(item);
-    setForm({ ...item, isPublished: item.isPublished !== false });
+    setForm({
+      name: item.name || "",
+      role: item.role || "",
+      text: item.text || "",
+      initials: item.initials || "",
+      rating: Number.isFinite(Number(item.rating)) ? Math.min(5, Math.max(1, Number(item.rating))) : 5,
+      isPublished: item.isPublished !== false,
+      displayOrder: Number.isFinite(Number(item.displayOrder)) ? Number(item.displayOrder) : 0,
+    });
     setOpen(true);
   };
 
@@ -60,14 +77,19 @@ export function TestimonialsTable() {
 
     setSaving(true);
     try {
+      const rawRating = Number(form.rating);
+      const safeRating = Number.isFinite(rawRating) ? Math.min(5, Math.max(1, Math.round(rawRating))) : 5;
+      const rawOrder = Number(form.displayOrder);
+      const safeOrder = Number.isFinite(rawOrder) && rawOrder >= 0 ? Math.floor(rawOrder) : 0;
+
       const payload = {
-        ...form,
         name: form.name.trim(),
         role: form.role.trim(),
         text: form.text.trim(),
         initials: (form.initials.trim() || form.name.trim().slice(0, 2)).toUpperCase(),
-        rating: Math.min(5, Math.max(1, Number(form.rating || 5))),
-        displayOrder: Number(form.displayOrder || 0),
+        rating: safeRating,
+        isPublished: form.isPublished !== false,
+        displayOrder: safeOrder,
       };
 
       if (editing) {
@@ -87,12 +109,27 @@ export function TestimonialsTable() {
 
   const remove = async (id: string) => {
     if (!window.confirm("Delete this testimonial?")) return;
-    await deleteDoc(doc(firestore, "testimonials", id));
-    toast({ title: "Testimonial deleted" });
+    try {
+      await deleteDoc(doc(firestore, "testimonials", id));
+      toast({ title: "Testimonial deleted" });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Delete failed",
+        description: error?.message || "Unable to delete this testimonial.",
+      });
+    }
   };
 
   const importDefaults = async () => {
-    if (items?.length) return;
+    if (items?.length) {
+      toast({
+        variant: "destructive",
+        title: "Import skipped",
+        description: "Testimonials already exist in the CMS. Import is only available for an empty collection.",
+      });
+      return;
+    }
     setSaving(true);
     try {
       await Promise.all(
@@ -122,7 +159,7 @@ export function TestimonialsTable() {
           <p className="mt-2 text-sm text-muted-foreground">Manage homepage testimonials and client proof from one CMS collection.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {!items?.length && (
+          {!items?.length && !error && (
             <Button variant="outline" onClick={importDefaults} disabled={saving}>
               <Upload className="mr-2 h-4 w-4" /> Import Current Defaults
             </Button>
@@ -133,7 +170,12 @@ export function TestimonialsTable() {
         </div>
       </div>
 
-      {!items?.length && !isLoading && (
+      {error ? (
+        <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 text-sm text-red-600">
+          <strong className="text-red-700">Could not load testimonials.</strong>
+          <p className="mt-1">{(error as Error)?.message || "Firestore returned an error while loading testimonials."}</p>
+        </div>
+      ) : !items?.length && !isLoading && (
         <div className="rounded-3xl border border-dashed border-primary/30 bg-primary/5 p-6 text-sm text-muted-foreground">
           <strong className="text-foreground">Migration-safe mode:</strong> the public homepage is still using its existing fallback testimonials. Import them once to move control fully into Admin.
         </div>
@@ -143,7 +185,7 @@ export function TestimonialsTable() {
         {isLoading ? (
           <div className="flex min-h-48 items-center justify-center"><Loader2 className="h-7 w-7 animate-spin text-primary" /></div>
         ) : (
-          items?.map((item) => (
+          orderedItems.map((item) => (
             <div key={item.id} className="rounded-3xl border border-border/60 bg-card/60 p-6 shadow-sm">
               <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
                 <div className="flex gap-4">
