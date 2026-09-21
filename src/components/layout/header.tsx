@@ -392,7 +392,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
             <ThemeToggle />
             <Button asChild size="sm" className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl px-5 py-2.5 h-10 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all flex items-center gap-1.5 border-none">
               <Link href="/tools/seo-audit" prefetch={false}>
-                Free Audit <span className="text-sm font-semibold">&rarr;</span>
+                Free SEO Audit <span className="text-sm font-semibold">&rarr;</span>
               </Link>
             </Button>
           </div>
@@ -607,7 +607,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                   <div className="mt-auto border-t border-border/40 pt-6 shrink-0">
                     <Button asChild className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold rounded-xl py-3 shadow-[0_0_15px_rgba(124,58,237,0.3)] transition-all justify-center border-none">
                       <Link href="/tools/seo-audit" prefetch={false} onClick={closeMobileMenu}>
-                        Free Audit &rarr;
+                        Free SEO Audit &rarr;
                       </Link>
                     </Button>
                   </div>
