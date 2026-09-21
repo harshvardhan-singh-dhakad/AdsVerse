@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Download, Mail, CheckCircle, Loader2, ArrowRight, XCircle, AlertCircle, Info, Crown, Sparkles, Copy, Check, ChevronDown, ChevronUp, ShieldCheck, Zap, Globe, Cpu, Award
@@ -545,7 +546,7 @@ export default function AdsVerseAuditPage() {
 
             {/* Trust Line */}
             <div className="text-center mt-3 text-xs md:text-sm font-medium text-slate-400">
-              No signup · No credit card · Results in 60 seconds
+              Start with a free website SEO check · No credit card · Actionable results
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mt-6 text-xs text-slate-400">
@@ -569,6 +570,59 @@ export default function AdsVerseAuditPage() {
                 onBuyCredits={() => handleOpenUpgrade()}
               />
             )}
+          </section>
+
+          {/* SEO landing content: search intent + topical context */}
+          <section className="max-w-6xl mx-auto px-5" aria-labelledby="free-seo-audit-intro">
+            <div className="glass p-7 md:p-10 rounded-3xl border border-violet-500/15 bg-gradient-to-b from-violet-500/[0.06] to-transparent">
+              <div className="max-w-4xl mx-auto space-y-5">
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-violet-400">Free Website SEO Checker</p>
+                  <h2 id="free-seo-audit-intro" className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mt-2">
+                    Free SEO Audit Tool for Your Website
+                  </h2>
+                </div>
+                <p className="text-sm md:text-base text-slate-300 leading-7">
+                  Use the AdsVerse free SEO audit tool to check the technical and on-page health of any public website. This website SEO checker reviews the signals that can affect organic visibility, including title tags, meta descriptions, heading structure, crawlability, canonical URLs, robots.txt, XML sitemap discovery, image ALT text, structured data, Open Graph, internal links, HTTPS and Core Web Vitals.
+                </p>
+                <p className="text-sm md:text-base text-slate-400 leading-7">
+                  It also adds AI-search visibility checks for <strong className="text-slate-200">GEO</strong> and <strong className="text-slate-200">AEO</strong>, so you can see where your website needs improvement for modern search experiences. The goal is simple: find important SEO issues, understand why they matter, and get practical recommendations before you spend money on a full SEO campaign.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+                    <div className="text-2xl mb-2">1️⃣</div>
+                    <h3 className="text-sm font-bold text-white">Enter your website URL</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed mt-2">Start with your homepage or an important landing page you want to improve in Google Search.</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+                    <div className="text-2xl mb-2">2️⃣</div>
+                    <h3 className="text-sm font-bold text-white">Run the SEO analyzer</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed mt-2">The audit checks technical SEO, content structure, performance, crawlability and AI-search signals.</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+                    <div className="text-2xl mb-2">3️⃣</div>
+                    <h3 className="text-sm font-bold text-white">Fix the highest-impact issues</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed mt-2">Use the report to prioritize fixes instead of guessing which SEO problems to solve first.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <Link href="/services/seo-optimization" className="text-xs font-bold text-violet-300 hover:text-white underline underline-offset-4">
+                    Learn about SEO Optimization
+                  </Link>
+                  <Link href="/services/geo-optimization" className="text-xs font-bold text-emerald-300 hover:text-white underline underline-offset-4">
+                    Learn about GEO Optimization
+                  </Link>
+                  <Link href="/blog?category=seo" className="text-xs font-bold text-blue-300 hover:text-white underline underline-offset-4">
+                    Read SEO guides
+                  </Link>
+                  <Link href="/faq" className="text-xs font-bold text-slate-300 hover:text-white underline underline-offset-4">
+                    SEO &amp; marketing FAQs
+                  </Link>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* Deep Content Section 1: The 3 Search Pillars */}
@@ -629,10 +683,10 @@ export default function AdsVerseAuditPage() {
             <div className="glass p-8 md:p-12 rounded-3xl border border-white/10 space-y-8">
               <div className="text-center max-w-xl mx-auto">
                 <h2 className="text-2xl md:text-3xl font-extrabold text-white">
-                  21+ In-Depth Technical &amp; AI Diagnostics
+                  What Our Free SEO Audit Tool Checks
                 </h2>
                 <p className="text-slate-400 text-xs md:text-sm mt-2">
-                  Everything you need to audit, fix, and dominate organic search in one unified report.
+                  21+ practical technical SEO, on-page, performance, crawlability and AI-search checks in one website SEO audit.
                 </p>
               </div>
 
@@ -665,6 +719,40 @@ export default function AdsVerseAuditPage() {
             </div>
           </section>
 
+          <section className="max-w-6xl mx-auto px-5" aria-labelledby="seo-learning-hub">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="glass p-7 md:p-9 rounded-3xl border border-white/10">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-blue-400">SEO Learning Hub</p>
+                <h2 id="seo-learning-hub" className="text-2xl md:text-3xl font-extrabold text-white mt-2">
+                  Improve Your SEO After the Audit
+                </h2>
+                <p className="text-sm text-slate-400 leading-7 mt-3">
+                  A report only helps when you know what to do next. Explore AdsVerse guides and service pages covering technical SEO, on-page SEO, local SEO, content strategy, GEO and AI-search visibility.
+                </p>
+                <div className="mt-5 space-y-3 text-sm">
+                  <Link href="/services/seo-optimization" className="block text-blue-300 hover:text-white font-semibold">Technical &amp; On-Page SEO Services →</Link>
+                  <Link href="/blog?category=seo" className="block text-blue-300 hover:text-white font-semibold">SEO Guides &amp; Tutorials →</Link>
+                  <Link href="/blog?category=local-seo" className="block text-blue-300 hover:text-white font-semibold">Local SEO Guides →</Link>
+                </div>
+              </div>
+              <div className="glass p-7 md:p-9 rounded-3xl border border-white/10">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-400">Built for Modern Search</p>
+                <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-2">
+                  SEO + GEO + AEO in One Audit
+                </h2>
+                <p className="text-sm text-slate-400 leading-7 mt-3">
+                  Traditional SEO helps search engines discover and understand your pages. GEO focuses on visibility across generative AI experiences, while AEO focuses on concise, answer-ready information. This tool brings those signals into one report.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold">
+                  <span className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">Technical SEO</span>
+                  <span className="px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">On-Page SEO</span>
+                  <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">GEO</span>
+                  <span className="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300">AEO</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Deep Content Section 3: FAQ Section for High SEO Authority */}
           <section className="max-w-4xl mx-auto px-5">
             <div className="text-center max-w-xl mx-auto mb-8">
@@ -677,6 +765,27 @@ export default function AdsVerseAuditPage() {
             </div>
 
             <div className="space-y-4">
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">What is a free SEO audit tool?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  A free SEO audit tool checks a website for important search-visibility issues without requiring a full paid SEO platform. This audit checks technical SEO, on-page signals, performance, crawlability, structured data and AI-search readiness.
+                </p>
+              </div>
+
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">What does a website SEO checker look for?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  It reviews signals such as title tags, meta descriptions, headings, canonical URLs, robots.txt, sitemap references, image ALT text, internal links, schema markup, Open Graph tags, HTTPS and Core Web Vitals.
+                </p>
+              </div>
+
+              <div className="glass p-5 rounded-xl border border-white/10">
+                <h3 className="text-base font-bold text-white mb-2">Is the SEO audit free?</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+                  You can start with a free initial website audit. Additional report depth, extended diagnostics and PDF export can be unlocked through the audit credit options shown in the tool.
+                </p>
+              </div>
+
               <div className="glass p-5 rounded-xl border border-white/10">
                 <h3 className="text-base font-bold text-white mb-2">How is this different from generic SEO checkers like Semrush or Ahrefs?</h3>
                 <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
