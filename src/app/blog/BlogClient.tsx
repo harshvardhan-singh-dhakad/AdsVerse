@@ -145,7 +145,7 @@ export default function BlogClient({ initialPosts = [], initialCategory }: BlogC
         <section className="mb-14">
           <div className="mb-4 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-primary">
             <Sparkles className="h-4 w-4" />
-            Editor's pick
+            {featuredPost.isFeatured ? "Featured insight" : "Start here"}
           </div>
 
           <Link
