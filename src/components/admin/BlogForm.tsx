@@ -491,7 +491,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         </h1>
         <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Structured content</span>
-          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Media library</span>
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Inline image upload</span>
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Live SEO</span>
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Preview before publish</span>
         </div>
@@ -706,7 +706,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <ImageIcon className="w-4 h-4" />
               </div>
-              <h3 className="font-bold text-sm tracking-wide">Media & Featured Image</h3>
+              <h3 className="font-bold text-sm tracking-wide">Featured Image</h3>
               {isFullHtmlMode && (
                 <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">
                   Step 1 · Upload Image
@@ -787,38 +787,51 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               </p>
             </div>
 
-            <InlineImageUploader onInsert={insertImageIntoFullHtml} />
-            <Textarea
-              ref={fullHtmlRef}
-              value={fullHtml}
-              onSelect={(e) => {
-                fullHtmlCursorRef.current = {
-                  start: e.currentTarget.selectionStart,
-                  end: e.currentTarget.selectionEnd,
-                };
-              }}
-              onClick={(e) => {
-                fullHtmlCursorRef.current = {
-                  start: e.currentTarget.selectionStart,
-                  end: e.currentTarget.selectionEnd,
-                };
-              }}
-              onKeyUp={(e) => {
-                fullHtmlCursorRef.current = {
-                  start: e.currentTarget.selectionStart,
-                  end: e.currentTarget.selectionEnd,
-                };
-              }}
-              onChange={(e) => {
-                fullHtmlCursorRef.current = {
-                  start: e.currentTarget.selectionStart,
-                  end: e.currentTarget.selectionEnd,
-                };
-                setFullHtml(e.target.value);
-              }}
-              className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
-              placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
-            />
+            <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-[#050b18] shadow-inner">
+              <div className="flex items-center gap-3 border-b border-slate-700/70 bg-[#0a1222] px-4 py-2.5">
+                <div className="flex items-center gap-1.5" aria-hidden="true">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                </div>
+                <span className="font-mono text-[10px] font-semibold text-slate-300">article-content.html</span>
+                <span className="ml-auto text-[9px] font-semibold uppercase tracking-widest text-slate-500">HTML + Embedded CSS</span>
+              </div>
+
+              <InlineImageUploader onInsert={insertImageIntoFullHtml} />
+
+              <Textarea
+                ref={fullHtmlRef}
+                value={fullHtml}
+                onSelect={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onClick={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onKeyUp={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onChange={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                  setFullHtml(e.target.value);
+                }}
+                className="min-h-[620px] rounded-none border-0 bg-transparent font-mono text-xs leading-6 text-emerald-300 shadow-none focus-visible:ring-0 md:text-sm resize-y"
+                placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
+              />
+            </div>
 
             <div className="flex items-center gap-3 mt-3">
               <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full">
