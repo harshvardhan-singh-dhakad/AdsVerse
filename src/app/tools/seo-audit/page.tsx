@@ -509,7 +509,7 @@ export default function AdsVerseAuditPage() {
             <p className="hero-sub max-w-2xl">Run a free website SEO check in seconds. Find technical SEO issues, on-page problems, Core Web Vitals gaps, crawlability errors and AI-search visibility signals in one report.</p>
 
             <p className="max-w-3xl mx-auto mt-4 text-xs md:text-sm leading-6 text-slate-400">
-              The AdsVerse <strong className="text-slate-200">free SEO audit tool</strong> is a practical website SEO checker for businesses, marketers and agencies. Check your website before you invest in SEO, content or paid traffic.
+              The AdsVerse <strong className="text-slate-200">free SEO audit tool</strong> is a practical website SEO checker for businesses, marketers and agencies in India and beyond. Check your website before you invest in SEO, content or paid traffic.
             </p>
 
             {/* Modern Wide Search Box */}
