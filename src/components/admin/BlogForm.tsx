@@ -258,7 +258,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const insertImageIntoFullHtml = (image: InlineUploadedImage) => {
     const textarea = fullHtmlRef.current;
     if (!textarea) {
-      setFullHtml((current) => `${current}\\n<img src="${escapeHtmlAttribute(image.url)}" alt="${escapeHtmlAttribute(image.alt)}" loading="lazy" />`);
+      setFullHtml((current) => `${current}\n<img src="${escapeHtmlAttribute(image.url)}" alt="${escapeHtmlAttribute(image.alt)}" loading="lazy" />`);
       return;
     }
 
