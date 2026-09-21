@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, KeyboardEvent } from 'react';
+import { useState, useEffect, useMemo, useRef, KeyboardEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -21,9 +21,9 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MediaLibrary, type BlogMediaItem } from './MediaLibrary';
+import { InlineImageUploader, type InlineUploadedImage } from './InlineImageUploader';
 import { SelectGroup, SelectLabel } from '@/components/ui/select';
-import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, UserPlus, Settings, Save, Send, Link as LinkIcon, Code2, Eye, Library, Smartphone, Monitor } from 'lucide-react';
+import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, UserPlus, Settings, Save, Send, Link as LinkIcon, Code2, Eye, Smartphone, Monitor } from 'lucide-react';
 
 const blogSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -50,6 +50,16 @@ const blogSchema = z.object({
 
 type BlogFormValues = z.infer<typeof blogSchema>;
 
+function toDateTimeLocalValue(value?: string) {
+  const date = value ? new Date(value) : new Date();
+  if (Number.isNaN(date.getTime())) return new Date().toISOString().slice(0, 16);
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+}
+
+function escapeHtmlAttribute(value: string) {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 interface BlogFormProps {
   initialData?: BlogPost | null;
   onSuccess?: () => void;
@@ -67,16 +77,21 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const [tagInput, setTagInput] = useState('');
   const [isFullHtmlMode, setIsFullHtmlMode] = useState(false);
   const [fullHtml, setFullHtml] = useState(initialData?.content || '');
-  const [mediaOpen, setMediaOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
-  const [editorInsertImage, setEditorInsertImage] = useState<{ src: string; alt?: string } | null>(null);
+  const fullHtmlRef = useRef<HTMLTextAreaElement | null>(null);
+  const fullHtmlCursorRef = useRef({ start: 0, end: 0 });
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
     defaultValues: initialData ? {
       ...initialData,
-      status: initialData.isPublished ? 'publish' : 'draft',
+      status: initialData.status === 'schedule'
+        ? 'schedule'
+        : initialData.isPublished
+          ? 'publish'
+          : 'draft',
+      publishedDate: toDateTimeLocalValue(initialData.publishedDate),
       language: initialData.language || 'en',
       tags: initialData.tags || [],
       allowComments: initialData.allowComments ?? true,
@@ -98,7 +113,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       metaTitle: '',
       metaDescription: '',
       author: 'harshvardhan',
-      publishedDate: new Date().toISOString().slice(0, 16),
+      publishedDate: toDateTimeLocalValue(),
       status: 'draft',
       allowComments: true,
       includeInSitemap: true,
@@ -201,8 +216,72 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         }
       });
     }
+
+    try {
+      const parser = new DOMParser();
+      const parsed = parser.parseFromString(html, 'text/html');
+      const getMeta = (selector: string) => parsed.querySelector(selector)?.getAttribute('content')?.trim() || '';
+
+      const h1 = parsed.querySelector('h1')?.textContent?.trim() || '';
+      const title = parsed.querySelector('title')?.textContent?.trim() || '';
+      const ogTitle = getMeta('meta[property="og:title"]');
+      const description =
+        getMeta('meta[name="description"]') ||
+        getMeta('meta[property="og:description"]');
+      const keywords = getMeta('meta[name="keywords"]');
+      const author = getMeta('meta[name="author"]');
+      const articleTags = Array.from(parsed.querySelectorAll('meta[property="article:tag"]'))
+        .map((node) => node.getAttribute('content')?.trim() || '')
+        .filter(Boolean);
+
+      if (!metadata.title) metadata.title = h1 || title || ogTitle;
+      if (!metadata.metatitle) metadata.metatitle = title || ogTitle || h1;
+      const metaFocusKeyword =
+        getMeta('meta[name="focus-keyword"]') ||
+        getMeta('meta[name="focus_keyword"]');
+
+      if (!metadata.metadesc) metadata.metadesc = description || metadata.description || '';
+      if (!metadata.author) metadata.author = author;
+      if (!metadata.focuskeyword) {
+        const keywordSource = metaFocusKeyword || metadata.keywords || keywords;
+        metadata.focuskeyword = keywordSource
+          ? keywordSource.split(',').map(item => item.trim()).filter(Boolean)[0] || ''
+          : '';
+      }
+      if (!metadata.tags) {
+        const tagSource = articleTags.length
+          ? articleTags
+          : (metadata.keywords || keywords).split(',').map(item => item.trim()).filter(Boolean);
+        metadata.tags = tagSource.join(', ');
+      }
+    } catch {
+      // Keep comment-based metadata when the HTML parser is unavailable.
+    }
+
     return metadata;
   };
+
+  const insertImageIntoFullHtml = (image: InlineUploadedImage) => {
+    const textarea = fullHtmlRef.current;
+    if (!textarea) {
+      setFullHtml((current) => `${current}\n<img src="${escapeHtmlAttribute(image.url)}" alt="${escapeHtmlAttribute(image.alt)}" loading="lazy" />`);
+      return;
+    }
+
+    const imageHtml = `<img src="${escapeHtmlAttribute(image.url)}" alt="${escapeHtmlAttribute(image.alt)}" loading="lazy" />`;
+    const start = fullHtmlCursorRef.current.start ?? textarea.value.length;
+    const end = fullHtmlCursorRef.current.end ?? start;
+    const next = textarea.value.slice(0, start) + imageHtml + textarea.value.slice(end);
+    const cursor = start + imageHtml.length;
+    fullHtmlCursorRef.current = { start: cursor, end: cursor };
+
+    setFullHtml(next);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(cursor, cursor);
+    });
+  };
+
 
   const handleAction = (statusOverride?: 'draft' | 'publish' | 'schedule') => {
     // Determine the status to use
@@ -266,8 +345,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       }
     }
 
-    if (finalStatus === 'publish' && (!initialData || !initialData.isPublished)) {
-      form.setValue('publishedDate', new Date().toISOString());
+    if (finalStatus === 'publish') {
+      const existingDate = new Date(form.getValues('publishedDate'));
+      if (
+        !initialData ||
+        initialData.status === 'schedule' ||
+        Number.isNaN(existingDate.getTime()) ||
+        existingDate > new Date()
+      ) {
+        form.setValue('publishedDate', new Date().toISOString());
+      }
     }
 
     form.setValue('status', finalStatus);
@@ -404,7 +491,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         </h1>
         <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Structured content</span>
-          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Media library</span>
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Inline image upload</span>
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Live SEO</span>
           <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Preview before publish</span>
         </div>
@@ -599,8 +686,6 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     <RichTextEditor
                       value={field.value}
                       onChange={field.onChange}
-                      onOpenMedia={() => setMediaOpen(true)}
-                      insertImage={editorInsertImage}
                     />
                   </FormControl>
                   <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
@@ -621,16 +706,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <ImageIcon className="w-4 h-4" />
               </div>
-              <h3 className="font-bold text-sm tracking-wide">Media & Featured Image</h3>
-              <Button
-                type="button"
-                variant="outline"
-                className="ml-auto h-8 rounded-lg text-[10px] font-bold"
-                onClick={() => setMediaOpen(true)}
-              >
-                <Library className="mr-1.5 h-3.5 w-3.5" />
-                Media Library
-              </Button>
+              <h3 className="font-bold text-sm tracking-wide">Featured Image</h3>
               {isFullHtmlMode && (
                 <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">
                   Step 1 · Upload Image
@@ -711,12 +787,51 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               </p>
             </div>
 
-            <Textarea
-              value={fullHtml}
-              onChange={(e) => setFullHtml(e.target.value)}
-              className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
-              placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
-            />
+            <div className="overflow-hidden rounded-2xl border border-slate-700/70 bg-[#050b18] shadow-inner">
+              <div className="flex items-center gap-3 border-b border-slate-700/70 bg-[#0a1222] px-4 py-2.5">
+                <div className="flex items-center gap-1.5" aria-hidden="true">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                </div>
+                <span className="font-mono text-[10px] font-semibold text-slate-300">article-content.html</span>
+                <span className="ml-auto text-[9px] font-semibold uppercase tracking-widest text-slate-500">HTML + Embedded CSS</span>
+              </div>
+
+              <InlineImageUploader onInsert={insertImageIntoFullHtml} />
+
+              <Textarea
+                ref={fullHtmlRef}
+                value={fullHtml}
+                onSelect={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onClick={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onKeyUp={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                }}
+                onChange={(e) => {
+                  fullHtmlCursorRef.current = {
+                    start: e.currentTarget.selectionStart,
+                    end: e.currentTarget.selectionEnd,
+                  };
+                  setFullHtml(e.target.value);
+                }}
+                className="min-h-[620px] rounded-none border-0 bg-transparent font-mono text-xs leading-6 text-emerald-300 shadow-none focus-visible:ring-0 md:text-sm resize-y"
+                placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
+              />
+            </div>
 
             <div className="flex items-center gap-3 mt-3">
               <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full">
@@ -1146,28 +1261,6 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       </Form>
 
         
-        <Dialog open={mediaOpen} onOpenChange={setMediaOpen}>
-          <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto rounded-3xl border-border/60 bg-background/95 p-0 shadow-2xl backdrop-blur-xl">
-            <DialogHeader className="sticky top-0 z-20 border-b border-border/60 bg-background/95 px-6 py-5 backdrop-blur-xl">
-              <DialogTitle className="text-xl font-black tracking-tight">Blog Media Library</DialogTitle>
-            </DialogHeader>
-            <div className="p-6">
-              <MediaLibrary
-                onInsert={(item: BlogMediaItem) => {
-                  setEditorInsertImage({ src: item.url, alt: item.alt });
-                  setMediaOpen(false);
-                  toast({ title: 'Image inserted', description: 'The image was inserted into the editor.' });
-                }}
-                onSetFeatured={(item: BlogMediaItem) => {
-                  form.setValue('imageUrl', item.url, { shouldValidate: true, shouldDirty: true });
-                  form.setValue('imageAlt', item.alt, { shouldValidate: true, shouldDirty: true });
-                  toast({ title: 'Featured image selected', description: item.name });
-                }}
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
-
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
           <DialogContent className="max-h-[92vh] max-w-7xl overflow-hidden rounded-3xl border-border/60 bg-background p-0 shadow-2xl">
             <DialogHeader className="border-b border-border/60 px-6 py-4">
