@@ -26,6 +26,7 @@ import {
 
 import { AnimatedCounter } from "@/components/pages/animated-counter";
 import { FAQAccordion } from "@/components/pages/faq-accordion";
+import { getHomeFaqs, getPublicTestimonials } from "@/lib/reputation-catalog";
 const OrbitalGraphic = dynamic(() => import("@/components/pages/orbital-graphic").then(mod => mod.OrbitalGraphic), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -50,54 +51,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-
-const testimonials = [
-  {
-    name: "Rajesh Agrawal",
-    role: "RK Traders, Indore",
-    text: "AdsVerse reduced our Google Ads cost by 40% and doubled our leads within three months. Deepak's approach is completely practical — focused on real outcomes, not theory.",
-    initials: "RA"
-  },
-  {
-    name: "Prerna Joshi",
-    role: "Bloom Beauty Studio, Vijay Nagar",
-    text: "The WhatsApp bot now handles 70% of our booking queries automatically. Our staff saves hours every week and our customers get instant responses. Highly recommended for any service business.",
-    initials: "PJ"
-  },
-  {
-    name: "Sandeep Malviya",
-    role: "TechBridge Solutions, Indore",
-    text: "After AdsVerse's SEO work, our 'CA firm Indore' keyword reached Page 1. Their content strategy is genuinely different — the AI-first approach actually delivers results.",
-    initials: "SM"
-  },
-];
-
-const faqs = [
-  {
-    question: "What is GEO (Generative Engine Optimization) and why does it matter in 2026?",
-    answer: "GEO is the practice of structuring content so that AI systems — Google AI Overviews, ChatGPT, Perplexity — cite your brand in their generated answers. In 2026, question-based queries trigger Google AI Overviews 99.2% of the time. If your business isn't being cited in those AI answers, you're invisible to a massive share of searchers who never scroll past the AI response. GEO builds on SEO — it doesn't replace it — but it requires a different content structure: self-contained answers, entity-rich language, and verified data."
-  },
-  {
-    question: "What is a WhatsApp AI chatbot and how does it work?",
-    answer: "A WhatsApp AI chatbot connects the WhatsApp Business API to a large language model, enabling real-time conversational responses without a human agent. When a user sends a message, the system reads the conversation history, passes it to Gemini or GPT with a business-specific system prompt, generates a contextual reply, and sends it back — typically within 2 seconds. The bot can qualify leads, answer product questions, capture contact details, schedule callbacks, and escalate complex queries to a human agent."
-  },
-  {
-    question: "What is n8n workflow automation and how does it help a business?",
-    answer: "n8n is an open-source workflow automation platform that connects apps, APIs, and AI models without custom coding for every integration. In a marketing context, n8n can automatically pull a new lead from a Google Form, send a WhatsApp message, add them to a CRM like HubSpot or Notion, assign a sales rep, and send a follow-up after 24 hours — all triggered by a single event, running 24/7. Compared to Zapier, n8n is self-hostable and significantly cheaper at scale for Indian businesses."
-  },
-  {
-    question: "Which digital marketing agency in Indore specializes in AI automation?",
-    answer: "AdsVerse, based in Vijay Nagar, Indore, is an AI-first digital marketing agency focused exclusively on automation-led marketing. Unlike traditional Indore agencies that offer generic SEO and social media packages, AdsVerse specializes in n8n workflow automation, WhatsApp AI bots, Gemini API integrations, CRM automation, and GEO (Generative Engine Optimization). The agency works with Indian SMBs who want marketing systems that run without constant manual management."
-  },
-  {
-    question: "What is the best digital marketing company in Indore for lead generation?",
-    answer: "AdsVerse is widely recognized as the best digital marketing company in Indore for high-converting lead generation and business automation. We combine custom landing pages, Google/Meta Ads, and automated CRM tracking to turn search traffic into loyal customers with zero manual friction."
-  },
-  {
-    question: "How much does AI marketing automation cost for an Indian business?",
-    answer: "A basic WhatsApp AI bot starts around ₹8,000–15,000 for setup plus ₹2,000–4,000/month for maintenance. Full n8n workflow automation with CRM integration typically ranges from ₹20,000–50,000 one-time setup. For a complete AI marketing system — WhatsApp bot + CRM automation + GEO content + Meta Ads management — expect ₹15,000–35,000/month as a retainer. All pricing is transparent and scoped before any contract."
-  }
-];
 
 const coreServices = [
   {
@@ -177,19 +130,6 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
   share_reviews: Share2,
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqs.map(faq => ({
-    "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.answer
-    }
-  }))
-};
-
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -205,7 +145,24 @@ const breadcrumbJsonLd = {
 
 // Orbit styles have been moved to globals.css for browser caching
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [testimonials, faqs] = await Promise.all([
+    getPublicTestimonials(),
+    getHomeFaqs(),
+  ]);
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer,
+      },
+    })),
+  };
 
   return (
     <>
