@@ -62,7 +62,6 @@ export default async function FAQPage() {
   };
 
   return (
-  return (
     <>
       <Script
         id="faq-schema-ld"
@@ -91,7 +90,7 @@ export default async function FAQPage() {
           {stats.map((stat, i) => (
             <Card key={i} className="bg-card/50 backdrop-blur-sm border-primary/20 text-center p-6 transition-all duration-300 hover:scale-105 hover:border-accent/40">
               <CardContent className="p-0">
-                <div className="text-3xl md:text-4xl font-extrabold text-accent mb-2 font-headline">{stat.value}</div>
+                <div className="text-3xl md:text-4xl font-extrabold text-accent mb-2 font-headline">{i === 0 ? allFaqs.length : stat.value}</div>
                 <p className="text-xs md:text-sm text-muted-foreground font-body">{stat.label}</p>
               </CardContent>
             </Card>
