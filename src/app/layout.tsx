@@ -198,10 +198,7 @@ const schemaArray = [
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [brand, navLinks] = await Promise.all([
-    getBrandSettings(),
-    getNavigationLinks(),
-  ]);
+  const brand = await getBrandSettings();
   const ogImage = new URL(brand.ogImageUrl, siteUrl).toString();
 
   return {
@@ -316,7 +313,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const brand = await getBrandSettings();
+  const [brand, navLinks] = await Promise.all([
+    getBrandSettings(),
+    getNavigationLinks(),
+  ]);
   const resolvedLogo = brand.logoUrl ? new URL(brand.logoUrl, siteUrl).toString() : `${siteUrl}/images/logo-white.webp`;
   const resolvedOgImage = new URL(brand.ogImageUrl, siteUrl).toString();
   const resolvedSchemaArray = schemaArray.map((item: any, index) => {

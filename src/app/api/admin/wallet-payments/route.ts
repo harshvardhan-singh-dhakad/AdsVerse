@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/firebase/admin';
 
+export const dynamic = 'force-dynamic';
+
 const ADMIN_EMAILS = new Set([
   'admin@adsverse.in',
   'harshvardhan@adsverse.in',
