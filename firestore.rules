@@ -148,6 +148,16 @@ service cloud.firestore {
       allow update, delete: if isAdmin() && resource != null;
     }
 
+    match /testimonials/{testimonialId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /faqs/{faqId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     /**
      * @description Stores contact form submissions (leads). Anyone can submit a lead.
      * Only administrators can read or manage leads.
