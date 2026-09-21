@@ -12,7 +12,7 @@ import { useState } from "react";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { AdminSidebar, type AdminTab } from "@/components/admin/AdminSidebar";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
-import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-settings";
+import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-defaults";
 
 export default function AdminPage() {
   const { user, isUserLoading: loading } = useUser();
