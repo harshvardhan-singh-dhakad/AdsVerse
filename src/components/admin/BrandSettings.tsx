@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import AdsVerseLogo from "@/components/AdsVerseLogo";
 import { Loader2, Save, RotateCcw, ExternalLink } from "lucide-react";
-import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-settings";
+import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-defaults";
 import { useToast } from "@/hooks/use-toast";
 
 const fields: Array<{ key: keyof BrandSettings; label: string; description?: string; type?: "text" | "url" | "textarea" }> = [
