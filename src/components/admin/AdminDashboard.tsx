@@ -14,6 +14,7 @@ import { CompetitorRadar } from "./CompetitorRadar";
 import { type AdminTab } from "./AdminSidebar";
 import { MediaLibrary } from "./MediaLibrary";
 import { BrandSettings } from "./BrandSettings";
+import { NavigationSettings } from "./NavigationSettings";
 
 interface AdminDashboardProps {
   activeTab: AdminTab;
@@ -43,6 +44,8 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <BlogTable />;
     case "brand":
       return <BrandSettings />;
+    case "navigation":
+      return <NavigationSettings />;
     case "media":
       return (
         <div className="rounded-3xl border border-border/60 bg-card/60 p-5 shadow-sm md:p-7">
