@@ -24,7 +24,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 
-const servicesData = [
+const FALLBACK_SERVICES = [
   "Local SEO", "E-commerce SEO", "Technical SEO Audit", "Keyword Research & Strategy", "Link Building Campaign",
   "Google Ads Management", "Meta Ads Management", "LinkedIn Ads Campaign", "Google Ads Setup", "Ad Copy & Creative Design",
   "Social Media Management", "Instagram Growth & Handling", "Facebook Page Management", "LinkedIn Profile Management", "Twitter (X) Content Strategy",
@@ -50,7 +50,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 
-export function ContactForm() {
+export function ContactForm({ services = FALLBACK_SERVICES }: { services?: string[] }) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -163,7 +163,7 @@ export function ContactForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {servicesData.map(service => (
+                    {services.map(service => (
                       <SelectItem key={service} value={service}>
                         {service}
                       </SelectItem>
