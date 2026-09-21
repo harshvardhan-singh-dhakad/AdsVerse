@@ -13,6 +13,7 @@ const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"
 import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { adminDb } from "@/firebase/admin";
 import { getBrandSettings } from "@/lib/brand-settings";
+import { getNavigationLinks } from "@/lib/navigation-settings";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -197,7 +198,10 @@ const schemaArray = [
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
-  const brand = await getBrandSettings();
+  const [brand, navLinks] = await Promise.all([
+    getBrandSettings(),
+    getNavigationLinks(),
+  ]);
   const ogImage = new URL(brand.ogImageUrl, siteUrl).toString();
 
   return {
@@ -254,14 +258,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/blog", label: "Blog" },
-  { href: "/locations", label: "Locations" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
 
 import { cache } from 'react';
 
