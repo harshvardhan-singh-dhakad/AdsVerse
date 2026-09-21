@@ -1,6 +1,9 @@
 # Settings for Backend (on Cloud Run).
 # See https://firebase.google.com/docs/app-hosting/configure#cloud-run
 runConfig:
+  # firebase-admin@14.x requires Node.js 22+.
+  # Pin App Hosting to Node 22 so Cloud Build and Cloud Run use the same runtime.
+  runtime: nodejs22
   minInstances: 0
   # maxInstances: 100
   # concurrency: 80
