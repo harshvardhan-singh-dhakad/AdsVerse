@@ -10,7 +10,14 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { BrandSettings } from "@/lib/brand-settings";
 
-export function Footer({ brand }: { brand?: Pick<BrandSettings, "logoUrl"> }) {
+export function Footer({
+  brand,
+}: {
+  brand?: Pick<
+    BrandSettings,
+    "logoUrl" | "description" | "phone" | "email" | "address" | "instagramUrl" | "facebookUrl" | "xUrl" | "linkedinUrl" | "googleBusinessUrl"
+  >;
+}) {
   const pathname = usePathname();
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [mounted, setMounted] = useState(false);
@@ -33,7 +40,7 @@ export function Footer({ brand }: { brand?: Pick<BrandSettings, "logoUrl"> }) {
             </Link>
             <div className="max-w-xs text-sm text-slate-800 dark:text-muted-foreground space-y-3">
               <p className="leading-relaxed">
-                We are a forward-thinking digital marketing agency specializing in AI-powered growth strategies.
+                {brand?.description || "We are a forward-thinking digital marketing agency specializing in AI-powered growth strategies."}
               </p>
               <div className="space-y-2 pt-2 border-t border-border/20">
                 <p className="flex items-start gap-2">
@@ -42,36 +49,36 @@ export function Footer({ brand }: { brand?: Pick<BrandSettings, "logoUrl"> }) {
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-primary shrink-0" />
-                  <a href="tel:+919685123339" className="hover:text-primary transition-colors">+91 96851 23339</a>
+                  <a href={`tel:${(brand?.phone || "+91 96851 23339").replace(/\s/g, "")}`} className="hover:text-primary transition-colors">{brand?.phone || "+91 96851 23339"}</a>
                 </p>
                 <p className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-primary shrink-0" />
-                  <a href="mailto:contact@adsverse.in" className="hover:text-primary transition-colors font-semibold">contact@adsverse.in</a>
+                  <a href={`mailto:${brand?.email || "contact@adsverse.in"}`} className="hover:text-primary transition-colors font-semibold">{brand?.email || "contact@adsverse.in"}</a>
                 </p>
               </div>
             </div>
             <div className="flex space-x-4">
-              <Link href="https://www.instagram.com/adsverse.ai" aria-label="Instagram" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.instagramUrl || "https://www.instagram.com/adsverse.ai"} aria-label="Instagram" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
                 </svg>
               </Link>
-              <Link href="https://www.facebook.com/adsverse.in" aria-label="Facebook" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.facebookUrl || "https://www.facebook.com/adsverse.in"} aria-label="Facebook" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
                   <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V21.878A10.003 10.003 0 0 0 22 12z"></path>
                 </svg>
               </Link>
-              <Link href="https://x.com/Adsverse" aria-label="X" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.xUrl || "https://x.com/Adsverse"} aria-label="X" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
                 </svg>
               </Link>
-              <Link href="https://www.linkedin.com/company/adsverse" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.linkedinUrl || "https://www.linkedin.com/company/adsverse"} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer nofollow">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </Link>
-              <Link href="https://maps.app.goo.gl/7edcg9nx6Kofxv8M8" aria-label="Google Business Profile" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.googleBusinessUrl || "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8"} aria-label="Google Business Profile" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
