@@ -20,8 +20,10 @@ import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { MediaLibrary, type BlogMediaItem } from './MediaLibrary';
 import { SelectGroup, SelectLabel } from '@/components/ui/select';
-import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, UserPlus, Settings, Save, Send, Link as LinkIcon, Code2 } from 'lucide-react';
+import { Calendar, Clock, Loader2, Upload, X, PenTool, Image as ImageIcon, Tags, Target, UserCheck, UserPlus, Settings, Save, Send, Link as LinkIcon, Code2, Eye, Library, Smartphone, Monitor } from 'lucide-react';
 
 const blogSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -65,6 +67,10 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const [tagInput, setTagInput] = useState('');
   const [isFullHtmlMode, setIsFullHtmlMode] = useState(false);
   const [fullHtml, setFullHtml] = useState(initialData?.content || '');
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
+  const [editorInsertImage, setEditorInsertImage] = useState<{ src: string; alt?: string } | null>(null);
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
@@ -389,14 +395,19 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       )}
 
       {/* HEADER */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 rounded-3xl border border-border/60 bg-card/60 px-5 py-8 shadow-sm backdrop-blur-sm">
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-4">
           Blog Studio
         </div>
         <h1 className="text-4xl md:text-5xl font-black font-headline tracking-tighter mb-4 text-foreground">
           Create a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">New Post</span>
         </h1>
-        <p className="text-muted-foreground font-medium">Automate. Elevate. Dominate — one blog post at a time.</p>
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Structured content</span>
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Media library</span>
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Live SEO</span>
+          <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1.5">Preview before publish</span>
+        </div>
       </div>
 
       {/* MODE TOGGLE */}
@@ -588,6 +599,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                     <RichTextEditor
                       value={field.value}
                       onChange={field.onChange}
+                      onOpenMedia={() => setMediaOpen(true)}
+                      insertImage={editorInsertImage}
                     />
                   </FormControl>
                   <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full mt-2">
@@ -608,13 +621,22 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
               <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <ImageIcon className="w-4 h-4" />
               </div>
-              <h3 className="font-bold text-sm tracking-wide">Media</h3>
+              <h3 className="font-bold text-sm tracking-wide">Media & Featured Image</h3>
+              <Button
+                type="button"
+                variant="outline"
+                className="ml-auto h-8 rounded-lg text-[10px] font-bold"
+                onClick={() => setMediaOpen(true)}
+              >
+                <Library className="mr-1.5 h-3.5 w-3.5" />
+                Media Library
+              </Button>
               {isFullHtmlMode && (
                 <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ml-2">
                   Step 1 · Upload Image
                 </span>
               )}
-              <span className="ml-auto text-[10px] font-bold text-muted-foreground tracking-widest">02 / 06</span>
+              <span className="text-[10px] font-bold text-muted-foreground tracking-widest">02 / 06</span>
             </div>
 
             <div className="space-y-6">
@@ -1023,8 +1045,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
           </div>
 
           {/* Actions Menu - Fixed at bottom for "Stable" UX */}
-          <div className="fixed bottom-0 left-0 right-0 z-[100] p-6 bg-background/80 backdrop-blur-2xl border-t border-border/10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-            <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-4">
+          <div className="fixed bottom-0 left-0 right-0 z-[100] border-t border-border/60 bg-background/95 px-4 py-3 shadow-[0_-12px_35px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-2.5">
               <div className="hidden lg:flex flex-col mr-auto">
                 <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">Studio Status</span>
                 <div className="flex items-center gap-2">
@@ -1036,6 +1058,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
                   </span>
                 </div>
               </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="h-11 rounded-xl border-border/60 px-4 text-[11px] font-bold uppercase tracking-widest"
+                onClick={() => setPreviewOpen(true)}
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                Preview
+              </Button>
 
               <Button
                 type="button"
@@ -1112,6 +1144,87 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
         </form>
       </Form>
+
+        
+        <Dialog open={mediaOpen} onOpenChange={setMediaOpen}>
+          <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto rounded-3xl border-border/60 bg-background/95 p-0 shadow-2xl backdrop-blur-xl">
+            <DialogHeader className="sticky top-0 z-20 border-b border-border/60 bg-background/95 px-6 py-5 backdrop-blur-xl">
+              <DialogTitle className="text-xl font-black tracking-tight">Blog Media Library</DialogTitle>
+            </DialogHeader>
+            <div className="p-6">
+              <MediaLibrary
+                onInsert={(item: BlogMediaItem) => {
+                  setEditorInsertImage({ src: item.url, alt: item.alt });
+                  setMediaOpen(false);
+                  toast({ title: 'Image queued', description: 'The image was inserted at the current editor position.' });
+                }}
+                onSetFeatured={(item: BlogMediaItem) => {
+                  form.setValue('imageUrl', item.url, { shouldValidate: true, shouldDirty: true });
+                  form.setValue('imageAlt', item.alt, { shouldValidate: true, shouldDirty: true });
+                  toast({ title: 'Featured image selected', description: item.name });
+                }}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+          <DialogContent className="max-h-[92vh] max-w-7xl overflow-hidden rounded-3xl border-border/60 bg-background p-0 shadow-2xl">
+            <DialogHeader className="border-b border-border/60 px-6 py-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <DialogTitle className="mr-auto text-xl font-black tracking-tight">Blog Preview</DialogTitle>
+                <Button type="button" variant={previewMode === 'desktop' ? 'default' : 'outline'} size="sm" className="rounded-lg" onClick={() => setPreviewMode('desktop')}>
+                  <Monitor className="mr-2 h-4 w-4" />
+                  Desktop
+                </Button>
+                <Button type="button" variant={previewMode === 'mobile' ? 'default' : 'outline'} size="sm" className="rounded-lg" onClick={() => setPreviewMode('mobile')}>
+                  <Smartphone className="mr-2 h-4 w-4" />
+                  Mobile
+                </Button>
+              </div>
+            </DialogHeader>
+            <div className="overflow-y-auto bg-muted/20 p-4 md:p-8">
+              <article
+                className={cn(
+                  'mx-auto overflow-hidden rounded-3xl border border-border/60 bg-background shadow-xl',
+                  previewMode === 'mobile' ? 'max-w-[430px]' : 'max-w-5xl'
+                )}
+              >
+                {watchAllDetails.imageUrl && (
+                  <div className="aspect-[16/9] w-full overflow-hidden bg-muted">
+                    <img
+                      src={watchAllDetails.imageUrl}
+                      alt={watchAllDetails.imageAlt || watchAllDetails.title || 'Blog featured image'}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="space-y-6 p-6 md:p-10">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-primary">
+                      <span className="rounded-full bg-primary/10 px-3 py-1">{watchAllDetails.category || 'Uncategorized'}</span>
+                      <span className="text-muted-foreground">{seoStats.readTime} min read</span>
+                    </div>
+                    <h1 className="text-3xl font-black tracking-tight md:text-5xl">
+                      {watchAllDetails.title || 'Untitled blog post'}
+                    </h1>
+                    <p className="text-base leading-7 text-muted-foreground md:text-lg">
+                      {watchAllDetails.excerpt || 'Add an excerpt to see the search and social preview.'}
+                    </p>
+                    <div className="text-xs font-medium text-muted-foreground">
+                      {watchAllDetails.author || 'AdsVerse'} · {watchAllDetails.publishedDate ? new Date(watchAllDetails.publishedDate).toLocaleString() : 'Draft'}
+                    </div>
+                  </div>
+                  <div
+                    className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-headline prose-a:text-primary"
+                    dangerouslySetInnerHTML={{ __html: watchAllDetails.content || '<p>Your article content will appear here.</p>' }}
+                  />
+                </div>
+              </article>
+            </div>
+          </DialogContent>
+        </Dialog>
+
     </div>
   );
 }
