@@ -40,7 +40,8 @@ export type AdminTab =
   | "portfolio"
   | "pricing"
   | "blogs"
-  | "media";
+  | "media"
+  | "brand";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -65,6 +66,12 @@ const groups = [
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
+    ],
+  },
+  {
+    label: "Brand",
+    items: [
+      { id: "brand", label: "Brand Settings", icon: Sparkles },
     ],
   },
   {
