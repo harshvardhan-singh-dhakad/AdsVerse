@@ -200,16 +200,16 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
   const parseMetadataFromHtml = (html: string) => {
     const metadata: Record<string, string> = {};
-    const commentRegex = /<!--([\\s\\S]*?)-->/g;
+    const commentRegex = /<!--([\s\S]*?)-->/g;
     let match;
 
     while ((match = commentRegex.exec(html)) !== null) {
       const commentContent = match[1];
-      const lines = commentContent.split('\\n');
+      const lines = commentContent.split('\n');
       lines.forEach(line => {
         const [key, ...valueParts] = line.split(':');
         if (key && valueParts.length > 0) {
-          const cleanKey = key.trim().toLowerCase().replace(/\\s+/g, '');
+          const cleanKey = key.trim().toLowerCase().replace(/\s+/g, '');
           const cleanValue = valueParts.join(':').trim();
           metadata[cleanKey] = cleanValue;
         }
