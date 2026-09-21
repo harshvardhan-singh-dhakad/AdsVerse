@@ -1,6 +1,6 @@
 "use client";
 
-import { DM_CATEGORIES, AI_CATEGORIES, getServicePrice, getServiceSlug } from "@/lib/services-data";
+import type { PublicService } from "@/lib/service-catalog";
 import { useState, useMemo, useRef } from "react";
 import { ArrowRight, Zap, TrendingUp, Star, Users, Loader2, ChevronLeft, ChevronRight, CheckCircle, MessageSquare } from "lucide-react";
 import Link from "next/link";
@@ -200,7 +200,7 @@ const CSS = `
 }
 `;
 
-function CatSection({ cat, selectedServices, onToggleService }: { cat: any, selectedServices: any[], onToggleService: (s: any) => void }) {
+function CatSection({ cat, selectedServices, onToggleService }: { cat: any, selectedServices: any[], onToggleService: (s: PublicService) => void }) {
   const styleVars = {
     "--cat-color": cat.color,
     "--cat-dim": hexToRgba(cat.color, 0.1),
@@ -221,7 +221,7 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
       <div className="svc-grid">
         {cat.services.map((s: any) => {
           const isSelected = selectedServices.some(item => item.name === s.name);
-          const price = getServicePrice(s.name);
+          const price = s.price ?? 0;
           return (
             <div className="svc" key={s.name}>
               {/* Top: name + price */}
@@ -239,7 +239,7 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
               </div>
               {/* Actions */}
               <div className="svc-actions">
-                <Link href={s.href || `/services/${getServiceSlug(s.name)}`} className="svc-btn-quote">
+                <Link href={s.href || `/services/${s.slug}`} className="svc-btn-quote">
                   View More
                 </Link>
                 <button
@@ -258,7 +258,7 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
   );
 }
 
-export default function ServicesClient({ isHi, initialServices }: { isHi: boolean, initialServices: any[] }) {
+export default function ServicesClient({ isHi, initialServices }: { isHi: boolean, initialServices: PublicService[] }) {
   const [mainTab, setMainTab] = useState("dm");
   const [dmCat, setDmCat] = useState("all");
   const [aiCat, setAiCat] = useState("all");
@@ -313,56 +313,35 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
     }
   };
 
-  const dmCategories = useMemo(() => {
-    const groups = [...DM_CATEGORIES.map(c => ({ ...c, services: c.services.map(s => ({ ...s })) }))];
-    initialServices?.forEach((s: any) => {
-      const isDM = s.planType === 'dm' || (!s.planType && ["smm", "seo", "content", "ppc", "ecommerce", "email", "design", "web", "orm", "analytics", "video", "branding"].includes(s.category || ''));
-      if (isDM && s.category) {
-        let group = groups.find(g => g.id === s.category);
-        if (!group) {
-          group = {
-            id: s.category,
-            label: s.categoryLabel || s.category.toUpperCase(),
-            icon: s.categoryIcon || "✨",
-            color: s.categoryColor || "#f97316",
-            desc: s.categoryDesc || "",
-            services: []
-          };
-          groups.push(group);
-        }
-        // Duplicate check
-        if (!group.services.some(srv => srv.name === s.name)) {
-          group.services.push({ name: s.name, desc: s.description || "", fullDesc: s.description || "", tags: s.features || [] });
-        }
-      }
-    });
-    return groups;
-  }, [initialServices]);
+  const buildGroups = (planType: "dm" | "ai") => {
+    const groups = new Map<string, any>();
+    const aiCategoryIds = ["whatsapp", "n8n", "aiagents", "crm", "chatautomation", "analytics-ai", "custom-dev", "whatsapp-ai", "ai-agents-&-bots", "chat-automation"];
 
-  const aiCategories = useMemo(() => {
-    const groups = [...AI_CATEGORIES.map(c => ({ ...c, services: c.services.map(s => ({ ...s })) }))];
-    initialServices?.forEach((s: any) => {
-      const isAI = s.planType === 'ai' || (!s.planType && ["whatsapp", "n8n", "aiagents", "crm", "chatautomation", "analytics-ai", "custom-dev"].includes(s.category || ''));
-      if (isAI && s.category) {
-        let group = groups.find(g => g.id === s.category);
-        if (!group) {
-          group = {
-            id: s.category,
-            label: s.categoryLabel || s.category.toUpperCase(),
-            icon: s.categoryIcon || "🤖",
-            color: s.categoryColor || "#f97316",
-            desc: s.categoryDesc || "",
-            services: []
-          };
-          groups.push(group);
+    (initialServices || [])
+      .filter((s: PublicService) => s.planType === planType || (!s.planType && planType === (aiCategoryIds.includes(s.category) ? "ai" : "dm")))
+      .sort((a: PublicService, b: PublicService) => (a.displayOrder || 0) - (b.displayOrder || 0))
+      .forEach((s: PublicService) => {
+        const key = s.category || `${planType}-general`;
+        const current = groups.get(key);
+        if (current) {
+          current.services.push(s);
+          return;
         }
-        if (!group.services.some(srv => srv.name === s.name)) {
-          group.services.push({ name: s.name, desc: s.description || "", fullDesc: s.description || "", tags: s.features || [] });
-        }
-      }
-    });
-    return groups;
-  }, [initialServices]);
+        groups.set(key, {
+          id: key,
+          label: s.categoryLabel || key.toUpperCase(),
+          icon: s.categoryIcon || s.iconName || (planType === "ai" ? "🤖" : "📈"),
+          color: s.categoryColor || "#f97316",
+          desc: s.categoryDesc || "",
+          services: [s],
+        });
+      });
+
+    return Array.from(groups.values());
+  };
+
+  const dmCategories = useMemo(() => buildGroups("dm"), [initialServices]);
+  const aiCategories = useMemo(() => buildGroups("ai"), [initialServices]);
 
   const dmTotal = dmCategories.reduce((s, c) => s + c.services.length, 0);
   const aiTotal = aiCategories.reduce((s, c) => s + c.services.length, 0);
@@ -965,16 +944,6 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
                     } catch (e) {
                       console.error("Local storage error:", e);
                     }
-
-                    // GOOGLE SHEETS WEBHOOK CALL (no-cors)
-                    try {
-                      fetch("https://script.google.com/macros/s/AKfycbz_placeholder/exec", {
-                        method: "POST",
-                        mode: "no-cors",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(bookingObj)
-                      }).catch(e => console.log("Silent sheets POST ignored."));
-                    } catch(err) {}
 
                     // Trigger Auto Click sandbox bypass
                     const encodedMsg = encodeURIComponent(msg);
