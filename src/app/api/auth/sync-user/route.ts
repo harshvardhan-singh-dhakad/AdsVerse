@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminAuth, adminDb } from '@/firebase/admin';
+import { adminDb } from '@/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
+import { verifyAdminIdToken } from '@/lib/admin-auth';
 
-const ADMIN_EMAILS = [
-  'admin@adsverse.in',
-  'harshvardhan@adsverse.in',
-  'harshvardhan.dhakad@gmail.com',
-  'harshvardhan.singh.dhakad@gmail.com',
-];
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +12,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing idToken' }, { status: 400 });
     }
 
-    const decoded = await adminAuth.verifyIdToken(idToken);
+    const adminContext = await verifyAdminIdToken(idToken);
+    const decoded = adminContext.decoded;
     const uid = decoded.uid;
     const email = decoded.email ? decoded.email.toLowerCase() : '';
     const displayName = name || decoded.name || email.split('@')[0] || 'User';
@@ -28,13 +24,8 @@ export async function POST(req: NextRequest) {
     // Keep the login decision consistent with Firestore's admin authorization
     // model. Admins may have been granted through the dedicated role records
     // even when their legacy audit_users profile still says "user".
-    const [snap, roleAdminSnap, emailAdminSnap] = await Promise.all([
-      userDocRef.get(),
-      adminDb.collection('roles_admin').doc(uid).get(),
-      email ? adminDb.collection('admins').doc(email).get() : Promise.resolve(null),
-    ]);
-    const hasAdminRecord = roleAdminSnap.exists || !!emailAdminSnap?.exists;
-    const isConfiguredAdmin = ADMIN_EMAILS.includes(email) || hasAdminRecord;
+    const [snap] = await Promise.all([userDocRef.get()]);
+    const isConfiguredAdmin = adminContext.isAdmin;
 
     let role = 'user';
     let paidCredits = 0;
