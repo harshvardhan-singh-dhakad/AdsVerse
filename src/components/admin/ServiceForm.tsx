@@ -42,7 +42,7 @@ const SERVICE_CATEGORIES = [
 
 const serviceSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
-  slug: z.string().min(3, "Slug must be at least 3 characters."),
+  slug: z.string().optional(),
   price: z.coerce.number().min(0, "Price cannot be negative."),
   description: z.string().min(10, "Description must be at least 10 characters."),
   iconName: z.string().min(2, "Icon name is required."),
@@ -102,6 +102,7 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
   const processForm = async (data: ServiceFormData) => {
     const dataForFirestore = {
       ...data,
+      slug: data.slug?.trim() || getServiceSlug(data.name),
       tags: data.tags.map(t => t.value),
     };
     
@@ -165,7 +166,7 @@ export function ServiceForm({ service, onFinished }: ServiceFormProps) {
                 <FormItem>
                   <FormLabel>Public URL Slug</FormLabel>
                   <FormControl><Input placeholder="e.g. seo-optimization" {...field} /></FormControl>
-                  <FormDescription>Keep this stable after publishing to avoid breaking existing links.</FormDescription>
+                  <FormDescription>Optional. Leave blank to generate from the service name. Keep it stable after publishing.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
