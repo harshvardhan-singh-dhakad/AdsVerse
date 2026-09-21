@@ -236,18 +236,23 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
 
       if (!metadata.title) metadata.title = h1 || title || ogTitle;
       if (!metadata.metatitle) metadata.metatitle = title || ogTitle || h1;
-      if (!metadata.metadesc) metadata.metadesc = description;
+      const metaFocusKeyword =
+        getMeta('meta[name="focus-keyword"]') ||
+        getMeta('meta[name="focus_keyword"]');
+
+      if (!metadata.metadesc) metadata.metadesc = description || metadata.description || '';
       if (!metadata.author) metadata.author = author;
       if (!metadata.focuskeyword) {
-        metadata.focuskeyword = keywords
-          ? keywords.split(',').map(item => item.trim()).filter(Boolean)[0] || ''
+        const keywordSource = metaFocusKeyword || metadata.keywords || keywords;
+        metadata.focuskeyword = keywordSource
+          ? keywordSource.split(',').map(item => item.trim()).filter(Boolean)[0] || ''
           : '';
       }
       if (!metadata.tags) {
-        const tags = articleTags.length
+        const tagSource = articleTags.length
           ? articleTags
-          : keywords.split(',').map(item => item.trim()).filter(Boolean);
-        metadata.tags = tags.join(', ');
+          : (metadata.keywords || keywords).split(',').map(item => item.trim()).filter(Boolean);
+        metadata.tags = tagSource.join(', ');
       }
     } catch {
       // Keep comment-based metadata when the HTML parser is unavailable.
@@ -268,6 +273,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     const end = fullHtmlCursorRef.current.end ?? start;
     const next = textarea.value.slice(0, start) + imageHtml + textarea.value.slice(end);
     const cursor = start + imageHtml.length;
+    fullHtmlCursorRef.current = { start: cursor, end: cursor };
 
     setFullHtml(next);
     requestAnimationFrame(() => {
