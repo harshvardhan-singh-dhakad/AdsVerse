@@ -13,7 +13,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { 
   Bold, Italic, List, ListOrdered, Quote, Undo, Redo, 
-  Code, Link as LinkIcon, Image as ImageIcon, Underline as UnderlineIcon,
+  Code, Link as LinkIcon, Underline as UnderlineIcon,
   AlignLeft, AlignCenter, AlignRight, ChevronDown, Highlighter, X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
