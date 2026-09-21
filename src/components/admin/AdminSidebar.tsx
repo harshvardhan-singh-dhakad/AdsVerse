@@ -14,6 +14,8 @@ import {
   Sparkles,
   ChevronRight,
   Menu,
+  Quote,
+  CircleHelp,
 } from "lucide-react";
 import {
   Sidebar,
@@ -43,7 +45,9 @@ export type AdminTab =
   | "blogs"
   | "media"
   | "brand"
-  | "navigation";
+  | "navigation"
+  | "testimonials"
+  | "faqs";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -68,6 +72,8 @@ const groups = [
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
+      { id: "testimonials", label: "Testimonials", icon: Quote },
+      { id: "faqs", label: "FAQs", icon: CircleHelp },
     ],
   },
   {
