@@ -11,6 +11,11 @@ export type Service = BaseDoc & {
     description: string;
     iconName: string;
     displayOrder: number;
+    slug?: string;
+    href?: string;
+    price?: number;
+    fullDesc?: string;
+    isPublished?: boolean;
     // New fields for categorization and tagging
     category?: string;
     categoryLabel?: string;
