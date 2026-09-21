@@ -44,25 +44,63 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
   return null;
 }
 
-async function getRelatedPosts(category: string, currentSlug: string): Promise<BlogPost[]> {
+async function getRelatedPosts(post: BlogPost): Promise<BlogPost[]> {
   try {
     const now = new Date().toISOString();
     const snap = await adminDb.collection("public_blogPosts")
-      .where("category", "==", category)
       .where("publishedDate", "<=", now)
       .orderBy("publishedDate", "desc")
-      .limit(4)
+      .limit(36)
       .get();
+
     if (snap && snap.docs && snap.docs.length > 0) {
-      return snap.docs
+      const currentTags = Array.isArray(post.tags) ? post.tags.map(tag => String(tag).toLowerCase()) : [];
+      const currentCategory = String(post.category || "").toLowerCase();
+
+      const candidates = snap.docs
         .map(doc => sanitizeBlogPost(doc.id, doc.data()))
-        .filter(post => post.slug !== currentSlug)
-        .slice(0, 3) as any;
+        .filter(candidate => candidate.slug !== post.slug)
+        .map(candidate => {
+          const candidateTags = Array.isArray(candidate.tags)
+            ? candidate.tags.map(tag => String(tag).toLowerCase())
+            : [];
+          const sharedTags = candidateTags.filter(tag => currentTags.includes(tag)).length;
+          const sameCategory = currentCategory && String(candidate.category || "").toLowerCase() === currentCategory;
+          const featuredBonus = candidate.isFeatured ? 1 : 0;
+
+          const publishedTime = new Date(candidate.publishedDate || 0).getTime();
+          const daysOld = Number.isFinite(publishedTime)
+            ? Math.max(0, (Date.now() - publishedTime) / 86400000)
+            : 3650;
+          const freshnessBonus = Math.max(0, 1 - Math.min(daysOld / 365, 1));
+
+          const relevanceScore =
+            (sameCategory ? 5 : 0) +
+            sharedTags * 3 +
+            featuredBonus +
+            freshnessBonus;
+
+          return { candidate, relevanceScore };
+        })
+        .sort((a, b) => {
+          if (b.relevanceScore !== a.relevanceScore) {
+            return b.relevanceScore - a.relevanceScore;
+          }
+          return new Date(b.candidate.publishedDate || 0).getTime() -
+            new Date(a.candidate.publishedDate || 0).getTime();
+        })
+        .slice(0, 3)
+        .map(item => item.candidate);
+
+      if (candidates.length > 0) return candidates as any;
     }
   } catch (err) {
-    console.warn("[getRelatedPosts] Firestore related posts query error:", err);
+    console.warn("[getRelatedPosts] Firestore recommendation query error:", err);
   }
-  return FALLBACK_POSTS.filter(post => post.slug !== currentSlug).slice(0, 3) as any;
+
+  return FALLBACK_POSTS
+    .filter(postItem => postItem.slug !== post.slug)
+    .slice(0, 3) as any;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -192,7 +230,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     notFound();
   }
 
-  const relatedPosts = await getRelatedPosts(post.category, post.slug);
+  const relatedPosts = await getRelatedPosts(post);
 
   const { cleanedHtml, headings } = processBlogContent(post.content);
 
@@ -354,22 +392,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <Card className="border-border/50 bg-background/50 backdrop-blur shadow-sm">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-headline uppercase tracking-wider">
-                      Related FAQs
+                      In this article
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4 text-sm">
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">How can AdsVerse help with this?</h4>
-                      <p className="text-muted-foreground">We provide end-to-end strategy and implementation. Book a free consultation to discuss your specific needs.</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">Do you provide custom solutions?</h4>
-                      <p className="text-muted-foreground">Yes, every digital strategy and AI automation is custom-built for your business scale and goals.</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">What is the typical ROI?</h4>
-                      <p className="text-muted-foreground">Our data-driven marketing and automation systems typically yield a 3x-5x ROI within the first 6 months.</p>
-                    </div>
+                  <CardContent className="space-y-3 text-sm">
+                    <p className="text-muted-foreground">
+                      Use the contents below to jump directly to the section you need.
+                    </p>
+                    <p className="text-xs font-semibold text-primary">
+                      {headings.length} sections · {Math.max(1, Math.ceil((post.content || '').replace(/<[^>]*>/g, ' ').trim().split(/\s+/).filter(Boolean).length / 200))} min read
+                    </p>
                   </CardContent>
                 </Card>
 
@@ -425,7 +457,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               
               {relatedPosts.length > 0 && (
                 <section className="pt-12 mt-16 border-t border-primary/10">
-                  <h2 className="text-3xl font-black font-headline mb-8 text-foreground text-center md:text-left">Related Articles</h2>
+                  <h2 className="text-3xl font-black font-headline mb-2 text-foreground text-center md:text-left">Recommended reading</h2>
+                  <p className="mb-8 text-sm text-muted-foreground text-center md:text-left">More AdsVerse insights selected by topic, tags, and freshness.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {relatedPosts.map(rp => (
                       <Card key={rp.slug} className="flex flex-col overflow-hidden group bg-card/40 backdrop-blur-md border-primary/10 hover:border-accent/40 transition-all duration-500">
