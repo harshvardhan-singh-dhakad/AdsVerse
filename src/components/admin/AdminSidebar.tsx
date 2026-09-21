@@ -13,6 +13,7 @@ import {
   Crown,
   Sparkles,
   ChevronRight,
+  Menu,
 } from "lucide-react";
 import {
   Sidebar,
