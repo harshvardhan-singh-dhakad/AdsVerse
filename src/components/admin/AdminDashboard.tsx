@@ -15,6 +15,8 @@ import { type AdminTab } from "./AdminSidebar";
 import { MediaLibrary } from "./MediaLibrary";
 import { BrandSettings } from "./BrandSettings";
 import { NavigationSettings } from "./NavigationSettings";
+import { TestimonialsTable } from "./TestimonialsTable";
+import { FaqTable } from "./FaqTable";
 
 interface AdminDashboardProps {
   activeTab: AdminTab;
@@ -40,6 +42,10 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <PortfolioTable />;
     case "pricing":
       return <PricingTable />;
+    case "testimonials":
+      return <TestimonialsTable />;
+    case "faqs":
+      return <FaqTable />;
     case "blogs":
       return <BlogTable />;
     case "brand":
