@@ -80,6 +80,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
   const fullHtmlRef = useRef<HTMLTextAreaElement | null>(null);
+  const fullHtmlCursorRef = useRef({ start: 0, end: 0 });
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
@@ -112,7 +113,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
       metaTitle: '',
       metaDescription: '',
       author: 'harshvardhan',
-      publishedDate: new Date().toISOString().slice(0, 16),
+      publishedDate: toDateTimeLocalValue(),
       status: 'draft',
       allowComments: true,
       includeInSitemap: true,
@@ -263,8 +264,8 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
     }
 
     const imageHtml = `<img src="${escapeHtmlAttribute(image.url)}" alt="${escapeHtmlAttribute(image.alt)}" loading="lazy" />`;
-    const start = textarea.selectionStart ?? textarea.value.length;
-    const end = textarea.selectionEnd ?? start;
+    const start = fullHtmlCursorRef.current.start ?? textarea.value.length;
+    const end = fullHtmlCursorRef.current.end ?? start;
     const next = textarea.value.slice(0, start) + imageHtml + textarea.value.slice(end);
     const cursor = start + imageHtml.length;
 
@@ -784,7 +785,31 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
             <Textarea
               ref={fullHtmlRef}
               value={fullHtml}
-              onChange={(e) => setFullHtml(e.target.value)}
+              onSelect={(e) => {
+                fullHtmlCursorRef.current = {
+                  start: e.currentTarget.selectionStart,
+                  end: e.currentTarget.selectionEnd,
+                };
+              }}
+              onClick={(e) => {
+                fullHtmlCursorRef.current = {
+                  start: e.currentTarget.selectionStart,
+                  end: e.currentTarget.selectionEnd,
+                };
+              }}
+              onKeyUp={(e) => {
+                fullHtmlCursorRef.current = {
+                  start: e.currentTarget.selectionStart,
+                  end: e.currentTarget.selectionEnd,
+                };
+              }}
+              onChange={(e) => {
+                fullHtmlCursorRef.current = {
+                  start: e.currentTarget.selectionStart,
+                  end: e.currentTarget.selectionEnd,
+                };
+                setFullHtml(e.target.value);
+              }}
               className="min-h-[600px] font-mono text-xs md:text-sm bg-muted/10 border-border/20 rounded-3xl p-6 focus-visible:ring-1 focus-visible:ring-primary/30 transition-all leading-relaxed resize-y"
               placeholder={`<h1>Your Blog Title Here</h1>\n<p>A brief 1-2 line description of this post...</p>\n\n<h2>Introduction</h2>\n<p>Write your opening paragraph here...</p>\n\n<h2>Main Content</h2>\n<p>Continue writing your full blog post here...</p>`}
             />
