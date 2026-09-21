@@ -1,4 +1,5 @@
 import { getPublicServices } from "@/lib/service-catalog";
+import { getPublicServicePriceOverrides } from "@/lib/pricing-catalog";
 import ServicesClient from "@/components/services/ServicesClient";
 import { Metadata } from "next";
 
@@ -64,7 +65,10 @@ async function getServices() {
 }
 
 export default async function ServicesPage() {
-  const dbServices = await getServices();
+  const [dbServices, servicePriceOverrides] = await Promise.all([
+    getServices(),
+    getPublicServicePriceOverrides(),
+  ]);
 
   return (
     <>
@@ -81,7 +85,11 @@ export default async function ServicesPage() {
 
 
       {/* ── FULL SERVICES LIST (existing ServicesClient component unchanged) ── */}
-      <ServicesClient isHi={false} initialServices={dbServices} />
+      <ServicesClient
+        isHi={false}
+        initialServices={dbServices}
+        servicePriceOverrides={servicePriceOverrides}
+      />
     </>
   );
 }

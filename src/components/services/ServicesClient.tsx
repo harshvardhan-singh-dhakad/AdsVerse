@@ -200,7 +200,12 @@ const CSS = `
 }
 `;
 
-function CatSection({ cat, selectedServices, onToggleService }: { cat: any, selectedServices: any[], onToggleService: (s: PublicService) => void }) {
+function CatSection({ cat, selectedServices, onToggleService, servicePriceOverrides }: {
+  cat: any;
+  selectedServices: any[];
+  onToggleService: (s: PublicService) => void;
+  servicePriceOverrides: Record<string, number>;
+}) {
   const styleVars = {
     "--cat-color": cat.color,
     "--cat-dim": hexToRgba(cat.color, 0.1),
@@ -221,7 +226,7 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
       <div className="svc-grid">
         {cat.services.map((s: any) => {
           const isSelected = selectedServices.some(item => item.name === s.name);
-          const price = s.price ?? 0;
+          const price = servicePriceOverrides[s.slug] ?? s.price ?? 0;
           return (
             <div className="svc" key={s.name}>
               {/* Top: name + price */}
@@ -258,7 +263,15 @@ function CatSection({ cat, selectedServices, onToggleService }: { cat: any, sele
   );
 }
 
-export default function ServicesClient({ isHi, initialServices }: { isHi: boolean, initialServices: PublicService[] }) {
+export default function ServicesClient({
+  isHi,
+  initialServices,
+  servicePriceOverrides = {},
+}: {
+  isHi: boolean;
+  initialServices: PublicService[];
+  servicePriceOverrides?: Record<string, number>;
+}) {
   const [mainTab, setMainTab] = useState("dm");
   const [dmCat, setDmCat] = useState("all");
   const [aiCat, setAiCat] = useState("all");
@@ -474,7 +487,12 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
                 className={isVisible ? "cat-section-animate" : ""}
                 style={{ display: isVisible ? "block" : "none" }}
               >
-                <CatSection cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
+                <CatSection
+                cat={cat}
+                selectedServices={selectedServices}
+                onToggleService={toggleService}
+                servicePriceOverrides={servicePriceOverrides}
+              />
               </div>
             );
           })}
@@ -528,7 +546,12 @@ export default function ServicesClient({ isHi, initialServices }: { isHi: boolea
                 className={isVisible ? "cat-section-animate" : ""}
                 style={{ display: isVisible ? "block" : "none" }}
               >
-                <CatSection cat={cat} selectedServices={selectedServices} onToggleService={toggleService} />
+                <CatSection
+                  cat={cat}
+                  selectedServices={selectedServices}
+                  onToggleService={toggleService}
+                  servicePriceOverrides={servicePriceOverrides}
+                />
               </div>
             );
           })}

@@ -41,8 +41,10 @@ export type PricingPlan = BaseDoc & {
     frequency?: string;
     category: string;
     subCategory?: string;
+    serviceSlug?: string;
     features: string[];
     isPopular: boolean;
+    isPublished?: boolean;
     callToAction: string;
     displayOrder: number;
     // New fields
