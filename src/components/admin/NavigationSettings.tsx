@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   DEFAULT_NAVIGATION_LINKS,
   type NavigationLink,
-} from "@/lib/navigation-settings";
+} from "@/lib/navigation-defaults";
 
 export function NavigationSettings() {
   const firestore = useFirestore();
