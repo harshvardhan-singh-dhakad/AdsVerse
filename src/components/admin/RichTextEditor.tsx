@@ -17,6 +17,7 @@ import {
   AlignLeft, AlignCenter, AlignRight, ChevronDown, Highlighter, X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { InlineImageUploader } from './InlineImageUploader';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -28,8 +29,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
-  onOpenMedia?: () => void;
-  insertImage?: { src: string; alt?: string } | null;
   className?: string;
 }
 
@@ -75,7 +74,7 @@ const ToolbarButton = ({
 
 const SectionDivider = () => <div className="w-px h-6 bg-border/40 mx-1" />;
 
-export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, className }: RichTextEditorProps) {
+export function RichTextEditor({ value, onChange, className }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -126,22 +125,6 @@ export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, clas
       editor.commands.setContent(value);
     }
   }, [value, editor]);
-
-  React.useEffect(() => {
-    if (!editor || !insertImage?.src) return;
-    editor.chain().focus().setImage({ src: insertImage.src, alt: insertImage.alt || '' }).run();
-  }, [editor, insertImage]);
-
-  const addImage = useCallback(() => {
-    if (onOpenMedia) {
-      onOpenMedia();
-      return;
-    }
-    const url = window.prompt('Image URL');
-    if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
-    }
-  }, [editor, onOpenMedia]);
 
   const setLink = useCallback(() => {
     const previousUrl = editor?.getAttributes('link').href;
@@ -287,12 +270,6 @@ export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, clas
             <LinkIcon className="w-4 h-4" />
           </ToolbarButton>
           <ToolbarButton
-            onClick={addImage}
-            tooltip="Insert from Media Library"
-          >
-            <ImageIcon className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
             onClick={() => editor.chain().focus().toggleCode().run()}
             isActive={editor.isActive('code')}
             tooltip="Inline Code"
@@ -329,6 +306,14 @@ export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, clas
           </ToolbarButton>
         </div>
       </div>
+
+      <InlineImageUploader
+        compact
+        autoInsert
+        onInsert={(image) => {
+          editor.chain().focus().setImage({ src: image.url, alt: image.alt }).run();
+        }}
+      />
 
       <BubbleMenu editor={editor} className="flex overflow-hidden rounded-full bg-card border border-border/10 shadow-2xl p-1 gap-1">
         <button
@@ -375,13 +360,6 @@ export function RichTextEditor({ value, onChange, onOpenMedia, insertImage, clas
           aria-label="Bullet List"
         >
           <List className="w-4 h-4" aria-hidden="true" /> Bullet List
-        </button>
-        <button
-          onClick={addImage}
-          className="flex items-center gap-2 px-3 py-2 text-xs font-bold hover:bg-muted transition-colors text-left"
-          aria-label="Insert Image"
-        >
-          <ImageIcon className="w-4 h-4" aria-hidden="true" /> Image
         </button>
       </FloatingMenu>
 
