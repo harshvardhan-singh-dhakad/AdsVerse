@@ -126,19 +126,47 @@ const normalizeFirestoreServices = (docs: QueryDocumentSnapshot[]): PublicServic
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
 export async function getPublicServices(): Promise<PublicService[]> {
+  const staticServices = normalizeStaticServices();
+
   try {
     const snapshot = await adminDb.collection("services").get();
-
-    // Firestore is authoritative whenever the collection contains documents.
-    // Static catalog data is only a migration/build fallback when the collection is empty.
-    if (snapshot.docs.length > 0) {
-      return normalizeFirestoreServices(snapshot.docs);
+    if (snapshot.docs.length === 0) {
+      return staticServices;
     }
+
+    const firestoreServices = normalizeFirestoreServices(snapshot.docs);
+    const firestoreBySlug = new Map<string, PublicService>();
+    const hiddenSlugs = new Set<string>();
+
+    for (const doc of snapshot.docs) {
+      const data = doc.data() as Record<string, any>;
+      const name = String(data.name || "").trim();
+      if (!name) continue;
+
+      const slug = String(data.slug || getServiceSlug(name));
+      if (data.isPublished === false) {
+        hiddenSlugs.add(slug);
+        continue;
+      }
+
+      const normalized = firestoreServices.find((service) => service.id === doc.id);
+      if (normalized) firestoreBySlug.set(slug, normalized);
+    }
+
+    const merged = staticServices
+      .filter((service) => !hiddenSlugs.has(service.slug))
+      .map((service) => firestoreBySlug.get(service.slug) || service);
+
+    const staticSlugs = new Set(staticServices.map((service) => service.slug));
+    const customServices = firestoreServices.filter(
+      (service) => !staticSlugs.has(service.slug) && !hiddenSlugs.has(service.slug)
+    );
+
+    return [...merged, ...customServices].sort((a, b) => a.displayOrder - b.displayOrder);
   } catch (error) {
     console.warn("[service-catalog] Firestore unavailable; using static fallback.", error);
+    return staticServices;
   }
-
-  return normalizeStaticServices();
 }
 
 export async function getPublicServiceBySlug(slug: string): Promise<PublicServiceResult | null> {
