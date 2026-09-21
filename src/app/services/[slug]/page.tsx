@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { getPublicServiceBySlug, getPublicServices } from "@/lib/service-catalog";
+import { getPublicServicePriceOverrides } from "@/lib/pricing-catalog";
 import { getCategoryDetails } from "@/lib/service-details";
 import { ArrowLeft, CheckCircle, Sparkles, Wrench, Package, Calendar } from "lucide-react";
 
@@ -58,7 +59,8 @@ export default async function DynamicServicePage({ params }: PageProps) {
   }
 
   const { service, category } = result;
-  const basePrice = service.price;
+  const servicePriceOverrides = await getPublicServicePriceOverrides();
+  const basePrice = servicePriceOverrides[service.slug] ?? service.price;
   const details = getCategoryDetails(category.id, service.name, service.tags);
 
   // Dynamic content block calculations
