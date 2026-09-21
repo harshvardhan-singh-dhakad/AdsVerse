@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import type { BrandSettings } from "@/lib/brand-settings";
 
-export function Footer() {
+export function Footer({ brand }: { brand?: Pick<BrandSettings, "logoUrl"> }) {
   const pathname = usePathname();
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [mounted, setMounted] = useState(false);
@@ -28,7 +29,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-2 group" aria-label="AdsVerse Home">
-              <AdsVerseLogo size="text-2xl" />
+              <AdsVerseLogo logoUrl={brand?.logoUrl || undefined} size="text-2xl" />
             </Link>
             <div className="max-w-xs text-sm text-slate-800 dark:text-muted-foreground space-y-3">
               <p className="leading-relaxed">
