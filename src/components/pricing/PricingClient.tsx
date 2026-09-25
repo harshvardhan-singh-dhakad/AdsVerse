@@ -827,7 +827,7 @@ export default function PricingClient({ initialPlans }: { initialPlans: PricingP
                         📍 Our Office: Vijay Nagar, Indore
                       </label>
                       <div className="w-full p-3 rounded-xl bg-neutral-900 border border-orange-500/20 text-neutral-400 text-xs leading-relaxed">
-                        AdsVerse — Vijay Nagar, Indore, Madhya Pradesh 452010<br />
+                        AdsVerse — Vijay Nagar, Indore, Madhya Pradesh 452011<br />
                         <span className="text-orange-500 font-bold">Mon–Sat: 10 AM – 7 PM</span>
                       </div>
                     </div>
