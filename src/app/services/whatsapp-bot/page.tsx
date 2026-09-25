@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "WhatsApp AI Chatbot Agency in Indore | AdsVerse" },
-  description: "AdsVerse develops custom WhatsApp AI chatbots in Indore. Automate customer support 24/7, capture verified leads, and sync with your CRM effortlessly.",
+  title: { absolute: "WhatsApp AI Chatbot & Automation in India | AdsVerse" },
+  description: "Build WhatsApp AI chatbots and automation for lead qualification, customer support, booking and CRM workflows across India with AdsVerse.",
   keywords: [
     "whatsapp ai chatbot development company indore",
     "whatsapp automation agency india",
@@ -193,7 +193,7 @@ export default function WhatsAppBotPage() {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
-                  <Link href="/contact">Get Started</Link>
+                  <Link href="/contact?service=WhatsApp%20AI%20Sales%20Bot&plan=Pro%20Sales%20Bot">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>
