@@ -320,7 +320,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                           </p>
                         </div>
                         <Button asChild size="sm" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:text-orange-500 hover:bg-orange-500/5 font-bold rounded-lg text-xs px-3 h-8">
-                          <Link href="/locations">View All 37+ Cities &rarr;</Link>
+                          <Link href="/locations">View All 25 Cities &rarr;</Link>
                         </Button>
                       </div>
 
@@ -541,7 +541,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                                         onClick={closeMobileMenu}
                                         className="text-xs font-bold text-orange-500 hover:text-primary transition-colors block"
                                       >
-                                        View All 37+ Cities &rarr;
+                                        View All 25 Cities &rarr;
                                       </Link>
 
                                       {/* Madhya Pradesh */}
