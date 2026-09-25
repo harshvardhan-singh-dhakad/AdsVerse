@@ -76,7 +76,11 @@ const buildContactJsonLd = (brand: BrandSettings) => ({
   }
 });
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: { service?: string; plan?: string };
+}) {
   const [services, brand] = await Promise.all([
     getPublicServices(),
     getBrandSettings(),
@@ -104,7 +108,11 @@ export default async function ContactPage() {
             <CardTitle className="text-3xl font-headline text-center">Contact Us</CardTitle>
           </CardHeader>
           <CardContent>
-            <ContactForm services={serviceOptions} />
+            <ContactForm
+              services={serviceOptions}
+              defaultService={searchParams?.service || ""}
+              defaultPlan={searchParams?.plan || ""}
+            />
           </CardContent>
         </Card>
 

@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/locations`, priority: 0.7, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/locations/pan-india-remote`, priority: 0.7, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/tools/seo-audit`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/services/ai-search-optimization`, priority: 0.9, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/terms-of-service`, priority: 0.3, changeFrequency: 'yearly' as const },
     { url: `${baseUrl}/privacy-policy`, priority: 0.3, changeFrequency: 'yearly' as const },
     { url: `${baseUrl}/refund-policy`, priority: 0.3, changeFrequency: 'yearly' as const },
@@ -37,7 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/locations/${city}`,
     priority: 0.6,
     changeFrequency: 'weekly' as const,
-    lastModified: new Date()
   }));
 
   // Fetch dynamic blog posts from Firestore to include in the sitemap
@@ -80,7 +80,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: page.url,
     priority: page.priority,
     changeFrequency: page.changeFrequency,
-    lastModified: new Date()
   }));
 
   const baseUrls = new Set(allStaticPages.map(page => page.url));
@@ -95,7 +94,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url,
         priority: 0.8,
         changeFrequency: "monthly" as const,
-        lastModified: new Date(),
       };
     })
     .filter((page) => !baseUrls.has(page.url));

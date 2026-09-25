@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "SEO Company in Indore | Rank #1 on Google | AdsVerse" },
-  description: "AdsVerse offers results-driven SEO services in Indore. Technical SEO audits, local GMB rankings, and GEO AI search optimization. Get a free audit today.",
+  title: { absolute: "SEO Services in Indore & India | Technical, Local & AI Search | AdsVerse" },
+  description: "AdsVerse provides technical, local and AI-search SEO for businesses in Indore and across India, covering crawlability, on-page SEO, Google Business Profile and search visibility.",
   alternates: {
     canonical: 'https://adsverse.in/services/seo-optimization',
   },
@@ -171,7 +171,7 @@ export default function SeoOptimizationPage() {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
-                  <Link href="/contact">Get Started</Link>
+                  <Link href="/contact?service=SEO%20Optimization&plan=Growth%20Pro">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>

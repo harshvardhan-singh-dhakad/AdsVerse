@@ -42,11 +42,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     console.warn(e);
   }
 
+  const keywords = [
+    service.name,
+    `${service.name} agency India`,
+    `${service.name} Indore`,
+    ...(service.tags || []),
+    category.label,
+    "SEO",
+    "AEO",
+    "GEO",
+  ].filter(Boolean);
+
   return {
     title: cleanT,
     description: service.desc,
+    keywords,
     alternates: {
       canonical: fullUrl,
+    },
+    openGraph: {
+      title: cleanT,
+      description: service.desc,
+      url: fullUrl,
+      siteName: "AdsVerse",
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: cleanT,
+      description: service.desc,
+      creator: "@Adsverse1",
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -120,14 +150,21 @@ export default async function DynamicServicePage({ params }: PageProps) {
         "name": `${service.name} Services | AdsVerse`,
         "description": service.fullDesc || service.desc,
         "provider": {
-          "@type": "Organization",
+          "@type": "LocalBusiness",
+          "@id": "https://adsverse.in/#organization",
           "name": "AdsVerse",
           "url": "https://adsverse.in",
         },
-        "areaServed": {
-          "@type": "City",
-          "name": "Indore",
-        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Indore",
+          },
+          {
+            "@type": "Country",
+            "name": "India",
+          },
+        ],
         "offers": {
           "@type": "Offer",
           "name": "Growth Pro",
@@ -356,7 +393,9 @@ export default async function DynamicServicePage({ params }: PageProps) {
                       pkg.isPopular ? "bg-accent hover:bg-accent/90" : "bg-primary hover:bg-primary/90"
                     }`}
                   >
-                    <Link href="/contact">Get Started</Link>
+                    <Link href={`/contact?service=${encodeURIComponent(service.name)}&plan=${encodeURIComponent(pkg.title)}`}>
+                      Get Started
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -396,6 +435,41 @@ export default async function DynamicServicePage({ params }: PageProps) {
                 </div>
               </Card>
             ))}
+          </div>
+        </section>
+
+        {/* Search visibility map: SEO + AEO + GEO */}
+        <section className="mb-16 rounded-3xl border border-primary/20 bg-primary/[0.04] p-6 md:p-10">
+          <div className="max-w-3xl">
+            <span className="text-[11px] font-black uppercase tracking-[0.18em] text-primary">Search visibility</span>
+            <h2 className="mt-3 text-3xl font-bold font-headline">
+              Get found in Search, Answers &amp; AI results
+            </h2>
+            <p className="mt-3 text-muted-foreground leading-7">
+              This service page is structured to support traditional SEO, answer-oriented discovery, and generative search visibility from the same source content. We focus on clear definitions, service-specific entities, useful FAQs, implementation details, and evidence rather than repeated keyword blocks.
+            </p>
+          </div>
+          <div className="mt-7 grid md:grid-cols-3 gap-4">
+            <div className="rounded-2xl border border-border/50 bg-background/60 p-5">
+              <div className="text-sm font-bold text-primary">SEO</div>
+              <p className="mt-2 text-sm text-muted-foreground leading-6">Canonical URL, descriptive metadata, semantic headings, internal links and service schema.</p>
+            </div>
+            <div className="rounded-2xl border border-border/50 bg-background/60 p-5">
+              <div className="text-sm font-bold text-primary">AEO</div>
+              <p className="mt-2 text-sm text-muted-foreground leading-6">Direct-answer FAQs and implementation explanations written for clear extraction into answer experiences.</p>
+            </div>
+            <div className="rounded-2xl border border-border/50 bg-background/60 p-5">
+              <div className="text-sm font-bold text-primary">GEO</div>
+              <p className="mt-2 text-sm text-muted-foreground leading-6">Consistent entity identity, first-party evidence, service context and citation-friendly statements for AI search.</p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/services/ai-search-optimization" className="text-sm font-bold text-primary hover:underline">
+              Explore the AdsVerse AI Search Optimization framework →
+            </Link>
+            <Link href="/tools/seo-audit" className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-primary">
+              Run a technical SEO audit
+            </Link>
           </div>
         </section>
 
