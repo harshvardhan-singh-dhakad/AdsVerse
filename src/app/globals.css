@@ -488,40 +488,40 @@
   ─────────────────────────────────────── */
 
   /* PRIMARY = ORANGE */
-  .text-primary { color: #f97316 !important; }
-  .bg-primary { background-color: #f97316 !important; }
-  .bg-primary\/5  { background-color: rgba(249, 115, 22, 0.05) !important; }
-  .bg-primary\/10 { background-color: rgba(249, 115, 22, 0.1) !important; }
-  .bg-primary\/20 { background-color: rgba(249, 115, 22, 0.2) !important; }
-  .border-primary { border-color: #f97316 !important; }
-  .border-primary\/10 { border-color: rgba(249, 115, 22, 0.1) !important; }
-  .border-primary\/20 { border-color: rgba(249, 115, 22, 0.2) !important; }
-  .border-primary\/30 { border-color: rgba(249, 115, 22, 0.3) !important; }
-  .border-primary\/40 { border-color: rgba(249, 115, 22, 0.4) !important; }
-  .hover\:bg-primary\/90:hover { background-color: rgba(249, 115, 22, 0.9) !important; }
-  .shadow-primary\/20 { --tw-shadow-color: rgba(249, 115, 22, 0.2) !important; }
-  .shadow-primary\/40 { --tw-shadow-color: rgba(249, 115, 22, 0.4) !important; }
-  .ring-primary\/30 { --tw-ring-color: rgba(249, 115, 22, 0.3) !important; }
+  .text-primary { color: hsl(var(--primary)) !important; }
+  .bg-primary { background-color: hsl(var(--primary)) !important; }
+  .bg-primary\/5  { background-color: hsl(var(--primary) / 0.05) !important; }
+  .bg-primary\/10 { background-color: hsl(var(--primary) / 0.1) !important; }
+  .bg-primary\/20 { background-color: hsl(var(--primary) / 0.2) !important; }
+  .border-primary { border-color: hsl(var(--primary)) !important; }
+  .border-primary\/10 { border-color: hsl(var(--primary) / 0.1) !important; }
+  .border-primary\/20 { border-color: hsl(var(--primary) / 0.2) !important; }
+  .border-primary\/30 { border-color: hsl(var(--primary) / 0.3) !important; }
+  .border-primary\/40 { border-color: hsl(var(--primary) / 0.4) !important; }
+  .hover\:bg-primary\/90:hover { background-color: hsl(var(--primary) / 0.9) !important; }
+  .shadow-primary\/20 { --tw-shadow-color: hsl(var(--primary) / 0.2) !important; }
+  .shadow-primary\/40 { --tw-shadow-color: hsl(var(--primary) / 0.4) !important; }
+  .ring-primary\/30 { --tw-ring-color: hsl(var(--primary) / 0.3) !important; }
 
   /* ACCENT = PURPLE */
-  .text-accent { color: #8b5cf6 !important; }
-  .bg-accent { background-color: #7c3aed !important; }
-  .bg-accent\/5  { background-color: rgba(139, 92, 246, 0.05) !important; }
-  .bg-accent\/10 { background-color: rgba(139, 92, 246, 0.1) !important; }
-  .bg-accent\/20 { background-color: rgba(139, 92, 246, 0.2) !important; }
-  .border-accent { border-color: #8b5cf6 !important; }
-  .border-accent\/10 { border-color: rgba(139, 92, 246, 0.1) !important; }
-  .border-accent\/20 { border-color: rgba(139, 92, 246, 0.2) !important; }
-  .border-accent\/30 { border-color: rgba(139, 92, 246, 0.3) !important; }
-  .border-accent\/60 { border-color: rgba(139, 92, 246, 0.6) !important; }
-  .hover\:bg-accent\/90:hover { background-color: rgba(139, 92, 246, 0.9) !important; }
-  .shadow-accent\/5  { --tw-shadow-color: rgba(139, 92, 246, 0.05) !important; }
-  .ring-accent\/30 { --tw-ring-color: rgba(139, 92, 246, 0.3) !important; }
+  .text-accent { color: hsl(var(--accent)) !important; }
+  .bg-accent { background-color: hsl(var(--accent)) !important; }
+  .bg-accent\/5  { background-color: hsl(var(--accent) / 0.05) !important; }
+  .bg-accent\/10 { background-color: hsl(var(--accent) / 0.1) !important; }
+  .bg-accent\/20 { background-color: hsl(var(--accent) / 0.2) !important; }
+  .border-accent { border-color: hsl(var(--accent)) !important; }
+  .border-accent\/10 { border-color: hsl(var(--accent) / 0.1) !important; }
+  .border-accent\/20 { border-color: hsl(var(--accent) / 0.2) !important; }
+  .border-accent\/30 { border-color: hsl(var(--accent) / 0.3) !important; }
+  .border-accent\/60 { border-color: hsl(var(--accent) / 0.6) !important; }
+  .hover\:bg-accent\/90:hover { background-color: hsl(var(--accent) / 0.9) !important; }
+  .shadow-accent\/5  { --tw-shadow-color: hsl(var(--accent) / 0.05) !important; }
+  .ring-accent\/30 { --tw-ring-color: hsl(var(--accent) / 0.3) !important; }
 
   /* Legacy brand aliases */
-  .text-brand-orange { color: #f97316 !important; }
-  .bg-brand-orange { background-color: #f97316 !important; }
-  .hover\:text-brand-orange:hover { color: #f97316 !important; }
+  .text-brand-orange { color: hsl(var(--primary)) !important; }
+  .bg-brand-orange { background-color: hsl(var(--primary)) !important; }
+  .hover\:text-brand-orange:hover { color: hsl(var(--primary)) !important; }
 
   /* Responsive Mobile */
   @media (max-width: 1024px) {
