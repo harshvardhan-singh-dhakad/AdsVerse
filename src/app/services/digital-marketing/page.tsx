@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Digital Marketing Agency in Indore | AdsVerse" },
-  description: "AdsVerse is the top digital marketing agency in Indore. Scale your revenue with AI-first SEO, Google Ads, Meta campaigns, and high-converting funnels.",
+  title: { absolute: "Digital Marketing Services in Indore | SEO, Ads & Automation | AdsVerse" },
+  description: "AdsVerse provides digital marketing services in Indore including SEO, Google Ads, Meta Ads, content, social media and marketing automation built around measurable business outcomes.",
   keywords: [
     "digital marketing agency in indore",
     "digital marketing company in indore",
@@ -151,7 +151,7 @@ export default function DigitalMarketingPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-                <Link href="/contact">Get Free Strategy Call</Link>
+                <Link href="/contact?service=Digital%20Marketing&plan=Strategy%20Call">Get Free Strategy Call</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="/services">View All Services</Link>
@@ -392,7 +392,7 @@ export default function DigitalMarketingPage() {
             AdsVerse — Vijay Nagar, Indore, Madhya Pradesh · Serving 18+ cities across India
           </p>
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-            <Link href="/contact">Book Free Strategy Call</Link>
+            <Link href="/contact?service=Digital%20Marketing&plan=Strategy%20Call">Book Free Strategy Call</Link>
           </Button>
         </section>
 
