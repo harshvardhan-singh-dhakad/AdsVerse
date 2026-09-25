@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -50,9 +50,21 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 
-export function ContactForm({ services = FALLBACK_SERVICES }: { services?: string[] }) {
+export function ContactForm({
+  services = FALLBACK_SERVICES,
+  defaultService = "",
+  defaultPlan = "",
+}: {
+  services?: string[];
+  defaultService?: string;
+  defaultPlan?: string;
+}) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const initialMessage = defaultPlan
+    ? `Interested in the ${defaultPlan} package.`
+    : "";
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -60,10 +72,22 @@ export function ContactForm({ services = FALLBACK_SERVICES }: { services?: strin
       name: "",
       email: "",
       phone: "",
-      subject: "",
-      message: "",
+      subject: defaultService || "",
+      message: initialMessage,
     },
   });
+
+  useEffect(() => {
+    if (defaultService) {
+      form.setValue("subject", defaultService);
+    }
+    if (defaultPlan) {
+      form.setValue(
+        "message",
+        initialMessage
+      );
+    }
+  }, [defaultService, defaultPlan, form, initialMessage]);
 
   const processForm = async (data: FormData) => {
     setIsSubmitting(true);
