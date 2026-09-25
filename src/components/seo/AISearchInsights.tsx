@@ -1,6 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface Insight {
   title: string;
@@ -38,6 +39,19 @@ export function AISearchInsights({ title, insights, takeaways }: AISearchInsight
                 ))}
               </ul>
             </Card>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 mt-8">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-semibold">
+            <Link href="/services/ai-search-optimization" className="text-primary hover:underline">
+              SEO + AEO + GEO framework →
+            </Link>
+            <Link href="/tools/seo-audit" className="text-slate-700 dark:text-slate-300 hover:text-primary">
+              Check technical SEO →
+            </Link>
+            <Link href="/contact" className="text-slate-700 dark:text-slate-300 hover:text-primary">
+              Discuss a search strategy →
+            </Link>
           </div>
         </div>
       </div>
