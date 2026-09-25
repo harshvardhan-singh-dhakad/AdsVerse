@@ -120,7 +120,7 @@ export default function RefundPolicyPage() {
           <p className="leading-relaxed">For any questions regarding this policy, please contact:</p>
           <div className="mt-3 p-5 rounded-xl border border-border/30 bg-card/20 space-y-1 text-sm">
             <p><strong className="text-white">AdsVerse</strong></p>
-            <p>Vijay Nagar, Indore, Madhya Pradesh — 452010, India</p>
+            <p>Vijay Nagar, Indore, Madhya Pradesh — 452011, India</p>
             <p>Email: <a href="mailto:contact@adsverse.in" className="text-primary hover:underline">contact@adsverse.in</a></p>
             <p>Phone: <a href="tel:+919685123339" className="text-primary hover:underline">+91 96851 23339</a></p>
             <p>Website: <a href="https://adsverse.in" className="text-primary hover:underline">adsverse.in</a></p>
