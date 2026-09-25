@@ -6,8 +6,8 @@ import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "GEO Services — Generative Engine Optimization | AdsVerse" },
-  description: "AdsVerse offers Generative Engine Optimization (GEO) in Indore. Get your business cited by ChatGPT, Gemini, and Perplexity with our AI search strategies.",
+  title: { absolute: "GEO Services in India | Generative Engine Optimization | AdsVerse" },
+  description: "AdsVerse provides Generative Engine Optimization for Indian businesses: entity clarity, citation-worthy content, structured data and AI-search visibility across major answer platforms.",
   alternates: {
     canonical: 'https://adsverse.in/services/geo-optimization',
   },
@@ -151,7 +151,7 @@ export default function GeoOptimizationPage() {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full bg-accent hover:bg-accent/90">
-                  <Link href="/contact">Get Started</Link>
+                  <Link href="/contact?service=GEO%20Optimization&plan=GEO%20Strategy">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>
