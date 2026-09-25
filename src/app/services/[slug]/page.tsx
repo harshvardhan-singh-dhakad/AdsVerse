@@ -150,14 +150,21 @@ export default async function DynamicServicePage({ params }: PageProps) {
         "name": `${service.name} Services | AdsVerse`,
         "description": service.fullDesc || service.desc,
         "provider": {
-          "@type": "Organization",
+          "@type": "LocalBusiness",
+          "@id": "https://adsverse.in/#organization",
           "name": "AdsVerse",
           "url": "https://adsverse.in",
         },
-        "areaServed": {
-          "@type": "City",
-          "name": "Indore",
-        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Indore",
+          },
+          {
+            "@type": "Country",
+            "name": "India",
+          },
+        ],
         "offers": {
           "@type": "Offer",
           "name": "Growth Pro",
