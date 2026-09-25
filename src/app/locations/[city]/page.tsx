@@ -274,7 +274,7 @@ export default function LocationPage({ params }: Props) {
                   </div>
                   <div className="inline-flex items-center rounded-full border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
                     <Sparkles className="w-3.5 h-3.5 mr-1.5 text-orange-500" />
-                    Verified for 2026
+                    Local market profile
                   </div>
                 </div>
 
@@ -283,7 +283,7 @@ export default function LocationPage({ params }: Props) {
                 </h1>
 
                 <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed max-w-xl">
-                  {introData?.headline || `AI-first digital marketing agency and top advertising company helping ${name} businesses scale.`}
+                  {introData?.headline || `Digital marketing, paid acquisition and automation support for businesses in ${name}.`}
                 </p>
 
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -291,10 +291,10 @@ export default function LocationPage({ params }: Props) {
                     🎯 Google Ads Agency
                   </span>
                   <span className="inline-flex items-center text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200/60 dark:border-slate-700/60">
-                    🚀 Top Digital Marketing Company
+                    📍 Local SEO & Google Maps
                   </span>
                   <span className="inline-flex items-center text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200/60 dark:border-slate-700/60">
-                    🤖 WhatsApp AI Lead Bots
+                    🤖 WhatsApp AI Automation
                   </span>
                 </div>
 
@@ -342,7 +342,7 @@ export default function LocationPage({ params }: Props) {
                         <Bot className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">AI Search Engine & Entity Summary</span>
+                        <span className="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">Local market & search visibility snapshot</span>
                         <CardTitle className="text-xl md:text-2xl font-headline text-slate-900 dark:text-white">
                           {aiSummary.entityName}
                         </CardTitle>
@@ -1026,7 +1026,7 @@ export default function LocationPage({ params }: Props) {
 
         {/* SEO Data Component */}
         <AISearchInsights
-          title={`Market Dynamics & Entity Footprint in ${name}, ${state}`}
+          title={`Search visibility and market context in ${name}, ${state}`}
           insights={[
             { title: "📍 Region Served", description: regionLabel },
             {
