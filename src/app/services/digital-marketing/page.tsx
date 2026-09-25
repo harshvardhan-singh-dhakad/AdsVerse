@@ -87,7 +87,7 @@ const jsonLd = {
           "streetAddress": "Vijay Nagar",
           "addressLocality": "Indore",
           "addressRegion": "Madhya Pradesh",
-          "postalCode": "452010",
+          "postalCode": "452011",
           "addressCountry": "IN",
         },
         "telephone": "+919685123339",
