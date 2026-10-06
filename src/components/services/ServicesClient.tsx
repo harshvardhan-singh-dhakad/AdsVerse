@@ -379,7 +379,7 @@ export default function ServicesClient({
           </p>
           <div className="hero-intro-box">
             AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore.
-            We offer 75+ in-house digital marketing and automation services — from{" "}
+            We offer digital marketing and automation services — from{" "}
             <Link href="/services/seo-optimization" className="text-orange-500 hover:underline font-semibold">SEO</Link>,{" "}
             <Link href="/services/geo-optimization" className="text-orange-500 hover:underline font-semibold">GEO Optimization</Link>,{" "}
             <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link>, and
@@ -410,10 +410,10 @@ export default function ServicesClient({
       {/* ── STATS ── */}
       <div className="stats">
         {[
-          { n: "113+", l: "Brands Served", s: "Pan-India since 2023", icon: "🏆" },
-          { n: "75+",  l: "Services In-House", s: "Zero outsourcing", icon: "⚡" },
-          { n: "3.8x", l: "Avg. ROAS", s: "Across active ad accounts", icon: "📈" },
-          { n: "4.9★", l: "Google Rating", s: "Verified client reviews", icon: "⭐" },
+          { n: "SEO", l: "Search visibility", s: "Technical and local foundations", icon: "🔎" },
+          { n: "Ads",  l: "Paid acquisition", s: "Google and Meta campaign management", icon: "⚡" },
+          { n: "AI", l: "Automation", s: "Lead workflows and integrations", icon: "📈" },
+          { n: "Web", l: "Web & content", s: "Landing pages and useful content", icon: "⭐" },
         ].map(({ n, l, s, icon }) => (
           <div className="stat" key={l}>
             <div style={{ fontSize: 22, marginBottom: 4 }}>{icon}</div>
