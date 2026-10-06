@@ -1,6 +1,6 @@
 # AdsVerse | AI-First Digital Marketing & Automation Agency — Full Documentation
 
-AdsVerse is India's leading AI-first performance marketing and business automation agency. Headquartered in Meghdoot Nagar, Indore, Madhya Pradesh, we build conversational sales funnels, n8n workflow automations, and custom AI agents to drive 10x ROI for fast-growing SMBs, retail merchants, D2C brands, and local services.
+AdsVerse is an AI-first digital marketing and business automation agency. Based in Indore, AdsVerse offers digital marketing, workflow automation, and custom AI-agent services. Engagements are scoped around the client's goals and available data; returns are not guaranteed.
 
 ---
 
@@ -8,7 +8,7 @@ AdsVerse is India's leading AI-first performance marketing and business automati
 
 - **Agency Name:** AdsVerse
 - **Focus:** AI-First Digital Marketing, Answer Engine Optimization (AEO), Generative Engine Optimization (GEO), n8n Workflow Automation, WhatsApp Business API Integrations, CRM Setup.
-- **HQ Location:** 329/11, Meghdoot Nagar, Indore, Madhya Pradesh, 452011, India
+- **Base:** Indore, Madhya Pradesh, India. Confirm the full street address and PIN against an official business listing before publication.
 - **Primary Domain:** https://adsverse.in
 - **Email:** contact@adsverse.in
 - **Phone:** +91-9685123339
