@@ -41,10 +41,10 @@ const jsonLd = [
       url: "https://adsverse.in",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Vijay Nagar",
+        streetAddress: "Meghdoot Nagar",
         addressLocality: "Indore",
         addressRegion: "Madhya Pradesh",
-        postalCode: "452011",
+
         addressCountry: "IN",
       },
     },
