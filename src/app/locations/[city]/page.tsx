@@ -410,7 +410,7 @@ export default async function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    High-intent Google Search PPC, Performance Max, and Display campaigns engineered with strict negative keyword filtering and 4.8x average ROAS.
+                    Google Search PPC, Performance Max, and Display campaigns can be planned around campaign goals, negative keywords, budget, and conversion tracking. ROAS varies by account.
                   </p>
                   <span className="inline-block text-xs font-semibold text-orange-600 dark:text-orange-400 pt-1">
                     google ads agency in {name.toLowerCase()}
@@ -428,7 +428,7 @@ export default async function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Hyperlocal 3-pack Google Maps SEO, entity schema optimization, and organic content strategies that rank your business #1 for service queries in {name}.
+                    Local SEO, business information, structured data, and relevant content can improve search foundations. Ranking positions depend on competition and implementation and are not guaranteed.
                   </p>
                   <span className="inline-block text-xs font-semibold text-blue-600 dark:text-blue-400 pt-1">
                     best digital marketing company in {name.toLowerCase()}
@@ -504,8 +504,8 @@ export default async function LocationPage({ params }: Props) {
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
                   <CardContent className="p-6 flex flex-col items-center text-center justify-center h-full">
                     <TrendingUp className="w-8 h-8 text-orange-500 mb-4" />
-                    <h3 className="text-3xl font-bold font-headline mb-2">113+ Brands</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Scaled Across India · 4.8x Average ROAS</p>
+                    <h3 className="text-3xl font-bold font-headline mb-2">Remote service</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">SEO · Paid Ads · Content · Automation</p>
                   </CardContent>
                 </Card>
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
@@ -777,7 +777,7 @@ export default async function LocationPage({ params }: Props) {
                   },
                   {
                     title: `Google Ads & PPC Management — ${name}`,
-                    desc: `Performance-driven Google Search, Display, and Performance Max campaigns with strict negative keyword pruning and 4.8x average ROAS.`,
+                    desc: `Google Search, Display, and Performance Max campaigns can be scoped around your goals and measured with conversion tracking. Outcomes vary and are not guaranteed.`,
                     href: "/services/paid-ads",
                     badge: `google ads agency in ${name.toLowerCase()}`,
                   },
