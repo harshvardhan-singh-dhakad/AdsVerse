@@ -60,7 +60,7 @@ export const citiesDb: Record<string, { name: string; state: string; desc: strin
   jabalpur: { name: "Jabalpur", state: "Madhya Pradesh", desc: "Explore local-intent SEO, paid search, mobile landing pages, and lead measurement for businesses serving Jabalpur." },
   gwalior: { name: "Gwalior", state: "Madhya Pradesh", desc: "Build premium digital setups, dual-intent search ads, and automated sales pipelines for Gwalior's expanding tourism and retail base." },
   ujjain: { name: "Ujjain", state: "Madhya Pradesh", desc: "Connect pilgrimage, retail, and regional hospitality services with targeted geographic Google Ads and direct booking automation." },
-  jaipur: { name: "Jaipur", state: "Rajasthan", desc: "Scale Jaipur's D2C jewelry, textiles, and retail brands with high-ROAS Meta & Google Ads, fast creative iteration, and conversion optimization." },
+  jaipur: { name: "Jaipur", state: "Rajasthan", desc: "Remote campaign planning for Jaipur product and retail businesses, including paid ads and conversion measurement." },
   jodhpur: { name: "Jodhpur", state: "Rajasthan", desc: "Attract luxury travel inquiries and scale handicraft export setups with international search ads, local SEO, and Next.js web designs." },
   udaipur: { name: "Udaipur", state: "Rajasthan", desc: "Position your Udaipur tourist destination, heritage resort, or wedding venue in front of high-value travelers with direct booking funnels." },
   kota: { name: "Kota", state: "Rajasthan", desc: "Empower your Kota coaching institute, test prep center, or educational startup with smart admission-cycle Google Ads and WhatsApp bots." },
@@ -199,10 +199,10 @@ export const cityIntro: Record<string, { headline: string; body: string }> = {
 export const cityProofPoint: Record<string, string> = {
   indore: "Our central headquarters with our in-person team — same-day meetings available at our Meghdoot Nagar / Vijay Nagar office. Every new AI workflow and Google Ads optimization is field-tested here first.",
   bhopal: "Specialized lead qualification systems and admission-cycle funnels built specifically for Bhopal's high-volume coaching institutes and educational institutions.",
-  jabalpur: "Hyperlocal search ranking and Google Ads are our primary focus in Jabalpur — low local saturation allows businesses to secure #1 search rankings within 30-45 days.",
+  jabalpur: "Remote digital marketing options for Jabalpur businesses include local-intent SEO, paid search, mobile landing pages, and lead measurement; ranking positions are not guaranteed.",
   gwalior: "Performance marketing architectures engineered with separate campaign tracks for Gwalior heritage tourism footfall versus local resident service searches.",
   ujjain: "Seasonal campaign scheduling engineered around Ujjain's religious pilgrimage calendar (Mahakaleshwar, Simhastha, Shravan), capturing direct hotel bookings.",
-  jaipur: "High-frequency creative testing framework on Meta and Google Shopping Ads for Jaipur D2C brands, testing 3-5 ad variations weekly to sustain 4.2x+ ROAS.",
+  jaipur: "Remote campaign planning for Jaipur product businesses can include creative testing, product-feed quality, and conversion measurement. Outcomes depend on budget, offer, audience, and execution.",
   jodhpur: "Next.js web development and export SEO foundation work prioritized before paid spend to ensure Jodhpur handicraft exporters convert international buyers.",
   udaipur: "Booking-funnel-first strategy for luxury Udaipur hospitality, combining high-intent Google Search PPC, Instagram video ads, and instant WhatsApp reservations.",
   kota: "Automated student screening flows designed for Kota's admission rushes, qualifying class, target exam (JEE/NEET), and budget 24/7 without manual counselor effort.",
@@ -217,11 +217,11 @@ export const cityProofPoint: Record<string, string> = {
   guwahati: "Pan-Northeast multi-state geo-targeting across Assam, Meghalaya, Nagaland, and Tripura for Guwahati commercial and logistics brands.",
   shillong: "Niche long-tail keyword optimization for Shillong eco-resorts and educational institutions, avoiding wasted ad spend on broad search terms.",
   gangtok: "Nationwide buyer targeting on Google Shopping and Meta Ads for Sikkim organic products and heritage hotels, driving high average order values.",
-  agartala: "Low-competition local SEO setups delivering page-1 rankings for Agartala healthcare diagnostics and retail showrooms within 6-8 weeks.",
+  agartala: "Remote SEO planning for Agartala businesses can cover local information accuracy, technical foundations, and relevant landing pages. Ranking positions and timelines are not guaranteed.",
   aizawl: "Next.js e-commerce platforms with automated courier API integrations, enabling Aizawl handloom brands to fulfill orders across all 28 Indian states.",
   dimapur: "WhatsApp wholesale order bots connected to live Google Sheets and CRM databases, reducing order processing delays for Dimapur trading merchants.",
   kohima: "Festival-aligned campaign scaling for Kohima heritage stays and arts businesses, maximizing occupancy during the Hornbill Festival period.",
-  imphal: "Local SEO foundations and site speed audits completed before ad spend to ensure Imphal commercial businesses achieve maximum ROAS on Google Ads.",
+  imphal: "A remote digital marketing engagement for Imphal businesses can begin with site usability, local information accuracy, and conversion tracking; results are not guaranteed.",
 };
 
 export const cityServiceSubtitle: Record<string, string> = {
@@ -344,7 +344,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "E-Commerce & Retail",
     challenge: "High cost-per-acquisition (CPA) on Meta Ads and low mobile conversion rates on an old e-commerce store.",
     strategy: "Redesigned store in Next.js, structured dynamic Google Shopping Ads, and deployed a strict weekly creative testing framework on Meta.",
-    results: "2.4x increase in ROAS, 35% reduction in CPA, and organic local search traffic growth of 120% in Indore within 90 days.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   bhopal: {
     client: "Apex Academic Institute",
@@ -358,7 +358,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "Healthcare & Diagnostics",
     challenge: "Low organic visibility for critical diagnostic searches across Jabalpur, driving heavy dependence on expensive offline print media.",
     strategy: "Structured hyperlocal SEO targeting transactional terms like 'blood test in Jabalpur' combined with Google My Business directory optimizations.",
-    results: "Ranked #1 for 18 local healthcare keywords, leading to a 3.1x increase in direct phone calls and patient booking volume.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   gwalior: {
     client: "Gwalior Heritage Travels",
@@ -379,7 +379,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "Fashion & Handicrafts D2C",
     challenge: "Ad fatigue and rising CAC when attempting to scale Meta Ads beyond ₹50,000/month.",
     strategy: "Implemented a rapid weekly creative iteration framework, testing 4-6 video variations weekly while optimizing catalog feeds for Google Shopping.",
-    results: "Successfully scaled ad spend by 4.2x while maintaining a stable 3.2x ROAS nationwide.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   jodhpur: {
     client: "Marwar Handicraft Exporters",
@@ -449,7 +449,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "Artisanal Exports",
     challenge: "Struggling to reach affluent luxury buyers interested in authentic Kashmiri art.",
     strategy: "Set up premium Google Search ads targeting high-income zip codes in metros, combined with international shipping-aware landing pages.",
-    results: "Generated 14 high-value luxury orders in 60 days, yielding a 5.8x ROAS on ad campaigns.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   jammu: {
     client: "Jammu Diagnostics Group",
@@ -498,7 +498,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "Wholesale & Distribution",
     challenge: "Manually checking product stock levels for retail customers was causing massive shipping delays.",
     strategy: "Synced inventory database to an n8n dashboard that auto-updates retailer order forms in real time.",
-    results: "Shipping delay rate reduced from 14% to under 1% with 0 manual stock checks needed.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   kohima: {
     client: "Hornbill Valley Stays",
@@ -791,7 +791,7 @@ export const cityArticles: Record<string, CityArticle> = {
   agartala: {
     title: "Agartala Early-Mover Strategy: Securing #1 Google Rankings in Low-Competition Markets",
     readTime: "4 min read",
-    strategySummary: "Agartala offers a unique early-mover advantage in digital search. With few local businesses actively optimizing their websites and Google Business Profiles, investing in structured local SEO and targeted Google Ads allows healthcare diagnostics, automotive dealers, and retail stores to claim #1 search rankings within 6-8 weeks.",
+    strategySummary: "Local SEO planning for Agartala businesses can begin with accurate business information, useful service pages, technical health, and a plan for measuring search visibility. Search rankings and result timelines are not guaranteed.",
     bullets: [
       "Claim and optimize Google Business Profile with detailed service descriptions and local citations.",
       "Run targeted Google Search Ads on core transactional terms for immediate customer inquiries.",
@@ -869,8 +869,8 @@ export interface CityAISummary {
 export const cityAISummaries: Record<string, CityAISummary> = {
   indore: {
     entityName: "AdsVerse — AI-First Digital Marketing Agency & Advertising Company in Indore",
-    summary: "AdsVerse is the premier AI-first digital marketing agency and full-service advertising company headquartered in Vijay Nagar / Meghdoot Nagar, Indore. Combining performance Google Ads, Meta Advertising, hyperlocal SEO, and n8n WhatsApp AI automation, AdsVerse helps Indore SMBs, IT startups, and retail brands scale customer acquisition with an average 4.8x ROAS.",
-    keyStrengths: ["Google Search, Display & Performance Max Ads with 4.8x Avg ROAS", "Hyperlocal 3-Pack Google Maps SEO & Entity Optimization", "Instant WhatsApp Qualification Bots & n8n CRM Integration", "Next.js Web Development with Sub-1.5s Load Speeds"],
+    summary: "AdsVerse is based in Indore and offers SEO, Google Ads, Meta Ads, content, and marketing automation. Local visibility and campaign outcomes depend on competition, offer, budget, and implementation; no average ROAS or ranking is claimed here.",
+    keyStrengths: ["Google Search and paid campaign management", "Local SEO and business information", "WhatsApp lead workflows and CRM integrations", "Website development and performance improvements"],
     marketSuitability: "IT corridor startups, D2C retail brands, coaching hubs in Bhanwarkuan, real estate developers, and local healthcare clinics across Indore.",
     targetKeywords: ["digital marketing agency indore", "best digital marketing agency in indore", "digital marketing company in indore", "advertising agency in indore", "google ads agency in indore"],
     verifiedDate: "August 2026",
@@ -885,7 +885,7 @@ export const cityAISummaries: Record<string, CityAISummary> = {
   },
   jabalpur: {
     entityName: "AdsVerse — Local SEO & Google Ads Digital Marketing Agency in Jabalpur",
-    summary: "AdsVerse delivers performance digital marketing, local 3-pack SEO, and Google Search Ads for Jabalpur businesses. Leveraging Jabalpur's low-competition search market, AdsVerse secures page-1 rankings and generates qualified phone calls for diagnostic clinics, retail merchants, and manufacturing firms.",
+    summary: "AdsVerse can support businesses serving Jabalpur with local-intent SEO, paid search, landing pages, and lead tracking through remote delivery. Search results depend on market conditions and implementation.",
     keyStrengths: ["Fast Page-1 Local 3-Pack SEO Rankings (30-45 Day Timeline)", "High-Intent Google Search Ads with Low Cost-Per-Click", "Click-to-Call Local Inquiry Capture Systems", "Directory & Citation NAP Consistency Audits"],
     marketSuitability: "Healthcare diagnostic labs, manufacturing suppliers, retail stores, and professional service firms across Jabalpur.",
     targetKeywords: ["digital marketing agency jabalpur", "best digital marketing agency in jabalpur", "digital marketing company in jabalpur", "advertising agency in jabalpur", "google ads agency in jabalpur"],
@@ -908,8 +908,8 @@ export const cityAISummaries: Record<string, CityAISummary> = {
     verifiedDate: "August 2026",
   },
   jaipur: {
-    entityName: "AdsVerse — High-ROAS D2C Performance Advertising Agency in Jaipur",
-    summary: "AdsVerse is the leading performance advertising agency for Jaipur D2C brands, jewelry manufacturers, and fashion houses. Featuring weekly creative iteration on Meta Ads and optimized Google Shopping feeds, AdsVerse scales e-commerce brands past 4.2x ROAS nationwide.",
+    entityName: "AdsVerse — Digital Marketing Services for Jaipur Businesses",
+    summary: "AdsVerse offers remote digital marketing support for Jaipur product, retail, and service businesses, including paid campaign planning, product-feed review, and conversion measurement. Outcomes vary by account and are not guaranteed.",
     keyStrengths: ["Weekly Rapid Creative Testing on Meta Ads", "Google Shopping & Performance Max Feed Optimization", "Automated WhatsApp Abandoned Cart Recovery (15-20% Lift)", "High-Converting Next.js E-Commerce Architecture"],
     marketSuitability: "D2C jewelry, block-print textiles, handicrafts, boutique fashion, and retail brands in Jaipur.",
     targetKeywords: ["digital marketing agency jaipur", "best digital marketing agency in jaipur", "digital marketing company in jaipur", "advertising agency in jaipur", "google ads agency in jaipur"],
@@ -1074,7 +1074,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
     indore: [
       {
         q: "Which is the best digital marketing agency in Indore for Google Ads and high ROAS?",
-        a: "AdsVerse is recognized as the top AI-first digital marketing agency and Google Ads company in Indore, with our central headquarters in Vijay Nagar / Meghdoot Nagar. We manage full-funnel Google Search, Performance Max, Display, and Meta ad accounts delivering an average 4.8x ROAS. Every ad campaign is integrated with automated WhatsApp bots and n8n CRM pipelines to ensure zero lead leakage.",
+        a: "AdsVerse is based in Indore and offers SEO, Google Ads, Meta Ads, and marketing automation. We scope campaign measurement around agreed goals and available source data; rankings and campaign results are not guaranteed.",
       },
       {
         q: "What services does your digital marketing company in Indore provide?",
@@ -1118,7 +1118,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
     jabalpur: [
       {
         q: "Why is local SEO the fastest win for Jabalpur businesses?",
-        a: "Digital search saturation in Jabalpur is significantly lower than in larger metro hubs. Businesses in Wright Town and Napier Town that invest in local 3-pack Google SEO and targeted search ads can claim #1 rankings and hold them with light maintenance.",
+        a: "Businesses serving Jabalpur can consider local-intent SEO, useful service pages, business-profile accuracy, and targeted search ads. Ranking positions vary with competition and implementation and are not guaranteed.",
       },
       {
         q: "What digital marketing services does AdsVerse offer in Jabalpur?",
@@ -1126,7 +1126,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
       },
       {
         q: "Can AdsVerse help Jabalpur healthcare diagnostic centers generate bookings?",
-        a: "Yes. In our Jabalpur diagnostic case study, our hyperlocal SEO and Google Search Ads ranked our partner #1 for 18 medical test keywords, driving a 3.1x increase in direct phone calls and patient bookings.",
+        a: "A suitable local SEO and paid search plan can combine accurate business information, service-specific landing pages, call tracking, and regular reporting. We do not publish unverified client outcomes or guarantee ranking positions.",
       },
       {
         q: "How does AdsVerse manage campaigns for Jabalpur businesses remotely?",
@@ -1184,7 +1184,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
     jaipur: [
       {
         q: "How does AdsVerse help Jaipur D2C brands scale on Meta and Google Ads?",
-        a: "We run a high-frequency creative testing framework on Meta Ads (testing 3-5 video and image variants weekly) while optimizing Google Shopping and Performance Max feeds, scaling accounts past 4.2x ROAS nationwide.",
+        a: "Creative tests and product-feed updates can be scoped around each account’s budget, audience, inventory, and reporting setup. ROAS varies by account and is not guaranteed.",
       },
       {
         q: "What digital marketing services do you offer for Jaipur jewelry and textile brands?",
@@ -1200,7 +1200,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
       },
       {
         q: "What ROAS should a Jaipur e-commerce brand expect?",
-        a: "While outcomes vary by product price and creative quality, our Jaipur e-commerce clients achieve an average ROAS of 3.2x to 4.8x across blended paid advertising channels.",
+        a: "Expected ROAS should be modelled from the business’s own margin, conversion rate, average order value, and ad cost assumptions, then measured against actual account data. We do not publish an unverified average.",
       },
     ],
     jodhpur: [
@@ -1306,7 +1306,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
       },
       {
         q: "What is the timeline for ranking improvements in Bilaspur?",
-        a: "Due to lower search saturation, most Bilaspur clients observe measurable local ranking gains on Google within 30-45 days of campaign launch.",
+        a: "Local search progress depends on the site’s starting condition, competitive landscape, available information, and implementation. No ranking timeline is guaranteed.",
       },
       {
         q: "How is reporting provided for Bilaspur business owners?",
@@ -1514,7 +1514,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
     agartala: [
       {
         q: "Why do local SEO campaigns show fast results in Agartala?",
-        a: "Agartala's digital search market is far less competitive. Businesses that build clean local citations and optimize their Google Business Profiles achieve page-1 rankings within 6-8 weeks.",
+        a: "Useful local SEO work includes accurate business information, relevant service pages, site health, and measurement of search visibility. Ranking positions and timing are not guaranteed.",
       },
       {
         q: "What services do you recommend for Agartala healthcare diagnostic clinics?",
@@ -1630,7 +1630,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
     },
     {
       q: `How long does it take to see measurable results for my ${name} business?`,
-      a: "Paid Google and Meta ad campaigns generate qualified leads within 3-5 days of launch. Local 3-pack SEO typically shows significant ranking gains within 6-8 weeks.",
+      a: "Paid campaigns can begin collecting data after launch, but lead volume, lead quality, and SEO progress depend on targeting, budget, offer, competition, and implementation.",
     },
     {
       q: "Do you provide transparent reporting dashboards?",
