@@ -83,6 +83,11 @@ export default function BlogClient({ initialPosts = [], initialCategory }: BlogC
     } catch {}
   }, []);
 
+  const validPosts = useMemo(
+    () => initialPosts.filter((post) => String(post.title || "").trim().toLowerCase() !== "custom blog post"),
+    [initialPosts]
+  );
+
   const categories = useMemo(() => {
     const seen = new Set<string>();
     validPosts.forEach((post) => {
@@ -90,11 +95,6 @@ export default function BlogClient({ initialPosts = [], initialCategory }: BlogC
     });
     return Array.from(seen).sort((a, b) => categoryLabel(a).localeCompare(categoryLabel(b)));
   }, [validPosts]);
-
-  const validPosts = useMemo(
-    () => initialPosts.filter((post) => String(post.title || "").trim().toLowerCase() !== "custom blog post"),
-    [initialPosts]
-  );
 
   const featuredPost = useMemo(() => {
     return validPosts.find((post) => post.isFeatured) || validPosts[0] || null;
