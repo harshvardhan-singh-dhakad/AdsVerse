@@ -116,7 +116,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                             <li>
                               <Link href="/services/seo-optimization" className="group/item block">
                                 <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">SEO Optimization</span>
-                                <span className="text-[10px] text-muted-foreground leading-tight block">Rank #1 on Google search engine.</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Technical, on-page & local SEO.</span>
                               </Link>
                             </li>
                             <li>
