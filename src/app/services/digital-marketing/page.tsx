@@ -7,8 +7,8 @@ import { AISearchInsights } from "@/components/seo/AISearchInsights";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Digital Marketing Services in Indore | SEO, Ads & Automation | AdsVerse" },
-  description: "AdsVerse provides digital marketing services in Indore including SEO, Google Ads, Meta Ads, content, social media and marketing automation built around measurable business outcomes.",
+  title: { absolute: "Digital Marketing Services | SEO, Paid Ads & Automation | AdsVerse" },
+  description: "Explore AdsVerse services for SEO, Google and Meta Ads, social media, content, landing pages, and marketing automation. Scope and reporting are agreed around your business goals.",
   keywords: [
     "digital marketing agency in indore",
     "digital marketing company in indore",
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     canonical: 'https://adsverse.in/services/digital-marketing',
   },
   openGraph: {
-    title: "Digital Marketing Agency in Indore — SEO, Ads & Social Media | AdsVerse",
-    description: "AI-first digital marketing agency in Indore. SEO, Google Ads, Meta Ads, social media marketing — 113+ clients, 4.8x avg ROAS. Vijay Nagar, Indore.",
+    title: "Digital Marketing Services | SEO, Paid Ads & Automation | AdsVerse",
+    description: "Explore SEO, Google and Meta Ads, social media, content, and marketing automation services from AdsVerse.",
     url: 'https://adsverse.in/services/digital-marketing',
     siteName: 'AdsVerse',
     locale: 'en_IN',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Marketing Agency in Indore | AdsVerse',
-    description: 'Best digital marketing company in Indore. SEO, Google Ads, Meta Ads, social media. 113+ clients · 4.8x ROAS · Vijay Nagar.',
+    description: 'SEO, paid advertising, content, social media, and marketing automation services with agreed scope and reporting.',
     creator: '@Adsverse1',
   },
 };
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: "Which is the best digital marketing agency in Indore?",
-    answer: "AdsVerse, headquartered in Vijay Nagar, Indore, is consistently rated the top AI-first digital marketing agency in Indore. We serve 113+ brands with an average 4.8x ROAS across Google Ads, Meta Ads, and SEO campaigns. Our approach combines traditional digital marketing with AI automation — making every campaign smarter and every lead cheaper.",
+    answer: "AdsVerse offers SEO, paid advertising, social media, content, and marketing automation. We start by understanding your goals, current channels, audience, and available data, then scope work and reporting around your business needs. Rankings and campaign performance depend on multiple factors and are not guaranteed.",
   },
   {
     question: "How much does digital marketing cost in Indore?",
@@ -79,15 +79,15 @@ const jsonLd = {
       "name": "Digital Marketing Agency in Indore | AdsVerse",
       "description": "AI-first digital marketing agency in Indore offering SEO, Google Ads, Meta Ads, and social media marketing services for businesses across Indore and pan-India.",
       "provider": {
-        "@type": "LocalBusiness",
+        "@type": "Organization",
         "name": "AdsVerse",
         "url": "https://adsverse.in",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Vijay Nagar",
+          "streetAddress": "Meghdoot Nagar",
           "addressLocality": "Indore",
           "addressRegion": "Madhya Pradesh",
-          "postalCode": "452011",
+          
           "addressCountry": "IN",
         },
         "telephone": "+919685123339",
@@ -134,16 +134,16 @@ export default function DigitalMarketingPage() {
               <Megaphone className="w-12 h-12 text-primary" />
             </div>
             <div className="inline-flex items-center justify-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4 mx-auto">
-              digital marketing agency in indore · 3,600 searches/mo
+Service overview · SEO · Paid Ads · Automation
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline">
-              Digital Marketing Agency in Indore
+SEO, Paid Ads & Marketing Automation Services
             </h1>
             <p className="text-muted-foreground text-lg mt-4 max-w-2xl mx-auto">
-              AI-first digital marketing company in Indore — SEO · Google Ads · Meta Ads · Social Media Marketing. 113+ brands · 4.8x avg ROAS · Vijay Nagar.
+              Explore practical digital marketing services: search visibility, paid acquisition, social media, content, and automated lead workflows. We serve Indore businesses and clients remotely.
             </p>
             <div className="flex flex-wrap gap-3 justify-center mt-6">
-              {["113+ Clients", "4.8x Avg ROAS", "Since 2023", "18+ Cities", "Vijay Nagar, Indore"].map((stat) => (
+              {["SEO & Local Search", "Google & Meta Ads", "Content Strategy", "Lead Automation"].map((stat) => (
                 <span key={stat} className="text-sm bg-card border border-border/40 px-3 py-1 rounded-full text-muted-foreground">
                   {stat}
                 </span>
@@ -208,7 +208,7 @@ export default function DigitalMarketingPage() {
           </div>
           <div className="prose prose-lg dark:prose-invert text-muted-foreground space-y-4 max-w-none">
             <p>
-              As a full-service <strong>ad agency in Indore</strong>, AdsVerse manages Google Search Ads, Google Display, YouTube Ads, Meta (Facebook + Instagram) Ads, and LinkedIn campaigns for Indore businesses and national brands. Our average client ROAS is 4.8x — every ₹1 spent returns ₹4.80.
+              AdsVerse can plan and manage Google Search, Display, YouTube, Meta (Facebook and Instagram), and LinkedIn campaigns. Campaign structure, budgets, conversion tracking, and reporting are agreed before launch; results vary by offer, audience, competition, and execution.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -252,8 +252,8 @@ export default function DigitalMarketingPage() {
           <div className="flex gap-4 p-5 rounded-xl border border-primary/20 bg-primary/5 items-center mt-2">
             <Star className="w-8 h-8 text-primary shrink-0" />
             <div>
-              <p className="font-bold text-foreground">4.8x Average ROAS across all ad clients</p>
-              <p className="text-muted-foreground text-sm">Every ₹1 of ad spend returns ₹4.80 on average. Verified across 113+ campaigns in Indore, Bhopal, Jaipur, and pan-India.</p>
+              <p className="font-bold text-foreground">Measurement and reporting</p>
+              <p className="text-muted-foreground text-sm">We can configure conversion tracking and reports around agreed KPIs such as leads, cost per lead, sales, and return on ad spend, where reliable source data is available.</p>
             </div>
           </div>
         </section>
@@ -333,7 +333,7 @@ export default function DigitalMarketingPage() {
               </div>
               <h3 className="font-bold text-foreground text-lg mb-2">4.8x ROAS in 3 months</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Complete digital marketing overhaul — Meta Ads + Google SEO + WhatsApp lead automation. Result: 4.8x ROAS, 300% increase in organic traffic, and zero manual lead follow-up.
+                Plan channel roles, conversion tracking, and follow-up workflows, then evaluate results against agreed business KPIs.
               </p>
               <div className="flex gap-2 flex-wrap">
                 <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">4.8x ROAS</span>
@@ -342,15 +342,15 @@ export default function DigitalMarketingPage() {
             </Card>
             <Card className="bg-card/50 border border-border/40 p-6">
               <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
-                Local Service Business — Vijay Nagar, Indore
+                Local service businesses
               </div>
               <h3 className="font-bold text-foreground text-lg mb-2">#1 Google Maps in 60 days</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Local SEO + Google Business Profile optimisation for a Vijay Nagar service business. Ranked #1 in Google Maps pack within 60 days, generating 40+ organic calls/month.
+                Local SEO and Google Business Profile optimisation can support local discovery through accurate business information, relevant content, and ongoing measurement. Search positions and call volumes depend on market conditions and are not guaranteed.
               </p>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">#1 Local Pack</span>
-                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">40+ calls/month</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">Local SEO</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">GBP Optimisation</span>
               </div>
             </Card>
           </div>
@@ -389,7 +389,7 @@ export default function DigitalMarketingPage() {
             Book a free 30-minute strategy call. We'll audit your current digital presence, identify your top 3 growth opportunities, and give you a custom action plan — no commitment required.
           </p>
           <p className="text-sm text-muted-foreground mb-6">
-            AdsVerse — Vijay Nagar, Indore, Madhya Pradesh · Serving 18+ cities across India
+            AdsVerse — Indore, Madhya Pradesh · Remote service delivery across India
           </p>
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
             <Link href="/contact?service=Digital%20Marketing&plan=Strategy%20Call">Book Free Strategy Call</Link>
@@ -399,8 +399,8 @@ export default function DigitalMarketingPage() {
         <AISearchInsights
           title="Why AdsVerse is Indore's Top Digital Marketing Agency (2026)"
           takeaways={[
-            "📍 Headquartered in Vijay Nagar, Indore",
-            "📈 4.8x avg ROAS across 113+ clients",
+            "📍 Based in Indore; remote delivery available",
+            "📈 Campaign reporting tied to agreed KPIs",
             "🤖 AI-first: GEO + AEO + automation built in",
             "🔍 #1 ranked for multiple Indore keywords",
           ]}
