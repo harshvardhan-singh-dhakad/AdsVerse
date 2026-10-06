@@ -89,7 +89,7 @@ export const DM_CATEGORIES: ServiceCategory[] = [
     label: "SEO",
     icon: "🔍",
     color: "#22c55e",
-    desc: "Rank higher, get found, dominate local search",
+    desc: "Improve local search foundations",
     services: [
       {
         name: "SEO Optimization Services",
@@ -126,7 +126,7 @@ export const DM_CATEGORIES: ServiceCategory[] = [
       {
         name: "Local SEO",
         desc: "Google Business Profile, local citations & 'near me' rankings.",
-        fullDesc: "Rank in Google's local 3-pack for '[your service] near me' and '[your service] in [city]' queries. We optimize your Google Business Profile, build local citations on Justdial, IndiaMart, and Sulekha, and create geo-targeted content that dominates local search. We optimize maps search so Indore local queries lead directly to your door.",
+        fullDesc: "Improve local search foundations by keeping business information accurate, reviewing relevant categories and service areas, building useful location content, and measuring discovery and enquiries. Map-pack positions and lead volumes vary by market and implementation and are not guaranteed.",
         tags: ["GBP", "Citations", "Maps"]
       },
       {
@@ -242,7 +242,7 @@ export const DM_CATEGORIES: ServiceCategory[] = [
       {
         name: "Google Search Ads",
         desc: "Intent-based search campaigns targeting buyers ready to convert.",
-        fullDesc: "Intent-based Google Search campaigns targeting buyers with high purchase intent. We handle keyword research, match type strategy, ad copy writing, Quality Score optimization, and bid management — delivering consistent ROAS with full attribution reporting. Average 3.8x ROAS across our active accounts.",
+        fullDesc: "Intent-based Google Search campaigns can include keyword research, match-type planning, ad copy, Quality Score improvements, bidding, conversion tracking, and reporting. ROAS depends on offer, audience, budget, site conversion, and competitive conditions.",
         tags: ["Search", "Intent", "ROAS"]
       },
       {
