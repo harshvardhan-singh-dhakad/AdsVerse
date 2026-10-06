@@ -94,7 +94,7 @@ export const DM_CATEGORIES: ServiceCategory[] = [
       {
         name: "SEO Optimization Services",
         desc: "Comprehensive search engine optimization services for long-term organic growth.",
-        fullDesc: "Scale your organic traffic, rank #1 on Google for high-intent keywords, and build long-term brand equity with our custom-tailored on-page, technical, off-page, and local SEO services.",
+        fullDesc: "Improve search foundations and make content easier to find with on-page, technical, off-page, and local SEO services. Rankings depend on competition, site history, content, and implementation; no position is guaranteed.",
         tags: ["Google Rank", "Organic Traffic", "SEO"],
         href: "/services/seo-optimization"
       },
