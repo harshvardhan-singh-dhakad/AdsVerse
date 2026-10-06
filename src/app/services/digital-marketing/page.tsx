@@ -331,12 +331,12 @@ SEO, Paid Ads & Marketing Automation Services
               <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
                 SimplyHerbal — D2C Brand, Indore
               </div>
-              <h3 className="font-bold text-foreground text-lg mb-2">4.8x ROAS in 3 months</h3>
+              <h3 className="font-bold text-foreground text-lg mb-2">Campaign planning and measurement</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 Plan channel roles, conversion tracking, and follow-up workflows, then evaluate results against agreed business KPIs.
               </p>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">4.8x ROAS</span>
+                <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">Measurement</span>
                 <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">300% organic growth</span>
               </div>
             </Card>
@@ -344,7 +344,7 @@ SEO, Paid Ads & Marketing Automation Services
               <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
                 Local service businesses
               </div>
-              <h3 className="font-bold text-foreground text-lg mb-2">#1 Google Maps in 60 days</h3>
+              <h3 className="font-bold text-foreground text-lg mb-2">Local search foundations</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 Local SEO and Google Business Profile optimisation can support local discovery through accurate business information, relevant content, and ongoing measurement. Search positions and call volumes depend on market conditions and are not guaranteed.
               </p>
@@ -402,7 +402,7 @@ SEO, Paid Ads & Marketing Automation Services
             "📍 Based in Indore; remote delivery available",
             "📈 Campaign reporting tied to agreed KPIs",
             "🤖 AI-first: GEO + AEO + automation built in",
-            "🔍 #1 ranked for multiple Indore keywords",
+            "🔍 Technical and local SEO",
           ]}
           insights={[
             {
