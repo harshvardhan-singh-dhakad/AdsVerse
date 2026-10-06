@@ -85,20 +85,25 @@ export default function BlogClient({ initialPosts = [], initialCategory }: BlogC
 
   const categories = useMemo(() => {
     const seen = new Set<string>();
-    initialPosts.forEach((post) => {
+    validPosts.forEach((post) => {
       if (post.category) seen.add(post.category);
     });
     return Array.from(seen).sort((a, b) => categoryLabel(a).localeCompare(categoryLabel(b)));
-  }, [initialPosts]);
+  }, [validPosts]);
+
+  const validPosts = useMemo(
+    () => initialPosts.filter((post) => String(post.title || "").trim().toLowerCase() !== "custom blog post"),
+    [initialPosts]
+  );
 
   const featuredPost = useMemo(() => {
-    return initialPosts.find((post) => post.isFeatured) || initialPosts[0] || null;
-  }, [initialPosts]);
+    return validPosts.find((post) => post.isFeatured) || validPosts[0] || null;
+  }, [validPosts]);
 
   const filteredPosts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    return initialPosts.filter((post) => {
+    return validPosts.filter((post) => {
       const categoryMatch =
         activeCategory === 'all' ||
         post.category === activeCategory ||
@@ -120,7 +125,7 @@ export default function BlogClient({ initialPosts = [], initialCategory }: BlogC
 
       return haystack.includes(query);
     });
-  }, [initialPosts, activeCategory, searchQuery]);
+  }, [validPosts, activeCategory, searchQuery]);
 
   const displayedPosts = useMemo(
     () => filteredPosts.slice(0, visibleCount),
