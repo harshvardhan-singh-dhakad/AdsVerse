@@ -388,7 +388,7 @@ export default function ServicesClient({
             <Link href="/services/automation-tools" className="text-orange-500 hover:underline font-semibold">n8n CRM workflows</Link>, and custom{" "}
             <Link href="/portfolio" className="text-orange-500 hover:underline font-semibold">Next.js websites</Link>.
             No outsourcing. No white-labelling. Every service is delivered by our core team with
-            full transparency, live dashboards, and a performance guarantee.
+            clear reporting and measurement against agreed campaign goals.
           </div>
           <div className="hero-btns">
             <Link
@@ -635,7 +635,7 @@ export default function ServicesClient({
         <div className="wrap">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-black">Frequently Asked Questions</h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto text-sm">Get clear, upfront answers about our delivery timeline, processes, and service guarantees.</p>
+            <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto text-sm">Get clear, upfront answers about scope, delivery process, reporting, and the factors that affect outcomes.</p>
           </div>
           <div className="faq-wrap">
             {[
