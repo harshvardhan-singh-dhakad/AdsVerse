@@ -365,7 +365,7 @@ export const cityCaseStudies: Record<string, { client: string; industry: string;
     industry: "Travel & Hospitality",
     challenge: "Severe booking drop-offs during off-peak summer months with empty tour slots.",
     strategy: "Created dual-intent search marketing campaigns separating heritage tourist queries from local resident weekend travel queries, paired with automated review triggers.",
-    results: "Maintained a 75% average booking occupancy rate during historically slow summer months and gained 140+ verified reviews.",
+    results: "Outcome data not independently verified for public use. Confirm approved source evidence before publishing a numeric performance claim.",
   },
   ujjain: {
     client: "Hotel Mahakal Palace",
@@ -1148,7 +1148,7 @@ export function getCityFAQs(name: string, state: string, cityKey: string) {
       },
       {
         q: "Can you help Gwalior hotels and travel operators maintain off-season occupancy?",
-        a: "Yes. In our Gwalior travel case study, seasonal search advertising and automated review collection sustained a 75% average booking occupancy during historically slow summer months.",
+        a: "A hospitality campaign can be planned around seasonality, service availability, search demand, landing-page quality, and enquiry or booking tracking. We do not publish unverified local case-study outcomes or promise occupancy levels.",
       },
       {
         q: "Does AdsVerse provide web design for Gwalior companies?",
