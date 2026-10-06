@@ -24,7 +24,7 @@ export const DEFAULT_BRAND: BrandSettings = {
   faviconUrl: "/favicon.ico",
   email: "contact@adsverse.in",
   phone: "+91 96851 23339",
-  address: "329/11, Meghdoot Nagar, Indore, Madhya Pradesh - 452011, India",
+  address: "Meghdoot Nagar, Indore, Madhya Pradesh, India",
   instagramUrl: "https://www.instagram.com/adsverse.ai",
   facebookUrl: "https://www.facebook.com/adsverse.in",
   xUrl: "https://x.com/Adsverse",

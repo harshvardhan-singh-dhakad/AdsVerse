@@ -31,6 +31,7 @@ import {
 import { Metadata } from "next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AISearchInsights } from "@/components/seo/AISearchInsights";
+import { getBrandSettings } from "@/lib/brand-settings";
 
 import {
   cityImages,
@@ -60,6 +61,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const brand = await getBrandSettings();
   const cityKey = params.city.toLowerCase();
   const meta = cityMeta[cityKey];
 
@@ -98,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function LocationPage({ params }: Props) {
+export default async function LocationPage({ params }: Props) {
   const cityKey = params.city.toLowerCase();
   const cityData = citiesDb[cityKey];
   const introData = cityIntro[cityKey];
@@ -121,44 +123,24 @@ export default function LocationPage({ params }: Props) {
   const aiSummary = cityAISummaries[cityKey];
 
   // Schema mappings for AEO / GEO
-  const localBusinessSchema = {
+  const serviceAreaSchema = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": `AdsVerse - Digital Marketing Agency in ${name}`,
-    "image": `https://adsverse.in${imagePath}`,
-    "url": `https://adsverse.in/locations/${cityKey}`,
-    "telephone": "+919685123339",
-    "priceRange": "$$",
-    "serviceType": [
-      "Digital Marketing",
-      "Google Ads Management",
-      "Meta Ads Management",
-      "Local SEO Optimization",
-      "WhatsApp AI Automation",
-      "Next.js Web Development",
-      "PPC Advertising"
-    ],
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": name,
-      "addressRegion": state,
-      "addressCountry": "IN",
+    "@type": "Service",
+    "name": `Digital Marketing Services for ${name} Businesses`,
+    "serviceType": ["Digital Marketing", "SEO", "Google Ads Management", "Meta Ads Management", "Content Marketing", "Marketing Automation", "Web Development"],
+    "provider": {
+      "@type": "Organization",
+      "name": brand.siteName,
+      "url": "https://adsverse.in",
+      "telephone": brand.phone,
+      "email": brand.email,
     },
-    ...(coords
-      ? {
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: coords.lat,
-            longitude: coords.lng,
-          },
-        }
-      : {}),
-    ...(wikiLink ? { sameAs: [wikiLink] } : {}),
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: name,
-      ...(wikiLink ? { sameAs: wikiLink } : {}),
+    "areaServed": {
+      "@type": "City",
+      "name": name,
+      "containedInPlace": { "@type": "AdministrativeArea", "name": state },
     },
+    "description": `Remote digital marketing services available to businesses in ${name}; this page does not indicate a local office in that city.`,
   };
 
   const breadcrumbSchema = {
@@ -239,7 +221,7 @@ export default function LocationPage({ params }: Props) {
       {/* Schema Injection */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceAreaSchema) }}
       />
       <script
         type="application/ld+json"
@@ -279,11 +261,11 @@ export default function LocationPage({ params }: Props) {
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-                  Best Digital Marketing Agency in <span className="text-orange-600 dark:text-orange-500">{name}</span>
+                  Digital Marketing Services for <span className="text-orange-600 dark:text-orange-500">{name}</span> Businesses
                 </h1>
 
                 <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed max-w-xl">
-                  {introData?.headline || `Digital marketing, paid acquisition and automation support for businesses in ${name}.`}
+                  {introData?.body || `AdsVerse provides SEO, paid advertising, content, web, and automation support remotely for businesses in ${name}.`}
                 </p>
 
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -319,11 +301,10 @@ export default function LocationPage({ params }: Props) {
                 />
                 <div className="absolute bottom-6 left-6 right-6 z-20 text-white">
                   <div className="flex items-center gap-2 mb-1">
-                    <Badge className="bg-orange-500 text-white hover:bg-orange-600 text-xs">Primary Hub</Badge>
-                    <span className="text-xs text-white/80">Active Campaigns</span>
+                    <Badge className="bg-orange-500 text-white hover:bg-orange-600 text-xs">Remote service coverage</Badge>
                   </div>
                   <p className="font-semibold text-lg drop-shadow-md">Serving {name}</p>
-                  <p className="text-white/80 text-sm">{state}, India · Central Operations</p>
+                  <p className="text-white/80 text-sm">Available remotely for businesses in {state}, India</p>
                 </div>
               </div>
             </div>
@@ -350,7 +331,7 @@ export default function LocationPage({ params }: Props) {
                     </div>
                     <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-border/50 text-slate-700 dark:text-slate-300">
                       <Calendar className="w-3.5 h-3.5 text-orange-500" />
-                      <span>Last Verified: {aiSummary.verifiedDate || "August 2026"}</span>
+                      <span>Market guidance, not a verified campaign report</span>
                     </div>
                   </div>
                 </CardHeader>
@@ -429,7 +410,7 @@ export default function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    High-intent Google Search PPC, Performance Max, and Display campaigns engineered with strict negative keyword filtering and 4.8x average ROAS.
+                    Google Search PPC, Performance Max, and Display campaigns can be planned around campaign goals, negative keywords, budget, and conversion tracking. ROAS varies by account.
                   </p>
                   <span className="inline-block text-xs font-semibold text-orange-600 dark:text-orange-400 pt-1">
                     google ads agency in {name.toLowerCase()}
@@ -447,7 +428,7 @@ export default function LocationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Hyperlocal 3-pack Google Maps SEO, entity schema optimization, and organic content strategies that rank your business #1 for service queries in {name}.
+                    Local SEO, business information, structured data, and relevant content can improve search foundations. Ranking positions depend on competition and implementation and are not guaranteed.
                   </p>
                   <span className="inline-block text-xs font-semibold text-blue-600 dark:text-blue-400 pt-1">
                     best digital marketing company in {name.toLowerCase()}
@@ -523,8 +504,8 @@ export default function LocationPage({ params }: Props) {
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
                   <CardContent className="p-6 flex flex-col items-center text-center justify-center h-full">
                     <TrendingUp className="w-8 h-8 text-orange-500 mb-4" />
-                    <h3 className="text-3xl font-bold font-headline mb-2">113+ Brands</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Scaled Across India · 4.8x Average ROAS</p>
+                    <h3 className="text-3xl font-bold font-headline mb-2">Remote service</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">SEO · Paid Ads · Content · Automation</p>
                   </CardContent>
                 </Card>
                 <Card className="border-border/50 bg-slate-50 dark:bg-slate-900/50 shadow-sm">
@@ -790,13 +771,13 @@ export default function LocationPage({ params }: Props) {
                 {[
                   {
                     title: `SEO & Local Search in ${name}`,
-                    desc: `Rank #1 on Google Maps and organic search for high-intent local keywords in ${name}. On-page, technical, and local schema optimized for your exact geography.`,
+                    desc: `Improve the foundations of local and organic search with on-page, technical, and business-profile optimisation. Rankings depend on competition and implementation; no position is guaranteed.`,
                     href: "/services/seo-optimization",
                     badge: `seo in ${name.toLowerCase()}`,
                   },
                   {
                     title: `Google Ads & PPC Management — ${name}`,
-                    desc: `Performance-driven Google Search, Display, and Performance Max campaigns with strict negative keyword pruning and 4.8x average ROAS.`,
+                    desc: `Google Search, Display, and Performance Max campaigns can be scoped around your goals and measured with conversion tracking. Outcomes vary and are not guaranteed.`,
                     href: "/services/paid-ads",
                     badge: `google ads agency in ${name.toLowerCase()}`,
                   },

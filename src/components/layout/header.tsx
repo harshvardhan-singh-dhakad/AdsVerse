@@ -116,7 +116,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                             <li>
                               <Link href="/services/seo-optimization" className="group/item block">
                                 <span className="text-xs font-bold text-foreground group-hover/item:text-primary transition-colors block">SEO Optimization</span>
-                                <span className="text-[10px] text-muted-foreground leading-tight block">Rank #1 on Google search engine.</span>
+                                <span className="text-[10px] text-muted-foreground leading-tight block">Technical, on-page & local SEO.</span>
                               </Link>
                             </li>
                             <li>
@@ -316,7 +316,7 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                         <div>
                           <h4 className="text-sm font-extrabold font-headline text-primary mb-2">Scale Locally</h4>
                           <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">
-                            We help businesses rank #1 for local searches across major regional growth hubs in India.
+                            We help businesses improve local search foundations through relevant content, accurate business information, and technical SEO.
                           </p>
                         </div>
                         <Button asChild size="sm" variant="outline" className="border-border/60 hover:border-orange-500/30 text-foreground hover:text-orange-500 hover:bg-orange-500/5 font-bold rounded-lg text-xs px-3 h-8">

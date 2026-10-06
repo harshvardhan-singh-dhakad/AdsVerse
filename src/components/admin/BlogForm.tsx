@@ -301,7 +301,7 @@ export function BlogForm({ initialData, onSuccess, onCancel }: BlogFormProps) {
         const parsed = parser.parseFromString(fullHtml, 'text/html');
         
         // Better extraction: fallback to <title> or <meta name="description"> if h1 or p are missing
-        const extractedTitle = metadata['title'] || parsed.querySelector('h1')?.textContent?.trim() || parsed.querySelector('title')?.textContent?.trim() || 'Custom Blog Post';
+        const extractedTitle = metadata['title'] || parsed.querySelector('h1')?.textContent?.trim() || parsed.querySelector('title')?.textContent?.trim() || '';
         const extractedExcerpt = metadata['metadesc'] || parsed.querySelector('p')?.textContent?.trim() || parsed.querySelector('meta[name="description"]')?.getAttribute('content')?.trim();
         
         // Auto-fill form from metadata or HTML

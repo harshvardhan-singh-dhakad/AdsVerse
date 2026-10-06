@@ -24,17 +24,17 @@ async function getBlogPosts() {
       .limit(200)
       .get();
     if (snap && snap.docs && snap.docs.length > 0) {
-      const posts = snap.docs.map((doc: any) => sanitizeBlogPost(doc.id, doc.data()));
+      const posts = snap.docs.map((doc: any) => sanitizeBlogPost(doc.id, doc.data())).filter((post: any) => String(post.title || "").trim().toLowerCase() !== "custom blog post");
       return posts.sort((a: any, b: any) => {
         if (a.isFeatured && !b.isFeatured) return -1;
         if (!a.isFeatured && b.isFeatured) return 1;
         return 0;
       });
     }
-    return FALLBACK_POSTS;
+    return FALLBACK_POSTS.filter((post: any) => String(post.title || "").trim().toLowerCase() !== "custom blog post");
   } catch (error) {
     console.warn("[getBlogPosts] Falling back to default posts:", error);
-    return FALLBACK_POSTS;
+    return FALLBACK_POSTS.filter((post: any) => String(post.title || "").trim().toLowerCase() !== "custom blog post");
   }
 }
 

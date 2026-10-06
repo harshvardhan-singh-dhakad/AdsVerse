@@ -31,8 +31,8 @@ const OrbitalGraphic = dynamic(() => import("@/components/pages/orbital-graphic"
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: { absolute: "AI Digital Marketing Agency in Indore | AdsVerse" },
-    description: "AdsVerse is the top AI digital marketing agency in Indore. Scale sales with AI SEO, GEO search, WhatsApp bots, n8n automation, and high-ROI Google & Meta Ads.",
+    title: { absolute: "Digital Marketing Agency in Indore | AdsVerse" },
+    description: "AdsVerse helps Indore businesses plan and manage SEO, Google and Meta Ads, content marketing, and marketing automation with clear scope and reporting.",
     keywords: [
       "ai first digital marketing agency in indore",
       "best ai digital marketing agency in indore",
@@ -44,8 +44,8 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `https://adsverse.in`,
     },
     openGraph: {
-      title: { absolute: "AI Digital Marketing Agency in Indore | AdsVerse" },
-      description: "Scale sales & organic search traffic with AI automation, SEO, WhatsApp bots, and performance ads by AdsVerse in Indore.",
+      title: { absolute: "Digital Marketing Agency in Indore | AdsVerse" },
+      description: "Explore SEO, paid advertising, content marketing, and lead automation services from AdsVerse in Indore.",
       url: "https://adsverse.in",
       siteName: "AdsVerse",
     },
@@ -193,17 +193,17 @@ export default async function HomePage() {
             <div className="w-full md:w-1/2 space-y-6 md:space-y-10 relative z-10 text-left">
               <div className="flex items-center gap-3">
                 <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-brand-orange uppercase">
-                  #1 AI-First Digital Marketing Agency • Indore
+                  SEO · Paid Ads · Marketing Automation · Indore
                 </span>
               </div>
               <h1 className="font-sans text-[30px] sm:text-5xl md:text-[64px] font-extrabold tracking-[-0.03em] leading-[1.1] text-slate-900 dark:text-white">
-                Best <span className="gradient-text">AI-First</span> Digital Marketing Agency in <span className="text-brand-orange">Indore</span>
+                Digital Marketing Agency in <span className="text-brand-orange">Indore</span>
               </h1>
               <p className="font-sans text-base sm:text-lg md:text-xl font-medium text-slate-800 dark:text-slate-100 max-w-lg leading-relaxed">
-                AI-powered marketing systems for Indian businesses — combining SEO, Google &amp; Meta Ads, WhatsApp AI, and n8n automation into one measurable growth engine.
+                AdsVerse helps Indore businesses with search visibility, Google and Meta Ads, useful content, and lead workflows. Work is scoped around your goals, audience, and reporting needs.
               </p>
               <p className="font-sans text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
-                Built from real campaigns, conversion data, automation workflows, and search-growth work — not generic marketing templates.
+                We begin by reviewing your current website, campaigns, and lead journey, then recommend practical next steps.
               </p>
               <div className="flex flex-wrap gap-4 pt-4 md:pt-6">
                 <Button asChild size="lg" aria-label="Get Free Audit" className="bg-orange-700 hover:bg-orange-800 text-white px-6 md:px-8 py-3 md:py-4 h-auto rounded-xl font-bold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] transition-all flex items-center gap-3 text-base md:text-lg border-none">
@@ -216,27 +216,6 @@ export default async function HomePage() {
                 </Button>
               </div>
               
-              {/* Preserved Stats */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-6 md:gap-8 pt-8 md:pt-10 border-t border-border-glass mt-8 md:mt-10">
-                <div>
-                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-brand-orange mb-1">
-                    <AnimatedCounter target={113} suffix="+" />
-                  </div>
-                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Clients Served</div>
-                </div>
-                <div className="border-l border-border-glass pl-2 sm:pl-6 md:pl-8">
-                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-primary mb-1">
-                    <AnimatedCounter target={3.8} suffix="x" />
-                  </div>
-                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Avg. ROAS</div>
-                </div>
-                <div className="border-l border-border-glass pl-2 sm:pl-6 md:pl-8">
-                  <div className="font-sans text-xl sm:text-3xl md:text-4xl font-extrabold leading-none text-brand-orange mb-1">
-                    <AnimatedCounter target={4.9} suffix="★" />
-                  </div>
-                  <div className="font-sans text-[10px] sm:text-[15px] font-semibold text-slate-700 dark:text-slate-300">Google Rating</div>
-                </div>
-              </div>
             </div>
 
             {/* Orbital graphic — decorative animation */}
@@ -246,83 +225,33 @@ export default async function HomePage() {
       </section>
 
       {/* Evidence & Results — keep claims tied to real work */}
-      <section aria-label="AdsVerse results and case study proof" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
-        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 items-stretch">
-          <div className="glass-card rounded-3xl p-6 md:p-10">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-primary" aria-hidden="true" />
-              </div>
-              <div>
-                <span className="font-sans text-[11px] font-bold tracking-[0.2em] text-primary uppercase">Proof, not promises</span>
-                <h2 className="font-sans text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Recent campaign evidence</h2>
-              </div>
-            </div>
-            <p className="text-sm md:text-base leading-7 text-slate-700 dark:text-slate-300">
-              We are keeping the ranking-focused positioning, but the supporting message is now anchored to identifiable work, measurable outcomes, and a clear time frame.
-            </p>
-            <div className="mt-6 grid grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-border-glass p-4 bg-white/60 dark:bg-white/[0.03]">
-                <div className="text-xl font-black text-primary">113+</div>
-                <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 mt-1">Brands served</div>
-              </div>
-              <div className="rounded-2xl border border-border-glass p-4 bg-white/60 dark:bg-white/[0.03]">
-                <div className="text-xl font-black text-primary">4.8x</div>
-                <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 mt-1">Case-study ROAS</div>
-              </div>
-              <div className="rounded-2xl border border-border-glass p-4 bg-white/60 dark:bg-white/[0.03]">
-                <div className="text-xl font-black text-primary">3 mo</div>
-                <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 mt-1">Reported period</div>
-              </div>
-            </div>
+      <section aria-label="How AdsVerse approaches digital marketing" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+        <div className="glass-card rounded-3xl p-6 md:p-10">
+          <span className="font-sans text-[11px] font-bold tracking-[0.2em] text-primary uppercase">A clear working process</span>
+          <h2 className="font-sans text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-2">Plan, implement, measure</h2>
+          <p className="mt-4 max-w-3xl text-sm md:text-base leading-7 text-slate-700 dark:text-slate-300">
+            Every engagement starts with the business goal and current data. We agree on the work, implement the selected services, and report against measurements available for your website and campaigns. Search rankings and advertising outcomes depend on competition, budget, offer, and execution; they are not guaranteed.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/services/digital-marketing" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+              Explore digital marketing services <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+            <Link href="/locations/indore" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-primary">
+              Indore service coverage
+            </Link>
           </div>
-
-          <article className="rounded-3xl border border-primary/20 bg-primary/[0.04] p-6 md:p-10">
-            <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-              SimplyHerbal · D2C Brand · Indore
-            </div>
-            <h3 className="font-sans text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-5">
-              From scattered acquisition to one connected growth funnel
-            </h3>
-            <div className="mt-6 grid md:grid-cols-4 gap-4">
-              <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Problem</div>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-300 mt-1">Paid traffic, organic growth and lead follow-up were operating as separate systems.</p>
-              </div>
-              <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">What changed</div>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-300 mt-1">Meta Ads, SEO and WhatsApp lead automation were connected into one measurable funnel.</p>
-              </div>
-              <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Reported result</div>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-300 mt-1">4.8x ROAS and 300% increase in organic traffic, according to the published AdsVerse case study.</p>
-              </div>
-              <div>
-                <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Timeframe</div>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-300 mt-1">3 months.</p>
-              </div>
-            </div>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/services/digital-marketing" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-                View the detailed case study <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
-              <Link href="/portfolio" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-primary">
-                View portfolio
-              </Link>
-            </div>
-          </article>
         </div>
       </section>
 
       {/* Trusted By */}
-      <section aria-label="Trusted By: Our Clients" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
+      <section aria-label="Core marketing capabilities" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
           <div className="border-y border-border-glass py-8 md:py-12 flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-12 opacity-70 hover:opacity-100 transition-opacity duration-500">
-            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-slate-700 dark:text-slate-300">TRUSTED BY</span>
-            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SimplyHerbal</span>
-            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">AssistHour</span>
-            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Gold Pure Enterprises</span>
-            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SMB Infratech</span>
-            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Soulvedic</span>
+            <span className="font-sans text-[11px] md:text-[13px] font-bold tracking-[0.2em] text-slate-700 dark:text-slate-300">CORE CAPABILITIES</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">SEO & Content</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Paid Advertising</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Lead Generation</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Marketing Automation</span>
+            <span className="font-sans text-lg md:text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Web & Conversion</span>
           </div>
       </section>
 
@@ -454,7 +383,7 @@ export default async function HomePage() {
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
                 </svg>
                 <span className="font-sans text-xs md:text-sm font-semibold text-slate-800 dark:text-slate-200">
-                  4.9★ Rated on Google Reviews
+                  Review and reporting options agreed for each engagement
                 </span>
               </div>
             </div>

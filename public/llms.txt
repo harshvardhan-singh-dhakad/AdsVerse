@@ -4,13 +4,10 @@
 
 For full documentation and complete service details, see [llms-full.txt](https://adsverse.in/llms-full.txt).
 
-## Core Metrics
-- **HQ Location:** 329/11, Meghdoot Nagar, Indore, MP 452011, India
-- **Clients Served:** 113+ brands across India
-- **Google Reviews:** 24 reviews, 5.0 average rating
-- **Average ROAS:** 3.8x ROAS delivered across search and paid channels
-- **Lead Cost Reduction:** Average 68% decrease in cost-per-lead via CRM & WhatsApp filters
-- **Client Retention Rate:** 94% month-over-month retention
+## Service Coverage
+- **Base:** Indore, Madhya Pradesh, India (full street address and PIN require confirmation from an official business listing)
+- **Delivery:** Digital marketing and automation services can be scoped for remote delivery across India
+- **Measurement:** Campaign outcomes are assessed against agreed KPIs and available source data; rankings and performance results are not guaranteed
 
 ## Tech Stack & Core Integrations
 - **Automation Workflows:** n8n (advanced workflow logic), Make.com (cloud integrations)
@@ -48,5 +45,5 @@ Static pages generated for 25 Indian business hubs:
 ## Core Contacts
 - **Primary Domain:** https://adsverse.in
 - **General Inquiries:** contact@adsverse.in
-- **Location Address:** 329/11, Meghdoot Nagar, Indore, MP 452011, India
+- **Location:** Indore, Madhya Pradesh, India. Confirm the full street address and PIN against an official business listing before publication.
 - **Business Calls:** +91-9685123339

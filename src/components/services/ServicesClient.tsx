@@ -379,7 +379,7 @@ export default function ServicesClient({
           </p>
           <div className="hero-intro-box">
             AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore.
-            We offer 75+ in-house digital marketing and automation services — from{" "}
+            We offer digital marketing and automation services — from{" "}
             <Link href="/services/seo-optimization" className="text-orange-500 hover:underline font-semibold">SEO</Link>,{" "}
             <Link href="/services/geo-optimization" className="text-orange-500 hover:underline font-semibold">GEO Optimization</Link>,{" "}
             <Link href="/locations/indore" className="text-orange-500 hover:underline font-semibold">local SEO</Link>, and
@@ -388,7 +388,7 @@ export default function ServicesClient({
             <Link href="/services/automation-tools" className="text-orange-500 hover:underline font-semibold">n8n CRM workflows</Link>, and custom{" "}
             <Link href="/portfolio" className="text-orange-500 hover:underline font-semibold">Next.js websites</Link>.
             No outsourcing. No white-labelling. Every service is delivered by our core team with
-            full transparency, live dashboards, and a performance guarantee.
+            clear reporting and measurement against agreed campaign goals.
           </div>
           <div className="hero-btns">
             <Link
@@ -410,10 +410,10 @@ export default function ServicesClient({
       {/* ── STATS ── */}
       <div className="stats">
         {[
-          { n: "113+", l: "Brands Served", s: "Pan-India since 2023", icon: "🏆" },
-          { n: "75+",  l: "Services In-House", s: "Zero outsourcing", icon: "⚡" },
-          { n: "3.8x", l: "Avg. ROAS", s: "Across active ad accounts", icon: "📈" },
-          { n: "4.9★", l: "Google Rating", s: "Verified client reviews", icon: "⭐" },
+          { n: "SEO", l: "Search visibility", s: "Technical and local foundations", icon: "🔎" },
+          { n: "Ads",  l: "Paid acquisition", s: "Google and Meta campaign management", icon: "⚡" },
+          { n: "AI", l: "Automation", s: "Lead workflows and integrations", icon: "📈" },
+          { n: "Web", l: "Web & content", s: "Landing pages and useful content", icon: "⭐" },
         ].map(({ n, l, s, icon }) => (
           <div className="stat" key={l}>
             <div style={{ fontSize: 22, marginBottom: 4 }}>{icon}</div>
@@ -635,13 +635,13 @@ export default function ServicesClient({
         <div className="wrap">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-black">Frequently Asked Questions</h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto text-sm">Get clear, upfront answers about our delivery timeline, processes, and service guarantees.</p>
+            <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto text-sm">Get clear, upfront answers about scope, delivery process, reporting, and the factors that affect outcomes.</p>
           </div>
           <div className="faq-wrap">
             {[
               {
                 q: "How is AdsVerse different from other digital marketing agencies?",
-                a: "We are an AI-first agency — meaning AI automation is built into every service we offer, not offered as an add-on. We use n8n workflows, Gemini API integrations, and WhatsApp AI bots to automate lead handling, reporting, and client communication. Every service is delivered in-house — no outsourcing. We serve 113+ brands with full transparency, live dashboards, and performance guarantees."
+                a: "We offer digital marketing and automation services including n8n workflows, AI integrations, and WhatsApp lead handling. Service scope, delivery responsibilities, and reporting are agreed for each engagement. Search rankings and business outcomes depend on implementation and market conditions; no performance guarantee is made."
               },
               {
                 q: "How much does digital marketing cost with AdsVerse?",

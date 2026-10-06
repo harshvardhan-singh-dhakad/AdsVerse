@@ -39,7 +39,7 @@ const stateBorderMap: Record<string, string> = {
 
 export const metadata: Metadata = {
   title: { absolute: "Locations We Serve | AI Marketing Agency | AdsVerse" },
-  description: "AdsVerse delivers AI SEO, WhatsApp bots, and performance ads across 25 Indian cities including Indore, Bhopal, Jaipur, Lucknow, and Raipur. Tier-1 ROI.",
+  description: "Explore city-specific digital marketing guidance and remote service coverage for businesses across India, including SEO, paid ads, content, websites, and automation.",
   alternates: {
     canonical: "https://adsverse.in/locations",
   },
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: { absolute: "Locations We Serve | AdsVerse" },
-    description: "AI-first digital marketing across 24 Indian cities in our core markets. SEO, WhatsApp bots, Google/Meta Ads.",
+    description: "City-specific service information for remote SEO, paid ads, content, web development, and marketing automation.",
     creator: "@Adsverse1",
   },
 };
@@ -63,17 +63,17 @@ const locationsGrouped = [
   {
     state: "Madhya Pradesh",
     cities: [
-      { slug: "indore", name: "Indore", desc: "Best digital marketing agency in Indore & top advertising company. Headquartered in Vijay Nagar / Meghdoot Nagar — delivering high-ROAS Google Ads, Meta Ads, local 3-pack SEO, and WhatsApp AI automation." },
+      { slug: "indore", name: "Indore", desc: "Indore-based digital marketing services covering SEO, paid advertising, content, and lead automation." },
       { slug: "bhopal", name: "Bhopal", desc: "Top digital marketing company in Bhopal. High-converting Google Ads, Meta Lead Ads & automated WhatsApp student screening funnels for MP Nagar coaching institutes and retail brands." },
-      { slug: "jabalpur", name: "Jabalpur", desc: "Leading digital marketing agency in Jabalpur. Local 3-pack Google SEO, high-intent search ads, and click-to-call direct lead capture for healthcare diagnostics, retail, and manufacturing." },
-      { slug: "gwalior", name: "Gwalior", desc: "Top advertising agency in Gwalior. Dual-intent Google Ads separating heritage tourism inquiries from City Centre local resident commerce, paired with Next.js web systems." },
+      { slug: "jabalpur", name: "Jabalpur", desc: "Remote planning for local-intent SEO, paid search, mobile landing pages, and lead measurement." },
+      { slug: "gwalior", name: "Gwalior", desc: "Remote campaign planning for Gwalior businesses can align search intent, landing pages, lead capture, and reporting to the actual audience." },
       { slug: "ujjain", name: "Ujjain", desc: "Premier digital marketing company in Ujjain. Seasonal pilgrimage campaign scheduling around Mahakaleshwar, direct-booking WhatsApp funnels, and 0% OTA commission setups." },
     ],
   },
   {
     state: "Rajasthan",
     cities: [
-      { slug: "jaipur", name: "Jaipur", desc: "Top advertising agency in Jaipur for D2C jewelry, fashion & retail. High-frequency Meta creative testing, Google Shopping Ads, and 4.8x average ROAS." },
+      { slug: "jaipur", name: "Jaipur", desc: "Remote campaign planning for retail and product businesses, with paid ads and conversion measurement." },
       { slug: "jodhpur", name: "Jodhpur", desc: "Leading digital marketing agency in Jodhpur. International B2B export search ads, handicraft manufacturing SEO, Next.js web design, and luxury tourism funnels." },
       { slug: "udaipur", name: "Udaipur", desc: "Top hospitality advertising agency in Udaipur. Booking-funnel-first Google Search PPC, destination wedding lead funnels, and automated WhatsApp room reservations." },
       { slug: "kota", name: "Kota", desc: "Best digital marketing company in Kota for coaching institutes. Admission-cycle Google Search Ads, counselor qualification WhatsApp bots, and automated CRM lead sync." },
@@ -114,7 +114,7 @@ const locationsGrouped = [
       { slug: "shillong", name: "Shillong", desc: "Leading advertising agency in Shillong. Niche long-tail SEO for eco-tourism resorts and schools, direct booking WhatsApp engines, and high-converting Meta Ads." },
       { slug: "gangtok", name: "Gangtok", desc: "Top digital marketing agency in Gangtok. Nationwide buyer SEO for Sikkim organic D2C brands, luxury heritage hotel ads, and high-AOV cart bundling funnels." },
       { slug: "agartala", name: "Agartala", desc: "Leading digital marketing company in Agartala. Fast-ranking low-competition local SEO, Google Ads, and walk-in footfall funnels for Tripura healthcare and retail." },
-      { slug: "aizawl", name: "Aizawl", desc: "Premier digital marketing agency in Aizawl. Nationwide Next.js e-commerce storefronts, courier API sync, and high-ROAS social ads for Mizo fashion & handlooms." },
+      { slug: "aizawl", name: "Aizawl", desc: "Remote website, content, and paid advertising support for Aizawl product and retail businesses, scoped to their catalogue and audience." },
       { slug: "dimapur", name: "Dimapur", desc: "Top advertising & automation agency in Dimapur. WhatsApp wholesale order bots, n8n inventory CRM sync, and B2B Google Search Ads for Nagaland traders." },
       { slug: "kohima", name: "Kohima", desc: "Leading digital marketing company in Kohima. Hornbill Festival & seasonal tourism campaign scheduling, heritage homestay SEO, and cultural D2C brand ads." },
       { slug: "imphal", name: "Imphal", desc: "Top digital marketing agency in Imphal. Local SEO foundation audits, lightning-fast mobile web builds, and Google Local Service Ads for Manipur SMBs." },
@@ -138,7 +138,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Cities Served by AdsVerse Digital Marketing Agency",
-  "description": "AdsVerse provides AI-first digital marketing, SEO, and WhatsApp automation across 24 Indian cities in its core service regions.",
+  "description": "AdsVerse provides digital marketing, SEO, paid advertising, and automation services with remote delivery available across India.",
   "url": "https://adsverse.in/locations",
   "numberOfItems": allCitiesList.length + 1,
   "itemListElement": [
@@ -176,7 +176,7 @@ export default function LocationsIndexPage() {
         </p>
         <p className="text-slate-700 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed text-sm md:text-base">
           AdsVerse is an AI-first digital marketing agency headquartered in Vijay Nagar, Indore,
-          serving 113+ brands across Madhya Pradesh, Rajasthan, Chhattisgarh, Uttar Pradesh, Bihar,
+          supporting businesses with SEO, paid advertising, content, and automation across India,
           Jammu &amp; Kashmir, and Northeast India. From local SEO and Google Ads to WhatsApp AI bots
           and n8n CRM automation &mdash; we deliver Tier-1 results in Tier-2 markets. Select your city
           below to learn how we work in your market.

@@ -55,16 +55,11 @@ const schemaArray = [
     "slogan": "Automate. Elevate. Dominate.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "329/11, Meghdoot Nagar",
+      "streetAddress": "Meghdoot Nagar",
       "addressLocality": "Indore",
       "addressRegion": "Madhya Pradesh",
-      "postalCode": "452011",
+
       "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 22.7533,
-      "longitude": 75.8937
     },
     "areaServed": [
       "Indore", "Madhya Pradesh", "India"
