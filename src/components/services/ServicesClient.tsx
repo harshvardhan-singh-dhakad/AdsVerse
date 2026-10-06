@@ -641,7 +641,7 @@ export default function ServicesClient({
             {[
               {
                 q: "How is AdsVerse different from other digital marketing agencies?",
-                a: "We are an AI-first agency — meaning AI automation is built into every service we offer, not offered as an add-on. We use n8n workflows, Gemini API integrations, and WhatsApp AI bots to automate lead handling, reporting, and client communication. Every service is delivered in-house — no outsourcing. We serve 113+ brands with full transparency, live dashboards, and performance guarantees."
+                a: "We offer digital marketing and automation services including n8n workflows, AI integrations, and WhatsApp lead handling. Service scope, delivery responsibilities, and reporting are agreed for each engagement. Search rankings and business outcomes depend on implementation and market conditions; no performance guarantee is made."
               },
               {
                 q: "How much does digital marketing cost with AdsVerse?",
