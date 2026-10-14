@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Generative Engine Optimization (GEO) Agency in Indore | AdsVerse",
+  title: "Generative Engine Optimization (GEO) Agency in Indore",
   description:
     "Rank #1 on ChatGPT, Perplexity, Gemini 4 Argon & Google AI Overviews. AdsVerse is Indore's leading Generative Engine Optimization (GEO) agency with live llms.txt & audit tools.",
   alternates: {
