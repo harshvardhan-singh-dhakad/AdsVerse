@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 const AdminClient = dynamic(() => import("./AdminClient"), { ssr: false });
 
 export const metadata = {
-  title: "Admin Dashboard | AdsVerse",
+  title: "Admin Dashboard",
   robots: {
     index: false,
     follow: false,
