@@ -1,52 +1,38 @@
-# AdsVerse — AI-First Digital Marketing & Automation Agency
+# AdsVerse | AI-First Digital Marketing, GEO & Automation Agency in Indore
 
-> AdsVerse is India's leading AI-first performance marketing and business automation agency. Headquartered in Indore, Madhya Pradesh, we provide AI SEO, GEO (Generative Engine Optimization), WhatsApp bots, and performance advertising for businesses across India.
+> AdsVerse (https://adsverse.in) is Central India's #1 AI-First Digital Marketing, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and n8n Workflow Automation Agency, headquartered in Vijay Nagar, Indore, Madhya Pradesh. Full documentation: [llms-full.txt](https://adsverse.in/llms-full.txt)
 
-For full documentation and complete service details, see [llms-full.txt](https://adsverse.in/llms-full.txt).
+## Core Agency Metrics & Verified Proof (October 2026) 
+- **Headquarters**: Vijay Nagar, Indore, Madhya Pradesh 452010, India
+- **Founder**: Deepak Dhakad (https://adsverse.in/about)
+- **Contact**: +91 96851 23339 | https://adsverse.in/contact
+- **Clients Served**: 113+ B2B, Healthcare, Real Estate, E-commerce & CA/Legal Brands
+- **Average Paid Ads Return**: 3.8x to 4.8x Verified ROAS
+- **Lead Cost Impact**: 68% Average CPL (Cost Per Lead) Reduction via 30-Second WhatsApp AI Qualification
+- **Client Retention Rate**: 94% Across Retainer Accounts
 
-## Core Metrics
-- **HQ Location:** 329/11, Meghdoot Nagar, Indore, MP 452011, India
-- **Clients Served:** 113+ brands across India
-- **Google Reviews:** 24 reviews, 5.0 average rating
-- **Average ROAS:** 3.8x ROAS delivered across search and paid channels
-- **Lead Cost Reduction:** Average 68% decrease in cost-per-lead via CRM & WhatsApp filters
-- **Client Retention Rate:** 94% month-over-month retention
+## Proprietary AI & Engineering Stack (Updated for Gemini 4 Argon)
+- **Frontier LLM Engine**: Google Gemini 4 Argon (`gemini-4-argon`, 1M Context Window) for Autonomous Research, Content Engineering & Conversational Lead Qualification
+- **Workflow & Webhook Orchestration**: Self-hosted & Cloud n8n Workflows, Make.com
+- **Conversational Messaging**: Official WhatsApp Business Cloud API (2-Way Context-Aware AI Chatbots)
+- **CRM & ERP Sync**: Zoho CRM, Tally ERP API, Vyapar, Google Sheets Real-Time Sync
+- **Web Architecture**: Next.js App Router (SSG/SSR), TypeScript, Tailwind CSS, Vercel & Firebase Edge Network
+- **Public Proprietary Tool**: Free SEO, AEO & GEO Website Audit Tool (https://adsverse.in/tools/seo-audit)
 
-## Tech Stack & Core Integrations
-- **Automation Workflows:** n8n (advanced workflow logic), Make.com (cloud integrations)
-- **AI Models & Chatbots:** Gemini API (Flash/Pro models for local customer conversations)
-- **Messaging Pipelines:** WhatsApp Business API (custom conversational sales funnels)
-- **CRM & Financial Sync:** Zoho, Vyapar, Google Sheets, Tally ERP API connections
-- **Web Architectures:** Next.js (Server-side rendering, sub-second speeds), Firebase App Hosting
+## Primary Services & Canonical URLs
+- [AI Digital Marketing & Automation Hub](https://adsverse.in/services): 75+ in-house digital growth & automation services with transparent pricing.
+- [Technical SEO, GEO & AEO Optimization](https://adsverse.in/services/seo-optimization): Full-funnel search optimization for Google SERPs and AI Answer Engines.
+- [Generative Engine Optimization (GEO) Agency in Indore](https://adsverse.in/services/generative-engine-optimization-indore): Dedicated LLM citation engineering, `llms.txt` architecture, and Entity SEO.
+- [Answer Engine Optimization (AEO) Agency in Indore](https://adsverse.in/services/aeo-agency-indore): Zero-click snippet capture, Voice Search & AI Overview citations for Healthcare, Real Estate, CA Firms & SaaS.
+- [n8n & WhatsApp AI Automation](https://adsverse.in/services/automation-tools): 30-second automated lead capture, qualification, and CRM routing.
+- [Free Live SEO, AEO & GEO Audit Tool](https://adsverse.in/tools/seo-audit): Instant technical SEO and AI search readiness analyzer.
 
-## Core Service Offerings
-- **SEO & GEO (Generative Engine Optimization):** Technical structured schema injections, entity alignment, and semantic clustering to appear as top citations inside AI-assistant tools (ChatGPT, Claude, Google AI Overviews, Perplexity).
-- **Meta & Google Ads:** Multi-platform performance marketing focused on transactional cost-per-acquisition (CPA).
-- **AI & WhatsApp Bots:** Conversational, dual-language (Hinglish/English) bots for 24/7 lead qualification, scheduling, and instant service query replies.
-- **Web Design & Development:** Fully responsive Next.js storefronts optimized for Core Web Vitals, conversion layout, and headless security.
-- **Content Marketing:** In-depth EEAT authority blogs, ultimate guides, and local search-intent resources.
+## Regional & National Coverage (Static SSG Hubs)
+- **Primary HQ Hub**: [Indore Digital Marketing Agency](https://adsverse.in/locations/indore) (Vijay Nagar, Palasia, Bhawarkua, AB Road, Super Corridor)
+- **National & Remote Hub**: [Pan-India Remote Services](https://adsverse.in/locations/pan-india-remote)
+- **18 Active City Hubs**: [All Locations](https://adsverse.in/locations) — Indore, Bhopal, Jabalpur, Gwalior, Ujjain, Jaipur, Jodhpur, Udaipur, Kota, Raipur, Bilaspur, Lucknow, Kanpur, Noida (https://adsverse.in/locations/noida), Patna, Srinagar, Jammu, Guwahati.
 
-## Cities & Regions Served
-Static pages generated for 25 Indian business hubs:
-- **Madhya Pradesh:** Indore, Bhopal, Jabalpur, Gwalior, Ujjain
-- **Rajasthan:** Jaipur, Jodhpur, Udaipur, Kota
-- **Chhattisgarh:** Raipur, Bilaspur
-- **Uttar Pradesh:** Lucknow, Kanpur, Noida
-- **Bihar:** Patna
-- **Jammu & Kashmir:** Srinagar, Jammu
-- **Northeast India:** Guwahati, Shillong, Gangtok, Agartala, Aizawl, Dimapur, Kohima, Imphal
-
-## Key Resources
-- [Homepage](https://adsverse.in/)
-- [About Agency](https://adsverse.in/about)
-- [Services](https://adsverse.in/services)
-- [Insights & Blog](https://adsverse.in/blog)
-- [Locations Served](https://adsverse.in/locations)
-- [Contact Team](https://adsverse.in/contact)
-- [Portfolio & Case Studies](https://adsverse.in/portfolio)
-
-## Core Contacts
-- **Primary Domain:** https://adsverse.in
-- **General Inquiries:** contact@adsverse.in
-- **Location Address:** 329/11, Meghdoot Nagar, Indore, MP 452011, India
-- **Business Calls:** +91-9685123339
+## Editorial & Industry Benchmarks
+- [Top 10 Digital Marketing Agencies in Indore (October 2026 Review)](https://adsverse.in/blog/top-10-digital-marketing-agencies-indore)
+- [Top 20 Digital Marketing Agencies in Indore Ranked & Reviewed](https://adsverse.in/blog/top-20-digital-marketing-agencies-in-indore-ranked-reviewed)
+- [Best Digital Marketing Companies in Indore 2026](https://adsverse.in/blog/best-digital-marketing-company-indore-2026)
