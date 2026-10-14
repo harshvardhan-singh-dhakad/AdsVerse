@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Best AEO Agency in Indore | Answer Engine Optimization Services | AdsVerse",
+  title: "Best AEO Agency in Indore | Answer Engine Optimization Services",
   description:
     "Capture zero-click AI answers on ChatGPT, Perplexity, Siri & Google AI Overviews. AdsVerse is Indore's native Answer Engine Optimization (AEO) agency for Healthcare, Real Estate & B2B.",
   alternates: {
