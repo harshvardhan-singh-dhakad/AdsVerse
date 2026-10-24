@@ -15,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const industry = getIndustryBySlug(params.slug);
   if (!industry) notFound();
 
-  const title = "Digital Marketing for " + industry.name + " | AdsVerse";
+  const titleName = industry.name.includes(" & ") ? industry.name.split(" & ")[0].trim() : industry.name;
+  const title = titleName + " Marketing | AdsVerse";
   const description = ("Industry-specific SEO, Google and Meta Ads, AI search visibility, lead generation and automation for " + industry.name + ". Explore a practical growth strategy from AdsVerse.").slice(0, 158);
   const url = "https://adsverse.in/industries/" + industry.slug;
 
@@ -42,6 +43,7 @@ export default function IndustryDetailPage({ params }: Props) {
   const sections = getIndustrySections(industry).filter((section) => section.heading !== "Frequently asked questions" && section.heading !== "AI readability, GEO and AEO");
   const faqs = getIndustryFaqs(industry);
   const wordCount = countIndustryWords(industry);
+  if (wordCount < 1500) throw new Error("Industry page content must contain at least 1,500 words: " + industry.slug);
   const related = INDUSTRIES.filter((item) => item.category === industry.category && item.slug !== industry.slug).slice(0, 4);
 
   const pageUrl = "https://adsverse.in/industries/" + industry.slug;
@@ -96,7 +98,7 @@ export default function IndustryDetailPage({ params }: Props) {
           <h1 className="text-4xl font-black leading-tight tracking-tight text-slate-950 dark:text-white md:text-6xl">
             Digital Marketing for <span className="text-orange-500">{industry.name}</span>
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700 dark:text-slate-300">{industry.summary} {industry.overview}</p>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700 dark:text-slate-300">{industry.summary}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/contact" className="rounded-xl bg-orange-500 px-6 py-3 font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600">Discuss Your Growth Plan</Link>
             <Link href="/services" className="rounded-xl border border-border bg-background/65 px-6 py-3 font-bold text-foreground backdrop-blur transition hover:border-orange-500/50">Explore AdsVerse Services</Link>
