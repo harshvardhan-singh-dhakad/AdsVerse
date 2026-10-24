@@ -69,15 +69,17 @@ export function IndustryContentManager() {
         throw new Error(payload.error || "Could not load industry pages.");
       }
       setIndustries(payload.industries);
-      if (!payload.industries.some((item) => item.slug === selectedSlug)) {
-        setSelectedSlug(payload.industries.find((item) => item.slug === "coaching-classes")?.slug || payload.industries[0]?.slug || "");
-      }
+      setSelectedSlug((current) =>
+        payload.industries!.some((item) => item.slug === current)
+          ? current
+          : payload.industries!.find((item) => item.slug === "coaching-classes")?.slug || payload.industries![0]?.slug || ""
+      );
     } catch (error: any) {
       setLoadError(error?.message || "Could not load industry pages.");
     } finally {
       setLoading(false);
     }
-  }, [selectedSlug]);
+  }, []);
 
   useEffect(() => {
     void loadIndustries();
@@ -85,7 +87,7 @@ export function IndustryContentManager() {
 
   useEffect(() => {
     if (selected) setDraft({ ...selected.fields });
-  }, [selected?.slug, selected?.wordCount, selected?.hasCustomContent]);
+  }, [selected]);
 
   const chooseIndustry = (slug: string) => {
     if (slug === selectedSlug) return;
