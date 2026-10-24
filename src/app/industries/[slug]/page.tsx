@@ -1,18 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { INDUSTRIES, countIndustryWords, getIndustryBySlug, getIndustryFaqs, getIndustrySections } from "@/lib/industries";
+import { INDUSTRIES, countIndustryWords, getIndustryFaqs, getIndustrySections } from "@/lib/industries";
+import { getIndustryPageData } from "@/lib/industry-page-data";
 
 type Props = { params: { slug: string } };
 
 export const dynamicParams = false;
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return INDUSTRIES.map((industry) => ({ slug: industry.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const industry = getIndustryBySlug(params.slug);
+  const industry = await getIndustryPageData(params.slug);
   if (!industry) notFound();
 
   const titleName = industry.name.includes(" & ") ? industry.name.split(" & ")[0].trim() : industry.name;
@@ -36,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function IndustryDetailPage({ params }: Props) {
-  const industry = getIndustryBySlug(params.slug);
+export default async function IndustryDetailPage({ params }: Props) {
+  const industry = await getIndustryPageData(params.slug);
   if (!industry) notFound();
 
   const sections = getIndustrySections(industry).filter((section) => section.heading !== "Frequently asked questions" && section.heading !== "AI readability, GEO and AEO");
