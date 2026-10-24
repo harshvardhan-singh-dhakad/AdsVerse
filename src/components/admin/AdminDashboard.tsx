@@ -16,6 +16,7 @@ import { BrandSettings } from "./BrandSettings";
 import { NavigationSettings } from "./NavigationSettings";
 import { TestimonialsTable } from "./TestimonialsTable";
 import { FaqTable } from "./FaqTable";
+import { IndustryContentManager } from "./IndustryContentManager";
 
 interface AdminDashboardProps {
   activeTab: AdminTab;
@@ -47,6 +48,8 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <FaqTable />;
     case "blogs":
       return <BlogTable />;
+    case "industries":
+      return <IndustryContentManager />;
     case "brand":
       return <BrandSettings />;
     case "navigation":
