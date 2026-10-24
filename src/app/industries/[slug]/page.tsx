@@ -39,7 +39,7 @@ export default function IndustryDetailPage({ params }: Props) {
   const industry = getIndustryBySlug(params.slug);
   if (!industry) notFound();
 
-  const sections = getIndustrySections(industry).filter((section) => section.heading !== "Frequently asked questions");
+  const sections = getIndustrySections(industry).filter((section) => section.heading !== "Frequently asked questions" && section.heading !== "AI readability, GEO and AEO");
   const faqs = getIndustryFaqs(industry);
   const wordCount = countIndustryWords(industry);
   const related = INDUSTRIES.filter((item) => item.category === industry.category && item.slug !== industry.slug).slice(0, 4);
