@@ -17,6 +17,15 @@ export async function getNavigationLinks(): Promise<NavigationLink[]> {
       }))
       .filter((item: NavigationLink) => item.href && item.label && item.href.startsWith("/"));
 
+    if (!normalized.some((item) => item.href === "/industries" && item.enabled)) {
+      const servicesIndex = normalized.findIndex((item) => item.href === "/services");
+      normalized.splice(servicesIndex >= 0 ? servicesIndex + 1 : 0, 0, {
+        href: "/industries",
+        label: "Industries",
+        enabled: true,
+      });
+    }
+
     const visibleLinks = normalized.filter((item) => item.enabled);
     return visibleLinks.length > 0 ? visibleLinks : DEFAULT_NAVIGATION_LINKS;
   } catch (error) {
