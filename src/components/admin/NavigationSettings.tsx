@@ -39,6 +39,15 @@ export function NavigationSettings() {
               .filter((item) => item.href && item.label)
           : [];
 
+        if (loaded.length > 0 && !loaded.some((item) => item.href === "/industries" && item.enabled)) {
+          const servicesIndex = loaded.findIndex((item) => item.href === "/services");
+          loaded.splice(servicesIndex >= 0 ? servicesIndex + 1 : 0, 0, {
+            href: "/industries",
+            label: "Industries",
+            enabled: true,
+          });
+        }
+
         if (!cancelled && loaded.length > 0) {
           setLinks(loaded);
         }
