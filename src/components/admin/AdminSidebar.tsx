@@ -15,6 +15,7 @@ import {
   Menu,
   Quote,
   CircleHelp,
+  Layers,
 } from "lucide-react";
 import {
   Sidebar,
@@ -45,7 +46,8 @@ export type AdminTab =
   | "brand"
   | "navigation"
   | "testimonials"
-  | "faqs";
+  | "faqs"
+  | "industries";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -66,6 +68,7 @@ const groups = [
     label: "Content",
     items: [
       { id: "blogs", label: "Blogs", icon: FileText },
+      { id: "industries", label: "Industry Pages", icon: Layers },
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
