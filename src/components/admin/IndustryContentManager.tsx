@@ -248,7 +248,7 @@ export function IndustryContentManager() {
               ))}
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card/50 p-4">
-              <p className="flex items-center gap-2 text-sm text-muted-foreground"><FileText className="h-4 w-4" /> A successful save is revalidated on the public page within approximately five minutes.</p>
+              <p className="flex items-center gap-2 text-sm text-muted-foreground"><FileText className="h-4 w-4" /> A successful save refreshes the public industry page and directory cache.</p>
               <Button onClick={save} disabled={!isDirty || saving || resetting}>
                 {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                 Save Content
