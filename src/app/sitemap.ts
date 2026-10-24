@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { adminDb } from "@/firebase/admin";
 import { getPublicServices } from "@/lib/service-catalog";
+import { INDUSTRIES } from "@/lib/industries";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://adsverse.in';
@@ -10,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/about`, priority: 0.8, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/contact`, priority: 0.9, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services`, priority: 0.9, changeFrequency: 'monthly' as const },
+    { url: `${baseUrl}/industries`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/services/ai-automation`, priority: 0.9, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/services/digital-marketing`, priority: 0.9, changeFrequency: 'monthly' as const },
     { url: `${baseUrl}/portfolio`, priority: 0.7, changeFrequency: 'monthly' as const },
@@ -33,6 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "srinagar", "jammu",
     "guwahati", "shillong", "gangtok", "agartala", "aizawl", "dimapur", "kohima", "imphal",
   ];
+
+  const industryPages = INDUSTRIES.map((industry) => ({
+    url: `${baseUrl}/industries/${industry.slug}`,
+    priority: 0.75,
+    changeFrequency: "monthly" as const,
+  }));
 
   const cityPages = cities.map(city => ({
     url: `${baseUrl}/locations/${city}`,
@@ -98,7 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter((page) => !baseUrls.has(page.url));
 
-  const allPages = [...allStaticPages, ...allServicePages, ...cityPages, ...blogPages];
+  const allPages = [...allStaticPages, ...allServicePages, ...cityPages, ...industryPages, ...blogPages];
 
   return allPages;
 }
