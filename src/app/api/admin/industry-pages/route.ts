@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/firebase/admin";
 import { ADMIN_EMAILS } from "@/lib/admin-auth";
@@ -117,6 +118,8 @@ export async function POST(request: NextRequest) {
       updatedBy: adminEmail,
     }, { merge: true });
 
+    revalidatePath("/industries/" + slug);
+    revalidatePath("/industries");
     return NextResponse.json({ success: true, slug, wordCount });
   } catch (error: any) {
     const message = error?.message || "";
@@ -140,6 +143,8 @@ export async function DELETE(request: NextRequest) {
 
   try {
     await adminDb.collection("industryPageOverrides").doc(slug).delete();
+    revalidatePath("/industries/" + slug);
+    revalidatePath("/industries");
     return NextResponse.json({ success: true, slug, reset: true });
   } catch (error) {
     console.error("[industry-pages DELETE]", error);
