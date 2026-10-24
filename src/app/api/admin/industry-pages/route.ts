@@ -3,7 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/firebase/admin";
 import { ADMIN_EMAILS } from "@/lib/admin-auth";
 import { countIndustryWords, getIndustryBySlug, INDUSTRIES, type Industry } from "@/lib/industries";
-import { INDUSTRY_EDITABLE_FIELDS, type IndustryEditableField } from "@/lib/industry-content-fields";
+import { getEditableIndustryFields, INDUSTRY_EDITABLE_FIELDS, type IndustryEditableField } from "@/lib/industry-content-fields";
 
 export const runtime = "nodejs";
 
@@ -63,7 +63,21 @@ export async function GET(request: NextRequest) {
       overrides[document.id] = safe;
     });
 
-    return NextResponse.json({ success: true, overrides });
+    const industries = INDUSTRIES.map((base) => {
+      const merged = { ...base, ...(overrides[base.slug] || {}) } as Industry;
+      return {
+        slug: base.slug,
+        name: base.name,
+        category: base.category,
+        icon: base.icon,
+        summary: base.summary,
+        fields: getEditableIndustryFields(merged),
+        wordCount: countIndustryWords(merged),
+        hasCustomContent: Boolean(overrides[base.slug]),
+      };
+    });
+
+    return NextResponse.json({ success: true, industries });
   } catch (error: any) {
     console.error("[industry-pages GET]", error);
     return NextResponse.json({ error: "Industry content could not be loaded." }, { status: 500 });
