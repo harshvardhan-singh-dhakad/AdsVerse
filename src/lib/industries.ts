@@ -1702,21 +1702,6 @@ export function getIndustrySections(industry: Industry): IndustrySection[] {
   const automationParagraph = "Automation should reduce response delays and repetitive administration without pretending to replace professional judgment. Map each hand-off: what starts the workflow, which system is the source of truth, who owns exceptions and how the customer can reach a person. Use access controls, collect only necessary data, honor consent and opt-out requests, and test failed or duplicate events. Keep critical commercial facts synchronized so an automated message does not repeat an expired offer or promise unavailable capacity. " + industry.automation;
   const trustParagraph = "Trust is earned through specific, verifiable information: real people, accurate credentials, clear terms, genuine examples and realistic limits. Identify the source of a statistic, the period it covers and how it was measured. Obtain permission for client names, logos, images and testimonials. Never invent reviews, certifications, case studies, scarcity or performance results. " + industry.trust;
   const measurementParagraph = "A useful measurement framework distinguishes attention from business results. Define the stages from visitor to enquiry, qualified lead, booked next step and completed commercial outcome. Agree on what counts as qualified before a campaign begins; otherwise, teams can report very different numbers as success. Review performance by service, audience, location and campaign while taking seasonality, sales-cycle length and operating capacity into account. " + industry.metrics;
-  const faqTail = "The best answer depends on the actual service scope, location, timing and capacity. Use the published information as a starting point and confirm any variable detail with the team before a customer makes a decision.";
-  const faqs: IndustryFaq[] = industry.faqs.map((item) => ({ question: item[0], answer: item[1] }));
-  faqs.push({
-    question: "How does AdsVerse approach marketing for " + industry.name.toLowerCase() + "?",
-    answer: industry.offer + " The first step is to understand the current funnel, customer questions, service capacity and available measurement. The proposed plan prioritizes improvements that can be tested, measured and adjusted rather than promising a predetermined ranking or sales result."
-  });
-  faqs.push({
-    question: "How is AI-readability different from traditional SEO?",
-    answer: "Traditional SEO helps pages be discovered and understood in search. AI-readability adds emphasis on clear entities, factual direct answers, consistent terminology and well-structured supporting information that answer systems can interpret. Both depend on useful, accurate content, sound technical access and consistency; neither can guarantee a specific recommendation or citation."
-  });
-  faqs.push({
-    question: "How soon can a digital marketing campaign produce results?",
-    answer: "Timing depends on the starting website, competition, offer, budget, season and speed of follow-up. Paid campaigns can generate early learning once tracking and landing pages work, while organic visibility generally needs consistent improvements and time. AdsVerse should establish a baseline, agree on leading and lagging indicators and report progress without promising a fixed outcome. " + faqTail
-  });
-
   return [
     {
       heading: "Understanding the " + industry.name + " market",
@@ -1849,7 +1834,6 @@ export function getIndustrySections(industry: Industry): IndustrySection[] {
 }
 
 export function getIndustryFaqs(industry: Industry): IndustryFaq[] {
-  const sections = getIndustrySections(industry);
   const all = industry.faqs.map((item) => ({ question: item[0], answer: item[1] }));
   all.push({
     question: "How does AdsVerse approach marketing for " + industry.name.toLowerCase() + "?",
@@ -1867,11 +1851,21 @@ export function getIndustryFaqs(industry: Industry): IndustryFaq[] {
 }
 
 export function countIndustryWords(industry: Industry): number {
-  const sections = getIndustrySections(industry);
+  // Count the content rendered on the detail page. The broad AI section is
+  // represented by the dedicated highlighted AI-readability block instead.
+  const sections = getIndustrySections(industry).filter(
+    (section) => section.heading !== "Frequently asked questions" && section.heading !== "AI readability, GEO and AEO"
+  );
+  const visibleAiSection = [
+    "AI Search Visibility AI-readable content for " + industry.name,
+    industry.aiQuestions,
+    "Use descriptive headings, direct answers, consistent business facts, visible author or reviewer context, and structured data that mirrors the page. Include relevant service boundaries and source links for claims. This makes information easier to interpret, but does not guarantee inclusion in an AI-generated response."
+  ].join(" ");
   const text = sections.flatMap((section) => [
     section.heading,
     ...section.paragraphs,
     ...(section.bullets || [])
-  ]).join(" ") + " " + getIndustryFaqs(industry).map((faq) => faq.question + " " + faq.answer).join(" ");
+  ]).join(" ") + " " + visibleAiSection + " " +
+    getIndustryFaqs(industry).map((faq) => faq.question + " " + faq.answer).join(" ");
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
