@@ -12,7 +12,6 @@ import {
   Crown,
   Sparkles,
   ChevronRight,
-  Menu,
   Quote,
   CircleHelp,
   Layers,
@@ -44,8 +43,6 @@ export type AdminTab =
   | "portfolio"
   | "pricing"
   | "blogs"
-  | "brand"
-  | "navigation"
   | "testimonials"
   | "faqs"
   | "industries"
@@ -77,18 +74,6 @@ const groups = [
       { id: "pricing", label: "Pricing", icon: IndianRupee },
       { id: "testimonials", label: "Testimonials", icon: Quote },
       { id: "faqs", label: "FAQs", icon: CircleHelp },
-    ],
-  },
-  {
-    label: "Brand",
-    items: [
-      { id: "brand", label: "Brand Settings", icon: Sparkles },
-    ],
-  },
-  {
-    label: "Site",
-    items: [
-      { id: "navigation", label: "Header Navigation", icon: Menu },
     ],
   },
   {
