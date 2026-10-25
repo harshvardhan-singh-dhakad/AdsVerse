@@ -312,7 +312,7 @@ export function IndustryContentManager() {
       const count = savedImages.length;
       toast({
         title: "Industry page saved",
-        description: "Saved " + count + " gallery image(s). The page is refreshing from the site's cache.",
+        description: "Industry content saved with " + count + " gallery image(s). The public page cache has been refreshed.",
       });
       releasePreviews(galleryDraft);
       setUploadProgress(0);
