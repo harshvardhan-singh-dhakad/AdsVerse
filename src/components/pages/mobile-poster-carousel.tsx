@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { type TransitionEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { MobilePoster } from "@/lib/mobile-posters-types";
@@ -46,7 +46,7 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
     ? (activeIndex === 0 ? posters.length - 1 : activeIndex > posters.length ? 0 : activeIndex - 1)
     : 0;
 
-  const finishLoop = (event: React.TransitionEvent<HTMLDivElement>) => {
+  const finishLoop = (event: TransitionEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget || reducedMotion) return;
 
     let resetIndex: number | null = null;
