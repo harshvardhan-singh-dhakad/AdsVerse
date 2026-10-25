@@ -12,8 +12,8 @@ import dynamic from "next/dynamic";
 const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"), { ssr: false });
 import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
 import { adminDb } from "@/firebase/admin";
-import { getBrandSettings } from "@/lib/brand-settings";
-import { getNavigationLinks } from "@/lib/navigation-settings";
+import { DEFAULT_BRAND } from "@/lib/brand-defaults";
+import { DEFAULT_NAVIGATION_LINKS } from "@/lib/navigation-defaults";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -197,64 +197,57 @@ const schemaArray = [
   }
 ];
 
-export async function generateMetadata(): Promise<Metadata> {
-  const brand = await getBrandSettings();
-  const ogImage = new URL(brand.ogImageUrl, siteUrl).toString();
-
-  return {
-    metadataBase: new URL(siteUrl),
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${siteName} | AI Marketing & Automation Agency`,
+    template: `%s | ${siteName}`,
+  },
+  description,
+  openGraph: {
     title: {
-      default: `${brand.siteName} | AI Marketing & Automation Agency`,
-      template: `%s | ${brand.siteName}`,
+      default: `${siteName} | Digital Marketing That Drives Results`,
+      template: `%s | ${siteName}`,
     },
-    description: brand.description,
-    openGraph: {
-      title: {
-        default: `${brand.siteName} | Digital Marketing That Drives Results`,
-        template: `%s | ${brand.siteName}`,
+    description,
+    url: siteUrl,
+    siteName,
+    images: [
+      {
+        url: new URL("/images/og-adsverse-2026.png", siteUrl).toString(),
+        width: 1200,
+        height: 630,
+        alt: `${siteName} - Digital Marketing Agency`,
       },
-      description: brand.description,
-      url: siteUrl,
-      siteName: brand.siteName,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: `${brand.siteName} - Digital Marketing Agency`,
-        },
-      ],
-      locale: "en_IN",
-      type: "website",
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: `${siteName} | Digital Marketing That Drives Results`,
+      template: `%s | ${siteName}`,
     },
-    twitter: {
-      card: "summary_large_image",
-      title: {
-        default: `${brand.siteName} | Digital Marketing That Drives Results`,
-        template: `%s | ${brand.siteName}`,
-      },
-      description: brand.description,
-      creator: twitterHandle,
-      images: [ogImage],
-    },
-    icons: {
-      icon: [
-        { url: `${brand.faviconUrl}?v=1`, sizes: "any" },
-        { url: "/favicon-96x96.png?v=1", sizes: "96x96", type: "image/png" },
-      ],
-      apple: [
-        { url: "/apple-touch-icon.png?v=1", sizes: "180x180", type: "image/png" },
-      ],
-    },
-    manifest: "/site.webmanifest",
-    robots: {
-      index: true,
-      follow: true,
-    },
-  };
-}
-
-
+    description,
+    creator: twitterHandle,
+    images: [new URL("/images/og-adsverse-2026.png", siteUrl).toString()],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=1", sizes: "any" },
+      { url: "/favicon-96x96.png?v=1", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png?v=1", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 import { cache } from 'react';
 
@@ -313,10 +306,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [brand, navLinks] = await Promise.all([
-    getBrandSettings(),
-    getNavigationLinks(),
-  ]);
+  const brand = DEFAULT_BRAND;
+  const navLinks = DEFAULT_NAVIGATION_LINKS
+    .filter((link) => link.enabled)
+    .map(({ href, label }) => ({ href, label }));
   const resolvedLogo = brand.logoUrl ? new URL(brand.logoUrl, siteUrl).toString() : `${siteUrl}/images/logo-white.webp`;
   const resolvedOgImage = new URL(brand.ogImageUrl, siteUrl).toString();
   const resolvedSchemaArray = schemaArray.map((item: any, index) => {
