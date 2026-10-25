@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { INDUSTRIES, countIndustryWords, getIndustryFaqs, getIndustrySections } from "@/lib/industries";
@@ -33,8 +34,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "AdsVerse",
       locale: "en_IN",
       type: "article",
+      images: industry.images.length > 0
+        ? [{ url: industry.images[0].url, alt: industry.images[0].altText || title }]
+        : undefined,
     },
-    twitter: { card: "summary_large_image", title, description, creator: "@Adsverse1" },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@Adsverse1",
+      images: industry.images.length > 0 ? [industry.images[0].url] : undefined,
+    },
   };
 }
 
@@ -58,6 +68,13 @@ export default async function IndustryDetailPage({ params }: Props) {
       url: pageUrl,
       isPartOf: { "@type": "WebSite", name: "AdsVerse", url: "https://adsverse.in" },
       about: { "@type": "Thing", name: industry.name },
+      ...(industry.images.length > 0 ? {
+        primaryImageOfPage: {
+          "@type": "ImageObject",
+          url: industry.images[0].url,
+          caption: industry.images[0].caption || industry.images[0].altText,
+        },
+      } : {}),
       breadcrumb: {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -112,6 +129,43 @@ export default async function IndustryDetailPage({ params }: Props) {
           </div>
         </div>
       </header>
+
+      {industry.images.length > 0 && (
+        <section aria-label={"Image gallery for " + industry.name} className="container mx-auto px-4 pb-12 md:pb-16">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">Industry Gallery</p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white md:text-3xl">
+                A closer look at {industry.name}
+              </h2>
+            </div>
+            <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-bold text-muted-foreground">
+              {industry.images.length} {industry.images.length === 1 ? "image" : "images"}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {industry.images.map((galleryImage, index) => (
+              <figure key={galleryImage.storagePath} className="group overflow-hidden rounded-2xl border border-border/70 bg-card/50 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-orange-500/35 hover:shadow-xl">
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  <Image
+                    src={galleryImage.url}
+                    alt={galleryImage.altText}
+                    fill
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+                {galleryImage.caption ? (
+                  <figcaption className="px-4 py-3 text-sm leading-6 text-muted-foreground">
+                    {galleryImage.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="container mx-auto grid grid-cols-1 gap-10 px-4 pb-20 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14">
         <div className="min-w-0">
