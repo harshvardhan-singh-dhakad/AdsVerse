@@ -12,8 +12,6 @@ import { AuditLeadsTable } from "./AuditLeadsTable";
 import { SubscriptionsPanel } from "./SubscriptionsPanel";
 import { CompetitorRadar } from "./CompetitorRadar";
 import { type AdminTab } from "./AdminSidebar";
-import { BrandSettings } from "./BrandSettings";
-import { NavigationSettings } from "./NavigationSettings";
 import { TestimonialsTable } from "./TestimonialsTable";
 import { FaqTable } from "./FaqTable";
 import { IndustryContentManager } from "./IndustryContentManager";
@@ -53,10 +51,6 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <IndustryContentManager />;
     case "mobile-posters":
       return <MobilePostersManager />;
-    case "brand":
-      return <BrandSettings />;
-    case "navigation":
-      return <NavigationSettings />;
     default:
       return <DashboardStats />;
   }
