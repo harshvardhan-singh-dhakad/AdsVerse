@@ -16,9 +16,11 @@ service firebase.storage {
 
     match /{allPaths=**} {
       allow read: if true;
-      allow write: if isAdmin()
+      allow create, update: if isAdmin()
         && request.resource.size < 10 * 1024 * 1024
         && request.resource.contentType.matches('image/.*');
+      // Admins can remove replaced or deleted gallery files from Storage.
+      allow delete: if isAdmin();
     }
   }
 }
