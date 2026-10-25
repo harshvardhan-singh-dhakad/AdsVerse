@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowUpDown, Check, Edit2, Eye, EyeOff, ImagePlus, Loader2, Plus, Save, Trash2, UploadCloud, X } from "lucide-react";
+import { ArrowUpDown, Edit2, Eye, EyeOff, ImagePlus, Loader2, Plus, Save, Trash2, UploadCloud, X } from "lucide-react";
 
 type PosterDraft = Omit<MobilePoster, "id">;
 
