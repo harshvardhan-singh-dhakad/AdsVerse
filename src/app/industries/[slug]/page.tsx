@@ -144,7 +144,7 @@ export default async function IndustryDetailPage({ params }: Props) {
             </span>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {industry.images.map((galleryImage, index) => (
+            {industry.images.map((galleryImage) => (
               <figure key={galleryImage.storagePath} className="group overflow-hidden rounded-2xl border border-border/70 bg-card/50 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-orange-500/35 hover:shadow-xl">
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                   <Image
