@@ -27,6 +27,8 @@ import {
 import { AnimatedCounter } from "@/components/pages/animated-counter";
 import { FAQAccordion } from "@/components/pages/faq-accordion";
 import { getHomeFaqs, getPublicTestimonials } from "@/lib/reputation-catalog";
+import { getPublicMobilePosters } from "@/lib/mobile-posters";
+import { MobilePosterCarousel } from "@/components/pages/mobile-poster-carousel";
 const OrbitalGraphic = dynamic(() => import("@/components/pages/orbital-graphic").then(mod => mod.OrbitalGraphic), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -146,9 +148,10 @@ const breadcrumbJsonLd = {
 // Orbit styles have been moved to globals.css for browser caching
 
 export default async function HomePage() {
-  const [testimonials, faqs] = await Promise.all([
+  const [testimonials, faqs, mobilePosters] = await Promise.all([
     getPublicTestimonials(),
     getHomeFaqs(),
+    getPublicMobilePosters(),
   ]);
 
   const faqJsonLd = {
@@ -183,7 +186,7 @@ export default async function HomePage() {
       <div className="relative overflow-hidden">
       
       {/* Hero Section (Full-bleed wrapper) */}
-      <section aria-label="Hero: AI-Powered Digital Marketing Agency in Indore" className="relative w-full pt-16 md:pt-24 pb-8 mb-20 md:mb-[160px] overflow-hidden">
+      <section aria-label="Hero: AI-Powered Digital Marketing Agency in Indore" className="relative w-full pt-16 md:pt-24 pb-8 mb-8 md:mb-[160px] overflow-hidden">
         {/* Hero Background Effect — decorative */}
         <div className="hero-vibrant-bg" aria-hidden="true"></div>
 
@@ -244,6 +247,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <MobilePosterCarousel posters={mobilePosters} />
 
       {/* Evidence & Results — keep claims tied to real work */}
       <section aria-label="AdsVerse results and case study proof" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">
