@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useStorage } from "@/firebase";
 import { Loader2, Save, RotateCcw, ExternalLink, Search, FileText, ImagePlus, Trash2, ChevronUp, ChevronDown, UploadCloud } from "lucide-react";
@@ -141,11 +141,17 @@ export function IndustryContentManager() {
     setUploadProgress(0);
   }, [selected]);
 
+  const galleryDraftRef = useRef<GalleryDraft[]>([]);
+
+  useEffect(() => {
+    galleryDraftRef.current = galleryDraft;
+  }, [galleryDraft]);
+
   useEffect(() => () => {
-    galleryDraft.forEach((image) => {
+    galleryDraftRef.current.forEach((image) => {
       if (image.previewUrl) URL.revokeObjectURL(image.previewUrl);
     });
-  }, [galleryDraft]);
+  }, []);
 
   const chooseIndustry = (slug: string) => {
     if (slug === selectedSlug) return;
