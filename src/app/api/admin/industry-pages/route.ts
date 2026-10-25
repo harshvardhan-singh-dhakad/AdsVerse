@@ -5,6 +5,7 @@ import { adminAuth, adminDb } from "@/firebase/admin";
 import { ADMIN_EMAILS } from "@/lib/admin-auth";
 import { countIndustryWords, getIndustryBySlug, INDUSTRIES, type Industry } from "@/lib/industries";
 import { getEditableIndustryFields, INDUSTRY_EDITABLE_FIELDS, type IndustryEditableField } from "@/lib/industry-content-fields";
+import { MAX_INDUSTRY_GALLERY_IMAGES, type IndustryGalleryImage } from "@/lib/industry-image-types";
 
 export const runtime = "nodejs";
 
@@ -44,6 +45,65 @@ function cleanFields(raw: Record<string, unknown>): Partial<Record<IndustryEdita
   return fields;
 }
 
+function cleanGalleryImages(raw: unknown, slug: string): IndustryGalleryImage[] {
+  if (!Array.isArray(raw)) {
+    throw new Error("Gallery images must be provided as a list.");
+  }
+  if (raw.length > MAX_INDUSTRY_GALLERY_IMAGES) {
+    throw new Error("You can add up to " + MAX_INDUSTRY_GALLERY_IMAGES + " images to one industry page.");
+  }
+
+  return raw.map((item, index) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      throw new Error("Gallery image " + (index + 1) + " is invalid.");
+    }
+    const data = item as Record<string, unknown>;
+    const url = typeof data.url === "string" ? data.url.trim() : "";
+    const storagePath = typeof data.storagePath === "string" ? data.storagePath.trim() : "";
+    const altText = typeof data.altText === "string" ? data.altText.trim() : "";
+    const caption = typeof data.caption === "string" ? data.caption.trim() : "";
+
+    let parsedUrl: URL | null = null;
+    try {
+      parsedUrl = new URL(url);
+    } catch {
+      parsedUrl = null;
+    }
+
+    if (
+      !parsedUrl ||
+      parsedUrl.protocol !== "https:" ||
+      parsedUrl.hostname !== "firebasestorage.googleapis.com"
+    ) {
+      throw new Error("Gallery images must use a secure Firebase Storage image URL.");
+    }
+    if (
+      !storagePath.startsWith("industry-pages/" + slug + "/") ||
+      storagePath.includes("..") ||
+      storagePath.length > 512
+    ) {
+      throw new Error("Gallery image storage path is invalid for this industry page.");
+    }
+    if (!altText || altText.length > 180) {
+      throw new Error("Every gallery image needs descriptive alt text of 180 characters or less.");
+    }
+    if (caption.length > 250) {
+      throw new Error("Image captions must be 250 characters or less.");
+    }
+
+    return { url, storagePath, altText, caption };
+  });
+}
+
+function readGalleryImages(raw: unknown, slug: string): IndustryGalleryImage[] {
+  if (!Array.isArray(raw)) return [];
+  try {
+    return cleanGalleryImages(raw.slice(0, MAX_INDUSTRY_GALLERY_IMAGES), slug);
+  } catch {
+    return [];
+  }
+}
+
 export async function GET(request: NextRequest) {
   if (!(await requireAdmin(request))) {
     return NextResponse.json({ error: "Administrator access required." }, { status: 401 });
@@ -52,7 +112,10 @@ export async function GET(request: NextRequest) {
   try {
     const snapshot = await adminDb.collection("industryPageOverrides").get();
     const validSlugs = new Set(INDUSTRIES.map((industry) => industry.slug));
-    const overrides: Record<string, Partial<Record<IndustryEditableField, string>>> = {};
+    const overrides: Record<string, {
+      fields: Partial<Record<IndustryEditableField, string>>;
+      images: IndustryGalleryImage[];
+    }> = {};
 
     snapshot.docs.forEach((document) => {
       if (!validSlugs.has(document.id)) return;
@@ -61,11 +124,15 @@ export async function GET(request: NextRequest) {
       for (const field of INDUSTRY_EDITABLE_FIELDS) {
         if (typeof data[field] === "string") safe[field] = data[field];
       }
-      overrides[document.id] = safe;
+      overrides[document.id] = {
+        fields: safe,
+        images: readGalleryImages(data.images, document.id),
+      };
     });
 
     const industries = INDUSTRIES.map((base) => {
-      const merged = { ...base, ...(overrides[base.slug] || {}) } as Industry;
+      const override = overrides[base.slug];
+      const merged = { ...base, ...(override?.fields || {}) } as Industry;
       return {
         slug: base.slug,
         name: base.name,
@@ -73,13 +140,14 @@ export async function GET(request: NextRequest) {
         icon: base.icon,
         summary: base.summary,
         fields: getEditableIndustryFields(merged),
+        images: override?.images || [],
         wordCount: countIndustryWords(merged),
-        hasCustomContent: Boolean(overrides[base.slug]),
+        hasCustomContent: Boolean(override),
       };
     });
 
     return NextResponse.json({ success: true, industries });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[industry-pages GET]", error);
     return NextResponse.json({ error: "Industry content could not be loaded." }, { status: 500 });
   }
@@ -112,22 +180,35 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    await adminDb.collection("industryPageOverrides").doc(slug).set({
+    const overrideRef = adminDb.collection("industryPageOverrides").doc(slug);
+    const previousSnapshot = await overrideRef.get();
+    const previousData = previousSnapshot.data() || {};
+    const images = Object.prototype.hasOwnProperty.call(payload, "images")
+      ? cleanGalleryImages(payload.images, slug)
+      : readGalleryImages(previousData.images, slug);
+
+    await overrideRef.set({
       ...fields,
+      images,
       updatedAt: FieldValue.serverTimestamp(),
       updatedBy: adminEmail,
     }, { merge: true });
 
     revalidatePath("/industries/" + slug);
     revalidatePath("/industries");
-    return NextResponse.json({ success: true, slug, wordCount });
-  } catch (error: any) {
-    const message = error?.message || "";
-    const status = /characters|at least 30|content fields are required/i.test(message) ? 400 : 500;
-    if (status === 500) console.error("[industry-pages POST]", error);
     return NextResponse.json({
-      error: status === 400 ? message : "Industry content could not be saved.",
-    }, { status });
+      success: true,
+      slug,
+      wordCount,
+      imageCount: images.length,
+    });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "";
+    const isValidationError = /characters|at least 30|content fields are required|gallery images|up to \d+ images|gallery image|alt text|captions|secure Firebase Storage/i.test(message);
+    if (!isValidationError) console.error("[industry-pages POST]", error);
+    return NextResponse.json({
+      error: isValidationError ? message : "Industry content could not be saved.",
+    }, { status: isValidationError ? 400 : 500 });
   }
 }
 
