@@ -16,6 +16,7 @@ import {
   Quote,
   CircleHelp,
   Layers,
+  Images,
 } from "lucide-react";
 import {
   Sidebar,
@@ -47,7 +48,8 @@ export type AdminTab =
   | "navigation"
   | "testimonials"
   | "faqs"
-  | "industries";
+  | "industries"
+  | "mobile-posters";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -68,6 +70,7 @@ const groups = [
     label: "Content",
     items: [
       { id: "blogs", label: "Blogs", icon: FileText },
+      { id: "mobile-posters", label: "Mobile Posters", icon: Images },
       { id: "industries", label: "Industry Pages", icon: Layers },
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
