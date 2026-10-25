@@ -2,6 +2,7 @@
 
 import { type TransitionEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { MobilePoster } from "@/lib/mobile-posters-types";
 
@@ -124,11 +125,12 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
                   aria-hidden={slideIndex === activeIndex ? undefined : true}
                 >
                   <div className="relative aspect-[4/5] w-full overflow-hidden">
-                    <img
+                    <Image
                       src={poster.imageUrl}
                       alt={poster.imageAlt}
-                      loading={slideIndex <= 1 ? "eager" : "lazy"}
-                      decoding="async"
+                      fill
+                      sizes="(max-width: 767px) 100vw, 1px"
+                      priority={slideIndex === (posters.length > 1 ? 1 : 0)}
                       draggable={false}
                       className="absolute inset-0 h-full w-full select-none object-cover"
                     />
