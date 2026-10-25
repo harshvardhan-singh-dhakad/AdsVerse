@@ -17,6 +17,7 @@ import { NavigationSettings } from "./NavigationSettings";
 import { TestimonialsTable } from "./TestimonialsTable";
 import { FaqTable } from "./FaqTable";
 import { IndustryContentManager } from "./IndustryContentManager";
+import { MobilePostersManager } from "./MobilePostersManager";
 
 interface AdminDashboardProps {
   activeTab: AdminTab;
@@ -50,6 +51,8 @@ export function AdminDashboard({ activeTab }: AdminDashboardProps) {
       return <BlogTable />;
     case "industries":
       return <IndustryContentManager />;
+    case "mobile-posters":
+      return <MobilePostersManager />;
     case "brand":
       return <BrandSettings />;
     case "navigation":
