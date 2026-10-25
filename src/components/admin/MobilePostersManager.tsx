@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { type ChangeEvent, type FormEvent, useCallback, useEffect, useState } from "react";
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useStorage } from "@/firebase";
 import type { MobilePoster } from "@/lib/mobile-posters-types";
@@ -113,7 +113,7 @@ export function MobilePostersManager() {
     setEditorOpen(true);
   };
 
-  const chooseImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const chooseImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setFormError("");
     if (!file) {
@@ -154,7 +154,7 @@ export function MobilePostersManager() {
     );
   });
 
-  const saveDraft = async (event: React.FormEvent<HTMLFormElement>) => {
+  const saveDraft = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (saving) return;
 
