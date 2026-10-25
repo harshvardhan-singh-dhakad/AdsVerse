@@ -3,12 +3,11 @@ import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPublicServices } from "@/lib/service-catalog";
-import { getBrandSettings } from "@/lib/brand-settings";
-import type { BrandSettings } from "@/lib/brand-defaults";
+import { DEFAULT_BRAND, type BrandSettings } from "@/lib/brand-defaults";
 
 const ContactForm = dynamic(
   () => import("@/components/pages/contact-form").then((mod) => mod.ContactForm),
@@ -17,17 +16,13 @@ const ContactForm = dynamic(
 
 import { MapIframe } from "@/components/pages/map-iframe";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const brand = await getBrandSettings();
-
-  return {
-    title: { absolute: `Contact ${brand.siteName} — Free Audit & Consultation` },
-    description: `Contact ${brand.siteName} for a free SEO audit & AI consultation. Call ${brand.phone} or message our automation experts to scale your business.`,
-    alternates: {
-      canonical: "https://adsverse.in/contact",
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: { absolute: "Contact AdsVerse — Free Audit & Consultation" },
+  description: "Contact AdsVerse for a free SEO audit and AI consultation. Call +91 96851 23339 or message our automation experts to scale your business.",
+  alternates: {
+    canonical: "https://adsverse.in/contact",
+  },
+};
 
 const buildContactJsonLd = (brand: BrandSettings) => ({
   "@context": "https://schema.org",
@@ -81,10 +76,8 @@ export default async function ContactPage({
 }: {
   searchParams?: { service?: string; plan?: string };
 }) {
-  const [services, brand] = await Promise.all([
-    getPublicServices(),
-    getBrandSettings(),
-  ]);
+  const services = await getPublicServices();
+  const brand = DEFAULT_BRAND;
   const serviceOptions = Array.from(new Set(services.map((service) => service.name).filter(Boolean)));
   const jsonLd = buildContactJsonLd(brand);
 
