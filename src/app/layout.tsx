@@ -3,17 +3,10 @@ import { Plus_Jakarta_Sans, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-import { FloatingActionButton } from "@/components/layout/floating-action-button";
 import { ThemeProvider } from "@/components/layout/theme-provider";
-import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import dynamic from "next/dynamic";
-const WebMCPProvider = dynamic(() => import("@/components/webmcp/WebMCPProvider"), { ssr: false });
-import { ScriptOptimizer } from "@/components/layout/ScriptOptimizer";
-import { adminDb } from "@/firebase/admin";
 import { DEFAULT_BRAND } from "@/lib/brand-defaults";
 import { DEFAULT_NAVIGATION_LINKS } from "@/lib/navigation-defaults";
+import { PublicSiteChrome } from "@/components/layout/PublicSiteChrome";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -249,31 +242,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { cache } from 'react';
-
-const getLatestPosts = cache(async () => {
-  try {
-    const now = new Date().toISOString();
-    const snap = await adminDb.collection("public_blogPosts")
-      .where("publishedDate", "<=", now)
-      .orderBy("publishedDate", "desc")
-      .limit(2)
-      .get();
-      
-    return snap.docs.map(doc => ({
-      id: doc.id,
-      title: doc.data().title || "",
-      slug: doc.data().slug || "",
-      imageUrl: doc.data().imageUrl || "/images/og-adsverse-2026.png",
-      category: doc.data().category || "",
-      publishedDate: doc.data().publishedDate || "",
-    }));
-  } catch (error) {
-    console.error("Failed to load latest posts:", error);
-    return [];
-  }
-});
-
 const webMcpManifest = {
   name: "AdsVerse WebMCP Agent Protocol",
   version: "1.0.0",
@@ -405,15 +373,12 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative z-10 min-h-screen flex flex-col">
-            <BackgroundEffects />
-            <Header navLinks={navLinks} latestPosts={await getLatestPosts()} brand={brand} />
-            <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
-              {children}
-            </main>
-            <Footer brand={brand} />
-            <FloatingActionButton />
+            <PublicSiteChrome navLinks={navLinks} brand={brand}>
+              <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
+                {children}
+              </main>
+            </PublicSiteChrome>
             <Toaster />
-            <WebMCPProvider />
           </div>
         </ThemeProvider>
       </body>
