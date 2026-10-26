@@ -6,6 +6,7 @@ import { ADMIN_EMAILS } from "@/lib/admin-auth";
 import { countIndustryWords, getIndustryBySlug, INDUSTRIES, type Industry } from "@/lib/industries";
 import { getEditableIndustryFields, INDUSTRY_EDITABLE_FIELDS, type IndustryEditableField } from "@/lib/industry-content-fields";
 import { MAX_INDUSTRY_GALLERY_IMAGES, type IndustryGalleryImage } from "@/lib/industry-image-types";
+import { getIndustryStaticImage } from "@/lib/industry-static-images";
 
 export const runtime = "nodejs";
 
@@ -141,6 +142,7 @@ export async function GET(request: NextRequest) {
         summary: base.summary,
         fields: getEditableIndustryFields(merged),
         images: override?.images || [],
+        defaultImage: getIndustryStaticImage(base.slug) || null,
         wordCount: countIndustryWords(merged),
         hasCustomContent: Boolean(override),
       };

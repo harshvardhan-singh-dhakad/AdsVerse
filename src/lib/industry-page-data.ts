@@ -5,6 +5,7 @@ import { adminDb } from "@/firebase/admin";
 import { getIndustryBySlug, type Industry } from "@/lib/industries";
 import { INDUSTRY_EDITABLE_FIELDS } from "@/lib/industry-content-fields";
 import { MAX_INDUSTRY_GALLERY_IMAGES, type IndustryGalleryImage } from "@/lib/industry-image-types";
+import { getIndustryStaticImage } from "@/lib/industry-static-images";
 
 export type IndustryPageContent = Industry & {
   images: IndustryGalleryImage[];
@@ -48,12 +49,15 @@ export const getIndustryPageData = cache(async (slug: string): Promise<IndustryP
   const base = getIndustryBySlug(slug);
   if (!base) return undefined;
 
+  const defaultImage = getIndustryStaticImage(base.slug);
+
   try {
     const snapshot = await adminDb.collection("industryPageOverrides").doc(base.slug).get();
-    if (!snapshot.exists) return { ...base, images: [] };
+    if (!snapshot.exists) return { ...base, images: defaultImage ? [defaultImage] : [] };
 
     const stored = snapshot.data() || {};
-    const merged = { ...base, images: readGalleryImages(stored.images, base.slug) } as IndustryPageContent;
+    const customImages = readGalleryImages(stored.images, base.slug);
+    const merged = { ...base, images: customImages.length > 0 ? customImages : defaultImage ? [defaultImage] : [] } as IndustryPageContent;
     for (const field of INDUSTRY_EDITABLE_FIELDS) {
       if (typeof stored[field] === "string") {
         merged[field] = stored[field] as never;
@@ -64,6 +68,6 @@ export const getIndustryPageData = cache(async (slug: string): Promise<IndustryP
     return merged;
   } catch (error) {
     console.warn("[industry-page-data] Using code defaults for " + base.slug, error);
-    return { ...base, images: [] };
+    return { ...base, images: defaultImage ? [defaultImage] : [] };
   }
 });

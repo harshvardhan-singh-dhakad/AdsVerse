@@ -20,6 +20,7 @@ type IndustryRow = {
   summary: string;
   fields: Record<IndustryEditableField, string>;
   images: IndustryGalleryImage[];
+  defaultImage: IndustryGalleryImage | null;
   wordCount: number;
   hasCustomContent: boolean;
 };
@@ -116,7 +117,7 @@ export function IndustryContentManager() {
       if (!response.ok || !payload.industries) {
         throw new Error(payload.error || "Could not load industry pages.");
       }
-      setIndustries(payload.industries.map((item) => ({ ...item, images: item.images || [] })));
+      setIndustries(payload.industries.map((item) => ({ ...item, images: item.images || [], defaultImage: item.defaultImage || null })));
       setSelectedSlug((current) =>
         payload.industries!.some((item) => item.slug === current)
           ? current
@@ -464,6 +465,29 @@ export function IndustryContentManager() {
                 </div>
                 <span className="inline-flex shrink-0 items-center rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs font-bold">{galleryDraft.length}/{MAX_INDUSTRY_GALLERY_IMAGES} images</span>
               </div>
+
+              {selected.defaultImage && (
+                <article className="grid gap-4 rounded-2xl border border-blue-500/20 bg-blue-500/[0.035] p-3 sm:grid-cols-[180px_minmax(0,1fr)]">
+                  <div className="overflow-hidden rounded-xl bg-muted">
+                    <img
+                      src={selected.defaultImage.url}
+                      alt={selected.defaultImage.altText}
+                      className="aspect-[4/3] h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="min-w-0 space-y-2">
+                    <p className="text-sm font-bold">Built-in industry image</p>
+                    <p className="text-xs leading-5 text-muted-foreground">
+                      {selected.images.length > 0
+                        ? "A custom gallery is currently shown on the public page. This built-in image remains the fallback."
+                        : "This image is currently used on the public industry page. Upload and save a custom gallery below to replace it."}
+                    </p>
+                    <p className="text-xs"><span className="font-semibold">Alt text:</span> {selected.defaultImage.altText}</p>
+                    {selected.defaultImage.caption && <p className="text-xs"><span className="font-semibold">Caption:</span> {selected.defaultImage.caption}</p>}
+                  </div>
+                </article>
+              )}
 
               <label htmlFor="industry-gallery-upload" className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-orange-500/40 bg-orange-500/[0.04] px-5 py-6 text-center transition hover:border-orange-500 hover:bg-orange-500/[0.08]">
                 <UploadCloud className="h-8 w-8 text-orange-500" />

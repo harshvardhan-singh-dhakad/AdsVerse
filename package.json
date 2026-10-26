@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "predev": "node scripts/prepare-industry-assets.mjs",
+    "prebuild": "node scripts/prepare-industry-assets.mjs"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.8",
