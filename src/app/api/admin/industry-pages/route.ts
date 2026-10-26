@@ -116,6 +116,7 @@ export async function GET(request: NextRequest) {
     const overrides: Record<string, {
       fields: Partial<Record<IndustryEditableField, string>>;
       images: IndustryGalleryImage[];
+      useCustomImages: boolean;
     }> = {};
 
     snapshot.docs.forEach((document) => {
@@ -128,6 +129,7 @@ export async function GET(request: NextRequest) {
       overrides[document.id] = {
         fields: safe,
         images: readGalleryImages(data.images, document.id),
+        useCustomImages: data.useCustomImages === true,
       };
     });
 
@@ -141,7 +143,9 @@ export async function GET(request: NextRequest) {
         icon: base.icon,
         summary: base.summary,
         fields: getEditableIndustryFields(merged),
-        images: override?.images || [],
+        images: override?.useCustomImages ? override.images : [],
+        storedImages: override?.images || [],
+        useCustomImages: override?.useCustomImages === true,
         defaultImage: getIndustryStaticImage(base.slug) || null,
         wordCount: countIndustryWords(merged),
         hasCustomContent: Boolean(override),
@@ -185,13 +189,18 @@ export async function POST(request: NextRequest) {
     const overrideRef = adminDb.collection("industryPageOverrides").doc(slug);
     const previousSnapshot = await overrideRef.get();
     const previousData = previousSnapshot.data() || {};
-    const images = Object.prototype.hasOwnProperty.call(payload, "images")
+    const hasImagesPayload = Object.prototype.hasOwnProperty.call(payload, "images");
+    const images = hasImagesPayload
       ? cleanGalleryImages(payload.images, slug)
       : readGalleryImages(previousData.images, slug);
+    const useCustomImages = hasImagesPayload
+      ? images.length > 0
+      : previousData.useCustomImages === true && images.length > 0;
 
     await overrideRef.set({
       ...fields,
       images,
+      useCustomImages,
       updatedAt: FieldValue.serverTimestamp(),
       updatedBy: adminEmail,
     }, { merge: true });
@@ -203,6 +212,7 @@ export async function POST(request: NextRequest) {
       slug,
       wordCount,
       imageCount: images.length,
+      useCustomImages,
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "";

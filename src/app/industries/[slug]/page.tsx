@@ -132,37 +132,51 @@ export default async function IndustryDetailPage({ params }: Props) {
 
       {industry.images.length > 0 && (
         <section aria-label={"Image gallery for " + industry.name} className="container mx-auto px-4 pb-12 md:pb-16">
-          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">Industry Gallery</p>
-              <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white md:text-3xl">
-                A closer look at {industry.name}
-              </h2>
+          <div className={industry.images.length === 1 ? "mx-auto w-full max-w-5xl" : ""}>
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">Industry Gallery</p>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white md:text-3xl">
+                  A closer look at {industry.name}
+                </h2>
+              </div>
+              <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-bold text-muted-foreground">
+                {industry.images.length} {industry.images.length === 1 ? "image" : "images"}
+              </span>
             </div>
-            <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1.5 text-xs font-bold text-muted-foreground">
-              {industry.images.length} {industry.images.length === 1 ? "image" : "images"}
-            </span>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {industry.images.map((galleryImage) => (
-              <figure key={galleryImage.storagePath} className="group overflow-hidden rounded-2xl border border-border/70 bg-card/50 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-orange-500/35 hover:shadow-xl">
-                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                  <Image
-                    src={galleryImage.url}
-                    alt={galleryImage.altText}
-                    fill
-                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                    loading="lazy"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                {galleryImage.caption ? (
-                  <figcaption className="px-4 py-3 text-sm leading-6 text-muted-foreground">
-                    {galleryImage.caption}
-                  </figcaption>
-                ) : null}
-              </figure>
-            ))}
+            <div className={
+              industry.images.length === 1
+                ? "grid grid-cols-1 gap-4"
+                : industry.images.length === 2
+                  ? "mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 md:grid-cols-2"
+                  : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            }>
+              {industry.images.map((galleryImage) => (
+                <figure key={galleryImage.storagePath} className="group overflow-hidden rounded-2xl border border-border/70 bg-card/50 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-orange-500/35 hover:shadow-xl">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    <Image
+                      src={galleryImage.url}
+                      alt={galleryImage.altText}
+                      fill
+                      sizes={
+                        industry.images.length === 1
+                          ? "(max-width: 1023px) 100vw, 1024px"
+                          : industry.images.length === 2
+                            ? "(max-width: 767px) 100vw, 50vw"
+                            : "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                      }
+                      loading="lazy"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  {galleryImage.caption ? (
+                    <figcaption className="px-4 py-3 text-sm leading-6 text-muted-foreground">
+                      {galleryImage.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
       )}

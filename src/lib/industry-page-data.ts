@@ -56,7 +56,10 @@ export const getIndustryPageData = cache(async (slug: string): Promise<IndustryP
     if (!snapshot.exists) return { ...base, images: defaultImage ? [defaultImage] : [] };
 
     const stored = snapshot.data() || {};
-    const customImages = readGalleryImages(stored.images, base.slug);
+    // Only galleries explicitly saved as active in the CMS override the slug-specific default.
+    // Older gallery records have no flag and may contain incorrectly reused images, so they
+    // safely fall back to the unique image mapped to this industry's slug.
+    const customImages = stored.useCustomImages === true ? readGalleryImages(stored.images, base.slug) : [];
     const merged = { ...base, images: customImages.length > 0 ? customImages : defaultImage ? [defaultImage] : [] } as IndustryPageContent;
     for (const field of INDUSTRY_EDITABLE_FIELDS) {
       if (typeof stored[field] === "string") {

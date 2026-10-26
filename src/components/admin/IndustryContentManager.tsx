@@ -20,6 +20,8 @@ type IndustryRow = {
   summary: string;
   fields: Record<IndustryEditableField, string>;
   images: IndustryGalleryImage[];
+  storedImages: IndustryGalleryImage[];
+  useCustomImages: boolean;
   defaultImage: IndustryGalleryImage | null;
   wordCount: number;
   hasCustomContent: boolean;
@@ -117,7 +119,7 @@ export function IndustryContentManager() {
       if (!response.ok || !payload.industries) {
         throw new Error(payload.error || "Could not load industry pages.");
       }
-      setIndustries(payload.industries.map((item) => ({ ...item, images: item.images || [], defaultImage: item.defaultImage || null })));
+      setIndustries(payload.industries.map((item) => ({ ...item, images: item.images || [], storedImages: item.storedImages || item.images || [], useCustomImages: item.useCustomImages === true, defaultImage: item.defaultImage || null })));
       setSelectedSlug((current) =>
         payload.industries!.some((item) => item.slug === current)
           ? current
@@ -306,7 +308,7 @@ export function IndustryContentManager() {
       if (!response.ok) throw new Error(payload.error || "Could not save industry content.");
 
       const retainedPaths = new Set(savedImages.map((image) => image.storagePath));
-      await Promise.all((selected.images || [])
+      await Promise.all((selected.storedImages || selected.images || [])
         .filter((image) => image.storagePath && !retainedPaths.has(image.storagePath))
         .map((image) => deleteObject(ref(storage, image.storagePath)).catch(() => undefined)));
 
@@ -332,6 +334,44 @@ export function IndustryContentManager() {
     }
   };
 
+  const restoreDefaultImage = async () => {
+    if (!selected || !selected.defaultImage || saving || resetting) return;
+
+    if (isDirty && !window.confirm("Discard unsaved text or image edits and use the built-in image for " + selected.name + "?")) return;
+    if (!window.confirm("Remove the saved custom gallery for " + selected.name + " and show its built-in industry image? Your last-saved text will be kept.")) return;
+
+    setResetting(true);
+    setGalleryError("");
+    try {
+      const response = await fetch("/api/admin/industry-pages", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: selected.slug, fields: selected.fields, images: [] }),
+      });
+      const payload = (await response.json()) as ApiResponse;
+      if (!response.ok) throw new Error(payload.error || "Could not restore the built-in industry image.");
+
+      releasePreviews(galleryDraft);
+      await Promise.all((selected.storedImages || selected.images || [])
+        .filter((image) => image.storagePath)
+        .map((image) => deleteObject(ref(storage, image.storagePath)).catch(() => undefined)));
+
+      toast({ title: "Default industry image restored", description: "The industry-specific default image is active. Saved text was kept." });
+      setGalleryDraft([]);
+      setDraft(null);
+      await loadIndustries();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Could not restore default image",
+        description: error instanceof Error ? error.message : "Please try again.",
+      });
+    } finally {
+      setResetting(false);
+    }
+  };
+
   const reset = async () => {
     if (!selected) return;
     if (isDirty && !window.confirm("Reset " + selected.name + " and discard all unsaved edits?")) return;
@@ -346,7 +386,7 @@ export function IndustryContentManager() {
       if (!response.ok) throw new Error(payload.error || "Could not reset industry content.");
 
       releasePreviews(galleryDraft);
-      await Promise.all((selected.images || [])
+      await Promise.all((selected.storedImages || selected.images || [])
         .filter((image) => image.storagePath)
         .map((image) => deleteObject(ref(storage, image.storagePath)).catch(() => undefined)));
 
@@ -461,7 +501,7 @@ export function IndustryContentManager() {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h4 id="industry-gallery-title" className="flex items-center gap-2 text-lg font-black"><ImagePlus className="h-5 w-5 text-orange-500" /> Industry image gallery</h4>
-                  <p className="mt-1 text-sm leading-6 text-muted-foreground">Upload multiple relevant images for this industry page. Images appear below the page hero; use authentic, licensed images and descriptive alt text.</p>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">Choose an industry on the left, upload its own image(s), edit alt text and caption, then select Save Changes. A custom gallery replaces the built-in default for this industry only.</p>
                 </div>
                 <span className="inline-flex shrink-0 items-center rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs font-bold">{galleryDraft.length}/{MAX_INDUSTRY_GALLERY_IMAGES} images</span>
               </div>
@@ -479,20 +519,33 @@ export function IndustryContentManager() {
                   <div className="min-w-0 space-y-2">
                     <p className="text-sm font-bold">Built-in industry image</p>
                     <p className="text-xs leading-5 text-muted-foreground">
-                      {selected.images.length > 0
-                        ? "A custom gallery is currently shown on the public page. This built-in image remains the fallback."
-                        : "This image is currently used on the public industry page. Upload and save a custom gallery below to replace it."}
+                      {selected.useCustomImages && selected.images.length > 0
+                        ? "A custom gallery is currently active on the public page. Use the button below to restore this industry-specific default."
+                        : "This industry-specific image is currently used on the public page. Upload and save a custom gallery below to replace it."}
                     </p>
                     <p className="text-xs"><span className="font-semibold">Alt text:</span> {selected.defaultImage.altText}</p>
                     {selected.defaultImage.caption && <p className="text-xs"><span className="font-semibold">Caption:</span> {selected.defaultImage.caption}</p>}
+                    {(selected.useCustomImages || selected.storedImages.length > 0) && (
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="mt-2"
+                        onClick={restoreDefaultImage}
+                        disabled={saving || resetting}
+                      >
+                        {resetting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RotateCcw className="mr-2 h-4 w-4" />}
+                        Use default image
+                      </Button>
+                    )}
                   </div>
                 </article>
               )}
 
               <label htmlFor="industry-gallery-upload" className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-orange-500/40 bg-orange-500/[0.04] px-5 py-6 text-center transition hover:border-orange-500 hover:bg-orange-500/[0.08]">
                 <UploadCloud className="h-8 w-8 text-orange-500" />
-                <span className="font-bold text-foreground">Choose multiple images</span>
-                <span className="text-xs text-muted-foreground">JPG, PNG, WebP, AVIF or GIF · under 10 MB each · up to {MAX_INDUSTRY_GALLERY_IMAGES} images per page</span>
+                <span className="font-bold text-foreground">Choose image(s) for {selected.name}</span>
+                <span className="text-xs text-muted-foreground">JPG, PNG, WebP, AVIF or GIF · under 10 MB each · up to {MAX_INDUSTRY_GALLERY_IMAGES} images. Recommended: WebP, 1200 × 900 px (4:3).</span>
                 <input id="industry-gallery-upload" className="sr-only" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/gif" multiple onChange={chooseImages} disabled={saving || resetting || galleryDraft.length >= MAX_INDUSTRY_GALLERY_IMAGES} />
               </label>
 
