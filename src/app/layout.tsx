@@ -365,7 +365,6 @@ export default async function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        <ScriptOptimizer />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
