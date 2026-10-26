@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -74,6 +74,12 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
       .catch(() => setLatestPostsLoaded(true))
       .finally(() => setIsLoadingLatestPosts(false));
   };
+
+  // Keep featured links fresh for visitors and JS-rendering crawlers, but never
+  // block initial page HTML or request blog data on admin routes.
+  useEffect(() => {
+    loadLatestPosts();
+  }, []);
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -252,8 +258,6 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                   <Link
                     href={href}
                     prefetch={false}
-                    onMouseEnter={loadLatestPosts}
-                    onFocus={loadLatestPosts}
                     className={cn(
                       "text-sm font-medium transition-colors hover:text-primary flex items-center",
                       pathname === href || pathname?.startsWith("/blog")
