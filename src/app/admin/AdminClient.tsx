@@ -25,30 +25,19 @@ export default function AdminPage() {
 
       user.getIdToken().then(async (token) => {
         try {
-          const res = await fetch("/api/auth/sync-user", {
+          // This endpoint verifies administrator access itself and creates the
+          // HttpOnly session cookie, so an extra sequential sync-user request
+          // is unnecessary on every admin dashboard visit.
+          const sessionRes = await fetch("/api/auth/admin-session", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idToken: token }),
           });
-          if (!res.ok) {
+          if (!sessionRes.ok) {
             throw new Error("Could not verify administrator access");
           }
-          const data = await res.json();
-          if (data?.user?.role === "admin") {
-            const sessionRes = await fetch("/api/auth/admin-session", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ idToken: token }),
-            });
-            if (!sessionRes.ok) {
-              throw new Error("Could not establish administrator session");
-            }
-            Cookies.remove("admin_token");
-            setIsAuthorized(true);
-          } else {
-            setIsAuthorized(false);
-            window.location.href = "/tools/seo-audit";
-          }
+          Cookies.remove("admin_token");
+          setIsAuthorized(true);
         } catch (err) {
           console.warn("Admin verification failed:", err);
           setIsAuthorized(false);
