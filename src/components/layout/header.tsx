@@ -49,13 +49,36 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
   const activeNavLinks = navLinks;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
+  const [resolvedLatestPosts, setResolvedLatestPosts] = useState(latestPosts);
+  const [latestPostsLoaded, setLatestPostsLoaded] = useState(latestPosts.length >= 2);
+  const [isLoadingLatestPosts, setIsLoadingLatestPosts] = useState(false);
+
+  const isAdminPath = pathname?.startsWith("/admin");
+
+  const loadLatestPosts = () => {
+    if (isAdminPath || latestPostsLoaded || isLoadingLatestPosts) return;
+
+    setIsLoadingLatestPosts(true);
+    fetch("/api/public/latest-blog-posts", {
+      headers: { Accept: "application/json" },
+      cache: "force-cache",
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Could not load featured articles.");
+        const data = await response.json();
+        if (Array.isArray(data?.posts)) {
+          setResolvedLatestPosts(data.posts);
+        }
+        setLatestPostsLoaded(true);
+      })
+      .catch(() => setLatestPostsLoaded(true))
+      .finally(() => setIsLoadingLatestPosts(false));
+  };
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setOpenMobileSection(null);
   };
-
-  const isAdminPath = pathname?.includes('/admin');
 
   if (isAdminPath) return null;
 
@@ -222,13 +245,15 @@ export function Header({ navLinks, latestPosts = [], brand }: HeaderProps) {
                 }
               ];
 
-              const displayPosts = latestPosts && latestPosts.length >= 2 ? latestPosts.slice(0, 2) : fallbackPosts;
+              const displayPosts = resolvedLatestPosts.length >= 2 ? resolvedLatestPosts.slice(0, 2) : fallbackPosts;
 
               return (
                 <div key={href} className="group relative py-3">
                   <Link
                     href={href}
                     prefetch={false}
+                    onMouseEnter={loadLatestPosts}
+                    onFocus={loadLatestPosts}
                     className={cn(
                       "text-sm font-medium transition-colors hover:text-primary flex items-center",
                       pathname === href || pathname?.startsWith("/blog")
