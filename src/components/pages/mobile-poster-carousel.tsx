@@ -125,41 +125,49 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
                   aria-hidden={slideIndex === activeIndex ? undefined : true}
                 >
                   <div className="relative aspect-[16/9] w-full overflow-hidden">
-                    <Image
-                      src={poster.imageUrl}
-                      alt={poster.imageAlt}
-                      fill
-                      sizes="(max-width: 767px) 100vw, (max-width: 1536px) 96vw, 1440px"
-                      priority={slideIndex === (posters.length > 1 ? 1 : 0)}
-                      draggable={false}
-                      className="absolute inset-0 h-full w-full select-none object-cover"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent px-4 pb-3 pt-12 sm:px-7 sm:pb-6 sm:pt-20 md:px-10 md:pb-8">
-                      {poster.title ? (
-                        <p className="mb-3 line-clamp-2 text-lg font-extrabold leading-tight text-white drop-shadow sm:text-xl">
-                          {poster.title}
-                        </p>
-                      ) : null}
-                      {isExternal ? (
-                        <a
-                          href={poster.targetUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          tabIndex={slideIndex === activeIndex ? 0 : -1}
-                          className="group inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 sm:min-h-11 sm:px-4 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-                        >
-                          {cta}
-                        </a>
-                      ) : (
-                        <Link
-                          href={poster.targetUrl}
-                          tabIndex={slideIndex === activeIndex ? 0 : -1}
-                          className="group inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 sm:min-h-11 sm:px-4 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-                        >
-                          {cta}
-                        </Link>
-                      )}
-                    </div>
+                    {isExternal ? (
+                      <a
+                        href={poster.targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={slideIndex === activeIndex ? 0 : -1}
+                        aria-label={poster.title ? "Open " + poster.title : "Open featured AdsVerse poster"}
+                        className="group absolute inset-0 block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-orange-400"
+                      >
+                        <Image
+                          src={poster.imageUrl}
+                          alt={poster.imageAlt}
+                          fill
+                          sizes="(max-width: 767px) 100vw, (max-width: 1536px) 96vw, 1440px"
+                          priority={slideIndex === (posters.length > 1 ? 1 : 0)}
+                          draggable={false}
+                          className="absolute inset-0 h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+                        />
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-slate-950/75 px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur sm:bottom-5 sm:right-5">
+                          Digital Marketing <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        href={poster.targetUrl}
+                        tabIndex={slideIndex === activeIndex ? 0 : -1}
+                        aria-label={poster.title ? "Open " + poster.title : "Open featured AdsVerse poster"}
+                        className="group absolute inset-0 block focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-orange-400"
+                      >
+                        <Image
+                          src={poster.imageUrl}
+                          alt={poster.imageAlt}
+                          fill
+                          sizes="(max-width: 767px) 100vw, (max-width: 1536px) 96vw, 1440px"
+                          priority={slideIndex === (posters.length > 1 ? 1 : 0)}
+                          draggable={false}
+                          className="absolute inset-0 h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+                        />
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-slate-950/75 px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur sm:bottom-5 sm:right-5">
+                          Digital Marketing <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </span>
+                      </Link>
+                    )}
                   </div>
                 </article>
               );
