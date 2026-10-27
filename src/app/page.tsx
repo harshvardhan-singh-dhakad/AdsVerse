@@ -183,6 +183,8 @@ export default async function HomePage() {
       />
       {/* Orbit styles moved to globals.css — no inline style injection */}
 
+      <MobilePosterCarousel posters={mobilePosters} />
+
       <div className="relative overflow-hidden">
       
       {/* Hero Section (Full-bleed wrapper) */}
@@ -247,8 +249,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <MobilePosterCarousel posters={mobilePosters} />
 
       {/* Evidence & Results — keep claims tied to real work */}
       <section aria-label="AdsVerse results and case study proof" className="max-w-[1280px] mx-auto px-5 md:px-8 mb-20 md:mb-[160px]">

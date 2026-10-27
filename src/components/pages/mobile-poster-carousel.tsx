@@ -85,11 +85,11 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
   return (
     <section
       aria-label="Featured AdsVerse posters"
-      className="w-full px-4 pb-8 md:hidden"
+      className="w-full px-4 pt-3 pb-6 sm:pt-4 md:pb-8"
     >
-      <div className="mx-auto w-full max-w-md">
+      <div className="mx-auto w-full max-w-[1440px]">
         <div
-          className="relative overflow-hidden rounded-[1.75rem] border border-border/50 bg-slate-950 shadow-[0_14px_45px_rgba(15,23,42,0.18)]"
+          className="relative overflow-hidden rounded-2xl border border-border/50 bg-slate-950 shadow-[0_14px_45px_rgba(15,23,42,0.18)]"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onFocusCapture={() => setFocused(true)}
@@ -124,17 +124,17 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
                   style={{ width: (100 / slides.length) + "%" }}
                   aria-hidden={slideIndex === activeIndex ? undefined : true}
                 >
-                  <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
                     <Image
                       src={poster.imageUrl}
                       alt={poster.imageAlt}
                       fill
-                      sizes="(max-width: 767px) 100vw, 1px"
+                      sizes="(max-width: 767px) 100vw, (max-width: 1536px) 96vw, 1440px"
                       priority={slideIndex === (posters.length > 1 ? 1 : 0)}
                       draggable={false}
                       className="absolute inset-0 h-full w-full select-none object-cover"
                     />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent px-4 pb-4 pt-16 sm:px-5 sm:pb-5">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent px-4 pb-3 pt-12 sm:px-7 sm:pb-6 sm:pt-20 md:px-10 md:pb-8">
                       {poster.title ? (
                         <p className="mb-3 line-clamp-2 text-lg font-extrabold leading-tight text-white drop-shadow sm:text-xl">
                           {poster.title}
@@ -146,7 +146,7 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           tabIndex={slideIndex === activeIndex ? 0 : -1}
-                          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                          className="group inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 sm:min-h-11 sm:px-4 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                         >
                           {cta}
                         </a>
@@ -154,7 +154,7 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
                         <Link
                           href={poster.targetUrl}
                           tabIndex={slideIndex === activeIndex ? 0 : -1}
-                          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                          className="group inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-3 py-2 sm:min-h-11 sm:px-4 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-colors hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                         >
                           {cta}
                         </Link>
