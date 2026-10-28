@@ -15,7 +15,7 @@ const AUTHORS: Record<string, any> = {
     bio: "Deepak Dhakad is the founder of AdsVerse, specializing in AI-driven digital marketing, SEO, and automation systems that help businesses scale efficiently.",
     image: "/images/deepak-dhakad-founder.webp",
     social: {
-      twitter: "https://twitter.com/Adsverse1",
+      twitter: "https://x.com/Adsverse1",
       linkedin: "https://linkedin.com/company/adsverse",
       email: "hello@adsverse.in"
     }

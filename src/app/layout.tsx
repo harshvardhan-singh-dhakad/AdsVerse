@@ -80,8 +80,9 @@ const schemaArray = [
     "sameAs": [
       "https://www.instagram.com/adsverse.ai",
       "https://www.facebook.com/adsverse.in",
-      "https://x.com/Adsverse",
-      "https://www.linkedin.com/company/adsverse"
+      "https://x.com/Adsverse1",
+      "https://www.linkedin.com/company/adsverse",
+      "https://www.youtube.com/@Adsverse_in"
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",

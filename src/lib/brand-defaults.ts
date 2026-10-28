@@ -27,7 +27,7 @@ export const DEFAULT_BRAND: BrandSettings = {
   address: "329/11, Meghdoot Nagar, Indore, Madhya Pradesh - 452011, India",
   instagramUrl: "https://www.instagram.com/adsverse.ai",
   facebookUrl: "https://www.facebook.com/adsverse.in",
-  xUrl: "https://x.com/Adsverse",
+  xUrl: "https://x.com/Adsverse1",
   linkedinUrl: "https://www.linkedin.com/company/adsverse",
   googleBusinessUrl: "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
 };

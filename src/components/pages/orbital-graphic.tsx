@@ -156,7 +156,7 @@ export function OrbitalGraphic() {
         </Link>
         {/* 8: X / Twitter */}
         <Link 
-          href="https://x.com/Adsverse" 
+          href="https://x.com/Adsverse1" 
           target="_blank" 
           rel="noopener noreferrer" 
           aria-label="AdsVerse X Profile" 
@@ -207,7 +207,14 @@ export function OrbitalGraphic() {
           />
         </div>
         {/* 3: YouTube */}
-        <div className="node node-inner" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
+        <Link
+          href="https://www.youtube.com/@Adsverse_in"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="AdsVerse YouTube channel"
+          className="node node-inner"
+          style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}
+        >
           <img
             src={ORBITAL_LOGOS.youtube}
             alt="YouTube Icon"
@@ -217,7 +224,7 @@ export function OrbitalGraphic() {
             loading="lazy"
             decoding="async"
           />
-        </div>
+        </Link>
         {/* 4: Pinterest */}
         <Link 
           href="https://in.pinterest.com/adsverse_in/" 
