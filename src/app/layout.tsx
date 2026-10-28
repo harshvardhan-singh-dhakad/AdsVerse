@@ -78,10 +78,10 @@ const schemaArray = [
     },
     "knowsAbout": ["Search Engine Optimization", "Generative Engine Optimization", "Google Ads", "Meta Ads", "n8n Workflow Automation", "WhatsApp Business API", "CRM Automation"],
     "sameAs": [
-      "https://www.instagram.com/adsverse.ai",
+      "https://www.instagram.com/adsverse_in",
+      "https://www.linkedin.com/company/adsverse",
       "https://www.facebook.com/adsverse.in",
       "https://x.com/Adsverse1",
-      "https://www.linkedin.com/company/adsverse",
       "https://www.youtube.com/@Adsverse_in"
     ],
     "hasOfferCatalog": {
@@ -243,30 +243,6 @@ export const metadata: Metadata = {
   },
 };
 
-const professionalServiceSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Adsverse",
-  "url": "https://adsverse.in",
-  "telephone": "+91-9685123339",
-  "email": "contact@adsverse.in",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Street No 11, House No. 329/11, Meghdoot Nagar, Vijay Nagar",
-    "addressLocality": "Indore",
-    "addressRegion": "MP",
-    "postalCode": "452011",
-    "addressCountry": "IN"
-  },
-  "sameAs": [
-    "https://www.instagram.com/adsverse_in",
-    "https://www.linkedin.com/company/adsverse",
-    "https://www.facebook.com/adsverse.in",
-    "https://x.com/Adsverse1",
-    "https://www.youtube.com/@Adsverse_in"
-  ]
-};
-
 const webMcpManifest = {
   name: "AdsVerse WebMCP Agent Protocol",
   version: "1.0.0",
@@ -317,10 +293,17 @@ export default async function RootLayout({
         telephone: brand.phone,
         email: brand.email,
         slogan: brand.tagline,
-        sameAs: [brand.instagramUrl, brand.facebookUrl, brand.xUrl, brand.linkedinUrl],
+        sameAs: [
+          "https://www.instagram.com/adsverse_in",
+          "https://www.linkedin.com/company/adsverse",
+          "https://www.facebook.com/adsverse.in",
+          "https://x.com/Adsverse1",
+          "https://www.youtube.com/@Adsverse_in",
+        ],
         address: {
           ...item.address,
-          streetAddress: brand.address,
+          streetAddress: "Street No 11, House No. 329/11, Meghdoot Nagar, Vijay Nagar",
+          addressRegion: "MP",
         },
         contactPoint: {
           ...item.contactPoint,
@@ -363,12 +346,6 @@ export default async function RootLayout({
           id="adsverse-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(resolvedSchemaArray) }}
-        />
-        {/* Additional ProfessionalService structured data; keeps the existing organization schemas intact. */}
-        <script
-          id="adsverse-professional-service-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
         />
         {/* WebMCP Tool Manifest Declaration */}
         <script
