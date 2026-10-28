@@ -85,7 +85,7 @@ export function MobilePosterCarousel({ posters }: MobilePosterCarouselProps) {
   return (
     <section
       aria-label="Featured AdsVerse posters"
-      className="w-full px-4 pt-3 pb-6 sm:pt-4 md:pb-8"
+      className="w-full px-4 pt-3 pb-6 sm:pt-4 md:hidden"
     >
       <div className="mx-auto w-full max-w-[1440px]">
         <div

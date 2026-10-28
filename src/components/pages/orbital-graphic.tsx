@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { ORBITAL_LOGOS } from "@/components/pages/orbital-logo-data";
 
 export function OrbitalGraphic() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -32,14 +32,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-google-ads-100.svg"
+          <img
+            src={ORBITAL_LOGOS.googleAds}
             alt="Google Ads Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 2: Meta */}
@@ -51,14 +51,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ top: '15%', right: '15%', transform: 'translate(50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-facebook-100.svg"
+          <img
+            src={ORBITAL_LOGOS.facebook}
             alt="Facebook Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 3: WhatsApp */}
@@ -70,14 +70,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-whatsapp-100.svg"
+          <img
+            src={ORBITAL_LOGOS.whatsapp}
             alt="WhatsApp Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 4: LinkedIn */}
@@ -89,14 +89,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ bottom: '15%', right: '15%', transform: 'translate(50%, 50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-linkedin-100.svg"
+          <img
+            src={ORBITAL_LOGOS.linkedin}
             alt="LinkedIn Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 5: Firebase Console */}
@@ -106,14 +106,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-google-firebase-console-100.svg"
+          <img
+            src={ORBITAL_LOGOS.firebase}
             alt="Firebase Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 6: GitHub */}
@@ -125,14 +125,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ bottom: '15%', left: '15%', transform: 'translate(-50%, 50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-github-100.svg"
+          <img
+            src={ORBITAL_LOGOS.github}
             alt="GitHub Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 7: Instagram */}
@@ -144,14 +144,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-instagram-100.svg"
+          <img
+            src={ORBITAL_LOGOS.instagram}
             alt="Instagram Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 8: X / Twitter */}
@@ -163,14 +163,14 @@ export function OrbitalGraphic() {
           className="node node-outer" 
           style={{ top: '15%', left: '15%', transform: 'translate(-50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-x-100.svg"
+          <img
+            src={ORBITAL_LOGOS.x}
             alt="X/Twitter Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
       </div>
@@ -184,38 +184,38 @@ export function OrbitalGraphic() {
           className="node node-inner" 
           style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-chrome-100.svg"
+          <img
+            src={ORBITAL_LOGOS.chrome}
             alt="Chrome Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
         {/* 2: Telegram */}
         <div className="node node-inner" style={{ top: '50%', right: 0, transform: 'translate(50%, -50%)' }}>
-          <Image
-            src="/images/icons/icons8-telegram-app-100.svg"
+          <img
+            src={ORBITAL_LOGOS.telegram}
             alt="Telegram Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </div>
         {/* 3: YouTube */}
         <div className="node node-inner" style={{ bottom: 0, left: '50%', transform: 'translate(-50%, 50%)' }}>
-          <Image
-            src="/images/icons/icons8-youtube-100.svg"
+          <img
+            src={ORBITAL_LOGOS.youtube}
             alt="YouTube Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </div>
         {/* 4: Pinterest */}
@@ -227,14 +227,14 @@ export function OrbitalGraphic() {
           className="node node-inner" 
           style={{ top: '50%', left: 0, transform: 'translate(-50%, -50%)' }}
         >
-          <Image
-            src="/images/icons/icons8-pinterest-100.svg"
+          <img
+            src={ORBITAL_LOGOS.pinterest}
             alt="Pinterest Icon"
             width={36}
             height={36}
             className="orbit-icon"
-            priority={false}
             loading="lazy"
+            decoding="async"
           />
         </Link>
       </div>
