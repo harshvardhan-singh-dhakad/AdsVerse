@@ -78,7 +78,7 @@ export function Footer({
               <Link href={brand?.linkedinUrl || "https://www.linkedin.com/company/adsverse"} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer nofollow">
                 <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </Link>
-              <Link href={brand?.googleBusinessUrl || "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8"} aria-label="Google Business Profile" target="_blank" rel="noopener noreferrer nofollow">
+              <Link href={brand?.googleBusinessUrl || "https://maps.app.goo.gl/Z9pNkf1FPYjRDsXz5"} aria-label="Google Business Profile" target="_blank" rel="noopener noreferrer nofollow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-muted-foreground hover:text-primary" aria-hidden="true">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>

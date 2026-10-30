@@ -39,7 +39,7 @@ const schemaArray = [
     "url": "https://adsverse.in",
     "logo": "https://adsverse.in/logo.png",
     "image": "https://adsverse.in/og-image.jpg",
-    "hasMap": "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
+    "hasMap": "https://maps.app.goo.gl/Z9pNkf1FPYjRDsXz5",
     "description": "AI-first digital marketing agency in Indore specializing in n8n automation, WhatsApp AI chatbots, Gemini API integrations, CRM automation, SEO, and performance advertising for Indian SMBs.",
     "telephone": "+91-9685123339",
     "email": "contact@adsverse.in",
