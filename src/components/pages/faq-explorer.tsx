@@ -20,7 +20,7 @@ export function FaqExplorer() {
   }, [activeCategory, searchQuery]);
 
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[#080b18] text-white">
+    <div className="relative isolate min-h-screen overflow-hidden bg-[#080b18] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-48 left-1/2 h-[34rem] w-[48rem] -translate-x-1/2 rounded-full bg-violet-700/20 blur-[120px]" />
         <div className="absolute right-[-12rem] top-[35rem] h-[28rem] w-[28rem] rounded-full bg-blue-700/10 blur-[110px]" />
@@ -154,6 +154,6 @@ export function FaqExplorer() {
           <p>AdsVerse · Vijay Nagar / Meghdoot Nagar, Indore · <Link href="/" className="text-slate-300 underline decoration-white/30 underline-offset-4 hover:text-white">adsverse.in</Link></p>
         </footer>
       </div>
-    </main>
+    </div>
   );
 }

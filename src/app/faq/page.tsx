@@ -42,7 +42,7 @@ const faqStructuredData = {
       "email": "contact@adsverse.in",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "329/11, Meghdoot Nagar / Vijay Nagar",
+        "streetAddress": "Street No 11, House No. 329/11, Meghdoot Nagar, Vijay Nagar",
         "addressLocality": "Indore",
         "addressRegion": "Madhya Pradesh",
         "postalCode": "452011",
