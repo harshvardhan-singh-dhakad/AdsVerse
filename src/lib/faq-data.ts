@@ -1,0 +1,230 @@
+export type FaqCategoryId = "seo" | "automation" | "ads" | "web" | "business";
+
+export type FaqItem = {
+  id: string;
+  category: FaqCategoryId;
+  categoryLabel: string;
+  question: string;
+  answer: string;
+};
+
+export const FAQ_CATEGORIES: { id: FaqCategoryId; label: string }[] = [
+  { id: "seo", label: "SEO, AEO & GEO" },
+  { id: "automation", label: "WhatsApp AI & n8n Automation" },
+  { id: "ads", label: "Google & Meta Ads" },
+  { id: "web", label: "Next.js Web Development" },
+  { id: "business", label: "Pricing, Process & Indore Local" },
+];
+
+export const FAQ_ITEMS: FaqItem[] = [
+  {
+    id: "faq-01",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "What is the difference between traditional SEO, AEO, and GEO?",
+    answer: "Traditional SEO helps your website rank in Google's organic search results. Answer Engine Optimization (AEO) structures useful content for direct answers such as Featured Snippets, People Also Ask, and voice search. Generative Engine Optimization (GEO) strengthens your brand entities, citations, and structured data so AI experiences such as Google AI Overviews, ChatGPT, Gemini, and Perplexity can understand and reference your business.",
+  },
+  {
+    id: "faq-02",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "How long does it take to see measurable results from SEO and GEO?",
+    answer: "Technical SEO improvements and Google Business Profile work can show early traction in approximately 30–45 days. Competitive organic rankings and consistent visibility in AI-generated answers generally take 3–6 months to compound. Results depend on your starting point, competition, website quality, and implementation. In the SimplyHerbal campaign cited by AdsVerse, organic traffic increased by 300% over three months.",
+  },
+  {
+    id: "faq-03",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "How does AdsVerse help my business appear in ChatGPT, Perplexity, and Google AI Overviews?",
+    answer: "We build an entity-first content structure, implement relevant JSON-LD structured data such as Organization, LocalBusiness, Service, and FAQPage, configure llms.txt where appropriate, strengthen authoritative local citations, and publish clear, question-led answer sections. These steps make your business information easier for search engines and AI systems to interpret. No agency can guarantee a specific AI citation or placement.",
+  },
+  {
+    id: "faq-04",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "Can you rank my business in the Google Maps Local 3-Pack in Indore?",
+    answer: "We can improve your eligibility and visibility for relevant local searches through Google Business Profile optimization, accurate business details, localized landing pages, relevant photos and updates, review-response processes, and consistent name, address, and phone information. We target local areas such as Vijay Nagar, Palasia, Super Corridor, Bhawarkuan, and MR 10. Google determines final Maps rankings, so a guaranteed position would not be realistic.",
+  },
+  {
+    id: "faq-05",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "Do you provide an initial SEO and AI visibility audit before starting?",
+    answer: "Yes. AdsVerse offers a free, no-obligation SEO and AEO/GEO technical audit. It reviews search visibility, technical issues, declining keywords, competitor gaps, and opportunities across traditional and AI-assisted search. We use the findings to outline a practical 90-day recovery and growth roadmap before you decide whether to proceed.",
+  },
+  {
+    id: "faq-06",
+    category: "seo",
+    categoryLabel: "SEO, AEO & GEO",
+    question: "Will AI search engines replace website traffic completely?",
+    answer: "No. AI answers are changing how people discover information, and some informational searches may generate fewer website clicks. Websites still matter for detailed evaluation, product comparisons, trust, and conversion. Visitors who click through from AI search experiences can have strong intent; AdsVerse's supplied performance brief cites conversion rates 2–3 times higher for some of these visits. Actual results vary by industry and source.",
+  },
+  {
+    id: "faq-07",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "How does an AdsVerse WhatsApp AI Chatbot work for lead generation and qualification?",
+    answer: "Our WhatsApp automation uses the official WhatsApp Business Platform and Gemini- or GPT-powered conversational flows. When a lead arrives from an ad or website, the bot can respond in under 30 seconds, ask qualifying questions in English or Hinglish, share approved catalogs and brochures, capture appointment requests, and send lead details to your CRM. The exact workflow is configured around your business and consent requirements.",
+  },
+  {
+    id: "faq-08",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "Can the WhatsApp AI bot converse in Hinglish and regional tones for Indian customers?",
+    answer: "Yes. We configure the assistant around your business knowledge base, product information, pricing policies, and customer communication style. It can respond in English, Hindi, or Hinglish, and can be designed for appropriate regional phrasing. When a question needs human judgment or approval, the workflow can hand the conversation to your sales or support team.",
+  },
+  {
+    id: "faq-09",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "What is n8n workflow automation and how does it reduce manual work?",
+    answer: "n8n connects tools and business systems through automated workflows. AdsVerse can connect Meta Lead Forms, Google Ads, website forms, WhatsApp, Google Sheets, and CRMs such as Zoho or HubSpot. Instead of downloading CSV files and forwarding enquiries manually, lead details can move into the right systems automatically, with follow-up and status updates triggered by workflow rules.",
+  },
+  {
+    id: "faq-10",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "Why is a 30-second lead response time critical for paid ads ROI?",
+    answer: "A prospect is more likely to engage while their enquiry is still fresh. AdsVerse's supplied benchmark cites qualification-rate improvements of up to 390% when leads are contacted within 30 seconds rather than after two hours. Automated WhatsApp and CRM workflows help respond outside regular office hours too. The impact varies with lead quality, offer, and sales process.",
+  },
+  {
+    id: "faq-11",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "Can you integrate AI automation with our existing CRM or ERP software?",
+    answer: "Yes. We use webhooks, APIs, and n8n workflows to connect systems such as Zoho CRM, HubSpot, LeadSquared, Shopify, WooCommerce, and custom applications. Integrations can synchronize leads, order or enquiry status, follow-up activity, and campaign outcomes with existing dashboards. Scope depends on the access, API capabilities, and data model of your current software.",
+  },
+  {
+    id: "faq-12",
+    category: "automation",
+    categoryLabel: "WhatsApp AI & n8n Automation",
+    question: "Are automated WhatsApp broadcasts safe from number banning?",
+    answer: "AdsVerse builds WhatsApp workflows on the official Meta WhatsApp Business Platform, using approved message templates where required, consent and opt-out safeguards, and sensible rate limits. These practices support policy compliance and reduce avoidable risk. No provider can promise that a number is 100% immune from restrictions; list quality, user feedback, message content, and platform policies all matter.",
+  },
+  {
+    id: "faq-13",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "How much budget should I spend on Google Ads or Meta Ads to get real ROI?",
+    answer: "The right budget depends on your industry, cost per acquisition, conversion rate, sales capacity, and target volume. For many Indian SMB, D2C, education, and real-estate campaigns, AdsVerse's starting media-budget guidance is ₹15,000–₹50,000 per month, alongside proper conversion tracking and lead follow-up. Media spend is separate from agency fees, and profitability is not guaranteed.",
+  },
+  {
+    id: "faq-14",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "What kind of ROAS (Return on Ad Spend) does AdsVerse typically deliver?",
+    answer: "AdsVerse reports an average of 4.8x ROAS across integrated funnels serving more than 113 brands. One cited SimplyHerbal D2C campaign combined Meta Ads, SEO, and WhatsApp automation and achieved 4.8x ROAS within 90 days. These are reported campaign results, not a promise of the same return for every business; performance depends on margins, offer, tracking, market, and execution.",
+  },
+  {
+    id: "faq-15",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "Why did my previous Facebook/Instagram or Google Ads campaigns fail to convert?",
+    answer: "Common causes include sending paid traffic to slow landing pages, running campaigns without reliable Pixel or Conversions API tracking, using broad creative without a clear offer, and following up with leads too late. AdsVerse reviews the full funnel—from ad creative and landing-page experience to server-side tracking and rapid WhatsApp follow-up—rather than optimizing clicks in isolation.",
+  },
+  {
+    id: "faq-16",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "Should my business invest in Google Search Ads or Meta (Instagram/Facebook) Ads first?",
+    answer: "Start with the channel that best matches customer intent. Google Search Ads are often a strong first choice when people are actively looking for a service, such as clinics, B2B manufacturers, coaching institutes, real estate, and local services. Meta Ads can be effective for visual D2C products, fashion, hospitality, and discovery-led offers. Many businesses combine Meta prospecting with Google Search or retargeting.",
+  },
+  {
+    id: "faq-17",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "How do you track accurate conversions with privacy updates and ad blockers?",
+    answer: "We can configure Google Tag Manager, Meta Conversions API, enhanced Google Ads conversions, call-tracking integrations, and CRM-based attribution. Connecting campaign events to qualified leads and closed revenue gives a clearer view than relying only on impressions or platform-reported clicks. The accuracy of attribution also depends on consent, implementation, data quality, and platform limitations.",
+  },
+  {
+    id: "faq-18",
+    category: "ads",
+    categoryLabel: "Google & Meta Ads",
+    question: "How often do you test new ad creatives and optimize campaigns?",
+    answer: "Our stated optimization cadence includes weekly creative iterations and A/B tests for hooks, landing-page headlines, and audience segments. We also review search terms regularly and remove irrelevant traffic. The schedule is adapted to campaign volume and data quality so that decisions are based on useful evidence rather than changes for their own sake.",
+  },
+  {
+    id: "faq-19",
+    category: "web",
+    categoryLabel: "Next.js Web Development",
+    question: "Why does AdsVerse build websites and landing pages in Next.js instead of basic WordPress templates?",
+    answer: "Next.js with TypeScript and Tailwind CSS gives us control over page structure, performance, integrations, and server-rendered content. It can support strong Core Web Vitals, clean HTML for search crawlers, and custom lead or CRM workflows without relying on a large plugin stack. We engineer for fast loading and target sub-1.5-second experiences where the design, hosting, and third-party services allow; actual speed must be measured on the finished site.",
+  },
+  {
+    id: "faq-20",
+    category: "web",
+    categoryLabel: "Next.js Web Development",
+    question: "Can you redesign our slow e-commerce store or corporate website without losing existing SEO rankings?",
+    answer: "Yes. We plan migrations around URL preservation, page-to-page mapping, 301 redirects for changed URLs, metadata and structured-data review, and technical SEO checks. We also improve mobile usability and performance. Rankings cannot be guaranteed during a migration, but a documented redirect and validation process helps protect existing search equity and reduce avoidable traffic loss.",
+  },
+  {
+    id: "faq-21",
+    category: "web",
+    categoryLabel: "Next.js Web Development",
+    question: "Do your landing pages include CRM and WhatsApp lead capture out of the box?",
+    answer: "Landing pages can be delivered with WhatsApp enquiry actions, n8n webhook integrations, conversion-event tracking, and layouts designed for mobile conversion. We define the capture fields, routing, consent, and follow-up steps during project planning so that leads reach the right team and can be measured through the sales process.",
+  },
+  {
+    id: "faq-22",
+    category: "web",
+    categoryLabel: "Next.js Web Development",
+    question: "Do you also build custom web portals, admin dashboards, and mobile apps?",
+    answer: "Yes. AdsVerse develops custom CMS and admin dashboards, React Native applications using Expo, Firebase or MongoDB-backed systems, and web tools that use Gemini APIs. We scope the architecture, integrations, security requirements, and support needs around the product rather than forcing every project into the same template.",
+  },
+  {
+    id: "faq-23",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "How much do AdsVerse digital marketing and AI automation services cost per month?",
+    answer: "AdsVerse's Tier-1 AI-first growth retainers start at ₹18,000 per month. The final scope depends on your stage and requirements—for example, Local SEO with a WhatsApp bot, or a broader program combining Google and Meta Ads, GEO, and n8n CRM automation. We outline deliverables and fees before work begins so you know what is included.",
+  },
+  {
+    id: "faq-24",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "Do you lock clients into long-term 12-month contracts?",
+    answer: "No. AdsVerse does not require a standard 12-month lock-in. SEO and automation often need a structured 90-day roadmap to build and evaluate momentum, but milestones, deliverables, and commercial terms are discussed transparently before onboarding.",
+  },
+  {
+    id: "faq-25",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "What makes AdsVerse different from the 40+ other digital marketing agencies in Indore?",
+    answer: "AdsVerse brings performance marketing (Google and Meta Ads), SEO, AEO and GEO, Next.js development, and in-house WhatsApp and n8n automation together under one team. The approach connects acquisition, follow-up, and measurement, with attention to cost per acquisition, qualified leads, and ROAS. AdsVerse's market assessment estimates that fewer than six Indore agencies use genuine AI or workflow automation in production.",
+  },
+  {
+    id: "faq-26",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "Where is the AdsVerse office located in Indore, and can we meet in person?",
+    answer: "AdsVerse is based at 329/11, Meghdoot Nagar / Vijay Nagar, Indore, Madhya Pradesh – 452011. You can request an in-person strategy meeting by calling or WhatsApping +91 96851 23339, or by emailing contact@adsverse.in. Please contact the team to confirm a suitable meeting time.",
+  },
+  {
+    id: "faq-27",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "Which industries and cities does AdsVerse work with?",
+    answer: "Alongside its Indore presence, AdsVerse works with businesses in Bhopal, Jabalpur, Gwalior, Ujjain, Jaipur, Udaipur, Kota, Raipur, and 25+ other regional hubs, as well as remote clients across India. Industries served include D2C e-commerce, SaaS and IT, manufacturing, education and coaching, healthcare, hospitality, and real estate.",
+  },
+  {
+    id: "faq-28",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "What kind of reporting will I receive every month?",
+    answer: "Clients can receive dashboard access connected to their CRM and a monthly performance review. Reporting can cover ad spend, qualified leads, cost per lead, ROAS, keyword movements, and the next month's action plan. The exact dashboard and metrics depend on the channels and tracking configured for your engagement.",
+  },
+  {
+    id: "faq-29",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "How quickly can we launch our campaign once we onboard with AdsVerse?",
+    answer: "The initial competitor and technical audit, conversion-tracking work, and WhatsApp bot setup are planned for the first 5–7 business days. Where access and approvals are ready, targeted Google or Meta Ads and automation workflows can go live in Week 2. Timelines depend on account access, creative approvals, integrations, and platform review.",
+  },
+  {
+    id: "faq-30",
+    category: "business",
+    categoryLabel: "Pricing, Process & Indore Local",
+    question: "How do I get started with a free AI marketing and SEO audit from AdsVerse?",
+    answer: "Use the contact form on AdsVerse, call or WhatsApp +91 96851 23339, or email contact@adsverse.in. The team will review your search visibility, advertising funnel, and lead-response process, then discuss a practical growth blueprint during a free 30-minute consultation.",
+  },
+];
