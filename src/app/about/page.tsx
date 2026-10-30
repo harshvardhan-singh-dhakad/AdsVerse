@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const teamMembers = [
-  { name: "Deepak Dhakad", role: "Ads, AI Automation, GEO & SEO Specialist", avatar: "/images/founder-deepak-v2.webp", hint: "man portrait" },
+  { name: "Deepak Dhakad", role: "Ads, AI Automation, GEO & SEO Specialist", avatar: "https://adsverse.in/images/founder-deepak-v2.webp", hint: "man portrait" },
   { name: "Manisha kumawat", role: "SMM & Ads Expert", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FMANU.jpg?alt=media", hint: "woman portrait" },
   { name: "Aarsh Shrivas", role: "Business Analyst", avatar: "https://firebasestorage.googleapis.com/v0/b/synergyflow-digital-p7c0g.firebasestorage.app/o/Image%2FBlog%2FAarsh.JPG?alt=media", hint: "man portrait" },
 ];
