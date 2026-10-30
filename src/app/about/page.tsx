@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
 import Image from "next/image";
+import founderPortrait from "@/assets/founder-deepak.webp";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -144,11 +145,11 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 items-center">
             <div className="md:col-span-1 h-full">
               <Image
-                src="/images/founder-deepak-v2.webp"
+                src={founderPortrait}
                 alt="Deepak Dhakad - Digital Marketing Expert and Founder, AdsVerse Indore"
                 width={380}
                 height={570}
-                unoptimized
+                priority
                 data-ai-hint="man professional"
                 className="w-full h-full object-cover object-top rounded-b-[5rem]"
                 sizes="(max-width: 768px) 100vw, 380px"
