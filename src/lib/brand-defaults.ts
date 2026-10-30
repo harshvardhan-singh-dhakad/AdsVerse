@@ -29,5 +29,5 @@ export const DEFAULT_BRAND: BrandSettings = {
   facebookUrl: "https://www.facebook.com/adsverse.in",
   xUrl: "https://x.com/Adsverse1",
   linkedinUrl: "https://www.linkedin.com/company/adsverse",
-  googleBusinessUrl: "https://maps.app.goo.gl/7edcg9nx6Kofxv8M8",
+  googleBusinessUrl: "https://maps.app.goo.gl/Z9pNkf1FPYjRDsXz5",
 };
