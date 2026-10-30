@@ -27,6 +27,10 @@ const normalizeTestimonials = (docs: FirebaseFirestore.QueryDocumentSnapshot[]):
         text,
         initials: String(data.initials || name.slice(0, 2)).trim().slice(0, 3).toUpperCase(),
         rating: Number.isFinite(rawRating) ? Math.min(5, Math.max(1, Math.round(rawRating))) : 5,
+        photoUrl: typeof data.photoUrl === "string" ? data.photoUrl : "",
+        photoAlt: typeof data.photoAlt === "string" ? data.photoAlt : "",
+        screenshotUrl: typeof data.screenshotUrl === "string" ? data.screenshotUrl : "",
+        screenshotAlt: typeof data.screenshotAlt === "string" ? data.screenshotAlt : "",
         isPublished: data.isPublished !== false,
         displayOrder: Number.isFinite(rawOrder) && rawOrder >= 0 ? rawOrder : index,
       } satisfies TestimonialItem;

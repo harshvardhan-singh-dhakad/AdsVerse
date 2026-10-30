@@ -5,6 +5,12 @@ export type TestimonialItem = {
   text: string;
   initials: string;
   rating?: number;
+  photoUrl?: string;
+  photoStoragePath?: string;
+  photoAlt?: string;
+  screenshotUrl?: string;
+  screenshotStoragePath?: string;
+  screenshotAlt?: string;
   isPublished?: boolean;
   displayOrder?: number;
 };

@@ -72,7 +72,7 @@ const groups = [
       { id: "portfolio", label: "Portfolio", icon: Briefcase },
       { id: "services", label: "Services", icon: Globe },
       { id: "pricing", label: "Pricing", icon: IndianRupee },
-      { id: "testimonials", label: "Testimonials", icon: Quote },
+      { id: "testimonials", label: "Reviews & Testimonials", icon: Quote },
       { id: "faqs", label: "FAQs", icon: CircleHelp },
     ],
   },

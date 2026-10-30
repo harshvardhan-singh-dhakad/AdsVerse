@@ -493,10 +493,18 @@ export default async function HomePage() {
                       </div>
                     </div>
                     <p className="font-sans text-sm md:text-[18px] leading-[1.6] text-slate-800 dark:text-slate-200 mb-6 md:mb-8 italic">"{t.text}"</p>
+                    {t.screenshotUrl ? (
+                      <a href={t.screenshotUrl} target="_blank" rel="noopener noreferrer" className="mb-5 block overflow-hidden rounded-xl border border-border-glass bg-slate-950/30 transition hover:border-primary/50" aria-label={"Open original review screenshot from " + t.name}>
+                        <Image src={t.screenshotUrl} alt={t.screenshotAlt || (t.name + " review screenshot")} width={720} height={480} unoptimized className="max-h-56 w-full object-contain" />
+                        <span className="block px-3 py-2 text-[11px] font-semibold text-muted-foreground">View review screenshot ↗</span>
+                      </a>
+                    ) : null}
                   </div>
                   <div className="flex items-center gap-4 border-t border-border-glass pt-5 md:pt-6">
-                    <div className={cn("w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-lg md:text-xl select-none shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/20", avatarBg)}>
-                      {t.initials}
+                    <div className={cn("relative w-10 h-10 md:w-12 md:h-12 shrink-0 overflow-hidden rounded-full flex items-center justify-center font-bold text-lg md:text-xl select-none shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/20", avatarBg)}>
+                      {t.photoUrl ? (
+                        <Image src={t.photoUrl} alt={t.photoAlt || (t.name + " profile photo")} width={48} height={48} unoptimized className="h-full w-full object-cover" />
+                      ) : t.initials}
                     </div>
                     <div>
                       <div className="font-sans text-base md:text-lg font-bold text-slate-900 dark:text-white leading-tight">{t.name}</div>
