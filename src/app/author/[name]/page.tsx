@@ -13,7 +13,7 @@ const AUTHORS: Record<string, any> = {
     name: "Deepak Dhakad",
     role: "Founder & Digital Marketing Expert",
     bio: "Deepak Dhakad is the founder of AdsVerse, specializing in AI-driven digital marketing, SEO, and automation systems that help businesses scale efficiently.",
-    image: "/images/deepak-dhakad-founder.webp",
+    image: "/images/founder-deepak-v2.webp",
     social: {
       twitter: "https://x.com/Adsverse1",
       linkedin: "https://linkedin.com/company/adsverse",

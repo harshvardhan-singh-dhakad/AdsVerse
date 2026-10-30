@@ -158,7 +158,7 @@ const schemaArray = [
     "name": "Deepak Dhakad",
     "url": "https://adsverse.in/about",
     "jobTitle": "Founder & Digital Marketing Expert",
-    "image": "https://adsverse.in/images/deepak-dhakad-founder.webp",
+    "image": "https://adsverse.in/images/founder-deepak-v2.webp",
     "knowsAbout": ["SEO", "Generative Engine Optimization", "Answer Engine Optimization", "Google Ads", "Meta Ads", "Marketing Automation", "n8n Workflows", "WhatsApp AI Bots"],
     "worksFor": {
       "@type": "Organization",

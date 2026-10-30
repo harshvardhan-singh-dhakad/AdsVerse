@@ -234,7 +234,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       "name": post.author || "Deepak Dhakad",
       "jobTitle": "Digital Marketing & AI Automation Expert",
       "url": "https://adsverse.in/author/deepak-dhakad",
-      "image": "https://adsverse.in/images/deepak-dhakad-founder.webp"
+      "image": "https://adsverse.in/images/founder-deepak-v2.webp"
     },
     "publisher": {
       "@type": "Organization",
